@@ -1,0 +1,235 @@
+/*
+  Aegis Design Tokens
+  Layout: thanh điều hướng trên, nội dung theo lưới, khung điện thoại ở trung tâm.
+  Nguyên tắc:
+  1. Token màu đặt tên theo CÔNG DỤNG, tối đa 4 từ: [nhóm]-[vai trò]-[biến thể]-[trạng thái]
+  2. Hover/press dùng lớp phủ trong suốt → không phát sinh thêm màu
+  3. Mọi cặp chữ/nền đạt WCAG 2.1 AA; tương phản giữ tương đương giữa sáng và tối
+  4. Chế độ tối: độ cao thể hiện bằng nền sáng dần, không dùng bóng
+*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Nền & bề mặt — xám ánh xanh, gần trắng */
+  --bg-base: #f2f4f8;
+  --bg-surface: #ffffff;
+  --bg-surface-raised: #ffffff;
+  --bg-sunken: #e9edf3;
+  --bg-inverse: #0d1b33;
+
+  /* Chữ — navy và xám xanh */
+  --text-primary: #0d1b33;
+  --text-secondary: #45526b;
+  --text-tertiary: #5f6b82;
+  --text-inverse: #ffffff;
+
+  /* Viền */
+  --border-subtle: rgba(13, 27, 51, 0.09);
+  --border-strong: rgba(13, 27, 51, 0.22);
+
+  /* Hành động chính — xanh dương */
+  --action-primary-bg: #1849a9;
+  --action-primary-text: #ffffff;
+  --action-primary-subtle-bg: #ebf1fc;
+  --action-primary-subtle-text: #1849a9;
+
+  /* Trạng thái */
+  --status-success-text: #11734a;
+  --status-success-subtle-bg: #ebf7f1;
+  --status-warning-text: #8a5300;
+  --status-warning-subtle-bg: #fdf5e6;
+  --status-danger-text: #b42318;
+  --status-danger-subtle-bg: #fdf0ee;
+  --status-danger-solid-bg: #b42318;
+  --status-danger-solid-text: #ffffff;
+  --status-info-text: #1849a9;
+  --status-info-subtle-bg: #ebf1fc;
+
+  /* Tương tác */
+  --overlay-hover: rgba(13, 27, 51, 0.05);
+  --overlay-press: rgba(13, 27, 51, 0.1);
+  --focus-ring: rgba(24, 73, 169, 0.4);
+
+  /* Độ cao — bóng mềm, gần như không thấy viền */
+  --shadow-raised: 0 1px 2px rgba(13, 27, 51, 0.05), 0 2px 8px rgba(13, 27, 51, 0.05);
+  --shadow-overlay: 0 4px 12px rgba(30, 33, 66, 0.08), 0 16px 40px rgba(30, 33, 66, 0.12);
+
+  /* Thương hiệu — dải navy đầu màn hình */
+  --brand-bg: #0b2559;
+  --brand-text: #ffffff;
+  --brand-muted: rgba(255, 255, 255, 0.78);
+
+  /* Mô phỏng camera/thiết bị (luôn tối) */
+  --device-bezel: #0b1530;
+  --camera-bg: #070d1c;
+  --camera-text: #ffffff;
+  --camera-guide: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-base: #0b1220;
+    --bg-surface: #121b2e;
+    --bg-surface-raised: #1a2540;
+    --bg-sunken: #080d18;
+    --bg-inverse: #e8edf6;
+    --text-primary: #e8edf6;
+    --text-secondary: #a9b4c8;
+    --text-tertiary: #8b97ad;
+    --text-inverse: #0d1b33;
+    --border-subtle: rgba(200, 215, 255, 0.09);
+    --border-strong: rgba(200, 215, 255, 0.22);
+    --action-primary-bg: #7aa2ff;
+    --action-primary-text: #07142e;
+    --action-primary-subtle-bg: rgba(122, 162, 255, 0.14);
+    --action-primary-subtle-text: #a9c1ff;
+    --status-success-text: #6fd59e;
+    --status-success-subtle-bg: rgba(111, 213, 158, 0.12);
+    --status-warning-text: #f2c069;
+    --status-warning-subtle-bg: rgba(242, 192, 105, 0.12);
+    --status-danger-text: #ff9a90;
+    --status-danger-subtle-bg: rgba(255, 154, 144, 0.12);
+    --status-danger-solid-bg: #ff8a7f;
+    --status-danger-solid-text: #2a0705;
+    --status-info-text: #a9c1ff;
+    --status-info-subtle-bg: rgba(169, 193, 255, 0.12);
+    --overlay-hover: rgba(255, 255, 255, 0.06);
+    --overlay-press: rgba(255, 255, 255, 0.12);
+    --focus-ring: rgba(169, 193, 255, 0.55);
+    --shadow-raised: none;
+    --shadow-overlay: 0 16px 48px rgba(0, 0, 0, 0.5);
+    --device-bezel: #05060f;
+    --brand-bg: #0e1b38;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg-base: #0b1220;
+  --bg-surface: #121b2e;
+  --bg-surface-raised: #1a2540;
+  --bg-sunken: #080d18;
+  --bg-inverse: #e8edf6;
+  --text-primary: #e8edf6;
+  --text-secondary: #a9b4c8;
+  --text-tertiary: #8b97ad;
+  --text-inverse: #0d1b33;
+  --border-subtle: rgba(200, 215, 255, 0.09);
+  --border-strong: rgba(200, 215, 255, 0.22);
+  --action-primary-bg: #7aa2ff;
+  --action-primary-text: #07142e;
+  --action-primary-subtle-bg: rgba(122, 162, 255, 0.14);
+  --action-primary-subtle-text: #a9c1ff;
+  --status-success-text: #6fd59e;
+  --status-success-subtle-bg: rgba(111, 213, 158, 0.12);
+  --status-warning-text: #f2c069;
+  --status-warning-subtle-bg: rgba(242, 192, 105, 0.12);
+  --status-danger-text: #ff9a90;
+  --status-danger-subtle-bg: rgba(255, 154, 144, 0.12);
+  --status-danger-solid-bg: #ff8a7f;
+  --status-danger-solid-text: #2a0705;
+  --status-info-text: #a9c1ff;
+  --status-info-subtle-bg: rgba(169, 193, 255, 0.12);
+  --overlay-hover: rgba(255, 255, 255, 0.06);
+  --overlay-press: rgba(255, 255, 255, 0.12);
+  --focus-ring: rgba(169, 193, 255, 0.55);
+  --shadow-raised: none;
+  --shadow-overlay: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --device-bezel: #05060f;
+  --brand-bg: #0e1b38;
+  color-scheme: dark;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 40;
+  background: var(--brand-bg);
+}
+
+@layer base {
+  html,
+  body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+  }
+  body {
+    font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .interactive {
+    position: relative;
+    isolation: isolate;
+  }
+  .interactive::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: transparent;
+    pointer-events: none;
+    transition: background-color 120ms ease;
+  }
+  .interactive:hover:not(:disabled)::after {
+    background: var(--overlay-hover);
+  }
+  .interactive:active:not(:disabled)::after {
+    background: var(--overlay-press);
+  }
+  .gutter {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  @media (min-width: 640px) {
+    .gutter {
+      padding-left: max(24px, env(safe-area-inset-left, 0px));
+      padding-right: max(24px, env(safe-area-inset-right, 0px));
+    }
+  }
+  .tabular,
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+  /* Nhãn nhóm: chữ thường, xám, không viết hoa */
+  .eyebrow {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+  }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes scan-line {
+  0% { top: 8%; }
+  100% { top: 88%; }
+}
+.anim-pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+.anim-scan-line { animation: scan-line 1.8s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: reduce) {
+  .anim-pulse-ring,
+  .anim-scan-line { animation: none; }
+  * { transition-duration: 0ms !important; }
+}
