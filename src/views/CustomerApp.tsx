@@ -15,7 +15,11 @@ const readOutcome = (): Outcome => {
 function CustomerApp() {
   useTheme();
   const [outcome] = useState(readOutcome);
-  const [key, setKey] = useState<ScreenKey>("intro");
+  // ?screen=cardHome mở thẳng một màn (vd. thẻ tín dụng) để test nhanh
+  const [key, setKey] = useState<ScreenKey>(() => {
+    const k = new URLSearchParams(window.location.search).get("screen");
+    return SCREENS.some((s) => s.key === k) ? (k as ScreenKey) : "intro";
+  });
   const [nonce, setNonce] = useState(0);
   const Comp = SCREENS.find((s) => s.key === key)!.comp;
 

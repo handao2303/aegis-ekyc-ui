@@ -12,7 +12,8 @@ import { useLang } from "../i18n";
 export type ScreenKey =
   | "intro" | "consent" | "reconsent" | "docType" | "captureFront" | "reviewFront" | "captureBack"
   | "ocrReview" | "nfc" | "unreadable" | "liveness" | "verifying"
-  | "approved" | "refer" | "rejected" | "requestInfo" | "duplicate" | "resume" | "expiredDoc";
+  | "approved" | "refer" | "rejected" | "requestInfo" | "duplicate" | "resume" | "expiredDoc"
+  | "cardHome" | "boostOffer" | "boostLocked";
 
 export type Outcome = "approved" | "refer" | "rejected";
 export type ScreenProps = { go: (k: ScreenKey) => void; outcome: Outcome };
@@ -608,7 +609,7 @@ export function Approved({ go }: ScreenProps) {
     setTimeout(() => setCopied(false), 1600);
   };
   return (
-    <Screen title={tr("Kết quả", "Result")} footer={<Button size="lg" block onClick={() => go("intro")}>{tr("Vào trang chủ", "Go to home")}</Button>}>
+    <Screen title={tr("Kết quả", "Result")} footer={<Button size="lg" block onClick={() => go("cardHome")}>{tr("Vào trang chủ", "Go to home")}</Button>}>
       <div className="flex items-center gap-3">
         <span className="grid size-12 shrink-0 place-items-center rounded-full text-white" style={{ background: "var(--grad-action)" }}><CheckCircle2 className="size-6" /></span>
         <div>

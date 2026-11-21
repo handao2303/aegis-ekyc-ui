@@ -3,13 +3,14 @@ import { RotateCcw } from "lucide-react";
 import { Badge, Card, cx } from "../components/ui";
 import { PhoneFrame } from "./MobileShell";
 import * as S from "./screens";
+import * as C from "./cardScreens";
 import type { Outcome, ScreenKey, ScreenProps } from "./screens";
 
 type Meta = {
   key: ScreenKey;
   code: string;
   name: string;
-  group: "Luồng chính" | "Kết quả" | "Ngoại lệ";
+  group: "Luồng chính" | "Kết quả" | "Ngoại lệ" | "Hạn mức thẻ";
   comp: ComponentType<ScreenProps>;
   dark?: boolean;
   purpose: string;
@@ -39,9 +40,12 @@ export const SCREENS: Meta[] = [
   { key: "requestInfo", code: "eKYC-11", name: "Yêu cầu bổ sung", group: "Ngoại lệ", comp: S.RequestInfo, purpose: "Compliance yêu cầu bổ sung; deep link mở thẳng màn này.", rules: ["Chỉ yêu cầu đúng hạng mục cần bổ sung", "Hiển thị hạn chót và hệ quả khi quá hạn"], refs: ["SCRUM-76 (C07)"] },
   { key: "duplicate", code: "eKYC-12", name: "Đã có tài khoản", group: "Ngoại lệ", comp: S.Duplicate, purpose: "CCCD đã có tài khoản active.", rules: ["Dừng trước Liveness/CIC để không tốn chi phí", "Có lối báo cáo mạo danh"], refs: ["SCRUM-73 (C04)"] },
   { key: "expiredDoc", code: "eKYC-13", name: "Giấy tờ hết hạn", group: "Ngoại lệ", comp: S.ExpiredDoc, purpose: "Giấy tờ quá hạn hiệu lực.", rules: ["Nêu ngày hết hạn cụ thể", "Gợi ý cách xử lý"], refs: ["SCRUM-74 (C05)"] },
+  { key: "cardHome", code: "LIM-M1", name: "Hạn mức thẻ", group: "Hạn mức thẻ", comp: C.CardHome, purpose: "Hạn mức khả dụng / tổng, % đã dùng, Boost đang có, Smart Fallback sang CASA.", rules: ["Số dư khả dụng = hạn mức − đã dùng − tạm giữ", "Boost hiển thị đếm ngược tới lúc hết hạn", "Bật/tắt Smart Fallback ngay trên thẻ"], refs: ["SCRUM-51", "SCRUM-29"] },
+  { key: "boostOffer", code: "LIM-M2", name: "Ưu đãi Boost", group: "Hạn mức thẻ", comp: C.BoostOffer, purpose: "Đề xuất nâng hạn mức tạm thời theo behavioral score, có thời hạn.", rules: ["Nói rõ hạn mức mới, thời hạn, tự trở về, phí", "Phải tick hiểu điều kiện khoá trước khi nhận", "Có lựa chọn Để sau ngang hàng"], refs: ["SCRUM-51", "SCRUM-30", "UAT-LIM-06"] },
+  { key: "boostLocked", code: "LIM-M3", name: "Thông báo khoá Boost", group: "Hạn mức thẻ", comp: C.BoostLocked, purpose: "Boost bị tạm khoá do nghi gian lận; khách xác nhận hoặc khoá thẻ.", rules: ["Không dùng từ 'gian lận' với khách – nói 'giao dịch khác thường'", "Nhấn mạnh hạn mức gốc vẫn dùng được", "Khoá thẻ là lựa chọn đỏ, có tổng đài"], refs: ["SCRUM-51", "SCRUM-54", "BR-LIM-07", "UAT-LIM-07"] },
 ];
 
-const GROUPS = ["Luồng chính", "Kết quả", "Ngoại lệ"] as const;
+const GROUPS = ["Luồng chính", "Kết quả", "Ngoại lệ", "Hạn mức thẻ"] as const;
 
 export default function MobileFlowPage() {
   const [key, setKey] = useState<ScreenKey>("intro");

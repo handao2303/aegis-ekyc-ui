@@ -2,7 +2,7 @@
 
 The eKYC module UI for **Aegis Bank**, a personal banking project. Bilingual (Vietnamese / English), with light and dark themes.
 
-- **Customer app** (`/app/`): online account opening. 19 screens covering the main flow, results and edge cases.
+- **Customer app** (`/app/`): online account opening (19 screens: main flow, results, edge cases) plus 3 credit card limit screens (LIM-M1 → M3).
 - **Aegis Compliance** (`/compliance/`): review back-office. Queue, case detail, maker-checker, completed cases, SLA report and threshold settings.
 - **Aegis Reconciliation** (`/reconciliation/`): matching dashboard, no-code rules with segregation-of-duties checks, exceptions with AI root-cause suggestions and data lineage, GL entries with zero-touch vs maker-checker posting (REC-01 → 06).
 - **Aegis Credit Limit** (`/credit-limit/`): live ISO 8583 authorization monitor, card limit profiles with optimistic locking and Smart Fallback, Temporary Limit Boost, fraud monitor with SMS/App delivery status (LIM-W1 → W4).
@@ -35,6 +35,7 @@ npm run start      # serve out/ locally
 | Customer app – English | http://localhost:5179/app/?lang=en | [open](https://handao2303.github.io/aegis-ekyc-ui/app/?lang=en) |
 | Customer app – ends in "under review" | http://localhost:5179/app/?ketqua=refer | [open](https://handao2303.github.io/aegis-ekyc-ui/app/?ketqua=refer) |
 | Customer app – ends in "rejected" | http://localhost:5179/app/?ketqua=rejected | [open](https://handao2303.github.io/aegis-ekyc-ui/app/?ketqua=rejected) |
+| Customer app – my card (LIM-M1) | http://localhost:5179/app/?screen=cardHome | [open](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome) |
 | Compliance back-office | http://localhost:5179/compliance/ | [open](https://handao2303.github.io/aegis-ekyc-ui/compliance/) |
 | Reconciliation | http://localhost:5179/reconciliation/ | [open](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) |
 | Credit limit | http://localhost:5179/credit-limit/ | [open](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) |
@@ -68,6 +69,11 @@ All three pages are static HTML that hydrate in the browser, so no server is nee
 - Active liveness check with the front camera and timed challenges; selfie is shown next to the ID photo while verifying
 - Results as a bank-style receipt: approved, under review (24-hour timeline) or rejected
 - Edge cases: unreadable document (retry counter), resume an unfinished application, more information requested, existing customer, expired ID
+
+**Card limit (customer)**
+- My card: available vs total limit, utilisation meter, on-hold amount, Smart Fallback toggle to the linked account, recent transactions
+- Temporary Limit Boost offer: new limit, time-boxed validity, automatic return, fee; must acknowledge before accepting; live countdown once active
+- Boost lock notice: push-style alert, unusual transactions to confirm, "Yes, it was me" or "Not me – lock my card"
 
 **Compliance back-office**
 - Review queue with SLA status (on track / due soon / breached), risk score, filters and search
