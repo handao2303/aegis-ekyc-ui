@@ -4,6 +4,7 @@ import { SCREENS } from "../mobile/MobileFlowPage";
 import type { Outcome, ScreenKey } from "../mobile/screens";
 import { useTheme } from "../shared/theme";
 import { LangProvider } from "../i18n";
+import { CaptureProvider } from "../mobile/camera";
 
 // Kết quả xác minh mô phỏng: /app/?ketqua=refer | rejected (mặc định: duyệt tự động). Thêm &lang=en để mở bằng tiếng Anh.
 const readOutcome = (): Outcome => {
@@ -18,10 +19,10 @@ function CustomerApp() {
   const [nonce, setNonce] = useState(0);
   const Comp = SCREENS.find((s) => s.key === key)!.comp;
 
-  // Skin Verde áp lên cả <html> để thanh trạng thái iPhone và nền cuộn cùng tông
+  // Skin Aurora áp lên cả <html> để thanh trạng thái iPhone và nền cuộn cùng tông
   useEffect(() => {
-    document.documentElement.classList.add("skin-verde");
-    return () => document.documentElement.classList.remove("skin-verde");
+    document.documentElement.classList.add("skin-aurora");
+    return () => document.documentElement.classList.remove("skin-aurora");
   }, []);
   const go = (k: ScreenKey) => {
     setKey(k);
@@ -29,10 +30,10 @@ function CustomerApp() {
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center bg-bg-sunken md:items-center md:p-6">
+    <div className="fixed inset-0 flex justify-center md:items-center md:p-6" style={{ background: "var(--grad-soft)" }}>
       <div
-        className="flex h-full w-full max-w-[440px] flex-col overflow-hidden md:max-h-[880px] md:rounded-[40px] md:shadow-overlay"
-        style={{ background: "var(--brand-bg)", paddingTop: "env(safe-area-inset-top, 0px)" }}
+        className="flex h-full w-full max-w-[440px] flex-col overflow-hidden bg-bg-base md:max-h-[880px] md:rounded-[40px] md:shadow-overlay"
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
         <Comp key={`${key}-${nonce}`} go={go} outcome={outcome} />
       </div>
@@ -43,7 +44,9 @@ function CustomerApp() {
 export default function CustomerAppPage() {
   return (
     <LangProvider>
-      <CustomerApp />
+      <CaptureProvider>
+        <CustomerApp />
+      </CaptureProvider>
     </LangProvider>
   );
 }

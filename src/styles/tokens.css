@@ -145,66 +145,91 @@
 }
 
 /*
-  Skin "Verde" – chỉ dùng cho app khách hàng (/app/ và khung điện thoại trong UI Kit).
-  Header xanh rừng chuyển màu, điểm nhấn lime, góc bo lớn, nút dạng viên thuốc.
-  Nội dung luôn ở nền sáng để giữ tương phản, kể cả khi máy bật chế độ tối.
-  Đặt sau các khối dark để thắng khi cùng độ ưu tiên.
+  Skin "Aurora" – chỉ dùng cho app khách hàng (/app/ và khung điện thoại trong UI Kit).
+  Nền trắng, chữ đen, gradient tím → cam vàng cho điểm nhấn; font Lexend (gần Outfit, có dấu tiếng Việt).
+  Hai gradient:
+  - --grad-brand: tông sáng, chỉ dùng trang trí (thanh quét, viền, ô icon)
+  - --grad-action: tông đậm hơn để chữ trắng trên nút đạt WCAG AA ở vùng giữa nút (≥ 4.5:1)
+  Đặt sau các khối dark để thắng khi cùng độ ưu tiên; nội dung luôn ở nền sáng.
 */
-:root.skin-verde,
-.skin-verde {
-  --bg-base: #eef2ec;
+:root.skin-aurora,
+.skin-aurora {
+  --bg-base: #ffffff;
   --bg-surface: #ffffff;
   --bg-surface-raised: #ffffff;
-  --bg-sunken: #e2e8de;
-  --bg-inverse: #0b1d10;
-  --text-primary: #0b1d10;
-  --text-secondary: #46564a;
-  --text-tertiary: #5a695d;
+  --bg-sunken: #f4f5f8;
+  --bg-inverse: #1a1a1a;
+  --text-primary: #1a1a1a;
+  --text-secondary: #575c6b;
+  --text-tertiary: #6b7080;
   --text-inverse: #ffffff;
-  --border-subtle: rgba(11, 29, 16, 0.08);
-  --border-strong: rgba(11, 29, 16, 0.2);
-  --action-primary-bg: #0f2416;
+  --border-subtle: #e9eaee;
+  --border-strong: #cfd2da;
+  --action-primary-bg: #6d34c4;
   --action-primary-text: #ffffff;
-  --action-primary-subtle-bg: #e3f4d2;
-  --action-primary-subtle-text: #2b6414;
-  --status-success-text: #1f7a2e;
-  --status-success-subtle-bg: #e6f6e3;
+  --action-primary-subtle-bg: #f3ecfe;
+  --action-primary-subtle-text: #6a2fb5;
+  --status-success-text: #157347;
+  --status-success-subtle-bg: #e8f7ef;
   --status-warning-text: #8a5300;
-  --status-warning-subtle-bg: #fbf3e2;
+  --status-warning-subtle-bg: #fef4dd;
   --status-danger-text: #b42318;
   --status-danger-subtle-bg: #fdf0ee;
   --status-danger-solid-bg: #b42318;
   --status-danger-solid-text: #ffffff;
-  --status-info-text: #2b6414;
-  --status-info-subtle-bg: #e3f4d2;
-  --overlay-hover: rgba(11, 29, 16, 0.05);
-  --overlay-press: rgba(11, 29, 16, 0.1);
-  --focus-ring: rgba(127, 209, 74, 0.7);
-  --shadow-raised: 0 1px 2px rgba(11, 29, 16, 0.04), 0 8px 24px rgba(11, 29, 16, 0.06);
-  --shadow-overlay: 0 8px 24px rgba(11, 29, 16, 0.12), 0 24px 56px rgba(11, 29, 16, 0.18);
-  --brand-bg: radial-gradient(120% 55% at 90% 0%, rgba(168, 232, 104, 0.2) 0%, rgba(168, 232, 104, 0) 60%),
-    linear-gradient(170deg, #17402a 0%, #0e2a19 48%, #08180e 100%);
-  --brand-ink: #0b1d10;
-  --brand-text: #ffffff;
-  --brand-muted: rgba(255, 255, 255, 0.72);
-  --device-bezel: #0a140d;
-  --camera-bg: #06120a;
-  --lime: #a8e868;
-  --lime-strong: #7fd14a;
-  --lime-ink: #0b1d10;
-  --lime-card: linear-gradient(135deg, #c4f58c 0%, #a8e868 45%, #6fc443 100%);
+  --status-info-text: #6a2fb5;
+  --status-info-subtle-bg: #f3ecfe;
+  --overlay-hover: rgba(26, 26, 26, 0.04);
+  --overlay-press: rgba(26, 26, 26, 0.08);
+  --focus-ring: rgba(180, 108, 246, 0.6);
+  /* Thẻ dùng viền mảnh thay cho bóng */
+  --shadow-raised: 0 0 0 1px #e9eaee, 0 1px 2px rgba(26, 26, 26, 0.03);
+  --shadow-overlay: 0 12px 32px rgba(72, 43, 100, 0.14), 0 2px 8px rgba(72, 43, 100, 0.08);
+  --brand-bg: #ffffff;
+  --brand-ink: #1a1a1a;
+  --brand-text: #1a1a1a;
+  --brand-muted: #6b7080;
+  --device-bezel: #121214;
+  --camera-bg: #0d0b12;
+  --aurora-purple: #b46cf6;
+  --aurora-amber: #f7b31b;
+  --aurora-deep: #482b64;
+  --aurora-ink: #1a1a1a;
+  --grad-brand: linear-gradient(90deg, #b46cf6 0%, #d98ca0 50%, #f7b31b 100%);
+  --grad-action: linear-gradient(90deg, #8640e0 0%, #b04f80 50%, #cf7212 100%);
+  --grad-soft: linear-gradient(135deg, #f3ecfe 0%, #fdf1f0 55%, #fef4dd 100%);
   --radius-md: 14px;
-  --radius-lg: 22px;
+  --radius-lg: 20px;
   color-scheme: light;
 }
-:root.skin-verde body::before {
-  display: none;
+:root.skin-aurora body,
+.skin-aurora {
+  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
 }
-.skin-verde .btn {
+.skin-aurora .font-mono {
+  font-family: inherit;
+}
+.skin-aurora .btn {
   border-radius: 9999px;
 }
-.skin-verde .btn.h-12 {
-  height: 52px;
+.skin-aurora .btn.h-12 {
+  height: 56px;
+  font-size: 17px;
+}
+/* Nút chính: gradient đậm, chữ trắng */
+.skin-aurora .btn.bg-action:not(:disabled) {
+  background: var(--grad-action);
+}
+.skin-aurora .btn.bg-action:disabled {
+  background: #d9dbe1;
+  color: #575c6b;
+  opacity: 1;
+}
+.text-gradient {
+  background: var(--grad-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 body::before {

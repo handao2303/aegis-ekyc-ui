@@ -1,12 +1,13 @@
-import { useEffect, useState, ReactNode } from "react";
+import { useEffect, useRef, useState, ReactNode } from "react";
 import {
-  Camera, Check, CheckCircle2, ChevronRight, Clock, CreditCard, FileText, IdCard, Zap,
+  Camera, Check, CheckCircle2, ChevronRight, Clock, CreditCard, FileText, IdCard,
   Lock, Nfc, RefreshCw, ScanFace, ShieldCheck, Smartphone, Sun, UserCheck, XCircle, Bell, CalendarClock,
-  Upload, History, Headphones, Copy, Building2, ArrowRight,
+  Upload, History, Headphones, Copy, Building2, ArrowRight, BookUser, CameraOff, FlipHorizontal2,
 } from "lucide-react";
 import { Alert, Button, Checkbox, ProgressBar, cx } from "../components/ui";
-import { IdCardArt, PageTitle, RoundIconButton, SAFE_BOTTOM, Screen } from "./MobileShell";
-import { LangSwitch, useLang } from "../i18n";
+import { FaceAvatar, IconTile, IdCardArt, PageTitle, ScanIllustration, Screen } from "./MobileShell";
+import { useCamera, useCapture } from "./camera";
+import { useLang } from "../i18n";
 
 export type ScreenKey =
   | "intro" | "consent" | "reconsent" | "docType" | "captureFront" | "reviewFront" | "captureBack"
@@ -42,107 +43,45 @@ function StatusMark({ tone, icon }: { tone: "success" | "warning" | "danger"; ic
 }
 
 /* ---------- 00 Giới thiệu ---------- */
-/** Minh hoạ hero: thẻ CCCD lime nghiêng trên nền tối, thẻ phía sau mờ — số giấy tờ đã che */
-function HeroCards() {
-  return (
-    <div className="relative mx-auto h-[206px] w-full max-w-[310px]" aria-hidden>
-      <div className="absolute left-1/2 top-4 h-36 w-36 -translate-x-1/2 rounded-full bg-lime/25 blur-3xl" />
-      <div
-        className="absolute left-[16%] top-2 aspect-[1.586] w-[74%] rounded-[22px] border border-white/10 bg-white/[0.05]"
-        style={{ transform: "rotate(-16deg)" }}
-      />
-      <div
-        className="absolute left-[8%] top-8 flex aspect-[1.586] w-[84%] flex-col justify-between rounded-[22px] p-5 text-lime-ink shadow-[0_24px_48px_rgba(0,0,0,0.35)]"
-        style={{ background: "var(--lime-card)", transform: "rotate(-8deg)" }}
-      >
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] opacity-70">Căn cước · Citizen ID</p>
-            <p className="mt-0.5 text-[13px] font-bold">Việt Nam</p>
-          </div>
-          <span className="inline-flex items-center gap-1 rounded-full border border-lime-ink/25 px-2 py-0.5 text-[11px] font-semibold">
-            <Nfc className="size-3.5" /> NFC
-          </span>
-        </div>
-        <div className="h-7 w-10 rounded-md border border-lime-ink/30 bg-lime-ink/10" />
-        <div className="flex items-end justify-between">
-          <p className="text-[19px] font-bold tracking-[0.06em] tabular">079 2•• ••• 456</p>
-          <p className="text-[12px] font-bold">VNM</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function Intro({ go }: ScreenProps) {
   const { tr } = useLang();
-  const steps = [tr("Đồng ý", "Consent"), tr("Chụp CCCD", "Scan ID"), tr("Quét chip", "NFC chip"), tr("Khuôn mặt", "Face")];
-  const needs: [ReactNode, string][] = [
-    [<IdCard key="i" className="size-4" />, tr("CCCD gắn chip", "Chip ID card")],
-    [<Nfc key="n" className="size-4" />, tr("Máy có NFC", "NFC phone")],
-    [<Sun key="s" className="size-4" />, tr("Đủ ánh sáng", "Good light")],
+  const steps: [ReactNode, string, string][] = [
+    [<FileText key="f" className="size-5" />, tr("Đồng ý điều khoản", "Accept the terms"), tr("Chọn dữ liệu bạn cho phép dùng", "Choose what data we can use")],
+    [<IdCard key="i" className="size-5" />, tr("Chụp CCCD gắn chip", "Photograph your chip ID"), tr("Mặt trước và mặt sau", "Front and back")],
+    [<Nfc key="n" className="size-5" />, tr("Quét chip NFC", "Scan the NFC chip"), tr("Áp thẻ vào mặt sau điện thoại", "Hold the card to your phone")],
+    [<ScanFace key="s" className="size-5" />, tr("Xác thực khuôn mặt", "Verify your face"), tr("Làm theo hướng dẫn trên màn hình", "Follow the on-screen prompts")],
   ];
   return (
-    <div className="flex min-h-0 flex-1 flex-col text-white" style={{ background: "var(--brand-bg)" }}>
-      <div className="flex h-14 shrink-0 items-center gap-2 px-4">
-        <span className="grid size-9 place-items-center rounded-full bg-lime text-lime-ink">
-          <ShieldCheck className="size-[18px]" aria-hidden />
-        </span>
-        <span className="text-[15px] font-bold tracking-tight">Aegis Bank</span>
-        <span className="flex-1" />
-        <LangSwitch onBrand />
-        <RoundIconButton label={tr("Hỗ trợ", "Support")}>
-          <Headphones className="size-[18px]" />
-        </RoundIconButton>
-      </div>
-
-      <div className="min-h-0 flex-1 overflow-y-auto px-6 pt-2">
-        <HeroCards />
-        <h1 className="mt-3 text-center text-[28px] font-bold leading-[36px] tracking-[-0.02em]">
-          {tr("Mở tài khoản", "Open an account")}
-          <br />
-          {tr("chỉ trong 3 phút", "in just 3 minutes")}
-        </h1>
-        <p className="mx-auto mt-3 max-w-[300px] text-center text-body-sm text-white/70">
-          {tr("Không cần ra quầy. Dữ liệu của bạn được mã hoá và chỉ dùng để xác minh danh tính.", "No branch visit. Your data is encrypted and only used to verify who you are.")}
-        </p>
-        <ol className="mt-5 grid grid-cols-4 gap-2" aria-label={tr("4 bước", "4 steps")}>
-          {steps.map((t, i) => (
-            <li key={t} className="flex flex-col items-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.06] px-1 py-3">
-              <span className="grid size-7 place-items-center rounded-full bg-lime/15 text-caption font-bold text-lime tabular">{i + 1}</span>
-              <span className="text-center text-[11px] font-medium leading-tight text-white/85">{t}</span>
-            </li>
-          ))}
-        </ol>
-        <ul className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 pb-2 text-caption text-white/65">
-          {needs.map(([ic, t]) => (
-            <li key={t} className="flex items-center gap-1.5"><span className="text-lime">{ic}</span>{t}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="shrink-0 px-5 pt-3" style={SAFE_BOTTOM}>
-        <div className="flex gap-3">
-          <button onClick={() => go("resume")} className="btn interactive h-14 shrink-0 rounded-full bg-white px-5 text-body-sm font-semibold text-lime-ink">
-            {tr("Hồ sơ dở", "Resume")}
-          </button>
-          <button
-            onClick={() => go("consent")}
-            className="btn interactive flex h-14 flex-1 items-center justify-between rounded-full pl-6 pr-1.5 text-body font-semibold text-lime-ink"
-            style={{ background: "var(--lime-card)" }}
-          >
-            {tr("Bắt đầu", "Get started")}
-            <span className="grid size-11 place-items-center rounded-full bg-lime-ink text-lime">
-              <ArrowRight className="size-5" aria-hidden />
+    <Screen
+      title="Aegis Bank"
+      footer={
+        <>
+          <Button size="lg" block onClick={() => go("consent")} iconRight={<ArrowRight className="size-5" />}>{tr("Bắt đầu", "Get started")}</Button>
+          <Button variant="ghost" block onClick={() => go("resume")}>{tr("Tiếp tục hồ sơ đang dở", "Continue a saved application")}</Button>
+        </>
+      }
+    >
+      <ScanIllustration />
+      <h2 className="mt-7 text-[30px] font-semibold leading-[36px] tracking-[-0.02em]">
+        {tr("Mở tài khoản", "Open an account")}
+        <br />
+        <span className="text-gradient">{tr("chỉ trong 3 phút", "in just 3 minutes")}</span>
+      </h2>
+      <p className="mt-2.5 text-[15px] leading-[22px] text-fg-secondary">
+        {tr("Không cần ra quầy. Chuẩn bị CCCD gắn chip và điện thoại có NFC.", "No branch visit. Have your chip ID card and an NFC-enabled phone ready.")}
+      </p>
+      <ol className="mt-6 flex flex-col gap-3">
+        {steps.map(([ic, t, d]) => (
+          <li key={t} className="flex items-center gap-4 rounded-[18px] border border-line-subtle p-3">
+            <IconTile size={44}>{ic}</IconTile>
+            <span className="min-w-0">
+              <span className="block text-[15px] font-semibold">{t}</span>
+              <span className="block text-caption text-fg-tertiary">{d}</span>
             </span>
-          </button>
-        </div>
-        <p className="mt-3 flex items-center justify-center gap-1.5 text-caption text-white/55">
-          <Lock className="size-3.5" aria-hidden />
-          {tr("Kết nối được mã hoá · Aegis Bank", "Encrypted connection · Aegis Bank")}
-        </p>
-      </div>
-    </div>
+          </li>
+        ))}
+      </ol>
+    </Screen>
   );
 }
 
@@ -200,29 +139,33 @@ export function DocType({ go }: ScreenProps) {
   const { tr } = useLang();
   const [sel, setSel] = useState("cccd");
   const opts = [
-    { id: "cccd", title: tr("Căn cước công dân gắn chip", "Chip-based citizen ID"), desc: tr("Được duyệt tự động khi đọc được chip", "Approved instantly when the chip can be read") },
-    { id: "cancuoc", title: tr("Thẻ Căn cước (mẫu 2024)", "Identity card (2024 format)"), desc: tr("Cấp từ ngày 01/07/2024", "Issued from 1 Jul 2024") },
+    { id: "cccd", icon: <IdCard className="size-6" />, title: tr("CCCD gắn chip", "Chip-based citizen ID"), desc: tr("Duyệt tự động khi đọc được chip", "Approved instantly when the chip is read") },
+    { id: "cancuoc", icon: <BookUser className="size-6" />, title: tr("Thẻ Căn cước (mẫu 2024)", "Identity card (2024)"), desc: tr("Cấp từ ngày 01/07/2024", "Issued from 1 Jul 2024") },
   ];
   return (
     <Screen title={tr("Giấy tờ tuỳ thân", "ID document")} step={1} onBack={() => go("consent")} footer={<Button size="lg" block onClick={() => go("captureFront")}>{tr("Tiếp tục", "Continue")}</Button>}>
-      <PageTitle title={tr("Chọn loại giấy tờ", "Choose your document")} desc={tr("Chỉ chấp nhận bản gốc, còn hạn.", "Original, unexpired documents only.")} />
-      <Section>
-        <div role="radiogroup" aria-label={tr("Loại giấy tờ", "Document type")} className="divide-y divide-[var(--border-subtle)]">
-          {opts.map((o) => (
-            <button key={o.id} role="radio" aria-checked={sel === o.id} onClick={() => setSel(o.id)} className="interactive flex w-full items-center gap-3 p-4 text-left first:rounded-t-lg last:rounded-b-lg">
-              <CreditCard className="size-6 shrink-0 text-fg-tertiary" />
-              <span className="min-w-0 flex-1">
-                <span className="block text-body-sm font-semibold">{o.title}</span>
-                <span className="block text-caption text-fg-tertiary">{o.desc}</span>
-              </span>
-              <span className={cx("grid size-5 shrink-0 place-items-center rounded-full border-2", sel === o.id ? "border-action" : "border-line-strong")}>
-                {sel === o.id && <span className="size-2.5 rounded-full bg-action" />}
-              </span>
-            </button>
-          ))}
-        </div>
-      </Section>
-      <p className="mt-4 flex gap-2 text-caption text-fg-tertiary">
+      <PageTitle title={tr("Chọn giấy tờ để tiếp tục", "Select a document to continue")} desc={tr("Dùng giấy tờ gốc, còn hạn để xác minh danh tính của bạn.", "Use an original, valid document to verify your identity.")} />
+      <div role="radiogroup" aria-label={tr("Loại giấy tờ", "Document type")} className="flex flex-col gap-3">
+        {opts.map((o) => (
+          <button
+            key={o.id}
+            role="radio"
+            aria-checked={sel === o.id}
+            onClick={() => setSel(o.id)}
+            className={cx("interactive flex w-full items-center gap-4 rounded-[20px] border p-4 text-left transition-colors", sel === o.id ? "border-[#b46cf6] bg-[#faf6ff]" : "border-line-subtle")}
+          >
+            <IconTile>{o.icon}</IconTile>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[17px] font-semibold">{o.title}</span>
+              <span className="block text-caption text-fg-tertiary">{o.desc}</span>
+            </span>
+            <span className={cx("grid size-6 shrink-0 place-items-center rounded-full border-2", sel === o.id ? "border-[#8a45e0]" : "border-line-strong")}>
+              {sel === o.id && <span className="size-3 rounded-full" style={{ background: "var(--grad-brand)" }} />}
+            </span>
+          </button>
+        ))}
+      </div>
+      <p className="mt-5 flex gap-2 text-caption text-fg-tertiary">
         <Building2 className="size-4 shrink-0" />
         {tr("CMND 9 số và CCCD không gắn chip vui lòng mở tài khoản tại quầy giao dịch.", "For 9-digit IDs or non-chip ID cards, please visit a branch.")}
       </p>
@@ -231,14 +174,73 @@ export function DocType({ go }: ScreenProps) {
 }
 
 /* ---------- 03 Camera ---------- */
+const CARD_RATIO = 1.586;
+
+/** Khung ngắm 4 góc */
+function Corners({ ready, radius = 16 }: { ready: boolean; radius?: number }) {
+  return (
+    <>
+      {(["left-0 top-0 border-l-[3px] border-t-[3px]", "right-0 top-0 border-r-[3px] border-t-[3px]", "left-0 bottom-0 border-l-[3px] border-b-[3px]", "right-0 bottom-0 border-r-[3px] border-b-[3px]"] as const).map((c, i) => (
+        <span
+          key={c}
+          aria-hidden
+          className={cx("absolute -m-2 size-9 transition-colors", c, ready ? "border-[#f7b31b]" : "border-white/80")}
+          style={{ [["borderTopLeftRadius", "borderTopRightRadius", "borderBottomLeftRadius", "borderBottomRightRadius"][i]]: radius }}
+        />
+      ))}
+    </>
+  );
+}
+
+function CameraFallbackNote({ status, onRetry }: { status: string; onRetry: () => void }) {
+  const { tr } = useLang();
+  if (status !== "denied" && status !== "unavailable") return null;
+  return (
+    <div className="mt-5 flex items-start gap-3 rounded-[16px] bg-white/10 p-3 text-body-sm">
+      <CameraOff className="mt-0.5 size-5 shrink-0" />
+      <div className="min-w-0 flex-1">
+        <p className="font-semibold">{status === "denied" ? tr("Chưa có quyền dùng camera", "Camera access is off") : tr("Không tìm thấy camera", "No camera found")}</p>
+        <p className="text-caption text-white/70">
+          {status === "denied"
+            ? tr("Vào Cài đặt › Safari › Camera để cho phép. Tạm thời dùng ảnh minh hoạ.", "Allow it in Settings › Safari › Camera. Using a sample image for now.")
+            : tr("Đang dùng ảnh minh hoạ để bạn đi tiếp luồng.", "Using a sample image so you can continue.")}
+        </p>
+      </div>
+      <button onClick={onRetry} className="interactive shrink-0 rounded-full bg-white/15 px-3 py-1.5 text-caption font-semibold">{tr("Thử lại", "Retry")}</button>
+    </div>
+  );
+}
+
 function CameraView({ side, go }: { side: "front" | "back"; go: (k: ScreenKey) => void }) {
   const { tr } = useLang();
-  const [state, setState] = useState<"aligning" | "ready">("aligning");
+  const { real, setPhoto } = useCapture();
+  const cam = useCamera("environment", real);
+  const live = real && cam.status === "live";
+  const fallback = !real || cam.status === "denied" || cam.status === "unavailable";
+  const [aligned, setAligned] = useState(false);
+  const [flash, setFlash] = useState(false);
+
+  // Mô phỏng: căn chỉnh xong sau 1,4s. Camera thật: cho chụp ngay khi có hình.
   useEffect(() => {
-    setState("aligning");
-    const t = setTimeout(() => setState("ready"), 1400);
+    setAligned(false);
+    if (live) return setAligned(true);
+    if (!fallback) return;
+    const t = setTimeout(() => setAligned(true), 1400);
     return () => clearTimeout(t);
-  }, [side]);
+  }, [side, live, fallback]);
+
+  const shoot = () => {
+    if (live) {
+      const url = cam.capture({ crop: CARD_RATIO });
+      if (url) setPhoto(side, url);
+      setFlash(true);
+      setTimeout(() => go(side === "front" ? "reviewFront" : "ocrReview"), 180);
+    } else {
+      setPhoto(side, undefined);
+      go(side === "front" ? "reviewFront" : "ocrReview");
+    }
+  };
+
   return (
     <Screen
       dark
@@ -247,41 +249,48 @@ function CameraView({ side, go }: { side: "front" | "back"; go: (k: ScreenKey) =
       onBack={() => go(side === "front" ? "docType" : "reviewFront")}
       footer={
         <div className="flex items-center justify-between">
-          <button className="interactive grid size-12 place-items-center rounded-full bg-white/10" aria-label={tr("Bật đèn", "Torch")}>
-            <Zap className="size-5" />
-          </button>
+          <span className="w-[88px]" />
           <button
-            onClick={() => go(side === "front" ? "reviewFront" : "ocrReview")}
-            disabled={state !== "ready"}
+            onClick={shoot}
+            disabled={!aligned}
             aria-label={tr("Chụp ảnh", "Take photo")}
-            className="interactive grid size-[72px] place-items-center rounded-full border-4 border-white/90 disabled:opacity-40"
+            className="interactive grid size-[76px] place-items-center rounded-full p-[4px] disabled:opacity-40"
+            style={{ background: "var(--grad-brand)" }}
           >
-            <span className="size-14 rounded-full bg-white" />
+            <span className="grid size-full place-items-center rounded-full bg-[var(--camera-bg)] p-[4px]"><span className="size-full rounded-full bg-white" /></span>
           </button>
-          <button onClick={() => go("unreadable")} className="interactive h-12 rounded-full bg-white/10 px-3 text-caption font-semibold">
+          <button onClick={() => go("unreadable")} className="interactive h-11 w-[88px] rounded-full bg-white/10 text-caption font-semibold">
             {tr("Gặp sự cố?", "Trouble?")}
           </button>
         </div>
       }
     >
-      <p className="mt-4 text-[17px] font-semibold">{side === "front" ? tr("Đặt mặt trước vào khung", "Place the front inside the frame") : tr("Đặt mặt sau vào khung", "Place the back inside the frame")}</p>
-      <p className="text-body-sm text-white/70">{tr("Giữ điện thoại song song với giấy tờ", "Keep your phone parallel to the card")}</p>
-      <div className="relative mx-auto mt-8 w-full">
-        <div className="relative overflow-hidden rounded-[14px]">
-          <IdCardArt side={side} className="opacity-90" />
-          <span aria-hidden className="anim-scan-line absolute inset-x-0 h-px bg-white shadow-[0_0_10px_white]" />
+      <p className="mt-2 text-[20px] font-semibold">{side === "front" ? tr("Đặt mặt trước vào khung", "Place the front in the frame") : tr("Đặt mặt sau vào khung", "Place the back in the frame")}</p>
+      <p className="text-body-sm text-white/70">{tr("Giữ điện thoại song song với thẻ, đủ sáng, không loá.", "Keep the phone parallel to the card, in good light, no glare.")}</p>
+
+      <div className="relative mx-auto mt-7 w-full" style={{ aspectRatio: String(CARD_RATIO) }}>
+        <div className="absolute inset-0 overflow-hidden rounded-[16px] bg-black">
+          {real && (
+            <video ref={cam.videoRef} playsInline muted autoPlay className={cx("absolute inset-0 size-full object-cover", live ? "opacity-100" : "opacity-0")} />
+          )}
+          {fallback && <IdCardArt side={side} className="opacity-90" />}
+          {real && cam.status === "starting" && (
+            <p className="absolute inset-0 grid place-items-center text-body-sm text-white/70">{tr("Đang mở camera…", "Opening camera…")}</p>
+          )}
+          <span aria-hidden className="anim-scan-line absolute inset-x-0 h-[3px] rounded-full" style={{ background: "var(--grad-brand)", boxShadow: "0 0 14px rgba(180,108,246,.8)" }} />
+          {flash && <span className="absolute inset-0 bg-white/80" aria-hidden />}
         </div>
-        {(["left-0 top-0 border-l-[3px] border-t-[3px] rounded-tl-[16px]", "right-0 top-0 border-r-[3px] border-t-[3px] rounded-tr-[16px]", "left-0 bottom-0 border-l-[3px] border-b-[3px] rounded-bl-[16px]", "right-0 bottom-0 border-r-[3px] border-b-[3px] rounded-br-[16px]"] as const).map((c) => (
-          <span key={c} aria-hidden className={cx("absolute -m-2 size-9 transition-colors", c, state === "ready" ? "border-[#4ade80]" : "border-white/70")} />
-        ))}
+        <Corners ready={aligned} />
       </div>
-      <div className="mt-8 flex justify-center" aria-live="polite">
-        <span className={cx("inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-body-sm font-medium", state === "ready" ? "bg-[#15803d] text-white" : "bg-white/15")}>
-          {state === "ready" ? <Check className="size-4" /> : <Camera className="size-4" />}
-          {state === "ready" ? tr("Đã căn chỉnh – có thể chụp", "Aligned – ready to capture") : tr("Đang tìm giấy tờ…", "Looking for your card…")}
+
+      <div className="mt-7 flex justify-center" aria-live="polite">
+        <span className={cx("inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-body-sm font-medium", aligned ? "bg-white text-[#1a1a1a]" : "bg-white/15")}>
+          {aligned ? <Check className="size-4 text-[#157347]" /> : <Camera className="size-4" />}
+          {live ? tr("Căn thẻ vừa khung rồi bấm chụp", "Fit the card in the frame, then tap") : aligned ? tr("Đã căn chỉnh – có thể chụp", "Aligned – ready to capture") : tr("Đang tìm giấy tờ…", "Looking for your card…")}
         </span>
       </div>
-      <ul className="mt-6 grid grid-cols-3 gap-2 text-center text-caption text-white/70">
+      {real && <CameraFallbackNote status={cam.status} onRetry={cam.retry} />}
+      <ul className="mt-5 grid grid-cols-3 gap-2 text-center text-caption text-white/70">
         <li>{tr("Không loá sáng", "No glare")}</li>
         <li>{tr("Đủ 4 góc", "All 4 corners")}</li>
         <li>{tr("Không che chữ", "Text not covered")}</li>
@@ -292,9 +301,22 @@ function CameraView({ side, go }: { side: "front" | "back"; go: (k: ScreenKey) =
 export const CaptureFront = ({ go }: ScreenProps) => <CameraView side="front" go={go} />;
 export const CaptureBack = ({ go }: ScreenProps) => <CameraView side="back" go={go} />;
 
+/** Ảnh đã chụp hoặc ảnh minh hoạ */
+function CardPhoto({ side }: { side: "front" | "back" }) {
+  const { tr } = useLang();
+  const { photos } = useCapture();
+  const url = photos[side];
+  return url ? (
+    <img src={url} alt={side === "front" ? tr("Ảnh mặt trước CCCD bạn vừa chụp", "Your photo of the ID front") : tr("Ảnh mặt sau CCCD bạn vừa chụp", "Your photo of the ID back")} className="w-full rounded-[14px] object-cover" style={{ aspectRatio: String(CARD_RATIO) }} />
+  ) : (
+    <IdCardArt side={side} />
+  );
+}
+
 /* ---------- 04 Kiểm tra ảnh ---------- */
 export function ReviewFront({ go }: ScreenProps) {
   const { tr } = useLang();
+  const { photos } = useCapture();
   const checks = [tr("Ảnh rõ nét", "Sharp image"), tr("Không bị loá", "No glare"), tr("Thấy đủ 4 góc", "All 4 corners visible")];
   return (
     <Screen
@@ -302,19 +324,22 @@ export function ReviewFront({ go }: ScreenProps) {
       step={1}
       onBack={() => go("captureFront")}
       footer={
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-3">
           <Button variant="secondary" size="lg" onClick={() => go("captureFront")}>{tr("Chụp lại", "Retake")}</Button>
           <Button size="lg" onClick={() => go("captureBack")}>{tr("Dùng ảnh này", "Use photo")}</Button>
         </div>
       }
     >
-      <PageTitle title={tr("Ảnh có đọc rõ không?", "Is everything readable?")} desc={tr("Đảm bảo nhìn rõ toàn bộ chữ và số.", "Make sure all text and numbers are clear.")} />
-      <Section className="p-3"><IdCardArt side="front" /></Section>
-      <ul className="mt-4 flex flex-col gap-2.5">
+      <PageTitle title={tr("Ảnh có đọc rõ không?", "Is everything readable?")} desc={tr("Đảm bảo nhìn rõ toàn bộ chữ và số trên thẻ.", "Make sure all text and numbers on the card are clear.")} />
+      <div className="rounded-[24px] bg-bg-sunken p-4"><CardPhoto side="front" /></div>
+      <ul className="mt-5 flex flex-col gap-3">
         {checks.map((c) => (
-          <li key={c} className="flex items-center gap-2 text-body-sm"><CheckCircle2 className="size-5 text-success" /> {c}</li>
+          <li key={c} className="flex items-center gap-3 text-[15px]"><span className="grid size-6 place-items-center rounded-full bg-success-subtle text-success"><Check className="size-4" /></span>{c}</li>
         ))}
       </ul>
+      {photos.front && (
+        <p className="mt-5 text-caption text-fg-tertiary">{tr("Ảnh chỉ nằm trên máy này trong bản demo, không được gửi đi.", "In this demo, photos stay on this device and are never uploaded.")}</p>
+      )}
     </Screen>
   );
 }
@@ -325,6 +350,10 @@ export function OcrReview({ go }: ScreenProps) {
   return (
     <Screen title={tr("Thông tin giấy tờ", "Document details")} step={1} onBack={() => go("captureBack")} footer={<Button size="lg" block onClick={() => go("nfc")}>{tr("Xác nhận thông tin", "Confirm details")}</Button>}>
       <PageTitle title={tr("Kiểm tra thông tin", "Check your details")} desc={tr("Đọc tự động từ ảnh giấy tờ. Nếu sai, vui lòng chụp lại.", "Read automatically from your photos. If anything is wrong, retake the photos.")} />
+      <div className="mb-4 grid grid-cols-2 gap-3">
+        <CardPhoto side="front" />
+        <CardPhoto side="back" />
+      </div>
       <Section>
         <dl className="divide-y divide-[var(--border-subtle)] px-4">
           <Row label={tr("Họ và tên", "Full name")} value="NGUYỄN THỊ MINH THƯ" strong />
@@ -444,42 +473,84 @@ export function Unreadable({ go }: ScreenProps) {
 /* ---------- 07 Khuôn mặt ---------- */
 export function Liveness({ go }: ScreenProps) {
   const { tr } = useLang();
+  const { real, setPhoto } = useCapture();
+  const cam = useCamera("user", real);
+  const live = real && cam.status === "live";
   const challenges = [tr("Nhìn thẳng vào camera", "Look straight at the camera"), tr("Quay mặt sang trái", "Turn your head left"), tr("Quay mặt sang phải", "Turn your head right"), tr("Mỉm cười", "Smile")];
   const [i, setI] = useState(-1);
+  const captureRef = useRef(cam.capture);
+  captureRef.current = cam.capture;
   useEffect(() => {
     if (i < 0) return;
+    if (i === 1 && live) {
+      // Lưu ảnh selfie khi khách đang nhìn thẳng (sau thử thách đầu tiên)
+      const url = captureRef.current({ mirror: true, maxWidth: 720 });
+      if (url) setPhoto("selfie", url);
+    }
     if (i >= challenges.length) {
       const t = setTimeout(() => go("verifying"), 500);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(() => setI(i + 1), 1300);
+    const t = setTimeout(() => setI(i + 1), 1500);
     return () => clearTimeout(t);
-  }, [i, go, challenges.length]);
+  }, [i, go, challenges.length, live, setPhoto]);
   const done = Math.max(0, Math.min(i, challenges.length));
   const C = 2 * Math.PI * 128;
   return (
     <Screen dark title={tr("Xác thực khuôn mặt", "Face verification")} step={3} onBack={() => go("nfc")}
-      footer={i < 0 ? <Button size="lg" block className="!bg-white !text-[#0b2559]" onClick={() => setI(0)}>{tr("Tôi đã sẵn sàng", "I'm ready")}</Button> : <p className="text-center text-body-sm text-white/75 tabular" aria-live="polite">{tr("Đang kiểm tra", "Checking")} · {done}/{challenges.length}</p>}
+      footer={i < 0
+        ? <Button size="lg" block disabled={real && cam.status === "starting"} onClick={() => setI(0)}>{tr("Tôi đã sẵn sàng", "I'm ready")}</Button>
+        : <p className="text-center text-body-sm text-white/75 tabular" aria-live="polite">{tr("Đang kiểm tra", "Checking")} · {done}/{challenges.length}</p>}
     >
-      <div className="relative mx-auto mt-4 aspect-[3/4] w-[74%]">
+      <div className="relative mx-auto mt-2 aspect-[3/4] w-[76%]">
+        <div className="absolute inset-[4%] overflow-hidden rounded-[50%] bg-white/5">
+          {real && (
+            <video ref={cam.videoRef} playsInline muted autoPlay className={cx("absolute inset-0 size-full -scale-x-100 object-cover", live ? "opacity-100" : "opacity-0")} />
+          )}
+          {!live && <FaceAvatar className="absolute inset-[18%] opacity-60" />}
+        </div>
         <svg viewBox="0 0 280 360" className="absolute inset-0 size-full" aria-hidden>
-          <ellipse cx="140" cy="180" rx="128" ry="168" fill="none" stroke="rgba(255,255,255,.2)" strokeWidth="5" />
-          <ellipse cx="140" cy="180" rx="128" ry="168" fill="none" stroke="#4ade80" strokeWidth="5" strokeLinecap="round"
+          <defs>
+            <linearGradient id="lv-grad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stopColor="#b46cf6" />
+              <stop offset="1" stopColor="#f7b31b" />
+            </linearGradient>
+          </defs>
+          <ellipse cx="140" cy="180" rx="128" ry="168" fill="none" stroke="rgba(255,255,255,.18)" strokeWidth="6" />
+          <ellipse cx="140" cy="180" rx="128" ry="168" fill="none" stroke="url(#lv-grad)" strokeWidth="6" strokeLinecap="round"
             strokeDasharray={`${(done / challenges.length) * C * 1.15} ${C * 2}`} transform="rotate(-90 140 180)" style={{ transition: "stroke-dasharray .5s" }} />
         </svg>
-        <div className="absolute inset-[6%] grid place-items-center rounded-[50%] bg-white/5">
-          <ScanFace className="size-20 opacity-40" aria-hidden />
-        </div>
       </div>
       <div className="mt-6 text-center" aria-live="assertive">
-        <p className="text-[20px] font-semibold">{i < 0 ? tr("Đưa khuôn mặt vào khung", "Fit your face in the oval") : i < challenges.length ? challenges[i] : tr("Hoàn tất", "Done")}</p>
+        <p className="text-[22px] font-semibold">{i < 0 ? tr("Đưa khuôn mặt vào khung", "Fit your face in the oval") : i < challenges.length ? challenges[i] : tr("Hoàn tất", "Done")}</p>
         <p className="mt-1 text-body-sm text-white/70">{i < 0 ? tr("Bỏ kính râm, khẩu trang và mũ", "Remove sunglasses, mask and hat") : tr("Làm theo hướng dẫn", "Follow the instruction")}</p>
       </div>
+      {real && <CameraFallbackNote status={cam.status} onRetry={cam.retry} />}
+      {live && (
+        <p className="mt-4 flex items-center justify-center gap-1.5 text-caption text-white/55"><FlipHorizontal2 className="size-3.5" />{tr("Bản demo: thử thách chạy theo thời gian, chưa nhận diện cử động thật", "Demo: prompts are timed; head movement isn't analysed yet")}</p>
+      )}
     </Screen>
   );
 }
 
 /* ---------- 08 Đang xác minh ---------- */
+/** Đối chiếu ảnh CCCD với ảnh khuôn mặt vừa chụp */
+function MatchPreview() {
+  const { tr } = useLang();
+  const { photos } = useCapture();
+  return (
+    <div className="mb-5 flex items-center justify-center gap-3 rounded-[24px] bg-bg-sunken p-4">
+      <div className="w-[46%]">
+        {photos.front ? <img src={photos.front} alt={tr("Ảnh CCCD", "ID photo")} className="w-full rounded-[12px] object-cover" style={{ aspectRatio: String(CARD_RATIO) }} /> : <IdCardArt side="front" />}
+      </div>
+      <span className="grid size-9 shrink-0 place-items-center rounded-full text-white" style={{ background: "var(--grad-action)" }}><ScanFace className="size-5" /></span>
+      <div className="grid size-[84px] shrink-0 place-items-center overflow-hidden rounded-full border-[3px] border-white bg-bg-surface shadow-[0_6px_16px_rgba(72,43,100,0.15)]">
+        {photos.selfie ? <img src={photos.selfie} alt={tr("Ảnh khuôn mặt", "Face photo")} className="size-full object-cover" /> : <FaceAvatar className="size-[70px]" />}
+      </div>
+    </div>
+  );
+}
+
 export function Verifying({ go, outcome }: ScreenProps) {
   const { tr } = useLang();
   const items = [tr("Đối chiếu giấy tờ với dữ liệu chip", "Matching your ID with chip data"), tr("So khớp khuôn mặt", "Matching your face"), tr("Kiểm tra hồ sơ theo quy định", "Running required checks"), tr("Tạo tài khoản", "Creating your account")];
@@ -495,6 +566,7 @@ export function Verifying({ go, outcome }: ScreenProps) {
   return (
     <Screen title={tr("Đang xác minh", "Verifying")} step={4}>
       <PageTitle title={tr("Đang xác minh hồ sơ", "Verifying your application")} desc={tr("Thường dưới 1 phút. Vui lòng không đóng ứng dụng.", "Usually under a minute. Please keep the app open.")} />
+      <MatchPreview />
       <Section>
         <ol className="px-4 py-2" aria-live="polite">
           {items.map((t, idx) => {
@@ -538,33 +610,33 @@ export function Approved({ go }: ScreenProps) {
   return (
     <Screen title={tr("Kết quả", "Result")} footer={<Button size="lg" block onClick={() => go("intro")}>{tr("Vào trang chủ", "Go to home")}</Button>}>
       <div className="flex items-center gap-3">
-        <span className="grid size-12 shrink-0 place-items-center rounded-full bg-lime text-lime-ink"><CheckCircle2 className="size-6" /></span>
+        <span className="grid size-12 shrink-0 place-items-center rounded-full text-white" style={{ background: "var(--grad-action)" }}><CheckCircle2 className="size-6" /></span>
         <div>
-          <h2 className="text-[22px] font-bold leading-[28px] tracking-[-0.01em]">{tr("Mở tài khoản thành công", "Your account is open")}</h2>
+          <h2 className="text-[24px] font-semibold leading-[30px] tracking-[-0.02em]">{tr("Mở tài khoản thành công", "Your account is open")}</h2>
           <p className="text-body-sm text-fg-secondary">{tr("Chào mừng bạn đến với Aegis Bank.", "Welcome to Aegis Bank.")}</p>
         </div>
       </div>
 
       {/* Thẻ tài khoản */}
-      <div className="relative mt-5 overflow-hidden rounded-[24px] p-5 text-white" style={{ background: "var(--brand-bg)" }}>
-        <div aria-hidden className="absolute -right-10 -top-10 size-40 rounded-full bg-lime/20 blur-2xl" />
+      <div className="relative mt-6 overflow-hidden rounded-[24px] p-5 text-white" style={{ background: "var(--aurora-deep)" }}>
+        <div aria-hidden className="absolute -right-12 -top-16 size-48 rounded-full opacity-60 blur-3xl" style={{ background: "var(--grad-brand)" }} />
         <div className="relative flex items-center justify-between">
           <span className="text-body-sm text-white/70">{tr("Tài khoản thanh toán · VND", "Current account · VND")}</span>
-          <span className="rounded-full bg-lime px-2.5 py-0.5 text-caption font-semibold text-lime-ink">{tr("Đang hoạt động", "Active")}</span>
+          <span className="rounded-full bg-aurora-amber px-2.5 py-0.5 text-caption font-semibold text-aurora-ink">{tr("Đang hoạt động", "Active")}</span>
         </div>
         <div className="relative mt-4 flex items-center gap-3">
           <span className="text-[26px] font-bold tracking-[0.04em] tabular">1903 6688 2025</span>
           <button onClick={copy} className="interactive grid size-9 place-items-center rounded-full bg-white/10" aria-label={tr("Sao chép số tài khoản", "Copy account number")}>
-            {copied ? <Check className="size-4 text-lime" /> : <Copy className="size-4" />}
+            {copied ? <Check className="size-4 text-aurora-amber" /> : <Copy className="size-4" />}
           </button>
         </div>
-        <p className="relative mt-1 h-4 text-caption text-lime" aria-live="polite">{copied ? tr("Đã sao chép", "Copied") : ""}</p>
+        <p className="relative mt-1 h-4 text-caption text-aurora-amber" aria-live="polite">{copied ? tr("Đã sao chép", "Copied") : ""}</p>
         <div className="relative mt-3 flex items-end justify-between border-t border-white/10 pt-3">
           <div>
             <p className="text-caption text-white/60">{tr("Chủ tài khoản", "Account holder")}</p>
             <p className="text-body-sm font-semibold">NGUYỄN THỊ MINH THƯ</p>
           </div>
-          <p className="text-caption text-white/60 tabular">09:42 · 09/11/2026</p>
+          <p className="shrink-0 text-caption text-white/60 tabular">09:42 · 09/11/2026</p>
         </div>
       </div>
 

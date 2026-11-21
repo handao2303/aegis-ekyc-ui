@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { Be_Vietnam_Pro } from "next/font/google";
+import { Be_Vietnam_Pro, Lexend } from "next/font/google";
 import "../styles/tokens.css";
 
 const font = Be_Vietnam_Pro({
@@ -8,6 +8,14 @@ const font = Be_Vietnam_Pro({
   weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-sans",
+});
+
+// Font hiển thị cho app khách hàng (skin Aurora): hình học như Outfit nhưng có dấu tiếng Việt
+const display = Lexend({
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-display",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +33,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="vi" className={font.variable} suppressHydrationWarning>
+    <html lang="vi" className={`${font.variable} ${display.variable}`} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

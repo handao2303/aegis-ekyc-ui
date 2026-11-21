@@ -37,7 +37,7 @@ export default {
           "solid-fg": v("status-danger-solid-text"),
         },
         info: { DEFAULT: v("status-info-text"), subtle: v("status-info-subtle-bg") },
-        lime: { DEFAULT: v("lime"), strong: v("lime-strong"), ink: v("lime-ink") },
+        aurora: { purple: v("aurora-purple"), amber: v("aurora-amber"), deep: v("aurora-deep"), ink: v("aurora-ink") },
       },
       fontFamily: {
         // Một họ chữ duy nhất; "mono" chỉ bật số thẳng cột, không đổi font

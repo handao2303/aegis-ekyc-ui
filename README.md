@@ -40,9 +40,9 @@ Use the **VI | EN** switch in the header to change language; the choice is remem
 
 1. Open **https://handao2303.github.io/aegis-ekyc-ui/app/** in Safari on the iPhone.
 2. Tap **Share → Add to Home Screen**.
-3. Launch **Aegis** from the home screen: it runs full screen like a native app, with its own icon, a green status bar and safe-area padding for the Dynamic Island and home indicator.
+3. Launch **Aegis** from the home screen: it runs full screen like a native app, with its own icon and safe-area padding for the Dynamic Island and home indicator. Safari asks for camera permission at the ID capture step.
 
-The customer app is a PWA (`src/app/manifest.ts`, Apple web-app meta tags in `src/app/app/page.tsx`). Camera, NFC and liveness are simulated, so no permissions are requested.
+The customer app is a PWA (`src/app/manifest.ts`, Apple web-app meta tags in `src/app/app/page.tsx`).
 
 ## Deployment
 
@@ -58,9 +58,9 @@ All three pages are static HTML that hydrate in the browser, so no server is nee
 
 **Customer app**
 - Consent per data scope, with re-consent when the terms change
-- ID document capture (front/back) with live alignment, photo check and OCR review
+- ID document capture (front/back) with the real rear camera, photo check and OCR review
 - NFC chip reading, with a manual-review fallback for phones without NFC
-- Active liveness check with random challenges
+- Active liveness check with the front camera and timed challenges; selfie is shown next to the ID photo while verifying
 - Results as a bank-style receipt: approved, under review (24-hour timeline) or rejected
 - Edge cases: unreadable document (retry counter), resume an unfinished application, more information requested, existing customer, expired ID
 
@@ -111,9 +111,15 @@ src/
 └── ds/DesignSystemPage.tsx  ← design system docs with a live WCAG contrast table
 ```
 
-## Customer app skin ("Verde")
+## Customer app skin ("Aurora")
 
-The customer app uses its own skin, scoped by the `skin-verde` class in `tokens.css`: a deep forest-green gradient header, lime accents, 22px cards and pill buttons. Only token values change; components are shared with the navy Compliance back-office. Content always sits on a light surface to keep WCAG AA contrast, even when the phone is in dark mode.
+The customer app uses its own skin, scoped by the `skin-aurora` class in `tokens.css`: white screens, large left-aligned titles, a purple-to-amber gradient for accents and pill buttons, and the Lexend typeface (geometric like Outfit, with full Vietnamese diacritics). Only token values change; components are shared with the navy Compliance back-office.
+
+Two gradients keep contrast honest: `--grad-brand` (bright) is decorative only, while `--grad-action` is darker so white button labels stay at WCAG AA in the middle of the button.
+
+## Real camera
+
+On `/app/` the ID capture uses the rear camera and the liveness step uses the front camera (`src/mobile/camera.tsx`, `getUserMedia`). Photos are kept in memory for the session only, shown back on the review, details and verifying screens, and never uploaded. If the camera is missing or permission is denied, the screen says so and falls back to a sample image so the flow can continue. NFC and the liveness challenges remain simulated: Safari on iPhone has no Web NFC, and head movement is not analysed yet.
 
 ## Design system principles
 
