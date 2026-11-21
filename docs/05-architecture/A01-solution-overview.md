@@ -187,5 +187,8 @@ flowchart LR
 | UI Kit & tài liệu thiết kế | `/` |
 | App khách hàng | `/app/` |
 | Aegis Compliance | `/compliance/` |
+| Aegis Đối soát (REC-01 → 06) | `/reconciliation/` |
+| Aegis Hạn mức (LIM-W1 → W4) | `/credit-limit/` |
+| App iPhone native – quét CCCD/hộ chiếu | `ios/AegisScan` (cài qua Xcode) |
 
 Bản demo dùng dữ liệu giả, không gọi API thật. Khi nối backend, giữ nguyên Next.js cho web Compliance; app khách hàng chuyển sang React Native với cùng token và cấu trúc màn hình.

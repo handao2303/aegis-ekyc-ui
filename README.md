@@ -4,10 +4,12 @@ The eKYC module UI for **Aegis Bank**, a personal banking project. Bilingual (Vi
 
 - **Customer app** (`/app/`): online account opening. 19 screens covering the main flow, results and edge cases.
 - **Aegis Compliance** (`/compliance/`): review back-office. Queue, case detail, maker-checker, completed cases, SLA report and threshold settings.
+- **Aegis Reconciliation** (`/reconciliation/`): matching dashboard, no-code rules with segregation-of-duties checks, exceptions with AI root-cause suggestions and data lineage, GL entries with zero-touch vs maker-checker posting (REC-01 → 06).
+- **Aegis Credit Limit** (`/credit-limit/`): live ISO 8583 authorization monitor, card limit profiles with optimistic locking and Smart Fallback, Temporary Limit Boost, fraud monitor with SMS/App delivery status (LIM-W1 → W4).
 - **UI Kit** (`/`): design system and design documentation.
 - **Aegis Scan – native iOS app** ([`ios/AegisScan`](ios/AegisScan/README.md)): scans the MRZ of a chip ID card (CCCD) or e-passport with the camera and reads the chip over NFC (photo, identity data, integrity checks). Install it on your iPhone with Xcode.
 
-**Live demo:** [handao2303.github.io/aegis-ekyc-ui](https://handao2303.github.io/aegis-ekyc-ui/) · [Customer app](https://handao2303.github.io/aegis-ekyc-ui/app/) · [Compliance](https://handao2303.github.io/aegis-ekyc-ui/compliance/)
+**Live demo:** [handao2303.github.io/aegis-ekyc-ui](https://handao2303.github.io/aegis-ekyc-ui/) · [Customer app](https://handao2303.github.io/aegis-ekyc-ui/app/) · [Compliance](https://handao2303.github.io/aegis-ekyc-ui/compliance/) · [Reconciliation](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) · [Credit limit](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/)
 
 > All sample data is fictional. Camera, NFC, liveness and verification results are simulated; no backend APIs are connected yet.
 
@@ -34,6 +36,8 @@ npm run start      # serve out/ locally
 | Customer app – ends in "under review" | http://localhost:5179/app/?ketqua=refer | [open](https://handao2303.github.io/aegis-ekyc-ui/app/?ketqua=refer) |
 | Customer app – ends in "rejected" | http://localhost:5179/app/?ketqua=rejected | [open](https://handao2303.github.io/aegis-ekyc-ui/app/?ketqua=rejected) |
 | Compliance back-office | http://localhost:5179/compliance/ | [open](https://handao2303.github.io/aegis-ekyc-ui/compliance/) |
+| Reconciliation | http://localhost:5179/reconciliation/ | [open](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) |
+| Credit limit | http://localhost:5179/credit-limit/ | [open](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) |
 
 Use the **VI | EN** switch in the header to change language; the choice is remembered. A `?lang=` parameter in the URL takes priority, so shared links open in the intended language.
 
@@ -105,6 +109,10 @@ src/
 │   ├── MobileShell.tsx      ← banking screen layout, ID card illustration
 │   ├── screens.tsx          ← the 19 customer screens
 │   └── MobileFlowPage.tsx   ← screen list, UX notes and Jira traceability (UI Kit)
+├── ops/
+│   ├── kit.tsx              ← dashboard shell, KPI cards, tables, SVG charts
+│   ├── Reconciliation.tsx   ← REC-01 → 06 and data lineage
+│   └── CreditLimit.tsx      ← LIM-W1 → W4 and card list
 ├── web/
 │   ├── data.ts              ← sample cases, SLA rules, reason codes
 │   ├── CompliancePage.tsx   ← queue, case detail, decision dialogs, navigation
@@ -117,6 +125,10 @@ src/
 The customer app uses its own skin, scoped by the `skin-aurora` class in `tokens.css`: white screens, large left-aligned titles, a purple-to-amber gradient for accents and pill buttons, and the Lexend typeface (geometric like Outfit, with full Vietnamese diacritics). Only token values change; components are shared with the navy Compliance back-office.
 
 Two gradients keep contrast honest: `--grad-brand` (bright) is decorative only, while `--grad-action` is darker so white button labels stay at WCAG AA in the middle of the button.
+
+## Operations dashboards (Reconciliation, Credit limit)
+
+Both share `src/ops/kit.tsx`: a light grey sidebar with a module switcher and ⌘K search, a white workspace, KPI cards with a gradient footer for the headline metric, dependency-free SVG line charts with hover tooltips, pill status tags and gradient progress meters, all on the Aurora tokens. Business rules are enforced in the UI and labelled with their IDs (for example `RULE-REC-05` blocks approving your own rule or GL entry, `RULE-REC-04` routes entries over 50 million ₫ to a checker, `BR-LIM-02` shows a version conflict on concurrent limit updates). Sample data is fictional and PANs are always masked.
 
 ## Real camera
 

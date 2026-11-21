@@ -96,10 +96,12 @@ function UiKit() {
             ))}
           </nav>
 
-          <div className="hidden shrink-0 items-center gap-1 lg:flex">
+          <div className="hidden shrink-0 items-center gap-1 xl:flex">
             {[
               { href: "/app/", label: "App khách hàng" },
               { href: "/compliance/", label: "Compliance" },
+              { href: "/reconciliation/", label: "Đối soát" },
+              { href: "/credit-limit/", label: "Hạn mức" },
             ].map((l) => (
               <Link key={l.href} href={l.href} className="interactive inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-body-sm font-medium text-action-subtle-fg">
                 {l.label}
