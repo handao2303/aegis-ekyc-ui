@@ -1,0 +1,592 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2C81A7DE4A78B9E95C93BF0C /* ChipReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3705D93F07A3E7403B04F7 /* ChipReader.swift */; };
+		2D8A010453011727F8DB9499 /* MRZCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD5201829C447AC0062A0EB /* MRZCamera.swift */; };
+		71E01854EF3AED0525B83CCA /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1A04A46C183213E5EE9C52 /* Theme.swift */; };
+		80DA97934C2E518CB7D9482D /* Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351C589C4BA65A270404AC92 /* Flow.swift */; };
+		A123A8472A35E4E4D4B1FDA2 /* NFCPassportReader in Frameworks */ = {isa = PBXBuildFile; productRef = C19D8F6CF74446F688ACFC48 /* NFCPassportReader */; };
+		B54A79794EA04038070FB9AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B85A3C29B7A41C43E8392A7 /* Assets.xcassets */; };
+		C7353BC37C9C0E12F78B06A4 /* MRZ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929FB159172042E650B4EED8 /* MRZ.swift */; };
+		E75312BACCF228D126CD71BB /* MRZTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0465625A574ECB69D2DAF867 /* MRZTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8846AB894A2350989AFC30CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4640EE385C758818115CC5A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0268EC0CDCDD68D3D100200A;
+			remoteInfo = AegisScan;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02A3DA2163ED1BD990C23252 /* AegisScan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AegisScan.entitlements; sourceTree = "<group>"; };
+		0465625A574ECB69D2DAF867 /* MRZTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZTests.swift; sourceTree = "<group>"; };
+		04C513704E59D1989599B2D3 /* AegisScanTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AegisScanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		351C589C4BA65A270404AC92 /* Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flow.swift; sourceTree = "<group>"; };
+		5BD5201829C447AC0062A0EB /* MRZCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZCamera.swift; sourceTree = "<group>"; };
+		899FED50C9D0AC33F245D795 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		929FB159172042E650B4EED8 /* MRZ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZ.swift; sourceTree = "<group>"; };
+		9B85A3C29B7A41C43E8392A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CF54B88DDCD455163C2A30FB /* AegisScan.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AegisScan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA3705D93F07A3E7403B04F7 /* ChipReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipReader.swift; sourceTree = "<group>"; };
+		EA1A04A46C183213E5EE9C52 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C48C958D3FC2393D7F060864 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A123A8472A35E4E4D4B1FDA2 /* NFCPassportReader in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		25291FD377DC11E7E1F7BC7C /* AegisScanTests */ = {
+			isa = PBXGroup;
+			children = (
+				0465625A574ECB69D2DAF867 /* MRZTests.swift */,
+			);
+			path = AegisScanTests;
+			sourceTree = "<group>";
+		};
+		4181F317C7C46186F5498221 /* AegisScan */ = {
+			isa = PBXGroup;
+			children = (
+				02A3DA2163ED1BD990C23252 /* AegisScan.entitlements */,
+				9B85A3C29B7A41C43E8392A7 /* Assets.xcassets */,
+				899FED50C9D0AC33F245D795 /* Info.plist */,
+				A263A5AD578C930AA4111882 /* Core */,
+				74763CCB8F6998F0C6864D5F /* Views */,
+			);
+			path = AegisScan;
+			sourceTree = "<group>";
+		};
+		476B14867745E8B640CC719A = {
+			isa = PBXGroup;
+			children = (
+				4181F317C7C46186F5498221 /* AegisScan */,
+				25291FD377DC11E7E1F7BC7C /* AegisScanTests */,
+				9EEB82A0A32903EC1B84A953 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		74763CCB8F6998F0C6864D5F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				351C589C4BA65A270404AC92 /* Flow.swift */,
+				EA1A04A46C183213E5EE9C52 /* Theme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9EEB82A0A32903EC1B84A953 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CF54B88DDCD455163C2A30FB /* AegisScan.app */,
+				04C513704E59D1989599B2D3 /* AegisScanTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A263A5AD578C930AA4111882 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				DA3705D93F07A3E7403B04F7 /* ChipReader.swift */,
+				929FB159172042E650B4EED8 /* MRZ.swift */,
+				5BD5201829C447AC0062A0EB /* MRZCamera.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0268EC0CDCDD68D3D100200A /* AegisScan */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A06EB088BC1B0D78448397F9 /* Build configuration list for PBXNativeTarget "AegisScan" */;
+			buildPhases = (
+				E867F7AAE4E0C7CB58076A4C /* Sources */,
+				5E3838084E306B7EA20B87D8 /* Resources */,
+				C48C958D3FC2393D7F060864 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AegisScan;
+			packageProductDependencies = (
+				C19D8F6CF74446F688ACFC48 /* NFCPassportReader */,
+			);
+			productName = AegisScan;
+			productReference = CF54B88DDCD455163C2A30FB /* AegisScan.app */;
+			productType = "com.apple.product-type.application";
+		};
+		897A4ED242899B26914A2F2C /* AegisScanTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C2279BA1659FF2AD39E836CE /* Build configuration list for PBXNativeTarget "AegisScanTests" */;
+			buildPhases = (
+				7322E1CACCB95F6F5A30D8A6 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				23F1B459381F2A9C8A595FCB /* PBXTargetDependency */,
+			);
+			name = AegisScanTests;
+			packageProductDependencies = (
+			);
+			productName = AegisScanTests;
+			productReference = 04C513704E59D1989599B2D3 /* AegisScanTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D4640EE385C758818115CC5A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					0268EC0CDCDD68D3D100200A = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 2D137726C679DFB601FD13BF /* Build configuration list for PBXProject "AegisScan" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 476B14867745E8B640CC719A;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9C6588D8022F3E2BB73EDE50 /* XCRemoteSwiftPackageReference "NFCPassportReader" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9EEB82A0A32903EC1B84A953 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0268EC0CDCDD68D3D100200A /* AegisScan */,
+				897A4ED242899B26914A2F2C /* AegisScanTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5E3838084E306B7EA20B87D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B54A79794EA04038070FB9AC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7322E1CACCB95F6F5A30D8A6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E75312BACCF228D126CD71BB /* MRZTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E867F7AAE4E0C7CB58076A4C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C81A7DE4A78B9E95C93BF0C /* ChipReader.swift in Sources */,
+				80DA97934C2E518CB7D9482D /* Flow.swift in Sources */,
+				C7353BC37C9C0E12F78B06A4 /* MRZ.swift in Sources */,
+				2D8A010453011727F8DB9499 /* MRZCamera.swift in Sources */,
+				71E01854EF3AED0525B83CCA /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		23F1B459381F2A9C8A595FCB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0268EC0CDCDD68D3D100200A /* AegisScan */;
+			targetProxy = 8846AB894A2350989AFC30CD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2EFCC363386A8BC8887AAFD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AegisScan/AegisScan.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = AegisScan/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.handao2303.aegisscan;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		5641E2BEA14AB3670AB6F18A /* Debug-NoNFC */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = "Debug-NoNFC";
+		};
+		69F950297414349858938D71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.handao2303.AegisScanTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AegisScan.app/AegisScan";
+			};
+			name = Release;
+		};
+		9B9C938F47E589FFCBBB908A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CB1C117CD1779CC05CE409EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D59CCA2C2783555297EC696F /* Debug-NoNFC */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.handao2303.AegisScanTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AegisScan.app/AegisScan";
+			};
+			name = "Debug-NoNFC";
+		};
+		D6EC1F2F0DA7ED516F20623B /* Debug-NoNFC */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = AegisScan/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.handao2303.aegisscan;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG NO_NFC";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = "Debug-NoNFC";
+		};
+		DB1BDD6CEA9008C1B70C0954 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.handao2303.AegisScanTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AegisScan.app/AegisScan";
+			};
+			name = Debug;
+		};
+		EF385063704A7846B9FACED4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = AegisScan/AegisScan.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = AegisScan/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.handao2303.aegisscan;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D137726C679DFB601FD13BF /* Build configuration list for PBXProject "AegisScan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B9C938F47E589FFCBBB908A /* Debug */,
+				5641E2BEA14AB3670AB6F18A /* Debug-NoNFC */,
+				CB1C117CD1779CC05CE409EB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A06EB088BC1B0D78448397F9 /* Build configuration list for PBXNativeTarget "AegisScan" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF385063704A7846B9FACED4 /* Debug */,
+				D6EC1F2F0DA7ED516F20623B /* Debug-NoNFC */,
+				2EFCC363386A8BC8887AAFD6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C2279BA1659FF2AD39E836CE /* Build configuration list for PBXNativeTarget "AegisScanTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB1BDD6CEA9008C1B70C0954 /* Debug */,
+				D59CCA2C2783555297EC696F /* Debug-NoNFC */,
+				69F950297414349858938D71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9C6588D8022F3E2BB73EDE50 /* XCRemoteSwiftPackageReference "NFCPassportReader" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AndyQ/NFCPassportReader.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C19D8F6CF74446F688ACFC48 /* NFCPassportReader */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C6588D8022F3E2BB73EDE50 /* XCRemoteSwiftPackageReference "NFCPassportReader" */;
+			productName = NFCPassportReader;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = D4640EE385C758818115CC5A /* Project object */;
+}

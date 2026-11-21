@@ -5,6 +5,7 @@ The eKYC module UI for **Aegis Bank**, a personal banking project. Bilingual (Vi
 - **Customer app** (`/app/`): online account opening. 19 screens covering the main flow, results and edge cases.
 - **Aegis Compliance** (`/compliance/`): review back-office. Queue, case detail, maker-checker, completed cases, SLA report and threshold settings.
 - **UI Kit** (`/`): design system and design documentation.
+- **Aegis Scan – native iOS app** ([`ios/AegisScan`](ios/AegisScan/README.md)): scans the MRZ of a chip ID card (CCCD) or e-passport with the camera and reads the chip over NFC (photo, identity data, integrity checks). Install it on your iPhone with Xcode.
 
 **Live demo:** [handao2303.github.io/aegis-ekyc-ui](https://handao2303.github.io/aegis-ekyc-ui/) · [Customer app](https://handao2303.github.io/aegis-ekyc-ui/app/) · [Compliance](https://handao2303.github.io/aegis-ekyc-ui/compliance/)
 

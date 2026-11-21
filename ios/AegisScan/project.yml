@@ -1,0 +1,87 @@
+name: AegisScan
+options:
+  bundleIdPrefix: com.handao2303
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+configs:
+  Debug: debug
+  Debug-NoNFC: debug
+  Release: release
+packages:
+  NFCPassportReader:
+    url: https://github.com/AndyQ/NFCPassportReader.git
+    exactVersion: 3.0.1
+targets:
+  AegisScan:
+    type: application
+    platform: iOS
+    sources:
+      - path: AegisScan
+    dependencies:
+      - package: NFCPassportReader
+    info:
+      path: AegisScan/Info.plist
+      properties:
+        CFBundleDisplayName: Aegis Scan
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen:
+          UIColorName: ""
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIRequiresFullScreen: true
+        NSCameraUsageDescription: Aegis dùng camera để đọc dòng MRZ trên CCCD hoặc hộ chiếu. Ảnh không được lưu hay gửi đi.
+        NFCReaderUsageDescription: Aegis dùng NFC để đọc chip trên CCCD gắn chip hoặc hộ chiếu điện tử.
+        com.apple.developer.nfc.readersession.iso7816.select-identifiers:
+          - A0000002471001
+          - A0000002472001
+          - "00000000000000"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.handao2303.aegisscan
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_STYLE: Automatic
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_PREVIEWS: YES
+      configs:
+        Debug:
+          CODE_SIGN_ENTITLEMENTS: AegisScan/AegisScan.entitlements
+        Release:
+          CODE_SIGN_ENTITLEMENTS: AegisScan/AegisScan.entitlements
+        Debug-NoNFC:
+          CODE_SIGN_ENTITLEMENTS: ""
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG NO_NFC
+  AegisScanTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: AegisScanTests
+    dependencies:
+      - target: AegisScan
+    settings:
+      base:
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  AegisScan:
+    build:
+      targets:
+        AegisScan: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - AegisScanTests
+    archive:
+      config: Release
+  AegisScan-NoNFC:
+    build:
+      targets:
+        AegisScan: all
+    run:
+      config: Debug-NoNFC
