@@ -2,11 +2,11 @@ import { useEffect, useState, ReactNode } from "react";
 import {
   Camera, Check, CheckCircle2, ChevronRight, Clock, CreditCard, FileText, IdCard, Zap,
   Lock, Nfc, RefreshCw, ScanFace, ShieldCheck, Smartphone, Sun, UserCheck, XCircle, Bell, CalendarClock,
-  Upload, History, Headphones, Copy, Building2,
+  Upload, History, Headphones, Copy, Building2, ArrowRight,
 } from "lucide-react";
 import { Alert, Button, Checkbox, ProgressBar, cx } from "../components/ui";
-import { IdCardArt, PageTitle, Screen } from "./MobileShell";
-import { useLang } from "../i18n";
+import { IdCardArt, PageTitle, RoundIconButton, SAFE_BOTTOM, Screen } from "./MobileShell";
+import { LangSwitch, useLang } from "../i18n";
 
 export type ScreenKey =
   | "intro" | "consent" | "reconsent" | "docType" | "captureFront" | "reviewFront" | "captureBack"
@@ -38,50 +38,111 @@ function Row({ label, value, strong, tone }: { label: string; value: ReactNode; 
 
 function StatusMark({ tone, icon }: { tone: "success" | "warning" | "danger"; icon: ReactNode }) {
   const cls = { success: "bg-success-subtle text-success", warning: "bg-warning-subtle text-warning", danger: "bg-danger-subtle text-danger" }[tone];
-  return <div className={cx("mx-auto grid size-[72px] place-items-center rounded-full", cls)}>{icon}</div>;
+  return <div className={cx("mx-auto grid size-20 place-items-center rounded-full ring-8 ring-white/70", cls)}>{icon}</div>;
 }
 
 /* ---------- 00 Giới thiệu ---------- */
+/** Minh hoạ hero: thẻ CCCD lime nghiêng trên nền tối, thẻ phía sau mờ — số giấy tờ đã che */
+function HeroCards() {
+  return (
+    <div className="relative mx-auto h-[206px] w-full max-w-[310px]" aria-hidden>
+      <div className="absolute left-1/2 top-4 h-36 w-36 -translate-x-1/2 rounded-full bg-lime/25 blur-3xl" />
+      <div
+        className="absolute left-[16%] top-2 aspect-[1.586] w-[74%] rounded-[22px] border border-white/10 bg-white/[0.05]"
+        style={{ transform: "rotate(-16deg)" }}
+      />
+      <div
+        className="absolute left-[8%] top-8 flex aspect-[1.586] w-[84%] flex-col justify-between rounded-[22px] p-5 text-lime-ink shadow-[0_24px_48px_rgba(0,0,0,0.35)]"
+        style={{ background: "var(--lime-card)", transform: "rotate(-8deg)" }}
+      >
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.12em] opacity-70">Căn cước · Citizen ID</p>
+            <p className="mt-0.5 text-[13px] font-bold">Việt Nam</p>
+          </div>
+          <span className="inline-flex items-center gap-1 rounded-full border border-lime-ink/25 px-2 py-0.5 text-[11px] font-semibold">
+            <Nfc className="size-3.5" /> NFC
+          </span>
+        </div>
+        <div className="h-7 w-10 rounded-md border border-lime-ink/30 bg-lime-ink/10" />
+        <div className="flex items-end justify-between">
+          <p className="text-[19px] font-bold tracking-[0.06em] tabular">079 2•• ••• 456</p>
+          <p className="text-[12px] font-bold">VNM</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Intro({ go }: ScreenProps) {
   const { tr } = useLang();
-  const steps = [
-    [tr("Đồng ý điều khoản", "Accept the terms"), tr("Chọn phạm vi dữ liệu bạn cho phép", "Choose what data you allow us to use")],
-    [tr("Chụp CCCD gắn chip", "Photograph your chip ID"), tr("Mặt trước và mặt sau", "Front and back")],
-    [tr("Quét chip NFC", "Scan the NFC chip"), tr("Áp thẻ vào mặt sau điện thoại", "Hold the card to the back of your phone")],
-    [tr("Xác thực khuôn mặt", "Verify your face"), tr("Làm theo hướng dẫn trên màn hình", "Follow the on-screen prompts")],
-  ];
+  const steps = [tr("Đồng ý", "Consent"), tr("Chụp CCCD", "Scan ID"), tr("Quét chip", "NFC chip"), tr("Khuôn mặt", "Face")];
   const needs: [ReactNode, string][] = [
-    [<IdCard key="i" className="size-5" />, tr("CCCD gắn chip, còn hạn", "Valid chip ID card")],
-    [<Nfc key="n" className="size-5" />, tr("Điện thoại có NFC", "NFC-enabled phone")],
-    [<Sun key="s" className="size-5" />, tr("Nơi đủ ánh sáng", "Good lighting")],
+    [<IdCard key="i" className="size-4" />, tr("CCCD gắn chip", "Chip ID card")],
+    [<Nfc key="n" className="size-4" />, tr("Máy có NFC", "NFC phone")],
+    [<Sun key="s" className="size-4" />, tr("Đủ ánh sáng", "Good light")],
   ];
   return (
-    <Screen title={tr("Mở tài khoản", "Open an account")} footer={<Button size="lg" block onClick={() => go("consent")}>{tr("Bắt đầu", "Get started")}</Button>}>
-      <PageTitle title={tr("Mở tài khoản thanh toán trực tuyến", "Open a payment account online")} desc={tr("Khoảng 3 phút. Không cần đến quầy giao dịch.", "About 3 minutes. No branch visit needed.")} />
-      <Section title={tr("Quy trình gồm 4 bước", "4 simple steps")}>
-        <ol className="px-4 pb-1">
-          {steps.map(([t, d], i) => (
-            <li key={t} className="flex gap-3 border-b border-line-subtle py-3 last:border-0">
-              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-action-subtle text-caption font-bold text-action-subtle-fg tabular">{i + 1}</span>
-              <span className="min-w-0">
-                <span className="block text-body-sm font-semibold">{t}</span>
-                <span className="block text-caption text-fg-tertiary">{d}</span>
-              </span>
+    <div className="flex min-h-0 flex-1 flex-col text-white" style={{ background: "var(--brand-bg)" }}>
+      <div className="flex h-14 shrink-0 items-center gap-2 px-4">
+        <span className="grid size-9 place-items-center rounded-full bg-lime text-lime-ink">
+          <ShieldCheck className="size-[18px]" aria-hidden />
+        </span>
+        <span className="text-[15px] font-bold tracking-tight">Aegis Bank</span>
+        <span className="flex-1" />
+        <LangSwitch onBrand />
+        <RoundIconButton label={tr("Hỗ trợ", "Support")}>
+          <Headphones className="size-[18px]" />
+        </RoundIconButton>
+      </div>
+
+      <div className="min-h-0 flex-1 overflow-y-auto px-6 pt-2">
+        <HeroCards />
+        <h1 className="mt-3 text-center text-[28px] font-bold leading-[36px] tracking-[-0.02em]">
+          {tr("Mở tài khoản", "Open an account")}
+          <br />
+          {tr("chỉ trong 3 phút", "in just 3 minutes")}
+        </h1>
+        <p className="mx-auto mt-3 max-w-[300px] text-center text-body-sm text-white/70">
+          {tr("Không cần ra quầy. Dữ liệu của bạn được mã hoá và chỉ dùng để xác minh danh tính.", "No branch visit. Your data is encrypted and only used to verify who you are.")}
+        </p>
+        <ol className="mt-5 grid grid-cols-4 gap-2" aria-label={tr("4 bước", "4 steps")}>
+          {steps.map((t, i) => (
+            <li key={t} className="flex flex-col items-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.06] px-1 py-3">
+              <span className="grid size-7 place-items-center rounded-full bg-lime/15 text-caption font-bold text-lime tabular">{i + 1}</span>
+              <span className="text-center text-[11px] font-medium leading-tight text-white/85">{t}</span>
             </li>
           ))}
         </ol>
-      </Section>
-      <Section title={tr("Bạn cần chuẩn bị", "What you'll need")} className="mt-4">
-        <ul className="grid grid-cols-3 gap-2 p-4 pt-3 text-center">
-          {needs.map(([icon, label]) => (
-            <li key={label} className="flex flex-col items-center gap-2 rounded-md bg-bg-base px-2 py-3">
-              <span className="text-action-subtle-fg">{icon}</span>
-              <span className="text-caption leading-tight text-fg-secondary">{label}</span>
-            </li>
+        <ul className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 pb-2 text-caption text-white/65">
+          {needs.map(([ic, t]) => (
+            <li key={t} className="flex items-center gap-1.5"><span className="text-lime">{ic}</span>{t}</li>
           ))}
         </ul>
-      </Section>
-    </Screen>
+      </div>
+
+      <div className="shrink-0 px-5 pt-3" style={SAFE_BOTTOM}>
+        <div className="flex gap-3">
+          <button onClick={() => go("resume")} className="btn interactive h-14 shrink-0 rounded-full bg-white px-5 text-body-sm font-semibold text-lime-ink">
+            {tr("Hồ sơ dở", "Resume")}
+          </button>
+          <button
+            onClick={() => go("consent")}
+            className="btn interactive flex h-14 flex-1 items-center justify-between rounded-full pl-6 pr-1.5 text-body font-semibold text-lime-ink"
+            style={{ background: "var(--lime-card)" }}
+          >
+            {tr("Bắt đầu", "Get started")}
+            <span className="grid size-11 place-items-center rounded-full bg-lime-ink text-lime">
+              <ArrowRight className="size-5" aria-hidden />
+            </span>
+          </button>
+        </div>
+        <p className="mt-3 flex items-center justify-center gap-1.5 text-caption text-white/55">
+          <Lock className="size-3.5" aria-hidden />
+          {tr("Kết nối được mã hoá · Aegis Bank", "Encrypted connection · Aegis Bank")}
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -464,31 +525,71 @@ function Receipt({ children }: { children: ReactNode }) {
 
 export function Approved({ go }: ScreenProps) {
   const { tr } = useLang();
-  const next: [ReactNode, string][] = [
-    [<Lock key="l" className="size-5" />, tr("Tạo mã PIN giao dịch", "Set up your transaction PIN")],
-    [<CreditCard key="c" className="size-5" />, tr("Phát hành thẻ ghi nợ ảo", "Get a virtual debit card")],
+  const [copied, setCopied] = useState(false);
+  const next: [ReactNode, string, string][] = [
+    [<Lock key="l" className="size-5" />, tr("Tạo mã PIN giao dịch", "Set up your transaction PIN"), tr("Bắt buộc trước giao dịch đầu tiên", "Needed before your first payment")],
+    [<CreditCard key="c" className="size-5" />, tr("Phát hành thẻ ghi nợ ảo", "Get a virtual debit card"), tr("Dùng ngay, miễn phí năm đầu", "Ready instantly, free for year one")],
   ];
+  const copy = () => {
+    navigator.clipboard?.writeText("190366882025").catch(() => {});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
+  };
   return (
     <Screen title={tr("Kết quả", "Result")} footer={<Button size="lg" block onClick={() => go("intro")}>{tr("Vào trang chủ", "Go to home")}</Button>}>
-      <StatusMark tone="success" icon={<CheckCircle2 className="size-9" />} />
-      <h2 className="mt-4 text-center text-[22px] font-bold">{tr("Mở tài khoản thành công", "Your account is open")}</h2>
-      <p className="mt-1 text-center text-body-sm text-fg-secondary">{tr("Chào mừng bạn đến với Aegis Bank.", "Welcome to Aegis Bank.")}</p>
+      <div className="flex items-center gap-3">
+        <span className="grid size-12 shrink-0 place-items-center rounded-full bg-lime text-lime-ink"><CheckCircle2 className="size-6" /></span>
+        <div>
+          <h2 className="text-[22px] font-bold leading-[28px] tracking-[-0.01em]">{tr("Mở tài khoản thành công", "Your account is open")}</h2>
+          <p className="text-body-sm text-fg-secondary">{tr("Chào mừng bạn đến với Aegis Bank.", "Welcome to Aegis Bank.")}</p>
+        </div>
+      </div>
+
+      {/* Thẻ tài khoản */}
+      <div className="relative mt-5 overflow-hidden rounded-[24px] p-5 text-white" style={{ background: "var(--brand-bg)" }}>
+        <div aria-hidden className="absolute -right-10 -top-10 size-40 rounded-full bg-lime/20 blur-2xl" />
+        <div className="relative flex items-center justify-between">
+          <span className="text-body-sm text-white/70">{tr("Tài khoản thanh toán · VND", "Current account · VND")}</span>
+          <span className="rounded-full bg-lime px-2.5 py-0.5 text-caption font-semibold text-lime-ink">{tr("Đang hoạt động", "Active")}</span>
+        </div>
+        <div className="relative mt-4 flex items-center gap-3">
+          <span className="text-[26px] font-bold tracking-[0.04em] tabular">1903 6688 2025</span>
+          <button onClick={copy} className="interactive grid size-9 place-items-center rounded-full bg-white/10" aria-label={tr("Sao chép số tài khoản", "Copy account number")}>
+            {copied ? <Check className="size-4 text-lime" /> : <Copy className="size-4" />}
+          </button>
+        </div>
+        <p className="relative mt-1 h-4 text-caption text-lime" aria-live="polite">{copied ? tr("Đã sao chép", "Copied") : ""}</p>
+        <div className="relative mt-3 flex items-end justify-between border-t border-white/10 pt-3">
+          <div>
+            <p className="text-caption text-white/60">{tr("Chủ tài khoản", "Account holder")}</p>
+            <p className="text-body-sm font-semibold">NGUYỄN THỊ MINH THƯ</p>
+          </div>
+          <p className="text-caption text-white/60 tabular">09:42 · 09/11/2026</p>
+        </div>
+      </div>
+
       <Receipt>
-        <Row label={tr("Chủ tài khoản", "Account holder")} value="NGUYỄN THỊ MINH THƯ" strong />
-        <Row label={tr("Số tài khoản", "Account number")} value={<span className="inline-flex items-center gap-2 font-semibold">1903 6688 2025 <Copy className="size-4 text-action-subtle-fg" aria-label={tr("Sao chép", "Copy")} /></span>} />
-        <Row label={tr("Loại tài khoản", "Account type")} value={tr("Thanh toán – VND", "Current account – VND")} />
-        <Row label={tr("Thời gian", "Time")} value="09:42 · 09/11/2026" />
+        <Row label={tr("Số dư khả dụng", "Available balance")} value="0 ₫" strong />
         <Row label={tr("Mã hồ sơ", "Reference")} value="EKS-2611-0042" />
       </Receipt>
-      <Section title={tr("Việc tiếp theo", "Next steps")} className="mt-4">
-        <ul className="px-4 pb-1 pt-1">
-          {next.map(([ic, t]) => (
-            <li key={t} className="flex items-center gap-3 border-b border-line-subtle py-3.5 text-body-sm font-medium last:border-0">
-              <span className="text-action-subtle-fg">{ic}</span><span className="flex-1">{t}</span><ChevronRight className="size-5 text-fg-tertiary" />
-            </li>
-          ))}
-        </ul>
-      </Section>
+
+      <div className="mt-6 flex items-center justify-between">
+        <h3 className="text-body font-semibold">{tr("Việc tiếp theo", "Next steps")}</h3>
+      </div>
+      <ul className="mt-3 flex flex-col gap-3">
+        {next.map(([ic, t, d]) => (
+          <li key={t}>
+            <button className="interactive flex w-full items-center gap-3 rounded-lg bg-bg-surface p-4 text-left shadow-raised">
+              <span className="grid size-11 shrink-0 place-items-center rounded-full bg-action-subtle text-action-subtle-fg">{ic}</span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-body-sm font-semibold">{t}</span>
+                <span className="block text-caption text-fg-tertiary">{d}</span>
+              </span>
+              <span className="grid size-9 place-items-center rounded-full bg-bg-sunken"><ChevronRight className="size-4" /></span>
+            </button>
+          </li>
+        ))}
+      </ul>
     </Screen>
   );
 }

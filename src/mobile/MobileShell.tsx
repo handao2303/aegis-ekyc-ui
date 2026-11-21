@@ -14,9 +14,9 @@ export const STEPS: L10n[] = [
 /** Khung thiết bị — chỉ dùng trong trang UI Kit */
 export function PhoneFrame({ children, dark }: { children: ReactNode; dark?: boolean }) {
   return (
-    <div className="relative mx-auto w-full max-w-[390px] rounded-[44px] p-2.5 shadow-overlay" style={{ background: "var(--device-bezel)" }}>
+    <div className="skin-verde relative mx-auto w-full max-w-[390px] rounded-[48px] p-2.5 shadow-overlay" style={{ background: "var(--device-bezel)" }}>
       <div
-        className={cx("relative flex h-[760px] max-h-[78vh] min-h-[620px] flex-col overflow-hidden rounded-[36px]", dark ? "text-white" : "bg-bg-base text-fg-primary")}
+        className={cx("relative flex h-[780px] max-h-[80vh] min-h-[620px] flex-col overflow-hidden rounded-[40px]", dark ? "text-white" : "bg-bg-base text-fg-primary")}
         style={{ background: dark ? "var(--camera-bg)" : "var(--brand-bg)" }}
       >
         <div className="flex h-11 shrink-0 items-center justify-between px-7 text-[13px] font-semibold tabular text-white" aria-hidden>
@@ -30,9 +30,21 @@ export function PhoneFrame({ children, dark }: { children: ReactNode; dark?: boo
   );
 }
 
+/** Đệm dưới = vùng an toàn của iPhone (thanh Home), tối thiểu 20px */
+export const SAFE_BOTTOM = { paddingBottom: "max(20px, env(safe-area-inset-bottom, 0px))" } as const;
+
+/** Nút tròn trên nền tối (quay lại, hỗ trợ) */
+export function RoundIconButton({ label, onClick, children }: { label: string; onClick?: () => void; children: ReactNode }) {
+  return (
+    <button onClick={onClick} aria-label={label} className="interactive grid size-10 shrink-0 place-items-center rounded-full bg-white/10 text-white backdrop-blur">
+      {children}
+    </button>
+  );
+}
+
 /**
- * Bố cục màn hình kiểu ngân hàng:
- * dải thương hiệu navy (thanh trên + tiến trình) → tấm nội dung trắng bo góc trên → vùng hành động cố định + cam kết bảo mật
+ * Bố cục màn hình:
+ * nền xanh rừng chuyển màu (thanh trên + tiến trình lime) → tấm nội dung sáng bo góc lớn → vùng hành động cố định + cam kết bảo mật
  */
 export function Screen({
   title,
@@ -55,33 +67,33 @@ export function Screen({
   return (
     <div className={cx("flex min-h-0 flex-1 flex-col", dark ? "text-white" : "")} style={{ background: dark ? "var(--camera-bg)" : "var(--brand-bg)" }}>
       {/* Thanh trên */}
-      <div className="flex h-14 shrink-0 items-center gap-1 px-2 text-white">
+      <div className="flex h-14 shrink-0 items-center gap-2 px-4 text-white">
         {onBack ? (
-          <button onClick={onBack} aria-label={tr("Quay lại", "Back")} className="interactive grid size-10 place-items-center rounded-full">
-            <ChevronLeft className="size-6" />
-          </button>
+          <RoundIconButton label={tr("Quay lại", "Back")} onClick={onBack}>
+            <ChevronLeft className="size-5" />
+          </RoundIconButton>
         ) : (
-          <span className="size-10" />
+          <span className="size-10 shrink-0" />
         )}
-        <h1 className="flex-1 truncate text-center text-[17px] font-semibold">{title}</h1>
+        <h1 className="flex-1 truncate text-center text-[16px] font-semibold">{title}</h1>
         <LangSwitch onBrand />
-        <button aria-label={tr("Hỗ trợ", "Support")} className="interactive ml-1 grid size-10 place-items-center rounded-full">
-          <Headphones className="size-5" />
-        </button>
+        <RoundIconButton label={tr("Hỗ trợ", "Support")}>
+          <Headphones className="size-[18px]" />
+        </RoundIconButton>
       </div>
 
       {/* Tiến trình */}
       {step !== undefined && (
-        <div className="shrink-0 px-5 pb-5 pt-1 text-white">
+        <div className="shrink-0 px-5 pb-5 pt-2 text-white">
           <div className="flex items-baseline justify-between text-caption">
             <span className="font-semibold">{pick(STEPS[step])}</span>
             <span className="tabular text-brand-muted">{tr(`Bước ${step + 1}/${STEPS.length}`, `Step ${step + 1} of ${STEPS.length}`)}</span>
           </div>
-          <ol className="mt-2 flex gap-1" aria-label={tr("Tiến trình", "Progress")}>
+          <ol className="mt-2.5 flex gap-1.5" aria-label={tr("Tiến trình", "Progress")}>
             {STEPS.map((s, i) => (
               <li key={s.en} className="flex-1" aria-current={i === step ? "step" : undefined}>
                 <span className="sr-only">{pick(s)}</span>
-                <span aria-hidden className={cx("block h-1 rounded-full", i <= step ? "bg-white" : "bg-white/25")} />
+                <span aria-hidden className={cx("block h-1.5 rounded-full", i <= step ? "bg-lime" : "bg-white/15")} />
               </li>
             ))}
           </ol>
@@ -92,10 +104,10 @@ export function Screen({
       {dark ? (
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-4">{children}</div>
       ) : (
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-t-[20px] bg-bg-base text-fg-primary">
-          <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-6 pt-6">{children}</div>
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-t-[28px] bg-bg-base text-fg-primary">
+          <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-6 pt-6" style={footer ? undefined : SAFE_BOTTOM}>{children}</div>
           {footer && (
-            <div className="shrink-0 border-t border-line-subtle bg-bg-surface px-5 pb-6 pt-3">
+            <div className="shrink-0 bg-bg-base px-5 pt-2" style={SAFE_BOTTOM}>
               <div className="flex flex-col gap-2">{footer}</div>
               {secure && (
                 <p className="mt-3 flex items-center justify-center gap-1.5 text-caption text-fg-tertiary">
@@ -107,7 +119,7 @@ export function Screen({
           )}
         </div>
       )}
-      {dark && footer && <div className="shrink-0 px-5 pb-8 pt-3">{footer}</div>}
+      {dark && footer && <div className="shrink-0 px-5 pt-3" style={{ paddingBottom: "max(28px, env(safe-area-inset-bottom, 0px))" }}>{footer}</div>}
     </div>
   );
 }
@@ -116,7 +128,7 @@ export function Screen({
 export function PageTitle({ title, desc }: { title: string; desc?: ReactNode }) {
   return (
     <div className="mb-5">
-      <h2 className="text-[22px] font-bold leading-[30px] tracking-[-0.01em]">{title}</h2>
+      <h2 className="text-[24px] font-bold leading-[32px] tracking-[-0.02em]">{title}</h2>
       {desc && <p className="mt-1.5 text-body-sm text-fg-secondary">{desc}</p>}
     </div>
   );

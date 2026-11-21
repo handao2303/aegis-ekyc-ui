@@ -37,6 +37,7 @@ export default {
           "solid-fg": v("status-danger-solid-text"),
         },
         info: { DEFAULT: v("status-info-text"), subtle: v("status-info-subtle-bg") },
+        lime: { DEFAULT: v("lime"), strong: v("lime-strong"), ink: v("lime-ink") },
       },
       fontFamily: {
         // Một họ chữ duy nhất; "mono" chỉ bật số thẳng cột, không đổi font
@@ -53,7 +54,7 @@ export default {
         headline: ["24px", { lineHeight: "32px", fontWeight: "700" }],
         display: ["32px", { lineHeight: "40px", fontWeight: "700", letterSpacing: "-0.01em" }],
       },
-      borderRadius: { sm: "6px", md: "8px", lg: "12px", xl: "16px", "2xl": "24px" },
+      borderRadius: { sm: "6px", md: "var(--radius-md, 8px)", lg: "var(--radius-lg, 12px)", xl: "16px", "2xl": "24px" },
       boxShadow: { raised: v("shadow-raised"), overlay: v("shadow-overlay") },
       ringColor: { focus: v("focus-ring") },
     },

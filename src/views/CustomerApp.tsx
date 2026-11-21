@@ -1,5 +1,5 @@
 /* App khách hàng eKYC — chạy toàn màn hình như sản phẩm thật */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SCREENS } from "../mobile/MobileFlowPage";
 import type { Outcome, ScreenKey } from "../mobile/screens";
 import { useTheme } from "../shared/theme";
@@ -17,6 +17,12 @@ function CustomerApp() {
   const [key, setKey] = useState<ScreenKey>("intro");
   const [nonce, setNonce] = useState(0);
   const Comp = SCREENS.find((s) => s.key === key)!.comp;
+
+  // Skin Verde áp lên cả <html> để thanh trạng thái iPhone và nền cuộn cùng tông
+  useEffect(() => {
+    document.documentElement.classList.add("skin-verde");
+    return () => document.documentElement.classList.remove("skin-verde");
+  }, []);
   const go = (k: ScreenKey) => {
     setKey(k);
     setNonce((n) => n + 1);
@@ -25,8 +31,8 @@ function CustomerApp() {
   return (
     <div className="fixed inset-0 flex justify-center bg-bg-sunken md:items-center md:p-6">
       <div
-        className="flex h-full w-full max-w-[440px] flex-col overflow-hidden md:max-h-[880px] md:rounded-2xl md:shadow-overlay"
-        style={{ background: "var(--brand-bg)", paddingTop: "env(safe-area-inset-top, 0px)", paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+        className="flex h-full w-full max-w-[440px] flex-col overflow-hidden md:max-h-[880px] md:rounded-[40px] md:shadow-overlay"
+        style={{ background: "var(--brand-bg)", paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
         <Comp key={`${key}-${nonce}`} go={go} outcome={outcome} />
       </div>

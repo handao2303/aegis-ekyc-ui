@@ -13,6 +13,7 @@ const font = Be_Vietnam_Pro({
 export const metadata: Metadata = {
   title: { default: "Aegis eKYC UI Kit", template: "%s · Aegis" },
   description: "eKYC module UI for Aegis Bank: customer onboarding app, Compliance back-office and design system.",
+  icons: { icon: [{ url: `${process.env.BASE_PATH || ""}/icon.svg`, type: "image/svg+xml" }] },
 };
 
 export const viewport: Viewport = {

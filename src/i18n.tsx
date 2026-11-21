@@ -55,7 +55,7 @@ export function LangSwitch({ onBrand }: { onBrand?: boolean }) {
             "h-6 min-w-[34px] rounded-full px-2 uppercase transition-colors",
             lang === l
               ? onBrand
-                ? "bg-white text-[var(--brand-bg)]"
+                ? "bg-white text-[color:var(--brand-ink)]"
                 : "bg-bg-surface text-fg-primary shadow-raised"
               : onBrand
                 ? "text-white/75"

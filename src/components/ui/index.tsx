@@ -43,7 +43,7 @@ export function Button({
   return (
     <button
       className={cx(
-        "interactive inline-flex items-center justify-center font-semibold whitespace-nowrap select-none",
+        "btn interactive inline-flex items-center justify-center font-semibold whitespace-nowrap select-none",
         "disabled:opacity-45 disabled:cursor-not-allowed",
         variants[variant],
         sizes[size],

@@ -36,6 +36,14 @@ npm run start      # serve out/ locally
 
 Use the **VI | EN** switch in the header to change language; the choice is remembered. A `?lang=` parameter in the URL takes priority, so shared links open in the intended language.
 
+## Test on iPhone
+
+1. Open **https://handao2303.github.io/aegis-ekyc-ui/app/** in Safari on the iPhone.
+2. Tap **Share → Add to Home Screen**.
+3. Launch **Aegis** from the home screen: it runs full screen like a native app, with its own icon, a green status bar and safe-area padding for the Dynamic Island and home indicator.
+
+The customer app is a PWA (`src/app/manifest.ts`, Apple web-app meta tags in `src/app/app/page.tsx`). Camera, NFC and liveness are simulated, so no permissions are requested.
+
 ## Deployment
 
 The site is hosted on GitHub Pages from the `gh-pages` branch.
@@ -102,6 +110,10 @@ src/
 │   └── pages.tsx            ← completed cases, SLA report, threshold settings
 └── ds/DesignSystemPage.tsx  ← design system docs with a live WCAG contrast table
 ```
+
+## Customer app skin ("Verde")
+
+The customer app uses its own skin, scoped by the `skin-verde` class in `tokens.css`: a deep forest-green gradient header, lime accents, 22px cards and pill buttons. Only token values change; components are shared with the navy Compliance back-office. Content always sits on a light surface to keep WCAG AA contrast, even when the phone is in dark mode.
 
 ## Design system principles
 

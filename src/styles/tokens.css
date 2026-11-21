@@ -59,6 +59,7 @@
 
   /* Thương hiệu — dải navy đầu màn hình */
   --brand-bg: #0b2559;
+  --brand-ink: #0b2559; /* chữ trên nền trắng đặt trong dải thương hiệu (brand-bg có thể là gradient) */
   --brand-text: #ffffff;
   --brand-muted: rgba(255, 255, 255, 0.78);
 
@@ -141,6 +142,69 @@
   --device-bezel: #05060f;
   --brand-bg: #0e1b38;
   color-scheme: dark;
+}
+
+/*
+  Skin "Verde" – chỉ dùng cho app khách hàng (/app/ và khung điện thoại trong UI Kit).
+  Header xanh rừng chuyển màu, điểm nhấn lime, góc bo lớn, nút dạng viên thuốc.
+  Nội dung luôn ở nền sáng để giữ tương phản, kể cả khi máy bật chế độ tối.
+  Đặt sau các khối dark để thắng khi cùng độ ưu tiên.
+*/
+:root.skin-verde,
+.skin-verde {
+  --bg-base: #eef2ec;
+  --bg-surface: #ffffff;
+  --bg-surface-raised: #ffffff;
+  --bg-sunken: #e2e8de;
+  --bg-inverse: #0b1d10;
+  --text-primary: #0b1d10;
+  --text-secondary: #46564a;
+  --text-tertiary: #5a695d;
+  --text-inverse: #ffffff;
+  --border-subtle: rgba(11, 29, 16, 0.08);
+  --border-strong: rgba(11, 29, 16, 0.2);
+  --action-primary-bg: #0f2416;
+  --action-primary-text: #ffffff;
+  --action-primary-subtle-bg: #e3f4d2;
+  --action-primary-subtle-text: #2b6414;
+  --status-success-text: #1f7a2e;
+  --status-success-subtle-bg: #e6f6e3;
+  --status-warning-text: #8a5300;
+  --status-warning-subtle-bg: #fbf3e2;
+  --status-danger-text: #b42318;
+  --status-danger-subtle-bg: #fdf0ee;
+  --status-danger-solid-bg: #b42318;
+  --status-danger-solid-text: #ffffff;
+  --status-info-text: #2b6414;
+  --status-info-subtle-bg: #e3f4d2;
+  --overlay-hover: rgba(11, 29, 16, 0.05);
+  --overlay-press: rgba(11, 29, 16, 0.1);
+  --focus-ring: rgba(127, 209, 74, 0.7);
+  --shadow-raised: 0 1px 2px rgba(11, 29, 16, 0.04), 0 8px 24px rgba(11, 29, 16, 0.06);
+  --shadow-overlay: 0 8px 24px rgba(11, 29, 16, 0.12), 0 24px 56px rgba(11, 29, 16, 0.18);
+  --brand-bg: radial-gradient(120% 55% at 90% 0%, rgba(168, 232, 104, 0.2) 0%, rgba(168, 232, 104, 0) 60%),
+    linear-gradient(170deg, #17402a 0%, #0e2a19 48%, #08180e 100%);
+  --brand-ink: #0b1d10;
+  --brand-text: #ffffff;
+  --brand-muted: rgba(255, 255, 255, 0.72);
+  --device-bezel: #0a140d;
+  --camera-bg: #06120a;
+  --lime: #a8e868;
+  --lime-strong: #7fd14a;
+  --lime-ink: #0b1d10;
+  --lime-card: linear-gradient(135deg, #c4f58c 0%, #a8e868 45%, #6fc443 100%);
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  color-scheme: light;
+}
+:root.skin-verde body::before {
+  display: none;
+}
+.skin-verde .btn {
+  border-radius: 9999px;
+}
+.skin-verde .btn.h-12 {
+  height: 52px;
 }
 
 body::before {
