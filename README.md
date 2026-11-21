@@ -6,31 +6,45 @@ The eKYC module UI for **Aegis Bank**, a personal banking project. Bilingual (Vi
 - **Aegis Compliance** (`/compliance/`): review back-office. Queue, case detail, maker-checker, completed cases, SLA report and threshold settings.
 - **UI Kit** (`/`): design system and design documentation.
 
+**Live demo:** [handao2303.github.io/aegis-ekyc-ui](https://handao2303.github.io/aegis-ekyc-ui/) · [Customer app](https://handao2303.github.io/aegis-ekyc-ui/app/) · [Compliance](https://handao2303.github.io/aegis-ekyc-ui/compliance/)
+
 > All sample data is fictional. Camera, NFC, liveness and verification results are simulated; no backend APIs are connected yet.
 
 ## Documentation
 
-Requirements, business rules, diagrams and test packs for the eKYC Completion epic live in [`docs/`](docs/README.md) (Vietnamese).
+Requirements, business rules, diagrams and test packs for the eKYC Completion epic live in [`docs/`](docs/README.md) (Vietnamese): 15 documents and 29 Mermaid diagrams. Start with the [solution overview](docs/05-architecture/A01-solution-overview.md): system context, containers, end-to-end sequence, decision tree and screen maps.
 
 ## Getting started
 
+Requires Node 20+.
+
 ```bash
 npm install
-npm run dev -- --port 5179
-npm run build      # builds all 3 pages into dist/
-npm run artifact   # builds the UI Kit as a single shareable HTML file
+npm run dev        # http://localhost:5179
+npm run build      # static export into out/
+npm run start      # serve out/ locally
 ```
 
-| Page | URL |
-|---|---|
-| Customer app | http://localhost:5179/app/ |
-| Customer app – English | http://localhost:5179/app/?lang=en |
-| Customer app – ends in "under review" | http://localhost:5179/app/?ketqua=refer |
-| Customer app – ends in "rejected" | http://localhost:5179/app/?ketqua=rejected |
-| Compliance back-office | http://localhost:5179/compliance/ |
-| UI Kit & design docs | http://localhost:5179/ |
+| Page | Local | Live |
+|---|---|---|
+| UI Kit & design docs | http://localhost:5179/ | [open](https://handao2303.github.io/aegis-ekyc-ui/) |
+| Customer app | http://localhost:5179/app/ | [open](https://handao2303.github.io/aegis-ekyc-ui/app/) |
+| Customer app – English | http://localhost:5179/app/?lang=en | [open](https://handao2303.github.io/aegis-ekyc-ui/app/?lang=en) |
+| Customer app – ends in "under review" | http://localhost:5179/app/?ketqua=refer | [open](https://handao2303.github.io/aegis-ekyc-ui/app/?ketqua=refer) |
+| Customer app – ends in "rejected" | http://localhost:5179/app/?ketqua=rejected | [open](https://handao2303.github.io/aegis-ekyc-ui/app/?ketqua=rejected) |
+| Compliance back-office | http://localhost:5179/compliance/ | [open](https://handao2303.github.io/aegis-ekyc-ui/compliance/) |
 
-Use the **VI | EN** switch in the header to change language; the choice is remembered.
+Use the **VI | EN** switch in the header to change language; the choice is remembered. A `?lang=` parameter in the URL takes priority, so shared links open in the intended language.
+
+## Deployment
+
+The site is hosted on GitHub Pages from the `gh-pages` branch.
+
+```bash
+npm run deploy     # next build with BASE_PATH=/aegis-ekyc-ui, then push out/ to gh-pages
+```
+
+All three pages are static HTML that hydrate in the browser, so no server is needed.
 
 ## Features
 
@@ -54,20 +68,26 @@ Use the **VI | EN** switch in the header to change language; the choice is remem
 
 | Choice | Reason |
 |---|---|
+| **Next.js 14 (App Router)** | File-based routes for the three products (`/`, `/app/`, `/compliance/`), per-page metadata, self-hosted Be Vietnam Pro via `next/font` (Vietnamese subset, no layout shift), and static export for free hosting on GitHub Pages. The Compliance back-office can later move to server components and API routes without changing the UI code. |
 | **React 18 + TypeScript** | Same component model as the React Native/Expo mobile app used in Aegis. Screen logic and component names carry over, and TypeScript catches errors in types such as `Outcome` and `ReasonCode`. |
 | **Tailwind CSS 3.4** | Used only as a mapping layer to CSS tokens (`tailwind.config.js`). Tailwind's default colours aren't used, so re-theming means editing `tokens.css` only. |
 | **CSS custom properties** | One token source for the web and, via export, React Native. Light/dark switches through variables, so components don't need to know the current theme. |
 | **lucide-react** | Consistent, lightweight, tree-shakeable icons. |
-| **Vite** | Fast builds, multi-page dev server, single-file build for sharing. |
 
 To move into the real mobile app: keep the tokens and screen structure, and replace `div`/`button` with `View`/`Pressable` (or use NativeWind to keep the Tailwind classes).
 
 ## Project structure
 
 ```
-app/index.html, compliance/index.html  ← entry pages for the two products
+next.config.mjs              ← static export, base path for GitHub Pages
 src/
-├── entries/                 ← app.tsx (customer app), compliance.tsx (back-office layout)
+├── app/                     ← Next.js routes
+│   ├── layout.tsx           ← <html>, font, metadata, global CSS
+│   ├── page.tsx             ← /            UI Kit
+│   ├── app/page.tsx         ← /app/        customer app
+│   ├── compliance/page.tsx  ← /compliance/ back-office
+│   └── ClientOnly.tsx       ← loads the views in the browser only (they read URL and localStorage on start)
+├── views/                   ← UiKit.tsx, CustomerApp.tsx, ComplianceApp.tsx (page shells)
 ├── i18n.tsx                 ← VI/EN provider, tr("vi", "en") helper, language switch
 ├── styles/tokens.css        ← semantic tokens (light/dark), interaction overlay
 ├── components/ui/index.tsx  ← Button, Badge, Card, Alert, TextField, Checkbox, Tabs, Modal, Stepper, ProgressBar, KV

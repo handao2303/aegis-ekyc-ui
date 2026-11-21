@@ -3,7 +3,7 @@ const v = (name) => `var(--${name})`;
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -40,8 +40,8 @@ export default {
       },
       fontFamily: {
         // Một họ chữ duy nhất; "mono" chỉ bật số thẳng cột, không đổi font
-        sans: ['"Be Vietnam Pro"', "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
-        mono: ['"Be Vietnam Pro"', "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+        sans: ['var(--font-sans)', '"Be Vietnam Pro"', "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+        mono: ['var(--font-sans)', '"Be Vietnam Pro"', "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
       },
       fontSize: {
         // Thang chữ 1.25 — tên theo vai trò

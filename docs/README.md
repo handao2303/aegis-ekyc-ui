@@ -3,7 +3,9 @@
 Bộ tài liệu cho 18 hạng mục của Epic [SCRUM-69 – eKYC Completion & Production Readiness](https://baohandao2303.atlassian.net/browse/SCRUM-69).
 Tổng quan và kế hoạch: [Gap Analysis & Delivery Plan (Confluence)](https://baohandao2303.atlassian.net/wiki/spaces/SCRUM/pages/15106049).
 
-Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tất cả đã được kiểm tra cú pháp.
+Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 29 diagram, tất cả đã được kiểm tra cú pháp.
+
+**Bắt đầu từ đây:** [A01 Tổng quan giải pháp](05-architecture/A01-solution-overview.md) – bối cảnh hệ thống, thành phần, luồng end-to-end, cây quyết định, bản đồ màn hình và cách triển khai UI.
 
 ## Bức tranh tổng thể
 
@@ -51,7 +53,7 @@ flowchart LR
 | Nhóm | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|---|
 | 00 · Quản trị | [C01 Nhật ký đồng bộ Jira](00-governance/C01-jira-hygiene-log.md) | SCRUM-70 | — | ✅ Hoàn tất |
-| | [C02 Compliance Mapping](00-governance/C02-compliance-mapping.md) | SCRUM-71 | — | 📝 Chờ Compliance xác nhận |
+| | [C02 Compliance Mapping](00-governance/C02-compliance-mapping.md) | SCRUM-71 | Flowchart (truy vết) | 📝 Chờ Compliance xác nhận |
 | | [C03 Requirements Addendum v1.3 & RTM](00-governance/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 Chờ PO & Compliance duyệt |
 | 01 · Nghiệp vụ | [C04–C05 Trùng khách hàng & hợp lệ giấy tờ](01-business/C04-C05-identity-validation.md) | SCRUM-73, 74 | Flowchart | 🔧 Đặc tả + UI mẫu xong, chờ backend |
 | | [C06 Vòng đời phiên](01-business/C06-session-lifecycle.md) | SCRUM-75 | State, Sequence | 🔧 Đặc tả + UI mẫu xong, chờ backend |
@@ -64,6 +66,7 @@ flowchart LR
 | | [C16 Kế hoạch SIT](03-quality/C16-sit-plan.md) | SCRUM-85 | Flowchart, Sequence | ⛔ Kế hoạch xong, bị chặn bởi SCRUM-56 |
 | | [C17 Bộ UAT & biên bản](03-quality/C17-uat-pack.md) | SCRUM-86 | Flowchart | ⛔ Bộ case xong, chờ C03 + C16 |
 | 04 · Đo lường | [C18 KPI & từ điển chỉ số](04-analytics/C18-kpi-metric-dictionary.md) | SCRUM-87 | Flowchart | 🔧 Đặc tả + màn Báo cáo SLA mẫu xong |
+| 05 · Kiến trúc | [A01 Tổng quan giải pháp](05-architecture/A01-solution-overview.md) | SCRUM-69 | Context, Container, Sequence, Flowchart ×4 | ✅ Hoàn tất |
 
 ## Việc còn lại ngoài tài liệu
 

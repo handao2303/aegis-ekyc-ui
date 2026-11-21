@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Monitor, Moon, Palette, ShieldCheck, Smartphone, Sun } from "lucide-react";
-import { cx } from "./components/ui";
-import DesignSystemPage from "./ds/DesignSystemPage";
-import MobileFlowPage from "./mobile/MobileFlowPage";
-import CompliancePage from "./web/CompliancePage";
+import Link from "next/link";
+import { ExternalLink, Monitor, Moon, Palette, ShieldCheck, Smartphone, Sun } from "lucide-react";
+import { LangProvider } from "../i18n";
+import { cx } from "../components/ui";
+import DesignSystemPage from "../ds/DesignSystemPage";
+import MobileFlowPage from "../mobile/MobileFlowPage";
+import CompliancePage from "../web/CompliancePage";
 
 type View = "design-system" | "mobile" | "compliance";
 type Theme = "system" | "light" | "dark";
@@ -15,11 +17,11 @@ const VIEWS: { id: View; label: string; short: string; icon: typeof Palette }[] 
 ];
 
 const readHash = (): View => {
-  const h = location.hash.replace("#", "") as View;
+  const h = window.location.hash.replace("#", "") as View;
   return VIEWS.some((v) => v.id === h) ? h : "mobile";
 };
 
-export default function App() {
+function UiKit() {
   const [view, setView] = useState<View>(readHash);
   const [theme, setTheme] = useState<Theme>(() => {
     try {
@@ -47,7 +49,7 @@ export default function App() {
   }, [theme]);
 
   const go = (v: View) => {
-    location.hash = v;
+    window.location.hash = v;
     setView(v);
   };
 
@@ -94,6 +96,18 @@ export default function App() {
             ))}
           </nav>
 
+          <div className="hidden shrink-0 items-center gap-1 lg:flex">
+            {[
+              { href: "/app/", label: "App khách hàng" },
+              { href: "/compliance/", label: "Compliance" },
+            ].map((l) => (
+              <Link key={l.href} href={l.href} className="interactive inline-flex h-9 items-center gap-1.5 rounded-md px-2.5 text-body-sm font-medium text-action-subtle-fg">
+                {l.label}
+                <ExternalLink className="size-3.5" aria-hidden />
+              </Link>
+            ))}
+          </div>
+
           <div className="flex shrink-0 rounded-md border border-line-subtle p-0.5" role="radiogroup" aria-label="Giao diện">
             {themes.map(({ id, icon: Icon, label }) => (
               <button
@@ -118,5 +132,13 @@ export default function App() {
         {view === "design-system" && <DesignSystemPage />}
       </main>
     </div>
+  );
+}
+
+export default function UiKitPage() {
+  return (
+    <LangProvider>
+      <UiKit />
+    </LangProvider>
   );
 }

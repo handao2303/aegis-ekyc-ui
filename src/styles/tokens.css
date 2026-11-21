@@ -159,7 +159,7 @@ body::before {
     color: var(--text-primary);
   }
   body {
-    font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-sans), "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     font-size: 16px;
     line-height: 24px;
     -webkit-font-smoothing: antialiased;

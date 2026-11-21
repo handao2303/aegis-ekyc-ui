@@ -1,29 +1,30 @@
 {
   "name": "aegis-ekyc-ui",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "artifact": "tsc -b && vite build --mode artifact && node scripts/to-artifact.mjs"
+    "dev": "next dev -p 5179",
+    "build": "next build",
+    "start": "npx --yes serve@14.2.4 out -l 5179",
+    "lint": "tsc --noEmit",
+    "build:pages": "BASE_PATH=/aegis-ekyc-ui next build",
+    "deploy": "npm run build:pages && gh-pages -d out -t -m \"Deploy site\""
   },
   "dependencies": {
     "lucide-react": "0.460.0",
+    "next": "14.2.35",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@types/node": "22.10.1",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
-    "@vitejs/plugin-react": "4.3.4",
     "autoprefixer": "10.4.20",
+    "gh-pages": "6.3.0",
     "postcss": "8.4.49",
     "tailwindcss": "3.4.17",
-    "typescript": "5.6.3",
-    "vite": "5.4.11",
-    "vite-plugin-singlefile": "2.0.3",
-    "@types/node": "22.10.1"
+    "typescript": "5.6.3"
   }
 }

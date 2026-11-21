@@ -20,6 +20,31 @@
 
 ## 2. Ma trận đối chiếu
 
+Sơ đồ truy vết: văn bản → yêu cầu còn thiếu → tài liệu xử lý. Chỉ vẽ các yêu cầu ❌ và 🟡.
+
+```mermaid
+flowchart LR
+    L01["L-01<br/>Mở TK điện tử"] --> CR02["CR-02 Ảnh sinh trắc gốc"]
+    L01 --> CR03["CR-03 Không STP khi OCR-only"]
+    L01 --> CR04["CR-04 Toàn vẹn chip 🟡"]
+    L03["L-03<br/>Dữ liệu cá nhân"] --> CR07["CR-07 Rút lại đồng ý"]
+    L03 --> CR08["CR-08 Xoá / ẩn danh"]
+    L04["L-04<br/>Phòng chống rửa tiền"] --> CR11["CR-11 Cấp thẩm quyền duyệt"]
+    L04 --> CR12["CR-12 Thời hạn lưu hồ sơ"]
+    L04 --> CR13["CR-13 Lưu vết 🟡"]
+    L05["L-05<br/>Năng lực hành vi"] --> CR14["CR-14 Độ tuổi"]
+
+    CR02 --> C11["C11 · SCRUM-80"]
+    CR03 --> C11
+    CR04 --> C11
+    CR07 --> C12["C12 · SCRUM-81"]
+    CR08 --> C12
+    CR12 --> C12
+    CR11 --> C10["C10 · SCRUM-79"]
+    CR13 --> C10
+    CR14 --> C05["C05 · SCRUM-74"]
+```
+
 Trạng thái: ✅ Đáp ứng · 🟡 Một phần · ❌ Chưa có
 
 | Mã yêu cầu | Nguồn | Yêu cầu (tóm tắt) | Hiện trạng Aegis | Trạng thái | Hành động |

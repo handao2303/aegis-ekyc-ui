@@ -1,8 +1,6 @@
 /* Aegis Compliance — ứng dụng back-office: thanh trên navy, sidebar cố định, vùng làm việc */
-import { StrictMode, useEffect, useRef, useState } from "react";
-import { createRoot } from "react-dom/client";
+import { useEffect, useRef, useState } from "react";
 import { Bell, LogOut, ShieldCheck } from "lucide-react";
-import "../styles/tokens.css";
 import CompliancePage from "../web/CompliancePage";
 import { ThemeToggle, useTheme } from "../shared/theme";
 import { LangProvider, LangSwitch, useLang } from "../i18n";
@@ -126,10 +124,10 @@ function ComplianceApp() {
   );
 }
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+export default function ComplianceAppPage() {
+  return (
     <LangProvider>
       <ComplianceApp />
     </LangProvider>
-  </StrictMode>,
-);
+  );
+}

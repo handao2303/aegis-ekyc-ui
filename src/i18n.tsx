@@ -10,13 +10,16 @@ const LangContext = createContext<Ctx>({ lang: "vi", setLang: () => {}, tr: (vi)
 
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>(() => {
+    // Ưu tiên ?lang= trên URL (link chia sẻ), sau đó tới lựa chọn đã lưu
+    const fromUrl = new URLSearchParams(window.location.search).get("lang");
+    if (fromUrl === "vi" || fromUrl === "en") return fromUrl;
     try {
       const saved = localStorage.getItem("aegis-lang");
       if (saved === "vi" || saved === "en") return saved;
     } catch {
       /* bỏ qua */
     }
-    return new URLSearchParams(location.search).get("lang") === "en" ? "en" : "vi";
+    return "vi";
   });
   useEffect(() => {
     document.documentElement.lang = lang;
