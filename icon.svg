@@ -1,22 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">
-      <stop offset="0" stop-color="#17402a"/>
-      <stop offset="0.5" stop-color="#0e2a19"/>
-      <stop offset="1" stop-color="#08180e"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0.82" cy="0.12" r="0.6">
-      <stop offset="0" stop-color="#a8e868" stop-opacity="0.35"/>
-      <stop offset="1" stop-color="#a8e868" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="lime" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#c4f58c"/>
-      <stop offset="0.45" stop-color="#a8e868"/>
-      <stop offset="1" stop-color="#6fc443"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b46cf6"/>
+      <stop offset="0.55" stop-color="#d98ca0"/>
+      <stop offset="1" stop-color="#f7b31b"/>
     </linearGradient>
   </defs>
   <rect width="1024" height="1024" fill="url(#bg)"/>
-  <rect width="1024" height="1024" fill="url(#glow)"/>
-  <path d="M512 196 L772 290 V500 C772 668 662 790 512 846 C362 790 252 668 252 500 V290 Z" fill="url(#lime)"/>
-  <path d="M402 522 L482 602 L636 438" fill="none" stroke="#0b1d10" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M512 196 L772 290 V500 C772 668 662 790 512 846 C362 790 252 668 252 500 V290 Z" fill="#ffffff"/>
+  <path d="M402 522 L482 602 L636 438" fill="none" stroke="#482b64" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
