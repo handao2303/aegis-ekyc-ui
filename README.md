@@ -8,6 +8,10 @@ The eKYC module UI for **Aegis Bank**, a personal banking project. Bilingual (Vi
 
 > All sample data is fictional. Camera, NFC, liveness and verification results are simulated; no backend APIs are connected yet.
 
+## Documentation
+
+Requirements, business rules, diagrams and test packs for the eKYC Completion epic live in [`docs/`](docs/README.md) (Vietnamese).
+
 ## Getting started
 
 ```bash

@@ -1,0 +1,76 @@
+# Tài liệu eKYC Completion (Epic SCRUM-69)
+
+Bộ tài liệu cho 18 hạng mục của Epic [SCRUM-69 – eKYC Completion & Production Readiness](https://baohandao2303.atlassian.net/browse/SCRUM-69).
+Tổng quan và kế hoạch: [Gap Analysis & Delivery Plan (Confluence)](https://baohandao2303.atlassian.net/wiki/spaces/SCRUM/pages/15106049).
+
+Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tất cả đã được kiểm tra cú pháp.
+
+## Bức tranh tổng thể
+
+```mermaid
+flowchart LR
+    subgraph G["00 · Quản trị"]
+        C01["C01 Đồng bộ Jira"]
+        C02["C02 Compliance Mapping"]
+        C03["C03 BRD/FSD/SRS v1.3 + RTM"]
+    end
+    subgraph B["01 · Nghiệp vụ"]
+        C0405["C04–C05 Trùng KH & hợp lệ giấy tờ"]
+        C06["C06 Vòng đời phiên"]
+        C0709["C07–C09 Xử lý REFER"]
+        C10["C10 Maker-Checker & Audit"]
+    end
+    subgraph P["02 · Tuân thủ & gian lận"]
+        C11["C11 Nguồn sinh trắc học"]
+        C12["C12 Đồng ý & lưu trữ"]
+        C1314["C13–C14 Chống gian lận"]
+    end
+    subgraph Q["03 · Chất lượng"]
+        C15["C15 Hiệu năng"]
+        C16["C16 SIT"]
+        C17["C17 UAT"]
+    end
+    subgraph A["04 · Đo lường"]
+        C18["C18 KPI"]
+    end
+    C02 --> C03
+    C02 --> C11
+    C02 --> C12
+    C03 --> B
+    C03 --> P
+    B --> C16
+    P --> C16
+    C16 --> C17
+    C03 --> C17
+    C15 --> C17
+    B --> C18
+```
+
+## Mục lục
+
+| Nhóm | Tài liệu | Jira | Diagram | Trạng thái |
+|---|---|---|---|---|
+| 00 · Quản trị | [C01 Nhật ký đồng bộ Jira](00-governance/C01-jira-hygiene-log.md) | SCRUM-70 | — | ✅ Hoàn tất |
+| | [C02 Compliance Mapping](00-governance/C02-compliance-mapping.md) | SCRUM-71 | — | 📝 Chờ Compliance xác nhận |
+| | [C03 Requirements Addendum v1.3 & RTM](00-governance/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 Chờ PO & Compliance duyệt |
+| 01 · Nghiệp vụ | [C04–C05 Trùng khách hàng & hợp lệ giấy tờ](01-business/C04-C05-identity-validation.md) | SCRUM-73, 74 | Flowchart | 🔧 Đặc tả + UI mẫu xong, chờ backend |
+| | [C06 Vòng đời phiên](01-business/C06-session-lifecycle.md) | SCRUM-75 | State, Sequence | 🔧 Đặc tả + UI mẫu xong, chờ backend |
+| | [C07–C09 Xử lý hồ sơ REFER](01-business/C07-C09-refer-handling.md) | SCRUM-76, 77, 78 | Swimlane, Sequence, State | 🔧 Đặc tả + UI mẫu xong, chờ backend |
+| | [C10 Maker-Checker & Audit](01-business/C10-maker-checker-audit.md) | SCRUM-79 | Flowchart, ERD | 🔧 Đặc tả + UI mẫu xong, chờ backend |
+| 02 · Tuân thủ | [C11 Nguồn ảnh sinh trắc học](02-compliance/C11-biometric-source.md) | SCRUM-80 | Flowchart | 🔧 Đặc tả xong, chờ C02 |
+| | [C12 Rút lại đồng ý & lưu trữ](02-compliance/C12-consent-retention.md) | SCRUM-81 | Flowchart, Sequence | 🔧 Đặc tả xong, chờ C02 |
+| | [C13–C14 Chống gian lận](02-compliance/C13-C14-fraud-controls.md) | SCRUM-82, 83 | Flowchart, Sequence | 🔧 Đặc tả + kế hoạch spike xong |
+| 03 · Chất lượng | [C15 Kế hoạch hiệu năng](03-quality/C15-performance-test-plan.md) | SCRUM-84 | Flowchart | 🔧 Kế hoạch xong, chờ thiết bị/môi trường |
+| | [C16 Kế hoạch SIT](03-quality/C16-sit-plan.md) | SCRUM-85 | Flowchart, Sequence | ⛔ Kế hoạch xong, bị chặn bởi SCRUM-56 |
+| | [C17 Bộ UAT & biên bản](03-quality/C17-uat-pack.md) | SCRUM-86 | Flowchart | ⛔ Bộ case xong, chờ C03 + C16 |
+| 04 · Đo lường | [C18 KPI & từ điển chỉ số](04-analytics/C18-kpi-metric-dictionary.md) | SCRUM-87 | Flowchart | 🔧 Đặc tả + màn Báo cáo SLA mẫu xong |
+
+## Việc còn lại ngoài tài liệu
+
+| Việc | Ai | Chặn |
+|---|---|---|
+| Xác minh văn bản pháp lý, trả lời 4 câu hỏi mở | Compliance | C03, C05, C11, C12 |
+| Duyệt BRD/FSD/SRS v1.3 | PO + Compliance | C17 |
+| Code backend cho C04–C13 | Dev | C16, C17 |
+| Sandbox đối tác DEP-01→04, 07–09 | Solution Owner | C16 |
+| Thiết bị NFC thứ hai để đo hiệu năng | Dev/QA | C15 |
