@@ -9,7 +9,7 @@
 ## 1. Luồng dữ liệu
 
 ```mermaid
-flowchart LR
+flowchart TB
     EK["ekyc-service"] -- "ekyc.session.*<br/>ekyc.decision.completed" --> PS["Pub/Sub"]
     PS --> DWH[("DWH<br/>fact_ekyc_session<br/>fact_ekyc_decision")]
     DB[("Postgres<br/>audit_event")] -- "CDC hằng giờ" --> DWH

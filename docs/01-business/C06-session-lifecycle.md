@@ -12,7 +12,6 @@ Phần "trong quá trình làm" của hồ sơ. Kết quả quyết định nằ
 
 ```mermaid
 stateDiagram-v2
-    direction LR
     [*] --> CREATED: Mở app, bấm Bắt đầu
     CREATED --> CONSENTED
     CONSENTED --> DOC_CAPTURED

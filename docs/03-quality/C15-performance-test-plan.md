@@ -8,7 +8,7 @@
 ## 1. Điểm đo trên luồng
 
 ```mermaid
-flowchart LR
+flowchart TB
     A["Consent"] --> B["OCR<br/>⏱ T1"]
     B --> C["NFC<br/>⏱ T2"]
     C --> D["Liveness + Face match<br/>⏱ T3"]

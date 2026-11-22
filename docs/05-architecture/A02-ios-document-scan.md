@@ -18,7 +18,7 @@
 ## 2. Luồng màn hình
 
 ```mermaid
-flowchart LR
+flowchart TB
     H["1 · Chọn giấy tờ<br/>CCCD / Hộ chiếu"] --> S["2 · Quét MRZ<br/>camera sau + Vision"]
     S -- "MRZ hợp lệ 2 khung liên tiếp" --> C["3 · Xác nhận thông tin"]
     S -- "Nhập tay" --> C

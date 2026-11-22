@@ -12,7 +12,7 @@
 Từ lúc file/API của các nguồn về tới khi có bút toán GL và báo cáo.
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph SRC["Nguồn dữ liệu"]
         CBS["Core Banking"]
         NAP["NAPAS 247"]

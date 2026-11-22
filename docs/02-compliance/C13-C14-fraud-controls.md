@@ -11,7 +11,7 @@ Hai lớp phòng thủ bổ sung cho nhau: **C13** chặn người mở **nhiề
 ## 1. Các lớp kiểm soát
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph L1["Lớp 1 · Thiết bị (C13)"]
         A1["Root / jailbreak / emulator"]
         A2["Camera ảo"]

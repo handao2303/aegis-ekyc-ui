@@ -136,7 +136,7 @@ flowchart TD
 22 màn hình (19 eKYC + 3 Hạn mức thẻ), mã khớp với cột "Mã" trong UI Kit.
 
 ```mermaid
-flowchart LR
+flowchart TB
     I["eKYC-00<br/>Giới thiệu"] --> C["eKYC-01<br/>Đồng ý"]
     C --> DT["eKYC-02<br/>Chọn giấy tờ"]
     DT --> CF["eKYC-03<br/>Chụp mặt trước"]
