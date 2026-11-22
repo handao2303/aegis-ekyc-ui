@@ -1,9 +1,9 @@
-# Tài liệu eKYC Completion (Epic SCRUM-69)
+# Tài liệu Aegis – eKYC, Đối soát, Hạn mức
 
-Bộ tài liệu cho 18 hạng mục của Epic [SCRUM-69 – eKYC Completion & Production Readiness](https://baohandao2303.atlassian.net/browse/SCRUM-69).
+Bộ tài liệu cho 18 hạng mục của Epic [SCRUM-69 – eKYC Completion & Production Readiness](https://baohandao2303.atlassian.net/browse/SCRUM-69), cùng 2 phân hệ [Đối soát (SCRUM-7)](https://baohandao2303.atlassian.net/browse/SCRUM-7), [Hạn mức (SCRUM-8)](https://baohandao2303.atlassian.net/browse/SCRUM-8) và app iPhone quét giấy tờ.
 Tổng quan và kế hoạch: [Gap Analysis & Delivery Plan (Confluence)](https://baohandao2303.atlassian.net/wiki/spaces/SCRUM/pages/15106049).
 
-Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 29 diagram, tất cả đã được kiểm tra cú pháp.
+Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 45 diagram, tất cả đã được kiểm tra cú pháp.
 
 **Bắt đầu từ đây:** [A01 Tổng quan giải pháp](05-architecture/A01-solution-overview.md) – bối cảnh hệ thống, thành phần, luồng end-to-end, cây quyết định, bản đồ màn hình và cách triển khai UI.
 
@@ -35,6 +35,16 @@ flowchart LR
     subgraph A["04 · Đo lường"]
         C18["C18 KPI"]
     end
+    subgraph X["05 · Kiến trúc"]
+        A01["A01 Tổng quan giải pháp"]
+        A02["A02 App iPhone quét giấy tờ"]
+    end
+    subgraph RC["06 · Đối soát"]
+        R01["R01 Luồng & kiểm soát"]
+    end
+    subgraph LM["07 · Hạn mức"]
+        L01["L01 Authorization, Boost, gian lận"]
+    end
     C02 --> C03
     C02 --> C11
     C02 --> C12
@@ -46,6 +56,11 @@ flowchart LR
     C03 --> C17
     C15 --> C17
     B --> C18
+    A01 --> A02
+    A01 --> R01
+    A01 --> L01
+    C11 --> A02
+    L01 -. "limit.authorization.processed" .-> R01
 ```
 
 ## Mục lục
@@ -67,6 +82,9 @@ flowchart LR
 | | [C17 Bộ UAT & biên bản](03-quality/C17-uat-pack.md) | SCRUM-86 | Flowchart | ⛔ Bộ case xong, chờ C03 + C16 |
 | 04 · Đo lường | [C18 KPI & từ điển chỉ số](04-analytics/C18-kpi-metric-dictionary.md) | SCRUM-87 | Flowchart | 🔧 Đặc tả + màn Báo cáo SLA mẫu xong |
 | 05 · Kiến trúc | [A01 Tổng quan giải pháp](05-architecture/A01-solution-overview.md) | SCRUM-69 | Context, Container, Sequence, Flowchart ×4 | ✅ Hoàn tất |
+| | [A02 App iPhone quét giấy tờ](05-architecture/A02-ios-document-scan.md) | SCRUM-18, 80 | Flowchart ×2, Sequence, State | 🔧 Bản mẫu chạy được, chưa có CSCA & liveness |
+| 06 · Đối soát | [R01 Luồng, trạng thái & kiểm soát](06-reconciliation/R01-reconciliation-flow.md) | SCRUM-7, 49, 50 | Flowchart ×2, State ×2, Sequence, ERD | 🔧 Đặc tả + UI mẫu xong, chờ backend |
+| 07 · Hạn mức | [L01 Authorization, Boost & gian lận](07-credit-limit/L01-credit-limit-flow.md) | SCRUM-8, 51, 52, 54 | Sequence ×2, Flowchart ×2, State ×2 | 🔧 Đặc tả + UI mẫu xong, chờ Notification thật |
 
 ## Việc còn lại ngoài tài liệu
 
@@ -77,3 +95,6 @@ flowchart LR
 | Code backend cho C04–C13 | Dev | C16, C17 |
 | Sandbox đối tác DEP-01→04, 07–09 | Solution Owner | C16 |
 | Thiết bị NFC thứ hai để đo hiệu năng | Dev/QA | C15 |
+| Master list CSCA, tài khoản Apple Developer để đọc chip | Dev | A02 |
+| Duyệt mẫu SMS/App khoá Boost, Notification Service thật | Risk/Legal/CSKH, Solution Owner | L01 (SCRUM-54) |
+| Backend reconciliation-service: lineage API (SCRUM-50), EOD cross-ledger (SCRUM-53) | Dev | R01, L01 |

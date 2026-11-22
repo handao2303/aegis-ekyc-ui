@@ -15,7 +15,7 @@ The eKYC module UI for **Aegis Bank**, a personal banking project. Bilingual (Vi
 
 ## Documentation
 
-Requirements, business rules, diagrams and test packs for the eKYC Completion epic live in [`docs/`](docs/README.md) (Vietnamese): 15 documents and 29 Mermaid diagrams. Start with the [solution overview](docs/05-architecture/A01-solution-overview.md): system context, containers, end-to-end sequence, decision tree and screen maps.
+Requirements, business rules, diagrams and test packs for the eKYC Completion epic live in [`docs/`](docs/README.md) (Vietnamese): 18 documents and 45 Mermaid diagrams. Start with the [solution overview](docs/05-architecture/A01-solution-overview.md): system context, containers, end-to-end sequence, decision tree and screen maps. Module docs: [reconciliation](docs/06-reconciliation/R01-reconciliation-flow.md), [credit limit](docs/07-credit-limit/L01-credit-limit-flow.md), [iOS document scan](docs/05-architecture/A02-ios-document-scan.md).
 
 ## Getting started
 

@@ -4,7 +4,7 @@
 |---|---|
 | Epic | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69) · nền tảng cho C04–C18 |
 | UI | [Bản chạy thật](https://handao2303.github.io/aegis-ekyc-ui/) · mã nguồn `src/` |
-| Mục đích | Một chỗ nhìn toàn cảnh trước khi đọc từng tài liệu C-xx |
+| Mục đích | Một chỗ nhìn toàn cảnh trước khi đọc từng tài liệu C-xx, R01, L01, A02 |
 
 ## 1. Bối cảnh hệ thống (System Context)
 
@@ -37,13 +37,15 @@ flowchart LR
 flowchart TB
     subgraph CLIENT["Kênh"]
         MOB["Mobile app<br/>React Native / Expo bare<br/>OCR SDK · NFC · Liveness"]
-        WEB["Aegis Compliance<br/>Web back-office<br/>(Next.js)"]
+        IOS["Aegis Scan (iOS, Swift)<br/>MRZ + chip NFC<br/>bản mẫu – A02"]
+        WEB["Web vận hành (Next.js)<br/>Compliance · Đối soát · Hạn mức"]
     end
 
     subgraph GCP["Google Cloud"]
         GW["API Gateway<br/>OAuth2 · mTLS"]
         EK["ekyc-service<br/>Cloud Run"]
         LIM["limit-service<br/>Cloud Run"]
+        REC["reconciliation-service<br/>Cloud Run"]
         PS[["Pub/Sub<br/>ekyc.session.*<br/>ekyc.decision.completed"]]
         DB[("Cloud SQL Postgres<br/>sessions · documents<br/>kyc_decisions · audit_event")]
         GCS[("Cloud Storage<br/>ảnh giấy tờ, selfie<br/>mã hoá, có TTL")]
@@ -51,7 +53,11 @@ flowchart TB
     end
 
     MOB --> GW
+    IOS -. "kế hoạch" .-> GW
     WEB --> GW
+    GW --> REC
+    GW --> LIM
+    LIM -- "limit.authorization.processed" --> REC
     GW --> EK
     EK --> DB
     EK --> GCS
@@ -62,7 +68,7 @@ flowchart TB
     EK --> EXT["CIC · AML · Biometric<br/>(qua adapter, circuit breaker)"]
 ```
 
-Chi tiết từng phần: vòng đời phiên ở [C06](../01-business/C06-session-lifecycle.md), audit ở [C10](../01-business/C10-maker-checker-audit.md), đo lường ở [C18](../04-analytics/C18-kpi-metric-dictionary.md).
+Chi tiết từng phần: vòng đời phiên ở [C06](../01-business/C06-session-lifecycle.md), audit ở [C10](../01-business/C10-maker-checker-audit.md), đo lường ở [C18](../04-analytics/C18-kpi-metric-dictionary.md), đối soát ở [R01](../06-reconciliation/R01-reconciliation-flow.md), hạn mức ở [L01](../07-credit-limit/L01-credit-limit-flow.md), app quét giấy tờ ở [A02](A02-ios-document-scan.md).
 
 ## 3. Luồng end-to-end – mở tài khoản thành công (STP)
 
@@ -127,7 +133,7 @@ flowchart TD
 
 ## 5. Bản đồ màn hình – App khách hàng
 
-19 màn hình, mã khớp với cột "Mã" trong UI Kit.
+22 màn hình (19 eKYC + 3 Hạn mức thẻ), mã khớp với cột "Mã" trong UI Kit.
 
 ```mermaid
 flowchart LR
@@ -152,9 +158,12 @@ flowchart LR
     RE -. "Compliance yêu cầu" .-> RQ["eKYC-11<br/>Bổ sung hồ sơ"]
     RS["eKYC-10<br/>Tiếp tục phiên"] -.-> L
     RC["eKYC-01R<br/>Đồng ý lại"] -.-> C
+    AP --> M1["LIM-M1<br/>Thẻ của tôi"]
+    M1 --> M2["LIM-M2<br/>Ưu đãi Boost"]
+    M1 -.-> M3["LIM-M3<br/>Khoá Boost"]
 ```
 
-Nét liền: luồng chính. Nét đứt: ngoại lệ.
+Nét liền: luồng chính. Nét đứt: ngoại lệ. Sau khi mở tài khoản thành công, "Vào trang chủ" dẫn sang nhóm Hạn mức thẻ (22 màn tổng cộng). Chi tiết Hạn mức ở [L01](../07-credit-limit/L01-credit-limit-flow.md).
 
 ## 6. Bản đồ màn hình – Aegis Compliance
 
@@ -191,4 +200,10 @@ flowchart LR
 | Aegis Hạn mức (LIM-W1 → W4) | `/credit-limit/` |
 | App iPhone native – quét CCCD/hộ chiếu | `ios/AegisScan` (cài qua Xcode) |
 
-Bản demo dùng dữ liệu giả, không gọi API thật. Khi nối backend, giữ nguyên Next.js cho web Compliance; app khách hàng chuyển sang React Native với cùng token và cấu trúc màn hình.
+Bản demo dùng dữ liệu giả, không gọi API thật. Hướng đi khi nối backend:
+
+| Phần | Hướng đi |
+|---|---|
+| Web vận hành (Compliance, Đối soát, Hạn mức) | Giữ Next.js, thay dữ liệu mẫu bằng API qua API Gateway |
+| App khách hàng | `mobile-app` (React Native / Expo bare) dùng lại token Aurora và cấu trúc màn hình của bản web |
+| Đọc chip CCCD / hộ chiếu | Logic MRZ + NFC của Aegis Scan (A02) đưa vào app thật dưới dạng native module, hoặc thay bằng SDK eKYC của đối tác |
