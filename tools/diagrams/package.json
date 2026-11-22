@@ -1,0 +1,19 @@
+{
+  "name": "aegis-diagrams",
+  "private": true,
+  "type": "module",
+  "description": "Mermaid trong docs/ → PNG theo theme Aegis (public/diagrams) và HTML cho Confluence",
+  "scripts": {
+    "check": "node check.mjs ../../docs",
+    "render": "node render.mjs ../../docs ../../public/diagrams",
+    "confluence": "node toconf.mjs ../../docs out"
+  },
+  "dependencies": {
+    "@mermaid-js/layout-elk": "0.2.3",
+    "dompurify": "3.2.3",
+    "jsdom": "25.0.1",
+    "marked": "15.0.12",
+    "mermaid": "11.17.2",
+    "puppeteer-core": "24.43.1"
+  }
+}
