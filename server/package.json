@@ -1,0 +1,16 @@
+{
+  "name": "aegis-ekyc-service",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "ekyc-service cho Aegis: phiên eKYC, quyết định, hàng đợi Compliance, Maker-Checker, audit. Không phụ thuộc thư viện ngoài (Node ≥ 23.6).",
+  "engines": {
+    "node": ">=23.6"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/main.ts",
+    "dev": "node --disable-warning=ExperimentalWarning --watch src/main.ts",
+    "test": "node --disable-warning=ExperimentalWarning --test --test-reporter=spec 'test/**/*.test.ts'",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}
