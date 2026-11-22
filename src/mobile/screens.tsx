@@ -8,6 +8,21 @@ import { Alert, Button, Checkbox, ProgressBar, cx } from "../components/ui";
 import { FaceAvatar, IconTile, IdCardArt, PageTitle, ScanIllustration, Screen } from "./MobileShell";
 import { useCamera, useCapture } from "./camera";
 import { useLang } from "../i18n";
+import { useEkyc } from "../ekyc/EkycContext";
+import { PersonaPicker } from "../ekyc/Overlay";
+import { fmtTime } from "../ekyc/api";
+
+/* Định dạng dữ liệu thật từ backend */
+const dmy = (iso: string) => iso.split("-").reverse().join("/");
+const groupId = (id: string) => `${id.slice(0, 3)} ${id.slice(3, 6)} ${id.slice(6, 9)} ${id.slice(9)}`;
+const maskId = (id: string) => `${id.slice(0, 3)} •••• ${id.slice(-4)}`;
+const ITEM_LABEL: Record<string, [string, string]> = {
+  FRONT_BLURRY: ["Ảnh mặt trước CCCD", "Front of ID card"],
+  BACK_BLURRY_MRZ: ["Ảnh mặt sau CCCD", "Back of ID card"],
+  BACK_MISSING: ["Ảnh mặt sau CCCD", "Back of ID card"],
+  OCR_CHIP_MISMATCH: ["Chụp lại giấy tờ và quét chip", "Retake ID and rescan chip"],
+  OTHER: ["Thông tin khác", "Other information"],
+};
 
 export type ScreenKey =
   | "intro" | "consent" | "reconsent" | "docType" | "captureFront" | "reviewFront" | "captureBack"
@@ -82,6 +97,7 @@ export function Intro({ go }: ScreenProps) {
           </li>
         ))}
       </ol>
+      <PersonaPicker />
     </Screen>
   );
 }
@@ -348,6 +364,8 @@ export function ReviewFront({ go }: ScreenProps) {
 /* ---------- 05 Kiểm tra thông tin OCR ---------- */
 export function OcrReview({ go }: ScreenProps) {
   const { tr } = useLang();
+  const ek = useEkyc();
+  const o = ek?.live ? ek.persona.ocr : null;
   return (
     <Screen title={tr("Thông tin giấy tờ", "Document details")} step={1} onBack={() => go("captureBack")} footer={<Button size="lg" block onClick={() => go("nfc")}>{tr("Xác nhận thông tin", "Confirm details")}</Button>}>
       <PageTitle title={tr("Kiểm tra thông tin", "Check your details")} desc={tr("Đọc tự động từ ảnh giấy tờ. Nếu sai, vui lòng chụp lại.", "Read automatically from your photos. If anything is wrong, retake the photos.")} />
@@ -357,13 +375,13 @@ export function OcrReview({ go }: ScreenProps) {
       </div>
       <Section>
         <dl className="divide-y divide-[var(--border-subtle)] px-4">
-          <Row label={tr("Họ và tên", "Full name")} value="NGUYỄN THỊ MINH THƯ" strong />
-          <Row label={tr("Số CCCD", "ID number")} value="089 1234 5678" />
-          <Row label={tr("Ngày sinh", "Date of birth")} value="15/03/1992" />
-          <Row label={tr("Giới tính", "Sex")} value={tr("Nữ", "Female")} />
-          <Row label={tr("Quê quán", "Place of origin")} value="Tân Châu, An Giang" />
-          <Row label={tr("Ngày cấp", "Date of issue")} value="12/06/2021" />
-          <Row label={tr("Có giá trị đến", "Expiry date")} value="15/03/2032" />
+          <Row label={tr("Họ và tên", "Full name")} value={o?.full_name ?? "NGUYỄN THỊ MINH THƯ"} strong />
+          <Row label={tr("Số CCCD", "ID number")} value={o ? groupId(o.id_number) : "089 1234 5678"} />
+          <Row label={tr("Ngày sinh", "Date of birth")} value={o ? dmy(o.dob) : "15/03/1992"} />
+          <Row label={tr("Giới tính", "Sex")} value={o?.sex === "M" ? tr("Nam", "Male") : tr("Nữ", "Female")} />
+          <Row label={tr("Quê quán", "Place of origin")} value={o?.origin ?? "Tân Châu, An Giang"} />
+          <Row label={tr("Ngày cấp", "Date of issue")} value={o ? dmy(o.issued) : "12/06/2021"} />
+          <Row label={tr("Có giá trị đến", "Expiry date")} value={o ? dmy(o.expiry) : "15/03/2032"} />
         </dl>
       </Section>
       <button onClick={() => go("captureFront")} className="interactive mt-3 flex w-full items-center justify-center gap-2 rounded-md py-2.5 text-body-sm font-semibold text-action-subtle-fg">
@@ -376,6 +394,8 @@ export function OcrReview({ go }: ScreenProps) {
 /* ---------- 06 Quét chip NFC ---------- */
 export function NfcScan({ go }: ScreenProps) {
   const { tr } = useLang();
+  const ek = useEkyc();
+  const next = (read: boolean) => { if (ek) ek.chipRead.current = read; go("liveness"); };
   const [phase, setPhase] = useState<"idle" | "reading" | "done">("idle");
   const [pct, setPct] = useState(0);
   const [skip, setSkip] = useState(false);
@@ -395,7 +415,7 @@ export function NfcScan({ go }: ScreenProps) {
       onBack={() => go("ocrReview")}
       footer={
         phase === "done" ? (
-          <Button size="lg" block onClick={() => go("liveness")}>{tr("Tiếp tục", "Continue")}</Button>
+          <Button size="lg" block onClick={() => next(true)}>{tr("Tiếp tục", "Continue")}</Button>
         ) : (
           <>
             <Button size="lg" block loading={phase === "reading"} onClick={() => { setPct(0); setPhase("reading"); }}>
@@ -433,7 +453,7 @@ export function NfcScan({ go }: ScreenProps) {
         <Alert tone="warning" className="mt-4" title={tr("Hồ sơ sẽ được duyệt thủ công", "Your application will be reviewed manually")}>
           <p>{tr("Không đọc chip, nhân viên cần xem xét hồ sơ, thường trong 24 giờ.", "Without the chip, our team needs to review it, usually within 24 hours.")}</p>
           <div className="mt-3 flex gap-2">
-            <Button size="sm" variant="secondary" onClick={() => go("liveness")}>{tr("Vẫn bỏ qua", "Skip anyway")}</Button>
+            <Button size="sm" variant="secondary" onClick={() => next(false)}>{tr("Vẫn bỏ qua", "Skip anyway")}</Button>
             <Button size="sm" variant="ghost" onClick={() => setSkip(false)}>{tr("Thử quét lại", "Try again")}</Button>
           </div>
         </Alert>
@@ -598,13 +618,15 @@ function Receipt({ children }: { children: ReactNode }) {
 
 export function Approved({ go }: ScreenProps) {
   const { tr } = useLang();
+  const r = useEkyc()?.result;
+  const acct = r?.account_no ?? "190366882025";
   const [copied, setCopied] = useState(false);
   const next: [ReactNode, string, string][] = [
     [<Lock key="l" className="size-5" />, tr("Tạo mã PIN giao dịch", "Set up your transaction PIN"), tr("Bắt buộc trước giao dịch đầu tiên", "Needed before your first payment")],
     [<CreditCard key="c" className="size-5" />, tr("Phát hành thẻ ghi nợ ảo", "Get a virtual debit card"), tr("Dùng ngay, miễn phí năm đầu", "Ready instantly, free for year one")],
   ];
   const copy = () => {
-    navigator.clipboard?.writeText("190366882025").catch(() => {});
+    navigator.clipboard?.writeText(acct).catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   };
@@ -626,7 +648,7 @@ export function Approved({ go }: ScreenProps) {
           <span className="rounded-full bg-aurora-amber px-2.5 py-0.5 text-caption font-semibold text-aurora-ink">{tr("Đang hoạt động", "Active")}</span>
         </div>
         <div className="relative mt-4 flex items-center gap-3">
-          <span className="text-[26px] font-bold tracking-[0.04em] tabular">1903 6688 2025</span>
+          <span className="text-[26px] font-bold tracking-[0.04em] tabular">{acct.replace(/(\d{4})(?=\d)/g, "$1 ")}</span>
           <button onClick={copy} className="interactive grid size-9 place-items-center rounded-full bg-white/10" aria-label={tr("Sao chép số tài khoản", "Copy account number")}>
             {copied ? <Check className="size-4 text-aurora-amber" /> : <Copy className="size-4" />}
           </button>
@@ -635,15 +657,15 @@ export function Approved({ go }: ScreenProps) {
         <div className="relative mt-3 flex items-end justify-between border-t border-white/10 pt-3">
           <div>
             <p className="text-caption text-white/60">{tr("Chủ tài khoản", "Account holder")}</p>
-            <p className="text-body-sm font-semibold">NGUYỄN THỊ MINH THƯ</p>
+            <p className="text-body-sm font-semibold">{r?.holder ?? "NGUYỄN THỊ MINH THƯ"}</p>
           </div>
-          <p className="shrink-0 text-caption text-white/60 tabular">09:42 · 09/11/2026</p>
+          <p className="shrink-0 text-caption text-white/60 tabular">{r?.decided_at ? fmtTime(r.decided_at) : "09:42 · 09/11/2026"}</p>
         </div>
       </div>
 
       <Receipt>
         <Row label={tr("Số dư khả dụng", "Available balance")} value="0 ₫" strong />
-        <Row label={tr("Mã hồ sơ", "Reference")} value="EKS-2611-0042" />
+        <Row label={tr("Mã hồ sơ", "Reference")} value={r?.session_id ?? "EKS-2611-0042"} />
       </Receipt>
 
       <div className="mt-6 flex items-center justify-between">
@@ -669,13 +691,22 @@ export function Approved({ go }: ScreenProps) {
 
 export function Refer({ go }: ScreenProps) {
   const { tr } = useLang();
+  const ek = useEkyc();
+  const r = ek?.result;
+  const q = r?.queued_at;
   const tl = [
-    { t: tr("Đã nhận hồ sơ", "Application received"), d: tr("09:41 hôm nay", "Today, 09:41"), s: "done" },
-    { t: tr("Đang xem xét", "Under review"), d: tr("Dự kiến trước 09:41 ngày mai", "Expected by 09:41 tomorrow"), s: "doing" },
+    { t: tr("Đã nhận hồ sơ", "Application received"), d: q ? fmtTime(q) : tr("09:41 hôm nay", "Today, 09:41"), s: "done" },
+    r?.status === "REFER_RESUBMITTED"
+      ? { t: tr("Đã nhận ảnh bổ sung", "Extra photo received"), d: tr("Hồ sơ được ưu tiên xem lại", "Your application is prioritised"), s: "doing" }
+      : { t: tr("Đang xem xét", "Under review"), d: q ? tr(`Dự kiến trước ${fmtTime(q + 24 * 3600_000)}`, `Expected by ${fmtTime(q + 24 * 3600_000)}`) : tr("Dự kiến trước 09:41 ngày mai", "Expected by 09:41 tomorrow"), s: "doing" },
     { t: tr("Thông báo kết quả", "Decision sent"), d: tr("Qua SMS và ứng dụng", "By SMS and in the app"), s: "todo" },
   ];
   return (
-    <Screen title={tr("Kết quả", "Result")} footer={<><Button size="lg" block icon={<Bell className="size-5" />}>{tr("Bật thông báo", "Turn on notifications")}</Button><Button variant="ghost" block onClick={() => go("intro")}>{tr("Về trang chủ", "Back to home")}</Button></>}>
+    <Screen title={tr("Kết quả", "Result")} footer={<>
+      {ek?.live && ek.session
+        ? <Button size="lg" block icon={<RefreshCw className="size-5" />} loading={ek.busy} onClick={() => ek.refreshResult().then((k) => k && k !== "refer" && go(k))}>{tr("Kiểm tra kết quả", "Check for a decision")}</Button>
+        : <Button size="lg" block icon={<Bell className="size-5" />}>{tr("Bật thông báo", "Turn on notifications")}</Button>}
+      <Button variant="ghost" block onClick={() => go("intro")}>{tr("Về trang chủ", "Back to home")}</Button></>}>
       <StatusMark tone="warning" icon={<Clock className="size-9" />} />
       <h2 className="mt-4 text-center text-[22px] font-bold">{tr("Hồ sơ đang được xem xét", "We're reviewing your application")}</h2>
       <p className="mt-1 text-center text-body-sm text-fg-secondary">{tr("Kết quả sẽ được gửi trong vòng 24 giờ.", "You'll hear from us within 24 hours.")}</p>
@@ -693,25 +724,26 @@ export function Refer({ go }: ScreenProps) {
           ))}
         </ol>
       </Section>
-      <Receipt><Row label={tr("Mã hồ sơ", "Reference")} value="EKS-2611-0042" strong /></Receipt>
+      <Receipt><Row label={tr("Mã hồ sơ", "Reference")} value={r?.session_id ?? "EKS-2611-0042"} strong /></Receipt>
     </Screen>
   );
 }
 
 export function Rejected({ go }: ScreenProps) {
   const { tr } = useLang();
+  const r = useEkyc()?.result;
   return (
     <Screen title={tr("Kết quả", "Result")} footer={<><Button size="lg" block icon={<Headphones className="size-5" />}>{tr("Gọi 1900 6868", "Call 1900 6868")}</Button><Button variant="ghost" block onClick={() => go("intro")}>{tr("Về trang chủ", "Back to home")}</Button></>}>
       <StatusMark tone="danger" icon={<XCircle className="size-9" />} />
       <h2 className="mt-4 text-center text-[22px] font-bold">{tr("Chưa thể mở tài khoản trực tuyến", "We can't open your account online")}</h2>
-      <p className="mt-1 text-center text-body-sm text-fg-secondary">{tr("Hồ sơ chưa đáp ứng điều kiện mở tài khoản qua ứng dụng.", "Your application doesn't meet the requirements for opening an account in the app.")}</p>
+      <p className="mt-1 text-center text-body-sm text-fg-secondary">{r?.reason && r.reason.code !== "GENERAL" ? r.reason.message : tr("Hồ sơ chưa đáp ứng điều kiện mở tài khoản qua ứng dụng.", "Your application doesn't meet the requirements for opening an account in the app.")}</p>
       <Section title={tr("Bạn có thể", "What you can do")} className="mt-6">
         <ul className="flex flex-col gap-3 p-4 pt-3 text-body-sm text-fg-secondary">
           <li className="flex gap-2"><Building2 className="mt-0.5 size-4 shrink-0" />{tr("Đến chi nhánh gần nhất cùng CCCD bản gốc", "Visit your nearest branch with your original ID")}</li>
           <li className="flex gap-2"><Headphones className="mt-0.5 size-4 shrink-0" />{tr("Gọi tổng đài 1900 6868 (8:00–20:00)", "Call 1900 6868 (8 am – 8 pm)")}</li>
         </ul>
       </Section>
-      <Receipt><Row label={tr("Mã hồ sơ", "Reference")} value="EKS-2611-0057" strong /></Receipt>
+      <Receipt><Row label={tr("Mã hồ sơ", "Reference")} value={r?.session_id ?? "EKS-2611-0057"} strong /></Receipt>
     </Screen>
   );
 }
@@ -719,14 +751,18 @@ export function Rejected({ go }: ScreenProps) {
 /* ---------- Ngoại lệ ---------- */
 export function RequestInfo({ go }: ScreenProps) {
   const { tr } = useLang();
+  const ir = useEkyc()?.result?.info_request;
+  const items = ir?.items.map((i) => tr(...(ITEM_LABEL[i] ?? [i, i]))) ?? [tr("Ảnh mặt sau CCCD", "Back of ID card")];
+  const daysLeft = ir ? Math.max(0, Math.ceil((ir.deadline_at - Date.now()) / 86_400_000)) : 4;
+  const front = ir?.items.includes("FRONT_BLURRY");
   return (
-    <Screen title={tr("Bổ sung hồ sơ", "More information needed")} footer={<Button size="lg" block icon={<Upload className="size-5" />} onClick={() => go("captureBack")}>{tr("Chụp lại mặt sau", "Retake the back")}</Button>}>
-      <PageTitle title={tr("Cần bổ sung 1 mục", "We need one more thing")} desc={tr("Nhân viên cần thêm thông tin để hoàn tất xét duyệt.", "Our team needs this to finish reviewing your application.")} />
+    <Screen title={tr("Bổ sung hồ sơ", "More information needed")} footer={<Button size="lg" block icon={<Upload className="size-5" />} onClick={() => go(front ? "captureFront" : "captureBack")}>{front ? tr("Chụp lại giấy tờ", "Retake your ID") : tr("Chụp lại mặt sau", "Retake the back")}</Button>}>
+      <PageTitle title={tr(`Cần bổ sung ${items.length} mục`, items.length > 1 ? `We need ${items.length} more things` : "We need one more thing")} desc={tr("Nhân viên cần thêm thông tin để hoàn tất xét duyệt.", "Our team needs this to finish reviewing your application.")} />
       <Section>
         <dl className="divide-y divide-[var(--border-subtle)] px-4">
-          <Row label={tr("Hạng mục", "Item")} value={tr("Ảnh mặt sau CCCD", "Back of ID card")} strong />
-          <Row label={tr("Lý do", "Reason")} value={tr("Ảnh bị mờ, chưa đọc được dòng mã cuối thẻ", "Blurred – the code line at the bottom isn't readable")} />
-          <Row label={tr("Hạn bổ sung", "Due by")} value={tr("14/11/2026 (còn 4 ngày)", "14 Nov 2026 (4 days left)")} tone="danger" />
+          <Row label={tr("Hạng mục", "Item")} value={[...new Set(items)].join(", ")} strong />
+          <Row label={tr("Lý do", "Reason")} value={ir ? ir.message ?? tr("Nhân viên cần ảnh rõ hơn", "We need a clearer photo") : tr("Ảnh bị mờ, chưa đọc được dòng mã cuối thẻ", "Blurred – the code line at the bottom isn't readable")} />
+          <Row label={tr("Hạn bổ sung", "Due by")} value={ir ? tr(`${fmtTime(ir.deadline_at).split(" · ")[1]} (còn ${daysLeft} ngày)`, `${fmtTime(ir.deadline_at).split(" · ")[1]} (${daysLeft} days left)`) : tr("14/11/2026 (còn 4 ngày)", "14 Nov 2026 (4 days left)")} tone="danger" />
         </dl>
       </Section>
       <p className="mt-4 flex gap-2 text-caption text-fg-tertiary"><CalendarClock className="size-4 shrink-0" />{tr("Quá hạn, hồ sơ sẽ tự huỷ và bạn cần làm lại từ đầu.", "After the deadline, the application is cancelled and you'll need to start again.")}</p>
@@ -736,10 +772,12 @@ export function RequestInfo({ go }: ScreenProps) {
 
 export function Duplicate({ go }: ScreenProps) {
   const { tr } = useLang();
+  const ek = useEkyc();
+  const id = ek?.live ? maskId(ek.persona.ocr.id_number) : "089 •••• 5678";
   return (
     <Screen title={tr("Mở tài khoản", "Open an account")} footer={<><Button size="lg" block onClick={() => go("intro")}>{tr("Đăng nhập", "Log in")}</Button><Button variant="ghost" block>{tr("Quên mật khẩu", "Forgot password")}</Button></>}>
       <PageTitle title={tr("Bạn đã có tài khoản Aegis", "You already have an Aegis account")} desc={tr("Số CCCD này đã được dùng để mở tài khoản. Vui lòng đăng nhập.", "This ID number is already linked to an account. Please log in.")} />
-      <Section className="flex items-center gap-3 p-4"><UserCheck className="size-6 text-action-subtle-fg" /><span className="text-body-sm">{tr("CCCD", "ID")} <span className="font-semibold tabular">089 •••• 5678</span></span></Section>
+      <Section className="flex items-center gap-3 p-4"><UserCheck className="size-6 text-action-subtle-fg" /><span className="text-body-sm">{tr("CCCD", "ID")} <span className="font-semibold tabular">{id}</span></span></Section>
       <Alert tone="warning" className="mt-4" title={tr("Không phải bạn mở tài khoản này?", "Didn't open this account?")}>{tr("Gọi ngay 1900 6868 để khoá tài khoản.", "Call 1900 6868 now to lock it.")}</Alert>
     </Screen>
   );
@@ -747,12 +785,17 @@ export function Duplicate({ go }: ScreenProps) {
 
 export function Resume({ go }: ScreenProps) {
   const { tr } = useLang();
+  const rs = useEkyc()?.resumable;
+  const docDone = !rs || ["DOC_CAPTURED", "LIVENESS_DONE"].includes(rs.last_step);
+  const done = [tr("Đồng ý điều khoản", "Terms accepted"), ...(docDone ? [tr("Chụp giấy tờ", "ID photographed"), tr("Quét chip NFC", "NFC chip scanned")] : [])];
+  const until = rs?.expires_at ? fmtTime(rs.expires_at).split(" · ")[1] : "16/11/2026";
   return (
-    <Screen title={tr("Mở tài khoản", "Open an account")} footer={<><Button size="lg" block onClick={() => go("liveness")}>{tr("Tiếp tục từ bước 4", "Continue from step 4")}</Button><Button variant="ghost" block onClick={() => go("intro")}>{tr("Làm lại từ đầu", "Start over")}</Button></>}>
-      <PageTitle title={tr("Tiếp tục hồ sơ đang làm dở?", "Continue where you left off?")} desc={tr("Bạn đã xong 3/5 bước. Hồ sơ được giữ đến 16/11/2026.", "You've completed 3 of 5 steps. We'll keep your application until 16 Nov 2026.")} />
+    <Screen title={tr("Mở tài khoản", "Open an account")} footer={<><Button size="lg" block onClick={() => go("liveness")}>{docDone ? tr("Tiếp tục từ bước 4", "Continue from step 4") : tr("Tiếp tục từ bước 2", "Continue from step 2")}</Button><Button variant="ghost" block onClick={() => go("intro")}>{tr("Làm lại từ đầu", "Start over")}</Button></>}>
+      <PageTitle title={tr("Tiếp tục hồ sơ đang làm dở?", "Continue where you left off?")} desc={tr(`Bạn đã xong ${done.length}/5 bước. Hồ sơ được giữ đến ${until}.`, `You've completed ${done.length} of 5 steps. We'll keep your application until ${until}.`)} />
+      {rs?.reconsent_required && <Alert tone="warning" className="mb-4" title={tr("Điều khoản đã cập nhật", "Our terms have changed")}>{tr("Bạn cần đồng ý lại trước khi tiếp tục.", "Please accept them again to continue.")}</Alert>}
       <Section>
         <ul className="px-4 py-1">
-          {[tr("Đồng ý điều khoản", "Terms accepted"), tr("Chụp giấy tờ", "ID photographed"), tr("Quét chip NFC", "NFC chip scanned")].map((s) => (
+          {done.map((s) => (
             <li key={s} className="flex items-center gap-3 border-b border-line-subtle py-3 text-body-sm"><CheckCircle2 className="size-5 text-success" />{s}</li>
           ))}
           <li className="flex items-center gap-3 py-3 text-body-sm text-fg-tertiary"><History className="size-5" />{tr("Xác thực khuôn mặt – làm lại để đảm bảo an toàn", "Face check – must be redone for your security")}</li>
@@ -764,13 +807,15 @@ export function Resume({ go }: ScreenProps) {
 
 export function ExpiredDoc({ go }: ScreenProps) {
   const { tr } = useLang();
+  const ek = useEkyc();
+  const o = ek?.live ? ek.persona.ocr : null;
   return (
     <Screen title={tr("Giấy tờ không hợp lệ", "Document not valid")} footer={<><Button size="lg" block onClick={() => go("docType")}>{tr("Dùng giấy tờ khác", "Use another document")}</Button><Button variant="ghost" block>{tr("Tìm nơi cấp đổi CCCD", "Where to renew your ID")}</Button></>}>
       <Alert tone="danger" title={tr("CCCD đã hết hạn", "Your ID has expired")}>{tr("Vui lòng cấp đổi trước khi mở tài khoản.", "Please renew it before opening an account.")}</Alert>
       <Section className="mt-4">
         <dl className="divide-y divide-[var(--border-subtle)] px-4">
-          <Row label={tr("Số CCCD", "ID number")} value="089 •••• 5678" />
-          <Row label={tr("Có giá trị đến", "Expiry date")} value="15/03/2025" tone="danger" />
+          <Row label={tr("Số CCCD", "ID number")} value={o ? maskId(o.id_number) : "089 •••• 5678"} />
+          <Row label={tr("Có giá trị đến", "Expiry date")} value={o ? dmy(o.expiry) : "15/03/2025"} tone="danger" />
         </dl>
       </Section>
       <p className="mt-4 flex gap-2 text-caption text-fg-tertiary"><ShieldCheck className="size-4 shrink-0" />{tr("Chúng tôi không lưu ảnh giấy tờ đã hết hạn.", "We don't keep photos of expired documents.")}</p>

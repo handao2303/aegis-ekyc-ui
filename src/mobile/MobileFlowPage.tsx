@@ -1,4 +1,6 @@
-import { useState, ComponentType } from "react";
+import { useCallback, useState, ComponentType } from "react";
+import { EkycProvider, useEkyc, useFlowGo } from "../ekyc/EkycContext";
+import { EkycOverlay, PersonaPicker } from "../ekyc/Overlay";
 import { RotateCcw } from "lucide-react";
 import { Badge, Card, cx } from "../components/ui";
 import { PhoneFrame } from "./MobileShell";
@@ -48,15 +50,25 @@ export const SCREENS: Meta[] = [
 const GROUPS = ["Luồng chính", "Kết quả", "Ngoại lệ", "Hạn mức thẻ"] as const;
 
 export default function MobileFlowPage() {
+  return (
+    <EkycProvider>
+      <MobileFlow />
+    </EkycProvider>
+  );
+}
+
+function MobileFlow() {
   const [key, setKey] = useState<ScreenKey>("intro");
   const [outcome, setOutcome] = useState<Outcome>("approved");
   const [nonce, setNonce] = useState(0);
   const meta = SCREENS.find((s) => s.key === key)!;
   const Comp = meta.comp;
-  const go = (k: ScreenKey) => {
+  const rawGo = useCallback((k: ScreenKey) => {
     setKey(k);
     setNonce((n) => n + 1);
-  };
+  }, []);
+  const go = useFlowGo(key, rawGo);
+  const ek = useEkyc();
 
   return (
     <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)_300px]">
@@ -89,7 +101,8 @@ export default function MobileFlowPage() {
       {/* Thiết bị */}
       <section className="order-1 lg:order-2 min-w-0" aria-label="Bản mẫu tương tác">
         <PhoneFrame dark={meta.dark}>
-          <Comp key={`${key}-${nonce}`} go={go} outcome={outcome} />
+          <EkycOverlay />
+          <Comp key={`${key}-${nonce}`} go={go} outcome={ek?.outcome ?? outcome} />
         </PhoneFrame>
         <div className="mt-4 flex justify-center">
           <button onClick={() => go("intro")} className="interactive inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-body-sm text-fg-secondary">
@@ -122,6 +135,14 @@ export default function MobileFlowPage() {
           </div>
         </Card>
 
+        {ek?.live ? (
+          <Card className="p-4">
+            <p className="eyebrow">Đang nối ekyc-service</p>
+            <p className="mt-1 text-body-sm text-fg-secondary">Kết quả do backend quyết định theo hồ sơ mẫu (C17 §4).</p>
+            <PersonaPicker compact />
+            {ek.session && <p className="mt-3 text-caption text-fg-tertiary tabular">Phiên: {ek.session.id}{ek.result ? ` · ${ek.result.status}` : ""}</p>}
+          </Card>
+        ) : (
         <Card className="p-4">
           <p className="eyebrow">Kịch bản demo</p>
           <p className="mt-1 text-body-sm text-fg-secondary">Kết quả trả về sau màn “Đang xác minh”.</p>
@@ -142,6 +163,7 @@ export default function MobileFlowPage() {
             ))}
           </div>
         </Card>
+        )}
       </aside>
     </div>
   );

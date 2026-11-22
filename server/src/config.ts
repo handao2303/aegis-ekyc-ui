@@ -24,9 +24,9 @@ export const DEFAULT_CONFIG = {
   risk_refer_score: 50,
   risk_reject_score: 80,
   liveness_pass: 0.85,
-  liveness_fail: 0.5,
+  liveness_fail: 0.7,
   face_match_pass: 0.85,
-  face_match_fail: 0.6,
+  face_match_fail: 0.7,
   sanction_action: "REFER" as "REFER" | "REJECT",
   max_capture_failures: 3,
   // C13 – RULE-EKYC-16

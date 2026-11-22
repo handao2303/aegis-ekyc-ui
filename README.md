@@ -42,6 +42,20 @@ npm run start      # serve out/ locally
 
 Use the **VI | EN** switch in the header to change language; the choice is remembered. A `?lang=` parameter in the URL takes priority, so shared links open in the intended language.
 
+## Run with the backend (module 1 – eKYC)
+
+The eKYC flow and the Compliance queue now run against a real backend, [`server/`](server/README.md) (Node 23, no dependencies, SQLite locally).
+
+```bash
+npm run dev:all    # ekyc-service on :8787 + web on :5179
+```
+
+- The web app detects the backend automatically on `localhost` or a LAN IP (`?api=<url>` to point elsewhere, `?api=off` for the offline demo). GitHub Pages has no backend, so it stays in demo mode.
+- Customer app `/app/`: pick a test profile **TD-01 → TD-13** (C17 §4) on the first screen; the result (STP / REFER / REJECTED, duplicate, expired ID…) comes from the backend.
+- Compliance `/compliance/`: switch user in the left menu (Officer, second Officer, Team lead, CS) to try maker-checker, two-person threshold changes and masked views.
+- Backend tests: `npm run test:server`.
+- On an iPhone on the same Wi-Fi: open `http://<Mac IP>:5179/app/`. The camera needs HTTPS, so over plain HTTP the capture screens fall back to sample images; the rest of the flow works.
+
 ## Test on iPhone
 
 1. Open **https://handao2303.github.io/aegis-ekyc-ui/app/** in Safari on the iPhone.

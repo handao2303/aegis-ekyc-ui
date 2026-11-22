@@ -9,7 +9,10 @@
     "start": "npx --yes serve@14.2.4 out -l 5179",
     "lint": "tsc --noEmit",
     "build:pages": "BASE_PATH=/aegis-ekyc-ui next build",
-    "deploy": "npm run build:pages && gh-pages -d out -t -m \"Deploy site\""
+    "deploy": "npm run build:pages && gh-pages -d out -t -m \"Deploy site\"",
+    "server": "npm --prefix server start",
+    "test:server": "npm --prefix server test",
+    "dev:all": "npm run server & npm run dev"
   },
   "dependencies": {
     "lucide-react": "0.460.0",

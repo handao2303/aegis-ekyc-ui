@@ -4,7 +4,7 @@ import { Bell, LogOut, ShieldCheck } from "lucide-react";
 import CompliancePage from "../web/CompliancePage";
 import { ThemeToggle, useTheme } from "../shared/theme";
 import { LangProvider, LangSwitch, useLang } from "../i18n";
-import { ME } from "../web/data";
+import { initials, roleLabel, useCaseStore } from "../web/store";
 import { Button, Modal, cx } from "../components/ui";
 
 function Notifications() {
@@ -49,6 +49,23 @@ function Notifications() {
   );
 }
 
+function MeAvatar() {
+  const { me } = useCaseStore();
+  return <span className="hidden size-8 place-items-center rounded-full bg-white/15 text-caption font-bold sm:grid" title={me.name}>{initials(me.name)}</span>;
+}
+function MeCard() {
+  const { me } = useCaseStore();
+  return (
+    <>
+      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-action-subtle text-caption font-bold text-action-subtle-fg">{initials(me.name)}</span>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-body-sm font-semibold">{me.name}</p>
+        <p className="text-caption text-fg-tertiary">{roleLabel(me.role)}</p>
+      </div>
+    </>
+  );
+}
+
 function ComplianceApp() {
   const [theme, setTheme] = useTheme();
   const { tr } = useLang();
@@ -82,7 +99,7 @@ function ComplianceApp() {
               <div className="ml-auto flex shrink-0 items-center gap-2">
                 <LangSwitch onBrand />
                 <Notifications />
-                <span className="hidden size-8 place-items-center rounded-full bg-white/15 text-caption font-bold sm:grid" title={ME}>MA</span>
+                <MeAvatar />
               </div>
             </div>
           </header>
@@ -94,11 +111,7 @@ function ComplianceApp() {
             </div>
             <div className="border-t border-line-subtle p-3">
               <div className="flex items-center gap-3 px-2 py-1">
-                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-action-subtle text-caption font-bold text-action-subtle-fg">MA</span>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-body-sm font-semibold">{ME}</p>
-                  <p className="text-caption text-fg-tertiary">Compliance Officer</p>
-                </div>
+                <MeCard />
                 <button onClick={() => setLogout(true)} className="interactive grid size-8 place-items-center rounded-md text-fg-tertiary" aria-label={tr("Đăng xuất", "Sign out")}><LogOut className="size-4" /></button>
               </div>
               <div className="mt-3 flex justify-center"><ThemeToggle theme={theme} onChange={setTheme} /></div>

@@ -4,7 +4,8 @@ import type { L10n } from "../i18n";
 
 export type ReasonCode =
   | "LIVENESS_BORDERLINE" | "PEP_MATCH" | "SANCTION_MATCH" | "CIC_TIMEOUT" | "DOC_DATA_MISMATCH"
-  | "NFC_SKIPPED" | "DEVICE_MULTI_IDENTITY" | "PRIOR_REJECTION" | "RISK_MEDIUM";
+  | "NFC_SKIPPED" | "DEVICE_MULTI_IDENTITY" | "PRIOR_REJECTION" | "RISK_MEDIUM"
+  | "CHIP_AUTH_FAILED" | "OCR_UNREADABLE" | "IDENTITY_MISMATCH" | "DEDUP_UNAVAILABLE" | "DEVICE_RISK";
 
 export const REASONS: Record<ReasonCode, { label: L10n; tone: Tone }> = {
   LIVENESS_BORDERLINE: { label: { vi: "Liveness vùng biên", en: "Borderline liveness" }, tone: "warning" },
@@ -16,6 +17,11 @@ export const REASONS: Record<ReasonCode, { label: L10n; tone: Tone }> = {
   DEVICE_MULTI_IDENTITY: { label: { vi: "Thiết bị nhiều danh tính", en: "Multiple IDs on device" }, tone: "danger" },
   PRIOR_REJECTION: { label: { vi: "Từng bị từ chối", en: "Previously rejected" }, tone: "warning" },
   RISK_MEDIUM: { label: { vi: "Rủi ro trung bình", en: "Medium risk" }, tone: "warning" },
+  CHIP_AUTH_FAILED: { label: { vi: "Chip sai chữ ký số", en: "Chip signature invalid" }, tone: "danger" },
+  OCR_UNREADABLE: { label: { vi: "Không đọc được giấy tờ", en: "ID unreadable" }, tone: "neutral" },
+  IDENTITY_MISMATCH: { label: { vi: "Cùng số, khác danh tính", en: "Same ID, different identity" }, tone: "danger" },
+  DEDUP_UNAVAILABLE: { label: { vi: "Chưa tra trùng được", en: "Duplicate check unavailable" }, tone: "info" },
+  DEVICE_RISK: { label: { vi: "Thiết bị rủi ro", en: "Risky device" }, tone: "danger" },
 };
 
 export type CaseStatus = "new" | "in_progress" | "resubmitted" | "pending_customer" | "pending_checker";
@@ -44,6 +50,8 @@ export type Case = {
   matchSource: "CHIP_DG2" | "OCR_FRONT";
   requestCount: number;
   decision?: { type: "approved" | "rejected"; by: string; at: string };
+  /** Bản ghi gốc từ ekyc-service (chế độ có backend) */
+  live?: import("../ekyc/api").CaseItem;
 };
 
 export const ME = "Nguyễn Minh Anh";

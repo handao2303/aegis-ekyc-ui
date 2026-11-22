@@ -413,8 +413,13 @@ export class EkycService {
     if (s.queued_at == null) throw new ApiError(404, "NOT_FOUND", "Hồ sơ không thuộc hàng đợi xét duyệt");
     const canSensitive = viewer.role !== "CS";
     if (opts.pii && !canSensitive) throw new ApiError(403, "FORBIDDEN", "Vai trò không được xem dữ liệu cá nhân đầy đủ");
-    this.audit(id, viewer, opts.pii ? "VIEW_PII" : "CASE_VIEW");
-    if (canSensitive && !opts.pii) this.audit(id, viewer, "VIEW_SENSITIVE");
+    // Mỗi lần mở đều ghi; tải lại trong cùng 1 phút (sau thao tác) không ghi trùng
+    const recent = (action: string) => !!this.db.get("SELECT 1 FROM audit_event WHERE session_id = ? AND actor_id = ? AND action = ? AND created_at > ?", id, viewer.id, action, clock.now() - 60_000);
+    if (opts.pii) this.audit(id, viewer, "VIEW_PII");
+    else if (!recent("CASE_VIEW")) {
+      this.audit(id, viewer, "CASE_VIEW");
+      if (canSensitive) this.audit(id, viewer, "VIEW_SENSITIVE");
+    }
     const ocr = j<Row | null>(s.ocr_json, null), chip = j<Row | null>(s.chip_json, null)?.dg1 ?? null;
     const show = (v: Row | null) => v && {
       full_name: opts.pii ? v.full_name : maskName(v.full_name), id_number: opts.pii ? v.id_number : maskIdNumber(v.id_number), dob: v.dob, expiry: v.expiry,
@@ -425,7 +430,7 @@ export class EkycService {
       full_name: opts.pii ? s.full_name : undefined,
       product: s.product,
       document: { ocr: show(ocr), chip: show(chip), chip_verified: !!s.chip_verified, mismatch: ocr && chip ? ocrChipMismatch(ocr as any, chip as any) : [], expiry: s.doc_expiry, purged: !!s.purged_at },
-      biometric: { liveness: s.liveness, face_match: s.face_match, match_source: s.match_source, pass: cfg.liveness_pass, borderline: cfg.face_match_fail },
+      biometric: { liveness: s.liveness, face_match: s.face_match, match_source: s.match_source, pass: cfg.liveness_pass, borderline: cfg.liveness_fail },
       screening: canSensitive ? { risk_score: s.risk_score, pep: !!s.pep, sanction: !!s.sanction, cic: j(s.cic_json, null) } : null,
       device: { model: s.device_model, rooted: !!s.device_rooted, other_ids_30d: Math.max(0, deviceIds - 1) },
       needs_checker: needsChecker({ pep: !!s.pep, sanction: !!s.sanction, riskScore: s.risk_score ?? 0 }, cfg),
@@ -592,11 +597,17 @@ export class EkycService {
     const byStaff = this.db.all(`SELECT st.name, COUNT(*) AS n FROM kyc_decisions d JOIN staff st ON st.id = COALESCE(d.checker_id, d.decided_by)
       WHERE d.decided_at >= ? GROUP BY st.name ORDER BY n DESC`, since);
     const open = this.listCases({ id: "system", name: "system", role: "LEAD" }).stats!;
+    const perDay: { day: string; total: number; within: number }[] = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const start = Date.UTC(new Date(now).getUTCFullYear(), new Date(now).getUTCMonth(), new Date(now).getUTCDate()) - i * D;
+      const ds = decided.filter((s) => s.decided_at >= start && s.decided_at < start + D);
+      perDay.push({ day: new Date(start).toISOString().slice(0, 10), total: ds.length, within: ds.filter((s) => slaElapsedMs(s as any, now) / H <= cfg.sla_hours).length });
+    }
     return {
       period_days: days, decided: decided.length, within_sla: within, sla_rate: decided.length ? within / decided.length : null,
       median_hours: median, breaches: decided.filter((s) => slaElapsedMs(s as any, now) / H > cfg.sla_hours).length + open.breached,
       escalated: this.db.get<{ n: number }>("SELECT COUNT(*) AS n FROM sessions WHERE escalated_at >= ?", since)?.n ?? 0,
-      open, by_staff: byStaff,
+      open, by_staff: byStaff, per_day: perDay,
     };
   }
   kpi(days = 30) {
