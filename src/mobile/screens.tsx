@@ -516,6 +516,11 @@ export function NfcScan({ go }: ScreenProps) {
           </div>
         )}
       </Section>
+      {ek?.doc?.warnings?.includes("DOC_EXPIRING_SOON") && (
+        <Alert tone="warning" className="mt-4" title={tr("Giấy tờ sắp hết hạn", "Your document expires soon")}>
+          {tr("Giấy tờ còn hạn dưới 30 ngày. Bạn vẫn mở được tài khoản, vui lòng cập nhật giấy tờ mới sau khi được cấp.", "It expires in less than 30 days. You can still open an account – please update it once renewed.")}
+        </Alert>
+      )}
       {skip && phase !== "done" && (
         <Alert tone="warning" className="mt-4" title={tr("Hồ sơ sẽ được duyệt thủ công", "Your application will be reviewed manually")}>
           <p>{tr("Không đọc chip, nhân viên cần xem xét hồ sơ, thường trong 24 giờ.", "Without the chip, our team needs to review it, usually within 24 hours.")}</p>

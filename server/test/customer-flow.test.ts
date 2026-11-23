@@ -207,3 +207,11 @@ test("Khách không thao tác được phiên của người khác", async () =>
   const { s } = await run(svc, "TD-01", {}, "consent");
   assert.throws(() => svc.sessionForToken(s.session_id, "sai-token"), /Phiên không hợp lệ/);
 });
+
+test("C05 #2 · CCCD còn hạn dưới 30 ngày → vẫn tiếp tục, có cảnh báo DOC_EXPIRING_SOON", async () => {
+  const svc = setup();
+  const p = findPersona("TD-16");
+  const { doc, res } = await run(svc, "TD-16", { ocr: { ...p.ocr, expiry: "2026-12-10" }, chip: { ...p.chip!, dg1: { ...p.chip!.dg1, expiry: "2026-12-10" } } });
+  assert.deepEqual((doc as any).warnings, ["DOC_EXPIRING_SOON"]);
+  assert.equal(res!.status, "STP_APPROVED");
+});

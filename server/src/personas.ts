@@ -57,6 +57,9 @@ const td10 = doc({ full_name: "LÝ GIA HUY", id_number: "079209001010", dob: "20
 const td12 = doc({ full_name: "TẠ MINH KHOA", id_number: "060091001212", dob: "1991-08-08", sex: "M", origin: "Phan Thiết, Bình Thuận", expiry: "2031-08-08" });
 const td14 = doc({ doc_type: "PASSPORT", full_name: "ĐẶNG MINH QUÂN", id_number: "079096001414", passport_no: "C1414141", nationality: "VNM", dob: "1996-04-14", sex: "M", origin: "TP. Hồ Chí Minh", issued: "2023-04-14", expiry: "2033-04-14" });
 const td15 = doc({ doc_type: "PASSPORT", full_name: "JOHN MICHAEL SMITH", id_number: "", passport_no: "533415151", nationality: "GBR", dob: "1987-05-12", sex: "M", origin: "London", issued: "2021-05-12", expiry: "2031-05-12" });
+// Hết hạn sau 20 ngày tính từ hôm nay để luôn rơi vào ngưỡng cảnh báo 30 ngày (C05 #2)
+const in20Days = new Date(Date.now() + 20 * 86_400_000).toISOString().slice(0, 10);
+const td16 = doc({ full_name: "PHAN THỊ THU HÀ", id_number: "046097001616", dob: "1997-02-16", origin: "TP. Huế", issued: "2011-12-10", expiry: in20Days });
 const td13 = doc({ full_name: "VŨ HOÀNG LONG", id_number: "034001001313", dob: "2001-10-10", sex: "M", origin: "Thái Bình", expiry: "2041-10-10" });
 
 export const PERSONAS: Persona[] = [
@@ -73,6 +76,7 @@ export const PERSONAS: Persona[] = [
   { code: "TD-12", label: "Chip sai chữ ký số", expect: "REFER · CHIP_AUTH_FAILED", product: "payment", device: { id: "dev-td12", model: "Pixel 8 · Android 15" }, phone: "0901000012", ocr: td12, chip: { ...chipOf(td12), sod_valid: false }, liveness: 0.97, face_match: 0.93, uat: ["UAT-EKYC-20"] },
   { code: "TD-13", label: "Một máy, hai CCCD", expect: "REFER · DEVICE_MULTI_IDENTITY", product: "payment", device: { id: "dev-shared-13", model: "Pixel 7 · Android 15" }, phone: "0901000013", ocr: td13, chip: chipOf(td13), liveness: 0.95, face_match: 0.91, uat: ["UAT-EKYC-22"] },
   { code: "TD-14", label: "Hộ chiếu Việt Nam gắn chip", expect: "STP_APPROVED", product: "payment", device: { id: "dev-td14", model: "iPhone 15 Pro · iOS 18" }, phone: "0901000014", ocr: td14, chip: chipOf(td14), liveness: 0.97, face_match: 0.94, uat: ["UAT-EKYC-25"] },
+  { code: "TD-16", label: "CCCD sắp hết hạn (< 30 ngày)", expect: "STP_APPROVED + cảnh báo", product: "payment", device: { id: "dev-td16", model: "iPhone 13 mini · iOS 18" }, phone: "0901000016", ocr: td16, chip: chipOf(td16), liveness: 0.96, face_match: 0.93, uat: ["UAT-EKYC-13"] },
   { code: "TD-15", label: "Hộ chiếu nước ngoài", expect: "REFER · FOREIGN_NATIONAL", product: "payment", device: { id: "dev-td15", model: "iPhone 14 · iOS 18" }, phone: "0901000015", ocr: td15, chip: chipOf(td15), liveness: 0.96, face_match: 0.92, uat: ["UAT-EKYC-26"] },
 ];
 

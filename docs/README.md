@@ -3,7 +3,7 @@
 Bộ tài liệu cho 18 hạng mục của Epic [SCRUM-69 – eKYC Completion & Production Readiness](https://baohandao2303.atlassian.net/browse/SCRUM-69), cùng 2 phân hệ [Đối soát (SCRUM-7)](https://baohandao2303.atlassian.net/browse/SCRUM-7), [Hạn mức (SCRUM-8)](https://baohandao2303.atlassian.net/browse/SCRUM-8) và app iPhone quét giấy tờ.
 Tổng quan và kế hoạch: [Gap Analysis & Delivery Plan (Confluence)](https://baohandao2303.atlassian.net/wiki/spaces/SCRUM/pages/15106049).
 
-Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 45 diagram, tất cả đã được kiểm tra cú pháp.
+Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 47 diagram, tất cả đã được kiểm tra cú pháp.
 
 **Bắt đầu từ đây:** [A01 Tổng quan giải pháp](05-architecture/A01-solution-overview.md) – bối cảnh hệ thống, thành phần, luồng end-to-end, cây quyết định, bản đồ màn hình và cách triển khai UI.
 
@@ -85,6 +85,12 @@ flowchart LR
 | | [A02 App iPhone quét giấy tờ](05-architecture/A02-ios-document-scan.md) | SCRUM-18, 80 | Flowchart ×2, Sequence, State | 🔧 Bản mẫu chạy được, chưa có CSCA & liveness |
 | 06 · Đối soát | [R01 Luồng, trạng thái & kiểm soát](06-reconciliation/R01-reconciliation-flow.md) | SCRUM-7, 49, 50 | Flowchart ×2, State ×2, Sequence, ERD | 🔧 Đặc tả + UI mẫu xong, chờ backend |
 | 07 · Hạn mức | [L01 Authorization, Boost & gian lận](07-credit-limit/L01-credit-limit-flow.md) | SCRUM-8, 51, 52, 54 | Sequence ×2, Flowchart ×2, State ×2 | 🔧 Đặc tả + UI mẫu xong, chờ Notification thật |
+| 08 · Kiểm thử | [T01 Kế hoạch kiểm thử module eKYC](08-testing/T01-test-plan.md) | SCRUM-69 | — | ✅ v1.0 |
+| | [T02 Bộ 106 test case](08-testing/T02-test-cases.md) | SCRUM-69, 86 | — | ✅ v1.0 |
+| | [T03 Báo cáo kết quả vòng 1](08-testing/T03-test-report.md) | SCRUM-69 | — | ✅ 91 đạt · 0 lỗi mở · chưa đủ điều kiện UAT |
+| 09 · Pháp lý | [P01 Điều khoản, quyền riêng tư & cơ sở pháp lý](09-legal/P01-terms-privacy.md) | SCRUM-17, 71, 81 | Flowchart | 📝 Chờ Pháp chế & Compliance duyệt |
+| 10 · Giao diện | [U01 Đặc tả giao diện app khách (20 màn)](10-ui/U01-customer-app-ui-spec.md) | SCRUM-47 | Flowchart | ✅ v1.0, có ảnh từng màn |
+| | [U02 Đặc tả giao diện Aegis Compliance](10-ui/U02-compliance-ui-spec.md) | SCRUM-48 | — | ✅ v1.0, có ảnh từng màn |
 
 ## Việc còn lại ngoài tài liệu
 
