@@ -65,15 +65,34 @@ Trạng thái: ✅ Đáp ứng · 🟡 Một phần · ❌ Chưa có
 | CR-14 | L-05 | Kiểm tra độ tuổi theo sản phẩm | Chưa có | ❌ | C05 – SCRUM-74 |
 | CR-15 | L-01 | Giấy tờ còn hiệu lực | Chưa kiểm tra hạn | ❌ | C05 |
 
+### Cập nhật 23/11/2026 – sau khi có backend mẫu
+
+Trạng thái trong bảng trên là lúc lập tài liệu (21/11). Sau khi xây `ekyc-service` và chạy kiểm thử ([T03](../1.4-testing/T03-test-report.md)):
+
+| Mã | Trạng thái mới | Bằng chứng |
+|---|---|---|
+| CR-02 | 🟡 | Chọn nguồn so khớp ảnh chip DG2 (C11) đã có; chưa nối nhà cung cấp so khớp khuôn mặt và CSDL dân cư |
+| CR-03 | ✅ | Không có chip hợp lệ → tối đa REFER (`NFC_SKIPPED`, `CHIP_AUTH_FAILED`) – UAT-EKYC-02, 20 |
+| CR-04 | 🟡 | Kiểm tra SOD có; chưa xác minh chữ ký tới CSCA (A02) |
+| CR-07 | ✅ | Màn eKYC-14 + API rút lại đồng ý – UAT-EKYC-21 |
+| CR-08 | ✅ | Job xoá phiên hết hạn, xoá sau rút đồng ý, retention – TC-JOB-02, 06 |
+| CR-11 | ✅ | Maker-Checker cho PEP/Sanction/rủi ro ≥ 70 – UAT-EKYC-19 |
+| CR-12 | 🟡 | Tham số lưu trữ đã có (`retention_rejected_days`); chờ Compliance chốt thời hạn |
+| CR-13 | ✅ | Audit chỉ ghi thêm, ghi xem hồ sơ / xem PII / quyết định – NFR-AUD-03 |
+| CR-14 | ✅ | Tuổi theo sản phẩm (15 / 18, cấu hình được) – UAT-EKYC-14 |
+| CR-15 | ✅ | Chặn giấy tờ hết hạn, cảnh báo còn < 30 ngày – UAT-EKYC-13 |
+
+Sau cập nhật: **12 ✅ · 3 🟡 · 0 ❌**. Còn chặn go-live: CR-02 (nhà cung cấp sinh trắc), CR-12 (thời hạn lưu – chờ trả lời câu hỏi 3).
+
 ## 3. Tổng hợp
 
 | Trạng thái | Số yêu cầu |
 |---|---|
-| ✅ Đáp ứng | 6 |
-| 🟡 Một phần | 2 |
-| ❌ Chưa có | 7 |
+| ✅ Đáp ứng | 5 (sau 23/11: 12) |
+| 🟡 Một phần | 2 (sau 23/11: 3) |
+| ❌ Chưa có | 8 (sau 23/11: 0) |
 
-**Ưu tiên chặn go-live:** CR-02, CR-03, CR-07, CR-08, CR-11, CR-12.
+**Ưu tiên chặn go-live (21/11):** CR-02, CR-03, CR-07, CR-08, CR-11, CR-12. **Còn lại sau 23/11:** CR-02, CR-12.
 
 ## 4. Câu hỏi mở cho Compliance
 

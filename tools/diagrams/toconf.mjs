@@ -31,7 +31,11 @@ for (const f of walk(docsDir)) {
   // Confluence: bảng không được nằm trong blockquote → bỏ khung trích dẫn
   html = html.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, (m, inner) => (inner.includes("<table") ? inner : m));
   // bỏ thẻ input checkbox của GFM (nếu có), gọn khoảng trắng giữa thẻ
-  html = html.replace(/>\s+</g, "><").trim();
+  // Chỉ bỏ khoảng trắng quanh thẻ khối; giữ dấu cách giữa các thẻ inline (</strong> <code>)
+  const BLOCK = "p|li|ul|ol|table|thead|tbody|tr|td|th|h[1-6]|div|figure|pre|blockquote|hr";
+  html = html.replace(new RegExp(`\\s+(<\\/?(?:${BLOCK})(?=[\\s>/]))`, "g"), "$1");
+  html = html.replace(new RegExp(`(<\\/?(?:${BLOCK})(?:\\s[^>]*)?>)\\s+`, "g"), "$1");
+  html = html.trim();
   // ảnh chụp màn hình đứng riêng → <figure> để Confluence nhận đúng
   html = html.replace(/<p>((?:<img[^>]*>)+)<\/p>/g, (m, imgs) => imgs);
   html = html.replace(/(<figure>)?(<img[^>]*>)/g, (m, fig, img) => (fig ? m : `<figure>${img}</figure>`));

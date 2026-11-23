@@ -133,7 +133,7 @@ flowchart TD
 
 ## 5. Bản đồ màn hình – App khách hàng
 
-22 màn hình (19 eKYC + 3 Hạn mức thẻ), mã khớp với cột "Mã" trong UI Kit.
+23 màn hình (20 eKYC + 3 Hạn mức thẻ), mã khớp với cột "Mã" trong UI Kit.
 
 ```mermaid
 flowchart TB
@@ -163,7 +163,7 @@ flowchart TB
     M1 -.-> M3["LIM-M3<br/>Khoá Boost"]
 ```
 
-Nét liền: luồng chính. Nét đứt: ngoại lệ. Sau khi mở tài khoản thành công, "Vào trang chủ" dẫn sang nhóm Hạn mức thẻ (22 màn tổng cộng). Chi tiết Hạn mức ở [L01](../03-credit-limit/L01-credit-limit-flow.md).
+Nét liền: luồng chính. Nét đứt: ngoại lệ. Sau khi mở tài khoản thành công, "Vào trang chủ" dẫn sang nhóm Hạn mức thẻ (23 màn tổng cộng). Chi tiết Hạn mức ở [L01](../03-credit-limit/L01-credit-limit-flow.md).
 
 ## 6. Bản đồ màn hình – Aegis Compliance
 
@@ -200,10 +200,10 @@ flowchart LR
 | Aegis Hạn mức (LIM-W1 → W4) | `/credit-limit/` |
 | App iPhone native – quét CCCD/hộ chiếu | `ios/AegisScan` (cài qua Xcode) |
 
-Bản demo dùng dữ liệu giả, không gọi API thật. Hướng đi khi nối backend:
+**eKYC đã nối backend** `ekyc-service` ([server/](../../server/README.md)) khi chạy `npm run dev:all`; bản GitHub Pages vẫn là demo không backend. Đối soát và Hạn mức còn dùng dữ liệu mẫu. Hướng đi tiếp theo:
 
 | Phần | Hướng đi |
 |---|---|
-| Web vận hành (Compliance, Đối soát, Hạn mức) | Giữ Next.js, thay dữ liệu mẫu bằng API qua API Gateway |
+| Web vận hành | Compliance đã gọi API; Đối soát, Hạn mức thay dữ liệu mẫu bằng API qua API Gateway |
 | App khách hàng | `mobile-app` (React Native / Expo bare) dùng lại token Aurora và cấu trúc màn hình của bản web |
 | Đọc chip CCCD / hộ chiếu | Logic MRZ + NFC của Aegis Scan (A02) đưa vào app thật dưới dạng native module, hoặc thay bằng SDK eKYC của đối tác |
