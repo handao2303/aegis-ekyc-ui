@@ -58,6 +58,8 @@ Ký hiệu nguồn: hồ sơ mẫu `TD-xx` chuẩn bị theo bảng ở mục 4.
 | UAT-EKYC-22 | Một máy, hai CCCD | TD-13 | REFER `DEVICE_MULTI_IDENTITY` | BR-21 | Must |
 | UAT-EKYC-23 | Đổi ngưỡng cấu hình | — | Cần người thứ hai duyệt; có audit | NFR-SEC-05 | Should |
 | UAT-EKYC-24 | Song ngữ VI/EN | — | Toàn bộ màn hình đổi ngôn ngữ, giữ lựa chọn | — | Should |
+| UAT-EKYC-25 | Hộ chiếu Việt Nam gắn chip | TD-14 | Chụp 1 trang, đọc chip ở bìa → STP_APPROVED | BR-12, 13 | Must |
+| UAT-EKYC-26 | Hộ chiếu nước ngoài | TD-15 | REFER `FOREIGN_NATIONAL`; Compliance thấy quốc tịch, số hộ chiếu đã che | BR-12 | Must |
 
 ## 4. Dữ liệu mẫu
 
@@ -76,6 +78,8 @@ Ký hiệu nguồn: hồ sơ mẫu `TD-xx` chuẩn bị theo bảng ở mục 4.
 | TD-11 | Hồ sơ cũ | Tạo lùi thời gian vào hàng đợi 17h / 25h |
 | TD-12 | Chip giả | Chữ ký số không hợp lệ |
 | TD-13 | Nhiều danh tính | Cùng `device_id`, 2 CCCD khác nhau |
+| TD-14 | Hộ chiếu Việt Nam | Số hộ chiếu C1414141, có số định danh, chip hợp lệ |
+| TD-15 | Hộ chiếu nước ngoài | Quốc tịch GBR, không có số định danh Việt Nam |
 
 ## 5. Mẫu ghi kết quả
 

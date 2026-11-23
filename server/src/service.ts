@@ -5,7 +5,7 @@ import { clock, D, H, type Db, type Row } from "./db.ts";
 import { DEFAULT_CONFIG, CONFIG_BOUNDS, type Config, type ConfigKey } from "./config.ts";
 import {
   checkDocument, customerSafeReason, decide, dedup, FORBIDDEN_MESSAGE, hashIdNumber, INFO_ITEMS, maskIdNumber, maskName,
-  needsChecker, normalizeIdNumber, ocrChipMismatch, slaElapsedMs, slaState, type Flag, type InfoItem, type ReferReason,
+  maskPassportNo, needsChecker, normalizeIdNumber, normalizePassportNo, ocrChipMismatch, slaElapsedMs, slaState, type Flag, type InfoItem, type ReferReason,
 } from "./rules.ts";
 import { AdapterError, amlScreen, cbsCreateAccount, cbsLookup, cicLookup, riskScore, sendNotification, type CicResult } from "./adapters.ts";
 
@@ -24,6 +24,8 @@ export const ACTIVE = ["CREATED", "CONSENTED", "DOC_CAPTURED", "LIVENESS_DONE"] 
 export const IN_QUEUE = ["REFER", "REFER_RESUBMITTED", "PENDING_CHECKER", "PENDING_CUSTOMER_INFO"] as const;
 const FINAL = ["STP_APPROVED", "APPROVED", "REJECTED", "STOPPED_DUPLICATE", "EXPIRED", "CANCELLED"];
 
+/** Khoá tra CIC/AML: số định danh, hoặc quốc tịch + số hộ chiếu với người nước ngoài */
+const screeningKey = (ocr: Row): string => ocr.id_number ?? `${ocr.nationality}:${ocr.passport_no}`;
 const j = <T>(s: string | null | undefined, d: T): T => (s ? (JSON.parse(s) as T) : d);
 const inList = (v: string, list: readonly string[]) => list.includes(v);
 
@@ -140,17 +142,31 @@ export class EkycService {
     return { capture_failures: n, remaining: cfg.max_capture_failures - n, next: "RETRY" };
   }
 
-  /** POST /sessions/:id/document – OCR xong: C05 (hạn, tuổi) rồi C04 (trùng), trước Liveness */
-  async submitDocument(id: string, token: string, ocr: { full_name: string; id_number: string; dob: string; sex?: string; expiry: string; issued?: string; origin?: string }) {
+  /** POST /sessions/:id/document – OCR xong: C05 (hạn, tuổi) rồi C04 (trùng), trước Liveness.
+   *  Giấy tờ: CCCD/thẻ Căn cước (số định danh 12 số) hoặc hộ chiếu (số hộ chiếu + quốc tịch).
+   *  Hộ chiếu Việt Nam có in số định danh → tra trùng như CCCD; hộ chiếu nước ngoài tra theo quốc tịch + số hộ chiếu và luôn REFER. */
+  async submitDocument(id: string, token: string, ocr: { doc_type?: "CCCD" | "PASSPORT"; full_name: string; id_number?: string; passport_no?: string; nationality?: string; dob: string; sex?: string; expiry: string; issued?: string; origin?: string }) {
     const s = this.sessionForToken(id, token), cfg = this.cfg(), now = clock.now();
     if (!inList(s.status, ["CONSENTED", "DOC_CAPTURED"])) throw new ApiError(409, "INVALID_STATE", `Không gửi giấy tờ được ở trạng thái ${s.status}`);
-    const idNumber = normalizeIdNumber(ocr?.id_number);
-    if (!idNumber || !ocr.full_name || !/^\d{4}-\d{2}-\d{2}$/.test(ocr.dob ?? "") || !/^\d{4}-\d{2}-\d{2}$/.test(ocr.expiry ?? ""))
-      throw new ApiError(422, "VALIDATION", "Dữ liệu OCR không hợp lệ");
-    const idHash = hashIdNumber(idNumber, this.salt);
+    const docType = ocr?.doc_type === "PASSPORT" ? "PASSPORT" : "CCCD";
+    const nationality = docType === "PASSPORT" ? String(ocr.nationality ?? "").toUpperCase() : "VNM";
+    const passportNo = docType === "PASSPORT" ? normalizePassportNo(ocr.passport_no) : null;
+    const idNumber = ocr?.id_number ? normalizeIdNumber(ocr.id_number) : null;
+    const datesOk = /^\d{4}-\d{2}-\d{2}$/.test(ocr?.dob ?? "") && /^\d{4}-\d{2}-\d{2}$/.test(ocr?.expiry ?? "");
+    if (!ocr?.full_name || !datesOk) throw new ApiError(422, "VALIDATION", "Dữ liệu OCR không hợp lệ");
+    if (docType === "CCCD" && !idNumber) throw new ApiError(422, "VALIDATION", "Số CCCD phải đủ 12 chữ số");
+    if (docType === "PASSPORT") {
+      if (!passportNo || !/^[A-Z]{3}$/.test(nationality)) throw new ApiError(422, "VALIDATION", "Số hộ chiếu hoặc quốc tịch không hợp lệ");
+      if (nationality === "VNM" && !idNumber) throw new ApiError(422, "VALIDATION", "Hộ chiếu Việt Nam cần số định danh cá nhân 12 số");
+    }
+    const foreign = docType === "PASSPORT" && nationality !== "VNM";
+    // Khoá tra trùng: số định danh nếu có, không thì quốc tịch + số hộ chiếu
+    const lookupKey = idNumber ?? `P:${nationality}:${passportNo}`;
+    const idHash = hashIdNumber(lookupKey, this.salt);
     const base = {
-      id_number_hash: idHash, id_number_masked: maskIdNumber(idNumber), full_name: ocr.full_name, dob: ocr.dob, sex: ocr.sex ?? null,
-      doc_expiry: ocr.expiry, ocr_json: JSON.stringify({ ...ocr, id_number: idNumber }),
+      doc_type: docType, nationality, passport_masked: passportNo ? maskPassportNo(passportNo) : null,
+      id_number_hash: idHash, id_number_masked: idNumber ? maskIdNumber(idNumber) : null, full_name: ocr.full_name, dob: ocr.dob, sex: ocr.sex ?? null,
+      doc_expiry: ocr.expiry, ocr_json: JSON.stringify({ ...ocr, doc_type: docType, nationality, id_number: idNumber ?? undefined, passport_no: passportNo ?? undefined }),
     };
 
     // RULE-EKYC-10
@@ -163,7 +179,7 @@ export class EkycService {
 
     // RULE-EKYC-09
     let customer, lookupFailed = false;
-    try { customer = await cbsLookup(this.db, idHash, idNumber); } catch (e) { if (e instanceof AdapterError) lookupFailed = true; else throw e; }
+    try { customer = await cbsLookup(this.db, idHash, idNumber ?? ""); } catch (e) { if (e instanceof AdapterError) lookupFailed = true; else throw e; }
     const open = this.db.get<{ id: string }>(`SELECT id FROM sessions WHERE id_number_hash = ? AND id <> ? AND status IN ('ABANDONED','CREATED','CONSENTED','DOC_CAPTURED','LIVENESS_DONE') ORDER BY last_activity_at DESC LIMIT 1`, idHash, id);
     const prior = this.db.get(`SELECT id FROM sessions WHERE id_number_hash = ? AND id <> ? AND status = 'REJECTED' AND decided_at >= ?`, idHash, id, now - cfg.prior_rejection_days * D);
     const others = this.db.all<{ full_name: string | null; dob: string | null }>("SELECT full_name, dob FROM sessions WHERE id_number_hash = ? AND id <> ? AND purged_at IS NULL", idHash, id);
@@ -189,12 +205,14 @@ export class EkycService {
     const flags: Flag[] = [...dd.flags];
     if (this.velocityCount("device_ids", s.device_id, 30 * D, true) >= cfg.velocity_device_ids_30d) flags.push("DEVICE_MULTI_IDENTITY");
     if (s.device_rooted) flags.push("DEVICE_RISK");
+    // Người nước ngoài: cần kiểm tra thị thực/thẻ tạm trú và mục đích mở tài khoản – không STP
+    if (foreign) flags.push("FOREIGN_NATIONAL");
     this.touch(id, { ...base, status: "DOC_CAPTURED", last_step: "DOC_CAPTURED", flags_json: JSON.stringify(flags), warnings_json: JSON.stringify(dc.warnings) });
     return { status: "DOC_CAPTURED", next: "NFC", warnings: dc.warnings };
   }
 
   /** POST /sessions/:id/chip – C11: chip hợp lệ ⇒ nguồn so khớp CHIP_DG2; OCR ≠ chip ⇒ cờ */
-  submitChip(id: string, token: string, input: { skipped?: boolean; dg1?: { full_name: string; id_number: string; dob: string; expiry: string }; sod_valid?: boolean; chip_auth?: boolean }) {
+  submitChip(id: string, token: string, input: { skipped?: boolean; dg1?: { full_name: string; id_number?: string; passport_no?: string; nationality?: string; dob: string; expiry: string }; sod_valid?: boolean; chip_auth?: boolean }) {
     const s = this.sessionForToken(id, token);
     if (s.status !== "DOC_CAPTURED") throw new ApiError(409, "INVALID_STATE", `Không đọc chip được ở trạng thái ${s.status}`);
     const flags = new Set<Flag>(j<Flag[]>(s.flags_json, []));
@@ -222,7 +240,7 @@ export class EkycService {
 
     // SCREENING
     this.db.patchSession(id, { status: "SCREENING" });
-    const idNumber: string = j<Row>(s.ocr_json, {}).id_number;
+    const idNumber = screeningKey(j<Row>(s.ocr_json, {}));
     let cic: CicResult | null = null, cicTimeout = false;
     try { cic = await cicLookup(idNumber); } catch (e) { if (e instanceof AdapterError) cicTimeout = true; else throw e; }
     const aml = await amlScreen(idNumber);
@@ -370,7 +388,7 @@ export class EkycService {
     const decision = this.db.get("SELECT decision, decided_by, maker_id, checker_id, decided_at FROM kyc_decisions WHERE session_id = ? ORDER BY id DESC LIMIT 1", s.id);
     const decider = decision ? this.db.get<Staff>("SELECT id, name FROM staff WHERE id = ?", decision.checker_id ?? decision.decided_by) : null;
     return {
-      id: s.id, status: s.status,
+      id: s.id, status: s.status, doc_type: s.doc_type ?? "CCCD", nationality: s.nationality ?? null,
       name_masked: s.full_name ? maskName(s.full_name) : "—",
       dob_year: s.dob ? s.dob.slice(0, 4) : null,
       reasons: j<string[]>(s.reasons_json, []),
@@ -422,7 +440,10 @@ export class EkycService {
     }
     const ocr = j<Row | null>(s.ocr_json, null), chip = j<Row | null>(s.chip_json, null)?.dg1 ?? null;
     const show = (v: Row | null) => v && {
-      full_name: opts.pii ? v.full_name : maskName(v.full_name), id_number: opts.pii ? v.id_number : maskIdNumber(v.id_number), dob: v.dob, expiry: v.expiry,
+      full_name: opts.pii ? v.full_name : maskName(v.full_name),
+      id_number: v.id_number ? (opts.pii ? v.id_number : maskIdNumber(v.id_number)) : null,
+      passport_no: v.passport_no ? (opts.pii ? v.passport_no : maskPassportNo(v.passport_no)) : null,
+      nationality: v.nationality ?? null, dob: v.dob, expiry: v.expiry,
     };
     const deviceIds = this.velocityCount("device_ids", s.device_id, 30 * D, true);
     return {
@@ -532,7 +553,7 @@ export class EkycService {
   async retryCic(id: string, viewer: Staff) {
     const s = this.session(id);
     if (viewer.role === "CS") throw new ApiError(403, "FORBIDDEN", "Không đủ quyền");
-    const idNumber = j<Row>(s.ocr_json, {}).id_number;
+    const idNumber = screeningKey(j<Row>(s.ocr_json, {}));
     try {
       const cic = await cicLookup(idNumber);
       const aml = { pep: !!s.pep, sanction: !!s.sanction, hits: 0 };

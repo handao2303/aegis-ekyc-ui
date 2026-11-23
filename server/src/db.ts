@@ -31,6 +31,9 @@ CREATE TABLE IF NOT EXISTS sessions (
   device_rooted INTEGER NOT NULL DEFAULT 0,
   phone TEXT,
   terms_version TEXT,
+  doc_type TEXT NOT NULL DEFAULT 'CCCD',
+  nationality TEXT,
+  passport_masked TEXT,
   id_number_hash TEXT,
   id_number_masked TEXT,
   full_name TEXT,
@@ -212,6 +215,13 @@ export class Db {
     this.raw = new DatabaseSync(path);
     this.raw.exec("PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;");
     this.raw.exec(SCHEMA);
+    this.migrate();
+  }
+  /** Thêm cột mới cho DB tạo từ phiên bản trước (SQLite không có ADD COLUMN IF NOT EXISTS) */
+  private migrate() {
+    const cols = new Set(this.all<{ name: string }>("PRAGMA table_info(sessions)").map((c) => c.name));
+    const add: [string, string][] = [["doc_type", "TEXT NOT NULL DEFAULT 'CCCD'"], ["nationality", "TEXT"], ["passport_masked", "TEXT"]];
+    for (const [c, def] of add) if (!cols.has(c)) this.raw.exec(`ALTER TABLE sessions ADD COLUMN ${c} ${def}`);
   }
   all<T = Row>(sql: string, ...p: any[]): T[] { return this.raw.prepare(sql).all(...p) as T[]; }
   get<T = Row>(sql: string, ...p: any[]): T | undefined { return this.raw.prepare(sql).get(...p) as T | undefined; }

@@ -4,7 +4,7 @@ import type { Config } from "./config.ts";
 
 export type Flag =
   | "DOC_DATA_MISMATCH" | "PRIOR_REJECTION" | "IDENTITY_MISMATCH" | "DEDUP_UNAVAILABLE"
-  | "DEVICE_MULTI_IDENTITY" | "DEVICE_RISK" | "CHIP_AUTH_FAILED" | "NFC_SKIPPED" | "OCR_UNREADABLE";
+  | "DEVICE_MULTI_IDENTITY" | "DEVICE_RISK" | "CHIP_AUTH_FAILED" | "NFC_SKIPPED" | "OCR_UNREADABLE" | "FOREIGN_NATIONAL";
 
 export type ReferReason =
   | Flag | "LIVENESS_BORDERLINE" | "PEP_MATCH" | "SANCTION_MATCH" | "CIC_TIMEOUT" | "RISK_MEDIUM";
@@ -19,6 +19,12 @@ export function normalizeIdNumber(raw: string): string | null {
   const d = String(raw ?? "").replace(/\s+/g, "");
   return /^\d{12}$/.test(d) ? d : null;
 }
+/** Số hộ chiếu theo MRZ (ICAO 9303): chữ hoa và số, 6–9 ký tự. Hộ chiếu Việt Nam: 1 chữ + 7 số */
+export function normalizePassportNo(raw: string | undefined | null): string | null {
+  const d = String(raw ?? "").replace(/\s+/g, "").toUpperCase();
+  return /^[A-Z0-9]{6,9}$/.test(d) ? d : null;
+}
+export const maskPassportNo = (p: string) => `${p.slice(0, 1)}•••${p.slice(-3)}`;
 export const hashIdNumber = (id: string, salt: string) => createHash("sha256").update(salt + ":" + id).digest("hex");
 export const maskIdNumber = (id: string) => `${id.slice(0, 3)}•••••${id.slice(-4)}`;
 /** Che họ tên: giữ chữ cái đầu mỗi từ */
@@ -49,11 +55,15 @@ export function checkDocument(doc: { dob: string; expiry: string }, product: "pa
 }
 
 /** Trường định danh OCR so với DG1 trong chip (C05 #5) */
-export function ocrChipMismatch(ocr: { full_name: string; dob: string; id_number: string }, chip: { full_name: string; dob: string; id_number: string }) {
+type DocIds = { full_name: string; dob: string; id_number?: string; passport_no?: string };
+export function ocrChipMismatch(ocr: DocIds, chip: DocIds) {
   const diff: string[] = [];
   if (norm(ocr.full_name) !== norm(chip.full_name)) diff.push("full_name");
   if (ocr.dob !== chip.dob) diff.push("dob");
-  if (normalizeIdNumber(ocr.id_number) !== normalizeIdNumber(chip.id_number)) diff.push("id_number");
+  if (ocr.passport_no || chip.passport_no) {
+    if (normalizePassportNo(ocr.passport_no) !== normalizePassportNo(chip.passport_no)) diff.push("passport_no");
+  }
+  if ((ocr.id_number || chip.id_number) && normalizeIdNumber(ocr.id_number ?? "") !== normalizeIdNumber(chip.id_number ?? "")) diff.push("id_number");
   return diff;
 }
 

@@ -5,7 +5,7 @@ import type { L10n } from "../i18n";
 export type ReasonCode =
   | "LIVENESS_BORDERLINE" | "PEP_MATCH" | "SANCTION_MATCH" | "CIC_TIMEOUT" | "DOC_DATA_MISMATCH"
   | "NFC_SKIPPED" | "DEVICE_MULTI_IDENTITY" | "PRIOR_REJECTION" | "RISK_MEDIUM"
-  | "CHIP_AUTH_FAILED" | "OCR_UNREADABLE" | "IDENTITY_MISMATCH" | "DEDUP_UNAVAILABLE" | "DEVICE_RISK";
+  | "CHIP_AUTH_FAILED" | "OCR_UNREADABLE" | "IDENTITY_MISMATCH" | "DEDUP_UNAVAILABLE" | "DEVICE_RISK" | "FOREIGN_NATIONAL";
 
 export const REASONS: Record<ReasonCode, { label: L10n; tone: Tone }> = {
   LIVENESS_BORDERLINE: { label: { vi: "Liveness vùng biên", en: "Borderline liveness" }, tone: "warning" },
@@ -22,6 +22,7 @@ export const REASONS: Record<ReasonCode, { label: L10n; tone: Tone }> = {
   IDENTITY_MISMATCH: { label: { vi: "Cùng số, khác danh tính", en: "Same ID, different identity" }, tone: "danger" },
   DEDUP_UNAVAILABLE: { label: { vi: "Chưa tra trùng được", en: "Duplicate check unavailable" }, tone: "info" },
   DEVICE_RISK: { label: { vi: "Thiết bị rủi ro", en: "Risky device" }, tone: "danger" },
+  FOREIGN_NATIONAL: { label: { vi: "Người nước ngoài – kiểm tra thị thực", en: "Foreign national – check visa" }, tone: "info" },
 };
 
 export type CaseStatus = "new" | "in_progress" | "resubmitted" | "pending_customer" | "pending_checker";

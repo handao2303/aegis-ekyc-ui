@@ -332,7 +332,9 @@ function CaseDetail({ c, onBack, standalone }: { c: Case; onBack: () => void; st
 
           <Card className="p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-title-sm">{tr("Giấy tờ", "ID document")}</h2>
+              <h2 className="flex items-center gap-2 text-title-sm">{tr("Giấy tờ", "ID document")}
+                {d && <Badge tone={d.doc_type === "PASSPORT" ? "info" : "neutral"}>{d.doc_type === "PASSPORT" ? tr(`Hộ chiếu · ${d.nationality ?? ""}`, `Passport · ${d.nationality ?? ""}`) : "CCCD"}</Badge>}
+              </h2>
               <Badge tone={c.nfc ? "success" : "warning"} dot>{c.nfc ? tr("Chip hợp lệ", "Chip verified") : c.reasons.includes("CHIP_AUTH_FAILED") ? tr("Chip sai chữ ký số", "Chip signature invalid") : tr("Không đọc chip", "Chip not read")}</Badge>
             </div>
             <div className="mt-3 grid grid-cols-2 gap-3">
@@ -348,7 +350,11 @@ function CaseDetail({ c, onBack, standalone }: { c: Case; onBack: () => void; st
                     const o = d.document.ocr!, ch = d.document.chip, mm = d.document.mismatch, dmy = (x?: string) => (x ? x.split("-").reverse().join("/") : "—");
                     return [
                       [tr("Họ tên", "Name"), o.full_name, ch?.full_name ?? "—", !mm.includes("full_name")],
-                      [tr("Số CCCD", "ID number"), o.id_number, ch?.id_number ?? "—", !mm.includes("id_number")],
+                      ...(o.passport_no ? [
+                        [tr("Số hộ chiếu", "Passport no."), o.passport_no, ch?.passport_no ?? "—", !mm.includes("passport_no")],
+                        [tr("Quốc tịch", "Nationality"), o.nationality ?? "—", ch?.nationality ?? "—", true],
+                      ] : []),
+                      ...(o.id_number ? [[tr("Số định danh", "ID number"), o.id_number, ch?.id_number ?? "—", !mm.includes("id_number")]] : []),
                       [tr("Ngày sinh", "Date of birth"), dmy(o.dob), dmy(ch?.dob), !mm.includes("dob")],
                       [tr("Hết hạn", "Expiry"), dmy(o.expiry), dmy(ch?.expiry), true],
                     ];

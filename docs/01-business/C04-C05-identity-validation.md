@@ -37,7 +37,8 @@ flowchart TD
 | 1 | `expiry_date < hôm nay` | REJECTED | Giấy tờ đã hết hạn |
 | 2 | Còn hạn < 30 ngày | Tiếp tục + cảnh báo | Giấy tờ sắp hết hạn, vui lòng cập nhật |
 | 3 | Tuổi < ngưỡng sản phẩm | REJECTED | Chưa đủ điều kiện độ tuổi |
-| 4 | Loại giấy tờ không thuộc danh sách cho phép | Chặn ở màn chọn giấy tờ | Vui lòng mở tài khoản tại quầy |
+| 4 | Loại giấy tờ không thuộc danh sách cho phép (CCCD gắn chip, thẻ Căn cước 2024, hộ chiếu gắn chip) | Chặn ở màn chọn giấy tờ | Vui lòng mở tài khoản tại quầy |
+| 6 | Hộ chiếu nước ngoài | Cờ `FOREIGN_NATIONAL` → REFER để kiểm tra thị thực / thẻ tạm trú | Hồ sơ được nhân viên xem xét |
 | 5 | OCR ≠ chip ở trường định danh | Cờ `DOC_DATA_MISMATCH` → REFER | (không hiển thị) |
 
 Ngưỡng tuổi chờ Compliance trả lời câu hỏi số 1 trong [C02](../00-governance/C02-compliance-mapping.md). Giá trị đề xuất: tài khoản thanh toán **15**, sản phẩm có hạn mức tín dụng **18**. Đây là tham số cấu hình, không viết cố định trong code.
@@ -53,6 +54,16 @@ Ngưỡng tuổi chờ Compliance trả lời câu hỏi số 1 trong [C02](../0
 | 5 | Cùng số nhưng khác họ tên / ngày sinh | Cờ `IDENTITY_MISMATCH` → REFER | Có |
 
 **Chuẩn hoá trước khi so:** bỏ khoảng trắng, đủ 12 chữ số, ưu tiên giá trị đọc từ chip.
+
+**Khoá tra trùng theo loại giấy tờ:**
+
+| Giấy tờ | Khoá | Ghi chú |
+|---|---|---|
+| CCCD / thẻ Căn cước | Số định danh 12 số | — |
+| Hộ chiếu Việt Nam | Số định danh in trên trang thông tin | Người đã mở tài khoản bằng CCCD dùng hộ chiếu vẫn bị phát hiện trùng |
+| Hộ chiếu nước ngoài | Quốc tịch + số hộ chiếu | Không có số định danh Việt Nam |
+
+Hộ chiếu chỉ chụp **trang thông tin** (MRZ 2 dòng × 44 ký tự, TD3); chip nằm ở bìa. So khớp OCR–chip thêm trường số hộ chiếu.
 
 ## 4. Dữ liệu
 

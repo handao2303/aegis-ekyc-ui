@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, ReactNode } from "react";
 import {
   Camera, Check, CheckCircle2, ChevronRight, Clock, CreditCard, FileText, IdCard,
   Lock, Nfc, RefreshCw, ScanFace, ShieldCheck, Smartphone, Sun, UserCheck, XCircle, Bell, CalendarClock,
-  Upload, History, Headphones, Copy, Building2, ArrowRight, BookUser, CameraOff, FlipHorizontal2,
+  Upload, History, Headphones, Copy, Building2, ArrowRight, BookUser, CameraOff, FlipHorizontal2, BookOpen, Globe2,
 } from "lucide-react";
 import { Alert, Button, Checkbox, ProgressBar, cx } from "../components/ui";
 import { FaceAvatar, IconTile, IdCardArt, PageTitle, ScanIllustration, Screen } from "./MobileShell";
@@ -84,7 +84,7 @@ export function Intro({ go }: ScreenProps) {
         <span className="text-gradient">{tr("chỉ trong 3 phút", "in just 3 minutes")}</span>
       </h2>
       <p className="mt-2.5 text-[15px] leading-[22px] text-fg-secondary">
-        {tr("Không cần ra quầy. Chuẩn bị CCCD gắn chip và điện thoại có NFC.", "No branch visit. Have your chip ID card and an NFC-enabled phone ready.")}
+        {tr("Không cần ra quầy. Chuẩn bị CCCD gắn chip hoặc hộ chiếu gắn chip và điện thoại có NFC.", "No branch visit. Have your chip ID card or e-passport and an NFC-enabled phone ready.")}
       </p>
       <ol className="mt-6 flex flex-col gap-3">
         {steps.map(([ic, t, d]) => (
@@ -154,13 +154,16 @@ export function Consent({ go, reconsent }: ScreenProps & { reconsent?: boolean }
 /* ---------- 02 Chọn giấy tờ ---------- */
 export function DocType({ go }: ScreenProps) {
   const { tr } = useLang();
-  const [sel, setSel] = useState("cccd");
+  const ek = useEkyc();
+  const [sel, setSel] = useState(ek?.docType === "PASSPORT" ? "passport" : "cccd");
   const opts = [
     { id: "cccd", icon: <IdCard className="size-6" />, title: tr("CCCD gắn chip", "Chip-based citizen ID"), desc: tr("Duyệt tự động khi đọc được chip", "Approved instantly when the chip is read") },
     { id: "cancuoc", icon: <BookUser className="size-6" />, title: tr("Thẻ Căn cước (mẫu 2024)", "Identity card (2024)"), desc: tr("Cấp từ ngày 01/07/2024", "Issued from 1 Jul 2024") },
+    { id: "passport", icon: <BookOpen className="size-6" />, title: tr("Hộ chiếu gắn chip", "Chip passport (e-passport)"), desc: tr("Hộ chiếu Việt Nam hoặc nước ngoài · chụp trang thông tin", "Vietnamese or foreign · photo of the data page") },
   ];
+  const next = () => { ek?.chooseDocType(sel === "passport" ? "PASSPORT" : "CCCD"); go("captureFront"); };
   return (
-    <Screen title={tr("Giấy tờ tuỳ thân", "ID document")} step={1} onBack={() => go("consent")} footer={<Button size="lg" block onClick={() => go("captureFront")}>{tr("Tiếp tục", "Continue")}</Button>}>
+    <Screen title={tr("Giấy tờ tuỳ thân", "ID document")} step={1} onBack={() => go("consent")} footer={<Button size="lg" block onClick={next}>{tr("Tiếp tục", "Continue")}</Button>}>
       <PageTitle title={tr("Chọn giấy tờ để tiếp tục", "Select a document to continue")} desc={tr("Dùng giấy tờ gốc, còn hạn để xác minh danh tính của bạn.", "Use an original, valid document to verify your identity.")} />
       <div role="radiogroup" aria-label={tr("Loại giấy tờ", "Document type")} className="flex flex-col gap-3">
         {opts.map((o) => (
@@ -186,6 +189,12 @@ export function DocType({ go }: ScreenProps) {
         <Building2 className="size-4 shrink-0" />
         {tr("CMND 9 số và CCCD không gắn chip vui lòng mở tài khoản tại quầy giao dịch.", "For 9-digit IDs or non-chip ID cards, please visit a branch.")}
       </p>
+      {sel === "passport" && (
+        <p className="mt-2 flex gap-2 text-caption text-fg-tertiary">
+          <Globe2 className="size-4 shrink-0" />
+          {tr("Người nước ngoài: hồ sơ được nhân viên xem xét để kiểm tra thị thực/thẻ tạm trú, thường trong 24 giờ.", "Foreign nationals: our team reviews your visa or residence card, usually within 24 hours.")}
+        </p>
+      )}
     </Screen>
   );
 }
@@ -230,6 +239,9 @@ function CameraFallbackNote({ status, onRetry }: { status: string; onRetry: () =
 
 function CameraView({ side, go }: { side: "front" | "back"; go: (k: ScreenKey) => void }) {
   const { tr } = useLang();
+  const passport = useEkyc()?.docType === "PASSPORT";
+  // Hộ chiếu chỉ chụp trang thông tin rồi sang bước kiểm tra
+  const after: ScreenKey = side === "front" ? "reviewFront" : "ocrReview";
   const { real, setPhoto } = useCapture();
   const cam = useCamera("environment", real);
   const live = real && cam.status === "live";
@@ -251,17 +263,17 @@ function CameraView({ side, go }: { side: "front" | "back"; go: (k: ScreenKey) =
       const url = cam.capture({ crop: CARD_RATIO });
       if (url) setPhoto(side, url);
       setFlash(true);
-      setTimeout(() => go(side === "front" ? "reviewFront" : "ocrReview"), 180);
+      setTimeout(() => go(after), 180);
     } else {
       setPhoto(side, undefined);
-      go(side === "front" ? "reviewFront" : "ocrReview");
+      go(after);
     }
   };
 
   return (
     <Screen
       dark
-      title={side === "front" ? tr("Mặt trước CCCD", "ID card – front") : tr("Mặt sau CCCD", "ID card – back")}
+      title={passport ? tr("Trang thông tin hộ chiếu", "Passport data page") : side === "front" ? tr("Mặt trước CCCD", "ID card – front") : tr("Mặt sau CCCD", "ID card – back")}
       step={1}
       onBack={() => go(side === "front" ? "docType" : "reviewFront")}
       footer={
@@ -282,15 +294,15 @@ function CameraView({ side, go }: { side: "front" | "back"; go: (k: ScreenKey) =
         </div>
       }
     >
-      <p className="mt-2 text-[20px] font-semibold">{side === "front" ? tr("Đặt mặt trước vào khung", "Place the front in the frame") : tr("Đặt mặt sau vào khung", "Place the back in the frame")}</p>
-      <p className="text-body-sm text-white/70">{tr("Giữ điện thoại song song với thẻ, đủ sáng, không loá.", "Keep the phone parallel to the card, in good light, no glare.")}</p>
+      <p className="mt-2 text-[20px] font-semibold">{passport ? tr("Mở trang có ảnh, đặt vào khung", "Open the photo page and fit it in the frame") : side === "front" ? tr("Đặt mặt trước vào khung", "Place the front in the frame") : tr("Đặt mặt sau vào khung", "Place the back in the frame")}</p>
+      <p className="text-body-sm text-white/70">{passport ? tr("Thấy rõ 2 dòng mã ở cuối trang, không bị ngón tay che.", "Both code lines at the bottom must be visible, not covered by fingers.") : tr("Giữ điện thoại song song với thẻ, đủ sáng, không loá.", "Keep the phone parallel to the card, in good light, no glare.")}</p>
 
       <div className="relative mx-auto mt-7 w-full" style={{ aspectRatio: String(CARD_RATIO) }}>
         <div className="absolute inset-0 overflow-hidden rounded-[16px] bg-black">
           {real && (
             <video ref={cam.videoRef} playsInline muted autoPlay className={cx("absolute inset-0 size-full object-cover", live ? "opacity-100" : "opacity-0")} />
           )}
-          {fallback && <IdCardArt side={side} className="opacity-90" />}
+          {fallback && (passport ? <PassportArt /> : <IdCardArt side={side} className="opacity-90" />)}
           {real && cam.status === "starting" && (
             <p className="absolute inset-0 grid place-items-center text-body-sm text-white/70">{tr("Đang mở camera…", "Opening camera…")}</p>
           )}
@@ -319,10 +331,41 @@ export const CaptureFront = ({ go }: ScreenProps) => <CameraView side="front" go
 export const CaptureBack = ({ go }: ScreenProps) => <CameraView side="back" go={go} />;
 
 /** Ảnh đã chụp hoặc ảnh minh hoạ */
+/** Trang thông tin hộ chiếu (minh hoạ, MRZ TD3) */
+function PassportArt() {
+  const ek = useEkyc();
+  const o = ek?.live ? ek.persona.ocr : null;
+  const name = (o?.full_name ?? "DANG MINH QUAN").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/Đ/g, "D").toUpperCase();
+  const nat = o?.nationality ?? "VNM";
+  // MRZ ghi HỌ trước: tên Việt Nam họ đứng đầu, tên nước ngoài họ đứng cuối
+  const parts = name.split(" ");
+  const surname = nat === "VNM" ? parts[0] : parts[parts.length - 1];
+  const given = nat === "VNM" ? parts.slice(1) : parts.slice(0, -1);
+  const ymd = (iso?: string) => (iso ? iso.slice(2).replace(/-/g, "") : "000000");
+  const mrz1 = `P<${nat}${surname}<<${given.join("<")}`.padEnd(44, "<").slice(0, 44);
+  const mrz2 = `${(o?.passport_no ?? "C1414141").padEnd(9, "<")}0${nat}${ymd(o?.dob ?? "1996-04-14")}0${o?.sex ?? "M"}${ymd(o?.expiry ?? "2033-04-14")}0`.padEnd(44, "<").slice(0, 44);
+  return (
+    <div className="absolute inset-0 flex flex-col bg-[#eef1f6] p-[6%]" aria-hidden>
+      <div className="flex flex-1 gap-[5%]">
+        <div className="aspect-[3/4] h-full rounded-md bg-[#c9d3e3]" />
+        <div className="flex flex-1 flex-col gap-[8%] pt-[2%]">
+          {[70, 55, 80, 45, 60].map((w, i) => <span key={i} className="h-[7%] rounded bg-[#c3ccda]" style={{ width: `${w}%` }} />)}
+        </div>
+      </div>
+      <div className="mt-[3%] font-mono text-[7.5px] leading-[10px] tracking-[0.06em] text-[#3a4256]">
+        <div className="truncate">{mrz1}</div>
+        <div className="truncate">{mrz2}</div>
+      </div>
+    </div>
+  );
+}
+
 function CardPhoto({ side }: { side: "front" | "back" }) {
   const { tr } = useLang();
   const { photos } = useCapture();
+  const passport = useEkyc()?.docType === "PASSPORT";
   const url = photos[side];
+  if (!url && passport) return <div className="relative w-full overflow-hidden rounded-[14px]" style={{ aspectRatio: String(CARD_RATIO) }}><PassportArt /></div>;
   return url ? (
     <img src={url} alt={side === "front" ? tr("Ảnh mặt trước CCCD bạn vừa chụp", "Your photo of the ID front") : tr("Ảnh mặt sau CCCD bạn vừa chụp", "Your photo of the ID back")} className="w-full rounded-[14px] object-cover" style={{ aspectRatio: String(CARD_RATIO) }} />
   ) : (
@@ -333,6 +376,7 @@ function CardPhoto({ side }: { side: "front" | "back" }) {
 /* ---------- 04 Kiểm tra ảnh ---------- */
 export function ReviewFront({ go }: ScreenProps) {
   const { tr } = useLang();
+  const passport = useEkyc()?.docType === "PASSPORT";
   const { photos } = useCapture();
   const checks = [tr("Ảnh rõ nét", "Sharp image"), tr("Không bị loá", "No glare"), tr("Thấy đủ 4 góc", "All 4 corners visible")];
   return (
@@ -343,7 +387,7 @@ export function ReviewFront({ go }: ScreenProps) {
       footer={
         <div className="grid grid-cols-2 gap-3">
           <Button variant="secondary" size="lg" onClick={() => go("captureFront")}>{tr("Chụp lại", "Retake")}</Button>
-          <Button size="lg" onClick={() => go("captureBack")}>{tr("Dùng ảnh này", "Use photo")}</Button>
+          <Button size="lg" onClick={() => go(passport ? "ocrReview" : "captureBack")}>{tr("Dùng ảnh này", "Use photo")}</Button>
         </div>
       }
     >
@@ -366,20 +410,27 @@ export function OcrReview({ go }: ScreenProps) {
   const { tr } = useLang();
   const ek = useEkyc();
   const o = ek?.live ? ek.persona.ocr : null;
+  const passport = ek?.docType === "PASSPORT";
   return (
-    <Screen title={tr("Thông tin giấy tờ", "Document details")} step={1} onBack={() => go("captureBack")} footer={<Button size="lg" block onClick={() => go("nfc")}>{tr("Xác nhận thông tin", "Confirm details")}</Button>}>
+    <Screen title={tr("Thông tin giấy tờ", "Document details")} step={1} onBack={() => go(passport ? "reviewFront" : "captureBack")} footer={<Button size="lg" block onClick={() => go("nfc")}>{tr("Xác nhận thông tin", "Confirm details")}</Button>}>
       <PageTitle title={tr("Kiểm tra thông tin", "Check your details")} desc={tr("Đọc tự động từ ảnh giấy tờ. Nếu sai, vui lòng chụp lại.", "Read automatically from your photos. If anything is wrong, retake the photos.")} />
       <div className="mb-4 grid grid-cols-2 gap-3">
         <CardPhoto side="front" />
-        <CardPhoto side="back" />
+        {passport ? <div className="grid place-items-center rounded-[14px] bg-bg-sunken p-3 text-center text-caption text-fg-tertiary">{tr("Hộ chiếu chỉ cần trang thông tin", "Passports only need the data page")}</div> : <CardPhoto side="back" />}
       </div>
       <Section>
         <dl className="divide-y divide-[var(--border-subtle)] px-4">
           <Row label={tr("Họ và tên", "Full name")} value={o?.full_name ?? "NGUYỄN THỊ MINH THƯ"} strong />
-          <Row label={tr("Số CCCD", "ID number")} value={o ? groupId(o.id_number) : "089 1234 5678"} />
+          {passport ? (
+            <>
+              <Row label={tr("Số hộ chiếu", "Passport number")} value={o?.passport_no ?? "C1414141"} />
+              <Row label={tr("Quốc tịch", "Nationality")} value={o?.nationality ?? "VNM"} />
+              {(o ? o.id_number : "079096001414") && <Row label={tr("Số định danh", "Personal ID number")} value={groupId(o ? o.id_number : "079096001414")} />}
+            </>
+          ) : <Row label={tr("Số CCCD", "ID number")} value={o ? groupId(o.id_number) : "089 1234 5678"} />}
           <Row label={tr("Ngày sinh", "Date of birth")} value={o ? dmy(o.dob) : "15/03/1992"} />
           <Row label={tr("Giới tính", "Sex")} value={o?.sex === "M" ? tr("Nam", "Male") : tr("Nữ", "Female")} />
-          <Row label={tr("Quê quán", "Place of origin")} value={o?.origin ?? "Tân Châu, An Giang"} />
+          <Row label={passport ? tr("Nơi sinh", "Place of birth") : tr("Quê quán", "Place of origin")} value={o?.origin ?? "Tân Châu, An Giang"} />
           <Row label={tr("Ngày cấp", "Date of issue")} value={o ? dmy(o.issued) : "12/06/2021"} />
           <Row label={tr("Có giá trị đến", "Expiry date")} value={o ? dmy(o.expiry) : "15/03/2032"} />
         </dl>
@@ -427,8 +478,8 @@ export function NfcScan({ go }: ScreenProps) {
       }
     >
       <PageTitle
-        title={phase === "done" ? tr("Đọc chip thành công", "Chip read successfully") : tr("Áp CCCD vào mặt sau điện thoại", "Hold your ID to the back of your phone")}
-        desc={phase === "done" ? tr("Chữ ký số trên chip hợp lệ.", "The chip's digital signature is valid.") : phase === "reading" ? tr("Giữ yên thẻ cho đến khi hoàn tất.", "Keep the card still until it finishes.") : tr("Đặt thẻ gần camera sau, giữ 3–5 giây.", "Place the card near the rear camera for 3–5 seconds.")}
+        title={phase === "done" ? tr("Đọc chip thành công", "Chip read successfully") : ek?.docType === "PASSPORT" ? tr("Áp bìa sau hộ chiếu vào điện thoại", "Hold the passport's back cover to your phone") : tr("Áp CCCD vào mặt sau điện thoại", "Hold your ID to the back of your phone")}
+        desc={phase === "done" ? tr("Chữ ký số trên chip hợp lệ.", "The chip's digital signature is valid.") : phase === "reading" ? tr("Giữ yên cho đến khi hoàn tất.", "Keep still until it finishes.") : ek?.docType === "PASSPORT" ? tr("Gập hộ chiếu, đặt bìa sau (có biểu tượng chip) sát phần trên lưng máy, giữ 3–5 giây.", "Close the passport and hold the back cover (with the chip symbol) to the top of your phone for 3–5 seconds.") : tr("Đặt thẻ gần camera sau, giữ 3–5 giây.", "Place the card near the rear camera for 3–5 seconds.")}
       />
       <Section className="grid place-items-center py-10">
         <div className="relative grid size-40 place-items-center" aria-hidden>
@@ -773,7 +824,7 @@ export function RequestInfo({ go }: ScreenProps) {
 export function Duplicate({ go }: ScreenProps) {
   const { tr } = useLang();
   const ek = useEkyc();
-  const id = ek?.live ? maskId(ek.persona.ocr.id_number) : "089 •••• 5678";
+  const id = ek?.live ? (ek.persona.ocr.id_number ? maskId(ek.persona.ocr.id_number) : ek.persona.ocr.passport_no ?? "") : "089 •••• 5678";
   return (
     <Screen title={tr("Mở tài khoản", "Open an account")} footer={<><Button size="lg" block onClick={() => go("intro")}>{tr("Đăng nhập", "Log in")}</Button><Button variant="ghost" block>{tr("Quên mật khẩu", "Forgot password")}</Button></>}>
       <PageTitle title={tr("Bạn đã có tài khoản Aegis", "You already have an Aegis account")} desc={tr("Số CCCD này đã được dùng để mở tài khoản. Vui lòng đăng nhập.", "This ID number is already linked to an account. Please log in.")} />
@@ -811,10 +862,10 @@ export function ExpiredDoc({ go }: ScreenProps) {
   const o = ek?.live ? ek.persona.ocr : null;
   return (
     <Screen title={tr("Giấy tờ không hợp lệ", "Document not valid")} footer={<><Button size="lg" block onClick={() => go("docType")}>{tr("Dùng giấy tờ khác", "Use another document")}</Button><Button variant="ghost" block>{tr("Tìm nơi cấp đổi CCCD", "Where to renew your ID")}</Button></>}>
-      <Alert tone="danger" title={tr("CCCD đã hết hạn", "Your ID has expired")}>{tr("Vui lòng cấp đổi trước khi mở tài khoản.", "Please renew it before opening an account.")}</Alert>
+      <Alert tone="danger" title={o?.doc_type === "PASSPORT" ? tr("Hộ chiếu đã hết hạn", "Your passport has expired") : tr("CCCD đã hết hạn", "Your ID has expired")}>{tr("Vui lòng cấp đổi trước khi mở tài khoản.", "Please renew it before opening an account.")}</Alert>
       <Section className="mt-4">
         <dl className="divide-y divide-[var(--border-subtle)] px-4">
-          <Row label={tr("Số CCCD", "ID number")} value={o ? maskId(o.id_number) : "089 •••• 5678"} />
+          <Row label={o?.doc_type === "PASSPORT" ? tr("Số hộ chiếu", "Passport number") : tr("Số CCCD", "ID number")} value={o ? (o.doc_type === "PASSPORT" ? o.passport_no ?? "" : maskId(o.id_number)) : "089 •••• 5678"} />
           <Row label={tr("Có giá trị đến", "Expiry date")} value={o ? dmy(o.expiry) : "15/03/2025"} tone="danger" />
         </dl>
       </Section>

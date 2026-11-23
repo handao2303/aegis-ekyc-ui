@@ -4,7 +4,7 @@ Backend cho module eKYC: phiên mở tài khoản của khách và hàng đợi 
 
 ```bash
 npm start      # http://localhost:8787 – lần đầu tự tạo dữ liệu mẫu ở data/aegis.db
-npm test       # 48 test, gồm UAT-EKYC-01 → 23 trong C17
+npm test       # 53 test, gồm UAT-EKYC-01 → 26 trong C17 (có hộ chiếu)
 npm run dev    # tự khởi động lại khi sửa code
 ```
 
@@ -19,7 +19,7 @@ npm run dev    # tự khởi động lại khi sửa code
 | `src/jobs.ts` | Bỏ dở 30 phút, hết hạn 7 ngày, hạn bổ sung 5 ngày, tự nhả hồ sơ 2 giờ, leo thang 20h/24h, xoá dữ liệu | C06 §4, C07, C09, C12 §4 |
 | `src/adapters.ts` | CIC, AML, Core Banking, Notification – bản giả lập theo fixture, có ngắt mạch | A01 §2, C16 |
 | `src/db.ts` | Lược đồ; trigger chặn sửa/xoá `audit_event`, `kyc_decisions`, `consents` | C10 (NFR-AUD-03) |
-| `src/personas.ts` | Hồ sơ mẫu TD-01 → TD-13, dùng chung với app | C17 §4 |
+| `src/personas.ts` | Hồ sơ mẫu TD-01 → TD-15 (TD-14, 15 là hộ chiếu), dùng chung với app | C17 §4 |
 | `src/seed.ts` | Nhân viên, khách cũ TD-08, 8 hồ sơ mẫu trong hàng đợi | — |
 
 ## API
@@ -30,7 +30,7 @@ Khách gửi `x-session-token` (nhận khi tạo phiên). Nhân viên gửi `x-s
 |---|---|---|
 | POST | `/api/sessions` | Tạo phiên (kiểm velocity C13) |
 | POST | `/api/sessions/:id/consent` | Đồng ý điều khoản, đúng `terms_version` |
-| POST | `/api/sessions/:id/document` | Dữ liệu OCR → kiểm tra hạn, tuổi, trùng khách |
+| POST | `/api/sessions/:id/document` | Dữ liệu OCR (`doc_type`: `CCCD` hoặc `PASSPORT` kèm `passport_no`, `nationality`) → kiểm tra hạn, tuổi, trùng khách |
 | POST | `/api/sessions/:id/chip` | DG1 + kết quả SOD, hoặc `{ "skipped": true }` |
 | POST | `/api/sessions/:id/liveness` | Điểm liveness/face match → sàng lọc → STP / REFER / REJECTED |
 | POST | `/api/sessions/:id/capture-failures` | Đọc giấy tờ lỗi; lần 3 → REFER |

@@ -10,8 +10,12 @@ type Sess = { id: string; token: string; terms: string };
 type DocResp = { next: string; reason?: { code: string; message: string }; expiry?: string; warnings?: string[]; resume_session_id?: string; resume_token?: string | null };
 type Resumable = { session_id: string; token: string; status: string; last_step: string; resume_screen: string; reconsent_required: boolean; expires_at: number } | null;
 
+export type DocKind = "CCCD" | "PASSPORT";
 type Ctx = {
   live: boolean | null;
+  /** Loại giấy tờ khách chọn (eKYC-02); bản live lấy theo hồ sơ mẫu */
+  docType: DocKind;
+  chooseDocType: (t: DocKind) => void;
   persona: Persona;
   setPersona: (code: string) => void;
   session: Sess | null;
@@ -64,6 +68,16 @@ export function EkycProvider({ children }: { children: ReactNode }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const chipRead = useRef(true);
+  const [demoDoc, setDemoDoc] = useState<DocKind>("CCCD");
+  const docType: DocKind = live ? persona.ocr.doc_type ?? "CCCD" : demoDoc;
+  /** Đổi loại giấy tờ: bản live chuyển sang hồ sơ mẫu tương ứng nhưng giữ phiên đang làm */
+  const chooseDocType = (t: DocKind) => {
+    setDemoDoc(t);
+    if (live && (persona.ocr.doc_type ?? "CCCD") !== t) {
+      const code = t === "PASSPORT" ? "TD-14" : "TD-01";
+      setPersonaCode(code); write(LS.persona, code);
+    }
+  };
   const pending = useRef<Promise<SessionResult> | null>(null);
   const dev = deviceFor(persona, install);
 
@@ -187,9 +201,9 @@ export function EkycProvider({ children }: { children: ReactNode }) {
   }, [live, session]);
 
   const value = useMemo<Ctx>(() => ({
-    live, persona, setPersona, session, result, doc, resumable, busy, error, clearError: () => setError(null), chipRead,
+    live, docType, chooseDocType, persona, setPersona, session, result, doc, resumable, busy, error, clearError: () => setError(null), chipRead,
     outcome: result?.outcome ?? null, transition, refreshResult, newDevice,
-  }), [live, persona, session, result, doc, resumable, busy, error, transition, refreshResult]); // eslint-disable-line react-hooks/exhaustive-deps
+  }), [live, docType, persona, session, result, doc, resumable, busy, error, transition, refreshResult]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <EkycCtx.Provider value={value}>{children}</EkycCtx.Provider>;
 }

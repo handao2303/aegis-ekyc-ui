@@ -3,8 +3,14 @@
    File này không import gì để cả Next.js và Node dùng chung được. */
 
 export type PersonaDoc = {
+  /** Mặc định CCCD. Hộ chiếu chỉ có 1 trang dữ liệu (MRZ TD3), chip nằm ở bìa */
+  doc_type?: "CCCD" | "PASSPORT";
   full_name: string;
+  /** Số định danh cá nhân 12 số; hộ chiếu nước ngoài để trống */
   id_number: string;
+  passport_no?: string;
+  /** Mã quốc gia ICAO 3 ký tự, mặc định VNM */
+  nationality?: string;
   dob: string; // YYYY-MM-DD
   sex: "F" | "M";
   origin: string;
@@ -21,7 +27,7 @@ export type Persona = {
   phone: string;
   ocr: PersonaDoc;
   /** null = máy không có NFC / khách bỏ qua */
-  chip: null | { dg1: Pick<PersonaDoc, "full_name" | "id_number" | "dob" | "expiry">; sod_valid: boolean; chip_auth: boolean };
+  chip: null | { dg1: Pick<PersonaDoc, "full_name" | "id_number" | "dob" | "expiry" | "passport_no" | "nationality">; sod_valid: boolean; chip_auth: boolean };
   liveness: number;
   face_match: number;
   /** Số lần chụp lỗi mô phỏng trước khi đọc được (TD-07) */
@@ -33,7 +39,7 @@ const doc = (p: Partial<PersonaDoc> & Pick<PersonaDoc, "full_name" | "id_number"
   sex: "F", origin: "Tân Châu, An Giang", issued: "2021-06-12", expiry: "2032-03-15", ...p,
 });
 const chipOf = (d: PersonaDoc, over: Partial<PersonaDoc> = {}) => ({
-  dg1: { full_name: d.full_name, id_number: d.id_number, dob: d.dob, expiry: d.expiry, ...over },
+  dg1: { full_name: d.full_name, id_number: d.id_number, dob: d.dob, expiry: d.expiry, passport_no: d.passport_no, nationality: d.nationality, ...over },
   sod_valid: true,
   chip_auth: true,
 });
@@ -49,6 +55,8 @@ const td08 = doc({ full_name: "HOÀNG THỊ LAN", id_number: "038085008899", dob
 const td09 = doc({ full_name: "NGÔ ĐỨC TÀI", id_number: "036090009900", dob: "1990-12-03", sex: "M", origin: "Nam Định", issued: "2015-03-15", expiry: "2025-03-15" });
 const td10 = doc({ full_name: "LÝ GIA HUY", id_number: "079209001010", dob: "2009-05-20", sex: "M", origin: "Quận 5, TP. Hồ Chí Minh", expiry: "2034-05-20" });
 const td12 = doc({ full_name: "TẠ MINH KHOA", id_number: "060091001212", dob: "1991-08-08", sex: "M", origin: "Phan Thiết, Bình Thuận", expiry: "2031-08-08" });
+const td14 = doc({ doc_type: "PASSPORT", full_name: "ĐẶNG MINH QUÂN", id_number: "079096001414", passport_no: "C1414141", nationality: "VNM", dob: "1996-04-14", sex: "M", origin: "TP. Hồ Chí Minh", issued: "2023-04-14", expiry: "2033-04-14" });
+const td15 = doc({ doc_type: "PASSPORT", full_name: "JOHN MICHAEL SMITH", id_number: "", passport_no: "533415151", nationality: "GBR", dob: "1987-05-12", sex: "M", origin: "London", issued: "2021-05-12", expiry: "2031-05-12" });
 const td13 = doc({ full_name: "VŨ HOÀNG LONG", id_number: "034001001313", dob: "2001-10-10", sex: "M", origin: "Thái Bình", expiry: "2041-10-10" });
 
 export const PERSONAS: Persona[] = [
@@ -64,6 +72,8 @@ export const PERSONAS: Persona[] = [
   { code: "TD-10", label: "17 tuổi, sản phẩm tín dụng", expect: "REJECTED · UNDER_AGE", product: "credit", device: { id: "dev-td10", model: "iPhone 11 · iOS 17" }, phone: "0901000010", ocr: td10, chip: chipOf(td10), liveness: 0.97, face_match: 0.93, uat: ["UAT-EKYC-14"] },
   { code: "TD-12", label: "Chip sai chữ ký số", expect: "REFER · CHIP_AUTH_FAILED", product: "payment", device: { id: "dev-td12", model: "Pixel 8 · Android 15" }, phone: "0901000012", ocr: td12, chip: { ...chipOf(td12), sod_valid: false }, liveness: 0.97, face_match: 0.93, uat: ["UAT-EKYC-20"] },
   { code: "TD-13", label: "Một máy, hai CCCD", expect: "REFER · DEVICE_MULTI_IDENTITY", product: "payment", device: { id: "dev-shared-13", model: "Pixel 7 · Android 15" }, phone: "0901000013", ocr: td13, chip: chipOf(td13), liveness: 0.95, face_match: 0.91, uat: ["UAT-EKYC-22"] },
+  { code: "TD-14", label: "Hộ chiếu Việt Nam gắn chip", expect: "STP_APPROVED", product: "payment", device: { id: "dev-td14", model: "iPhone 15 Pro · iOS 18" }, phone: "0901000014", ocr: td14, chip: chipOf(td14), liveness: 0.97, face_match: 0.94, uat: ["UAT-EKYC-25"] },
+  { code: "TD-15", label: "Hộ chiếu nước ngoài", expect: "REFER · FOREIGN_NATIONAL", product: "payment", device: { id: "dev-td15", model: "iPhone 14 · iOS 18" }, phone: "0901000015", ocr: td15, chip: chipOf(td15), liveness: 0.96, face_match: 0.92, uat: ["UAT-EKYC-26"] },
 ];
 
 export const findPersona = (code: string | null | undefined) => PERSONAS.find((p) => p.code === code) ?? PERSONAS[0];

@@ -16,8 +16,11 @@ export function apiBase(): string | null {
     if (saved === "off") return null;
     if (saved) return saved;
   } catch { /* trình duyệt chặn storage */ }
-  const { hostname, protocol } = window.location;
-  return PRIVATE.test(hostname) && protocol === "http:" ? `http://${hostname}:8787` : null;
+  const { hostname, protocol, origin } = window.location;
+  if (PRIVATE.test(hostname) && protocol === "http:") return `http://${hostname}:8787`;
+  // Link HTTPS tạm (Cloudflare Tunnel) trỏ về Next dev: gọi backend qua proxy cùng nguồn /ekyc-api
+  if (hostname.endsWith(".trycloudflare.com")) return `${origin}${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/ekyc-api`;
+  return null;
 }
 
 let probe: Promise<boolean> | null = null;
@@ -66,6 +69,7 @@ export type Staff = { id: string; name: string; role: "OFFICER" | "LEAD" | "CS" 
 
 export type CaseItem = {
   id: string; status: "REFER" | "REFER_RESUBMITTED" | "PENDING_CHECKER" | "PENDING_CUSTOMER_INFO" | "APPROVED" | "REJECTED";
+  doc_type: "CCCD" | "PASSPORT"; nationality: string | null;
   name_masked: string; dob_year: string | null; reasons: string[]; risk_score: number | null;
   sla: { state: "ON_TRACK" | "DUE_SOON" | "BREACHED" | "PAUSED" | "DONE"; elapsed_hours: number; limit_hours: number; warning_hours: number };
   assignee: Staff | null; pending_maker: Staff | null; resubmitted: boolean; info_request_count: number;
@@ -74,7 +78,7 @@ export type CaseItem = {
   decision: { decision: string; by: string; at: number } | null;
 };
 
-type DocView = { full_name: string; id_number: string; dob: string; expiry: string } | null;
+type DocView = { full_name: string; id_number: string | null; passport_no: string | null; nationality: string | null; dob: string; expiry: string } | null;
 export type CaseDetail = CaseItem & {
   full_name?: string;
   document: { ocr: DocView; chip: DocView; chip_verified: boolean; mismatch: string[]; expiry: string | null; purged: boolean };
