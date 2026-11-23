@@ -4,8 +4,8 @@
 |---|---|
 | Module | eKYC – mở tài khoản trực tuyến (app khách, Aegis Compliance, `ekyc-service`) |
 | Epic | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69) |
-| Tài liệu đi kèm | [T02 Bộ test case](T02-test-cases.md) · [T03 Báo cáo kết quả](T03-test-report.md) · [C15 Hiệu năng](../03-quality/C15-performance-test-plan.md) · [C16 SIT](../03-quality/C16-sit-plan.md) · [C17 UAT](../03-quality/C17-uat-pack.md) |
-| Cơ sở | BRD/FSD/SRS v1.2 + addendum v1.3 ([C03](../00-governance/C03-requirements-addendum-v1.3.md)), đặc tả C04–C13, giao diện [U01](../10-ui/U01-customer-app-ui-spec.md), [U02](../10-ui/U02-compliance-ui-spec.md), điều khoản [P01](../09-legal/P01-terms-privacy.md) |
+| Tài liệu đi kèm | [T02 Bộ test case](T02-test-cases.md) · [T03 Báo cáo kết quả](T03-test-report.md) · [C15 Hiệu năng](C15-performance-test-plan.md) · [C16 SIT](C16-sit-plan.md) · [C17 UAT](C17-uat-pack.md) |
+| Cơ sở | BRD/FSD/SRS v1.2 + addendum v1.3 ([C03](../../00-overview/C03-requirements-addendum-v1.3.md)), đặc tả C04–C13, giao diện [U01](../1.3-ui/U01-customer-app-ui-spec.md), [U02](../1.3-ui/U02-compliance-ui-spec.md), điều khoản [P01](../1.2-compliance-legal/P01-terms-privacy.md) |
 | Phiên bản | 1.0 · 23/11/2026 · Han Dao (BA) |
 
 ## 1. Mục tiêu
@@ -57,7 +57,7 @@
 | Demo | GitHub Pages – không backend | Trình diễn giao diện |
 | SIT / UAT | Theo C16 / C17 | — |
 
-**Dữ liệu:** hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`, mô tả ở [C17 §4](../03-quality/C17-uat-pack.md)), 8 hồ sơ có sẵn trong hàng đợi, 4 nhân viên mẫu. Đặt lại dữ liệu: `POST /api/dev/reset`. Tua giờ để thử SLA/job: `POST /api/dev/clock/advance`. **Không dùng dữ liệu thật của khách.**
+**Dữ liệu:** hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`, mô tả ở [C17 §4](C17-uat-pack.md)), 8 hồ sơ có sẵn trong hàng đợi, 4 nhân viên mẫu. Đặt lại dữ liệu: `POST /api/dev/reset`. Tua giờ để thử SLA/job: `POST /api/dev/clock/advance`. **Không dùng dữ liệu thật của khách.**
 
 ## 6. Tiêu chí vào
 

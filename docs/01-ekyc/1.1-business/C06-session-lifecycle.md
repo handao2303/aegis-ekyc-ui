@@ -8,7 +8,7 @@
 
 ## 1. Sơ đồ trạng thái phiên
 
-Phần "trong quá trình làm" của hồ sơ. Kết quả quyết định nằm ở sơ đồ tổng trong [C03](../00-governance/C03-requirements-addendum-v1.3.md).
+Phần "trong quá trình làm" của hồ sơ. Kết quả quyết định nằm ở sơ đồ tổng trong [C03](../../00-overview/C03-requirements-addendum-v1.3.md).
 
 ```mermaid
 stateDiagram-v2

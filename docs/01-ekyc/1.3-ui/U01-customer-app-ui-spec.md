@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phạm vi | 20 màn eKYC (eKYC-00 → eKYC-14) và hộp thoại Điều khoản. Màn Hạn mức thẻ (LIM-M) xem [L01](../07-credit-limit/L01-credit-limit-flow.md) |
+| Phạm vi | 20 màn eKYC (eKYC-00 → eKYC-14) và hộp thoại Điều khoản. Màn Hạn mức thẻ (LIM-M) xem [L01](../../03-credit-limit/L01-credit-limit-flow.md) |
 | Jira | SCRUM-47 (UX), SCRUM-17 → 19, 39 → 41, 46; SCRUM-73 → 81 |
 | Bản chạy | [Bản demo](https://handao2303.github.io/aegis-ekyc-ui/app/) · bản nối backend: `npm run dev:all` rồi mở `/app/` |
 | Mã nguồn | `src/mobile/screens.tsx`, `src/ekyc/EkycContext.tsx` (gọi API), `src/ekyc/terms.ts` (điều khoản) |
@@ -67,11 +67,11 @@ flowchart TB
 
 ## 2. Đặc tả từng màn
 
-Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/README](../../server/README.md)). Không có backend thì app chạy chế độ demo, giữ nguyên điều hướng.
+Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/README](../../../server/README.md)). Không có backend thì app chạy chế độ demo, giữ nguyên điều hướng.
 
 ### eKYC-00 · Giới thiệu
 
-<img src="../../public/ui/app-intro.png" width="240" alt="eKYC-00 Giới thiệu">
+<img src="../../../public/ui/app-intro.png" width="240" alt="eKYC-00 Giới thiệu">
 
 | Mục | Nội dung |
 |---|---|
@@ -83,13 +83,13 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-01 · Đồng ý điều khoản
 
-<img src="../../public/ui/app-consent.png" width="240" alt="eKYC-01 Đồng ý"> <img src="../../public/ui/app-terms.png" width="240" alt="Hộp thoại điều khoản">
+<img src="../../../public/ui/app-consent.png" width="240" alt="eKYC-01 Đồng ý"> <img src="../../../public/ui/app-terms.png" width="240" alt="Hộp thoại điều khoản">
 
 | Mục | Nội dung |
 |---|---|
 | Mục đích | Thu thập đồng ý theo từng phạm vi, ghi lại phiên bản điều khoản |
 | Thành phần | 3 ô chọn: **Xử lý dữ liệu định danh** (bắt buộc) · **Tra cứu tín dụng và kiểm tra tuân thủ** (bắt buộc) · **Nhận ưu đãi phù hợp** (tuỳ chọn). Ô không được chọn sẵn |
-| Điều khoản | Thẻ "Điều khoản và điều kiện · Phiên bản 2026.11 · hiệu lực 01/11/2026" mở hộp thoại 8 mục (nội dung: [P01 §2](../09-legal/P01-terms-privacy.md)) |
+| Điều khoản | Thẻ "Điều khoản và điều kiện · Phiên bản 2026.11 · hiệu lực 01/11/2026" mở hộp thoại 8 mục (nội dung: [P01 §2](../1.2-compliance-legal/P01-terms-privacy.md)) |
 | Kiểm tra | Nút chính bị khoá và ghi "Chọn 2 mục bắt buộc" cho tới khi đủ 2 mục bắt buộc |
 | Điều hướng | **Đồng ý và tiếp tục** → eKYC-02 |
 | API | `POST /api/sessions` (thiết bị, số điện thoại, sản phẩm) rồi `POST /api/sessions/:id/consent` (`scopes`, `terms_version`) |
@@ -97,7 +97,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-01R · Đồng ý lại điều khoản
 
-<img src="../../public/ui/app-reconsent.png" width="240" alt="eKYC-01R Đồng ý lại">
+<img src="../../../public/ui/app-reconsent.png" width="240" alt="eKYC-01R Đồng ý lại">
 
 | Mục | Nội dung |
 |---|---|
@@ -108,7 +108,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-02 · Chọn giấy tờ
 
-<img src="../../public/ui/app-docType.png" width="240" alt="eKYC-02 Chọn giấy tờ"> <img src="../../public/ui/app-docType-passport.png" width="240" alt="eKYC-02 chọn hộ chiếu">
+<img src="../../../public/ui/app-docType.png" width="240" alt="eKYC-02 Chọn giấy tờ"> <img src="../../../public/ui/app-docType-passport.png" width="240" alt="eKYC-02 chọn hộ chiếu">
 
 | Mục | Nội dung |
 |---|---|
@@ -119,7 +119,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-03 / 03b · Chụp giấy tờ
 
-<img src="../../public/ui/app-captureFront.png" width="240" alt="eKYC-03 Chụp mặt trước"> <img src="../../public/ui/app-captureBack.png" width="240" alt="eKYC-03b Chụp mặt sau">
+<img src="../../../public/ui/app-captureFront.png" width="240" alt="eKYC-03 Chụp mặt trước"> <img src="../../../public/ui/app-captureBack.png" width="240" alt="eKYC-03b Chụp mặt sau">
 
 | Mục | Nội dung |
 |---|---|
@@ -132,7 +132,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-04 · Kiểm tra ảnh
 
-<img src="../../public/ui/app-reviewFront.png" width="240" alt="eKYC-04 Kiểm tra ảnh">
+<img src="../../../public/ui/app-reviewFront.png" width="240" alt="eKYC-04 Kiểm tra ảnh">
 
 | Mục | Nội dung |
 |---|---|
@@ -142,7 +142,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-05 · Kiểm tra thông tin
 
-<img src="../../public/ui/app-ocrReview.png" width="240" alt="eKYC-05 Kiểm tra thông tin">
+<img src="../../../public/ui/app-ocrReview.png" width="240" alt="eKYC-05 Kiểm tra thông tin">
 
 | Mục | Nội dung |
 |---|---|
@@ -155,7 +155,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-03B · Quét chip NFC
 
-<img src="../../public/ui/app-nfc.png" width="240" alt="eKYC-03B Quét chip">
+<img src="../../../public/ui/app-nfc.png" width="240" alt="eKYC-03B Quét chip">
 
 | Mục | Nội dung |
 |---|---|
@@ -164,11 +164,11 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 | Cảnh báo | Giấy tờ còn hạn dưới 30 ngày: "Giấy tờ sắp hết hạn" – vẫn đi tiếp |
 | Bỏ qua | "Điện thoại không có NFC?" → cảnh báo "Hồ sơ sẽ được duyệt thủ công" + **Vẫn bỏ qua** / **Thử quét lại** |
 | API | `POST /api/sessions/:id/chip` (DG1 + kết quả SOD) hoặc `{ skipped: true }` |
-| Giới hạn | Safari trên iPhone không có Web NFC: bản web mô phỏng bước đọc; đọc chip thật dùng app Aegis Scan ([A02](../05-architecture/A02-ios-document-scan.md)) |
+| Giới hạn | Safari trên iPhone không có Web NFC: bản web mô phỏng bước đọc; đọc chip thật dùng app Aegis Scan ([A02](A02-ios-document-scan.md)) |
 
 ### eKYC-06 · Xác thực khuôn mặt
 
-<img src="../../public/ui/app-liveness.png" width="240" alt="eKYC-06 Khuôn mặt">
+<img src="../../../public/ui/app-liveness.png" width="240" alt="eKYC-06 Khuôn mặt">
 
 | Mục | Nội dung |
 |---|---|
@@ -179,7 +179,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-06b · Đang xác minh
 
-<img src="../../public/ui/app-verifying.png" width="240" alt="eKYC-06b Đang xác minh">
+<img src="../../../public/ui/app-verifying.png" width="240" alt="eKYC-06b Đang xác minh">
 
 | Mục | Nội dung |
 |---|---|
@@ -189,7 +189,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-07 · Thành công
 
-<img src="../../public/ui/app-approved.png" width="240" alt="eKYC-07 Thành công">
+<img src="../../../public/ui/app-approved.png" width="240" alt="eKYC-07 Thành công">
 
 | Mục | Nội dung |
 |---|---|
@@ -199,7 +199,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-09 · Đang xem xét
 
-<img src="../../public/ui/app-refer.png" width="240" alt="eKYC-09 Đang xem xét">
+<img src="../../../public/ui/app-refer.png" width="240" alt="eKYC-09 Đang xem xét">
 
 | Mục | Nội dung |
 |---|---|
@@ -210,7 +210,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-08 · Từ chối
 
-<img src="../../public/ui/app-rejected.png" width="240" alt="eKYC-08 Từ chối">
+<img src="../../../public/ui/app-rejected.png" width="240" alt="eKYC-08 Từ chối">
 
 | Mục | Nội dung |
 |---|---|
@@ -219,7 +219,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-03C · Không đọc được giấy tờ
 
-<img src="../../public/ui/app-unreadable.png" width="240" alt="eKYC-03C Không đọc được">
+<img src="../../../public/ui/app-unreadable.png" width="240" alt="eKYC-03C Không đọc được">
 
 | Mục | Nội dung |
 |---|---|
@@ -230,7 +230,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-10 · Tiếp tục phiên
 
-<img src="../../public/ui/app-resume.png" width="240" alt="eKYC-10 Tiếp tục phiên">
+<img src="../../../public/ui/app-resume.png" width="240" alt="eKYC-10 Tiếp tục phiên">
 
 | Mục | Nội dung |
 |---|---|
@@ -240,7 +240,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-11 · Bổ sung hồ sơ
 
-<img src="../../public/ui/app-requestInfo.png" width="240" alt="eKYC-11 Bổ sung hồ sơ">
+<img src="../../../public/ui/app-requestInfo.png" width="240" alt="eKYC-11 Bổ sung hồ sơ">
 
 | Mục | Nội dung |
 |---|---|
@@ -251,7 +251,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-12 · Đã có tài khoản
 
-<img src="../../public/ui/app-duplicate.png" width="240" alt="eKYC-12 Đã có tài khoản">
+<img src="../../../public/ui/app-duplicate.png" width="240" alt="eKYC-12 Đã có tài khoản">
 
 | Mục | Nội dung |
 |---|---|
@@ -262,7 +262,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-13 · Giấy tờ hết hạn
 
-<img src="../../public/ui/app-expiredDoc.png" width="240" alt="eKYC-13 Giấy tờ hết hạn">
+<img src="../../../public/ui/app-expiredDoc.png" width="240" alt="eKYC-13 Giấy tờ hết hạn">
 
 | Mục | Nội dung |
 |---|---|
@@ -271,7 +271,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ### eKYC-14 · Quyền riêng tư
 
-<img src="../../public/ui/app-privacy.png" width="240" alt="eKYC-14 Quyền riêng tư">
+<img src="../../../public/ui/app-privacy.png" width="240" alt="eKYC-14 Quyền riêng tư">
 
 | Mục | Nội dung |
 |---|---|
@@ -297,7 +297,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ## 4. Truy vết
 
-| Màn | Story | Quy tắc | UAT ([C17](../03-quality/C17-uat-pack.md)) | Test case ([T02](../08-testing/T02-test-cases.md)) |
+| Màn | Story | Quy tắc | UAT ([C17](../1.4-testing/C17-uat-pack.md)) | Test case ([T02](../1.4-testing/T02-test-cases.md)) |
 |---|---|---|---|---|
 | eKYC-01, 01R | SCRUM-17, 46 | Đồng ý theo phạm vi | 03 | TC-APP-01 → 06 |
 | eKYC-02 → 05 | SCRUM-18, 73, 74 | RULE-09, 10 | 12, 13, 14, 25, 26 | TC-APP-07 → 18 |

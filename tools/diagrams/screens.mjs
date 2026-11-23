@@ -1,4 +1,4 @@
-/* Chụp ảnh màn hình cho tài liệu giao diện (docs/10-ui).
+/* Chụp ảnh màn hình cho tài liệu giao diện (docs/01-ekyc/1.3-ui).
    Cần web chạy ở http://localhost:5179 (npm run dev). Chạy ở chế độ demo (?api=off) để ảnh ổn định.
    node screens.mjs ../../public/ui */
 import puppeteer from "puppeteer-core";

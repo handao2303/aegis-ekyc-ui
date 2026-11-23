@@ -68,7 +68,7 @@ flowchart TB
     EK --> EXT["CIC · AML · Biometric<br/>(qua adapter, circuit breaker)"]
 ```
 
-Chi tiết từng phần: vòng đời phiên ở [C06](../01-business/C06-session-lifecycle.md), audit ở [C10](../01-business/C10-maker-checker-audit.md), đo lường ở [C18](../04-analytics/C18-kpi-metric-dictionary.md), đối soát ở [R01](../06-reconciliation/R01-reconciliation-flow.md), hạn mức ở [L01](../07-credit-limit/L01-credit-limit-flow.md), app quét giấy tờ ở [A02](A02-ios-document-scan.md).
+Chi tiết từng phần: vòng đời phiên ở [C06](../01-ekyc/1.1-business/C06-session-lifecycle.md), audit ở [C10](../01-ekyc/1.1-business/C10-maker-checker-audit.md), đo lường ở [C18](../01-ekyc/1.5-analytics/C18-kpi-metric-dictionary.md), đối soát ở [R01](../02-reconciliation/R01-reconciliation-flow.md), hạn mức ở [L01](../03-credit-limit/L01-credit-limit-flow.md), app quét giấy tờ ở [A02](../01-ekyc/1.3-ui/A02-ios-document-scan.md).
 
 ## 3. Luồng end-to-end – mở tài khoản thành công (STP)
 
@@ -108,7 +108,7 @@ sequenceDiagram
     APP-->>KH: Màn "Thành công"
 ```
 
-Nhánh REFER và REJECTED: xem [C07–C09](../01-business/C07-C09-refer-handling.md).
+Nhánh REFER và REJECTED: xem [C07–C09](../01-ekyc/1.1-business/C07-C09-refer-handling.md).
 
 ## 4. Cây quyết định tổng
 
@@ -163,7 +163,7 @@ flowchart TB
     M1 -.-> M3["LIM-M3<br/>Khoá Boost"]
 ```
 
-Nét liền: luồng chính. Nét đứt: ngoại lệ. Sau khi mở tài khoản thành công, "Vào trang chủ" dẫn sang nhóm Hạn mức thẻ (22 màn tổng cộng). Chi tiết Hạn mức ở [L01](../07-credit-limit/L01-credit-limit-flow.md).
+Nét liền: luồng chính. Nét đứt: ngoại lệ. Sau khi mở tài khoản thành công, "Vào trang chủ" dẫn sang nhóm Hạn mức thẻ (22 màn tổng cộng). Chi tiết Hạn mức ở [L01](../03-credit-limit/L01-credit-limit-flow.md).
 
 ## 6. Bản đồ màn hình – Aegis Compliance
 

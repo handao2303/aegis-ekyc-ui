@@ -6,7 +6,7 @@
 | Phiên bản điều khoản | `2026.11` · hiệu lực dự kiến 01/11/2026 |
 | Dùng ở | Màn eKYC-01 / 01R (hộp thoại điều khoản), eKYC-14 (quyền riêng tư), thông báo SMS/Push (C08) |
 | Nguồn trong code | `src/ekyc/terms.ts` (nội dung hiển thị) · `server/src/config.ts` → `terms_version` |
-| Liên quan | [C02 Compliance Mapping](../00-governance/C02-compliance-mapping.md) · [C12 Rút lại đồng ý & lưu trữ](../02-compliance/C12-consent-retention.md) · [C07–C09 Thông báo](../01-business/C07-C09-refer-handling.md) |
+| Liên quan | [C02 Compliance Mapping](C02-compliance-mapping.md) · [C12 Rút lại đồng ý & lưu trữ](C12-consent-retention.md) · [C07–C09 Thông báo](../1.1-business/C07-C09-refer-handling.md) |
 | Jira | SCRUM-17, 46, 71, 81 |
 
 > ⚠️ Nội dung điều khoản là bản BA soạn để làm giao diện và kiểm thử. Số hiệu văn bản ở mục 4 lấy theo C02 và **phải được Pháp chế đối chiếu bản gốc, tình trạng hiệu lực** trước khi phát hành.

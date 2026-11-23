@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Jira | [SCRUM-87](https://baohandao2303.atlassian.net/browse/SCRUM-87) |
-| UI | Màn **Báo cáo SLA** trong Aegis Compliance (bản mẫu: [pages.tsx](../../src/web/pages.tsx)) |
+| UI | Màn **Báo cáo SLA** trong Aegis Compliance (bản mẫu: [pages.tsx](../../../src/web/pages.tsx)) |
 | Nguồn dữ liệu | Sự kiện trạng thái phiên (C06), `kyc_decisions`, `audit_event` (C10) → DWH |
 
 ## 1. Luồng dữ liệu

@@ -5,7 +5,7 @@
 | Jira | [SCRUM-72](https://baohandao2303.atlassian.net/browse/SCRUM-72) |
 | Bổ sung cho | BAS-BRD-v1.2 · BAS-FSD-v1.2 · BAS-SRS-v1.2 |
 | Trạng thái | **Bản nháp v1.3-draft – chờ PO & Compliance duyệt** |
-| Đầu vào | [C02 Compliance Mapping](C02-compliance-mapping.md) |
+| Đầu vào | [C02 Compliance Mapping](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) |
 
 Tài liệu này chỉ chứa **phần thay đổi** so với baseline v1.2. Khi được duyệt, nội dung được gộp vào BRD/FSD/SRS v1.3.
 
@@ -64,16 +64,16 @@ stateDiagram-v2
 
 | Mã | Mô tả | BR | Tài liệu chi tiết |
 |---|---|---|---|
-| FR-EKYC-09 | Kiểm tra trùng theo số CCCD sau OCR/NFC, trước Liveness | BR-12 | [C04–C05](../01-business/C04-C05-identity-validation.md) |
-| FR-EKYC-10 | Kiểm tra hạn giấy tờ, tuổi, lệch OCR–chip | BR-13 | [C04–C05](../01-business/C04-C05-identity-validation.md) |
-| FR-EKYC-11 | Quản lý trạng thái phiên, tiếp tục phiên, job hết hạn | BR-14 | [C06](../01-business/C06-session-lifecycle.md) |
-| FR-EKYC-12 | Luồng yêu cầu bổ sung giấy tờ | BR-15 | [C07–C09](../01-business/C07-C09-refer-handling.md) |
-| FR-EKYC-13 | Gửi thông báo SMS / Push theo ma trận sự kiện | BR-16 | [C07–C09](../01-business/C07-C09-refer-handling.md) |
-| FR-EKYC-14 | SLA, nhận xử lý, leo thang hàng đợi | BR-17 | [C07–C09](../01-business/C07-C09-refer-handling.md) |
-| FR-EKYC-15 | Maker-Checker và audit log bất biến | BR-18 | [C10](../01-business/C10-maker-checker-audit.md) |
-| FR-EKYC-16 | Chọn nguồn ảnh so khớp, xác thực chip | BR-19 | [C11](../02-compliance/C11-biometric-source.md) |
-| FR-EKYC-17 | Rút lại đồng ý, job lưu trữ / xoá | BR-20 | [C12](../02-compliance/C12-consent-retention.md) |
-| FR-EKYC-18 | Velocity rules theo thiết bị / số điện thoại | BR-21 | [C13–C14](../02-compliance/C13-C14-fraud-controls.md) |
+| FR-EKYC-09 | Kiểm tra trùng theo số CCCD sau OCR/NFC, trước Liveness | BR-12 | [C04–C05](../01-ekyc/1.1-business/C04-C05-identity-validation.md) |
+| FR-EKYC-10 | Kiểm tra hạn giấy tờ, tuổi, lệch OCR–chip | BR-13 | [C04–C05](../01-ekyc/1.1-business/C04-C05-identity-validation.md) |
+| FR-EKYC-11 | Quản lý trạng thái phiên, tiếp tục phiên, job hết hạn | BR-14 | [C06](../01-ekyc/1.1-business/C06-session-lifecycle.md) |
+| FR-EKYC-12 | Luồng yêu cầu bổ sung giấy tờ | BR-15 | [C07–C09](../01-ekyc/1.1-business/C07-C09-refer-handling.md) |
+| FR-EKYC-13 | Gửi thông báo SMS / Push theo ma trận sự kiện | BR-16 | [C07–C09](../01-ekyc/1.1-business/C07-C09-refer-handling.md) |
+| FR-EKYC-14 | SLA, nhận xử lý, leo thang hàng đợi | BR-17 | [C07–C09](../01-ekyc/1.1-business/C07-C09-refer-handling.md) |
+| FR-EKYC-15 | Maker-Checker và audit log bất biến | BR-18 | [C10](../01-ekyc/1.1-business/C10-maker-checker-audit.md) |
+| FR-EKYC-16 | Chọn nguồn ảnh so khớp, xác thực chip | BR-19 | [C11](../01-ekyc/1.2-compliance-legal/C11-biometric-source.md) |
+| FR-EKYC-17 | Rút lại đồng ý, job lưu trữ / xoá | BR-20 | [C12](../01-ekyc/1.2-compliance-legal/C12-consent-retention.md) |
+| FR-EKYC-18 | Velocity rules theo thiết bị / số điện thoại | BR-21 | [C13–C14](../01-ekyc/1.2-compliance-legal/C13-C14-fraud-controls.md) |
 
 ## 4. Business Rules mới
 
@@ -92,7 +92,7 @@ stateDiagram-v2
 
 | Mã | Yêu cầu | Đo bằng |
 |---|---|---|
-| NFR-PERF-03 | Toàn luồng từ Consent đến kết quả STP ≤ 3 phút (P90, không tính thời gian khách thao tác) | [C15](../03-quality/C15-performance-test-plan.md) |
+| NFR-PERF-03 | Toàn luồng từ Consent đến kết quả STP ≤ 3 phút (P90, không tính thời gian khách thao tác) | [C15](../01-ekyc/1.4-testing/C15-performance-test-plan.md) |
 | NFR-AUD-03 | Audit log append-only, không sửa/xoá ở tầng service và DB | Test C10 |
 | NFR-RET-01 | Job retention chạy hằng ngày, có báo cáo số bản ghi xoá | Test C12 |
 | NFR-SEC-05 | Cấu hình ngưỡng thay đổi cần phê duyệt hai người | Test C10 |
@@ -112,7 +112,7 @@ stateDiagram-v2
 | BR-20 | FR-17 | RULE-15 | SCRUM-81 | Màn Consent | UAT-EKYC-21 |
 | BR-21 | FR-18 | RULE-16 | SCRUM-82 | Thẻ "Thiết bị" | UAT-EKYC-22 |
 
-Bộ UAT chi tiết: [C17 UAT Pack](../03-quality/C17-uat-pack.md).
+Bộ UAT chi tiết: [C17 UAT Pack](../01-ekyc/1.4-testing/C17-uat-pack.md).
 
 ## 7. Nhật ký thay đổi
 

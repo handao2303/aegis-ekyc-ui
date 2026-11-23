@@ -1,5 +1,5 @@
 /* Điều khoản mở tài khoản trực tuyến – bản hiển thị trong app (màn eKYC-01).
-   Nguồn: docs/09-legal/P01-terms-privacy.md. Phiên bản phải khớp terms_version của ekyc-service
+   Nguồn: docs/01-ekyc/1.2-compliance-legal/P01-terms-privacy.md. Phiên bản phải khớp terms_version của ekyc-service
    (server/src/config.ts); đổi nội dung thì tăng phiên bản để khách được hỏi đồng ý lại (SCRUM-46).
    BẢN NHÁP – chờ Pháp chế/Compliance duyệt. */
 

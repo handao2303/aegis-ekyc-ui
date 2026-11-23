@@ -4,7 +4,7 @@
 |---|---|
 | Jira | [SCRUM-73](https://baohandao2303.atlassian.net/browse/SCRUM-73) (C04) · [SCRUM-74](https://baohandao2303.atlassian.net/browse/SCRUM-74) (C05) |
 | BR / FR / RULE | BR-12, BR-13 · FR-09, FR-10 · RULE-09, RULE-10 |
-| UI | `Duplicate`, `ExpiredDoc`, `OcrReview` trong [screens.tsx](../../src/mobile/screens.tsx) |
+| UI | `Duplicate`, `ExpiredDoc`, `OcrReview` trong [screens.tsx](../../../src/mobile/screens.tsx) |
 
 Hai kiểm tra này chạy **ngay sau OCR/NFC và trước Liveness**. Mục đích là dừng sớm hồ sơ không hợp lệ, không tốn chi phí gọi Liveness và CIC.
 
@@ -41,7 +41,7 @@ flowchart TD
 | 5 | OCR ≠ chip ở trường định danh | Cờ `DOC_DATA_MISMATCH` → REFER | (không hiển thị) |
 | 6 | Hộ chiếu nước ngoài | Cờ `FOREIGN_NATIONAL` → REFER để kiểm tra thị thực / thẻ tạm trú | Hồ sơ được nhân viên xem xét |
 
-Ngưỡng tuổi chờ Compliance trả lời câu hỏi số 1 trong [C02](../00-governance/C02-compliance-mapping.md). Giá trị đề xuất: tài khoản thanh toán **15**, sản phẩm có hạn mức tín dụng **18**. Đây là tham số cấu hình, không viết cố định trong code.
+Ngưỡng tuổi chờ Compliance trả lời câu hỏi số 1 trong [C02](../1.2-compliance-legal/C02-compliance-mapping.md). Giá trị đề xuất: tài khoản thanh toán **15**, sản phẩm có hạn mức tín dụng **18**. Đây là tham số cấu hình, không viết cố định trong code.
 
 ## 3. RULE-EKYC-09 · Trùng khách hàng
 
@@ -82,4 +82,4 @@ Hộ chiếu chỉ chụp **trang thông tin** (MRZ 2 dòng × 44 ký tự, TD3)
 
 ## 6. Tiêu chí nghiệm thu (rút gọn)
 
-Xem ticket để có đầy đủ. UAT: UAT-EKYC-12, 13, 14, 25, 26 trong [C17](../03-quality/C17-uat-pack.md).
+Xem ticket để có đầy đủ. UAT: UAT-EKYC-12, 13, 14, 25, 26 trong [C17](../1.4-testing/C17-uat-pack.md).

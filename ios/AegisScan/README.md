@@ -31,7 +31,7 @@ Requirements: a Mac with Xcode, an iPhone 7 or later (iOS 16+), a USB cable.
 
 ## What is not production-ready yet
 
-- **CSCA signature**: needs a master list of country signing certificates (`PassportReader(masterListURL:)`). Without it, the app shows "Not checked". Banks also verify CCCD chips through the national system (C06); see `docs/02-compliance/C11-biometric-source.md`.
+- **CSCA signature**: needs a master list of country signing certificates (`PassportReader(masterListURL:)`). Without it, the app shows "Not checked". Banks also verify CCCD chips through the national system (C06); see `docs/01-ekyc/1.2-compliance-legal/C11-biometric-source.md`.
 - **DG13 labels** follow the commonly used layout and must be checked against the official specification.
 - **No liveness / face match** yet: compare a selfie with the DG2 photo in the next step.
 

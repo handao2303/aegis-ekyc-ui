@@ -32,7 +32,7 @@
 
 ## 2. Hàng đợi xét duyệt
 
-<img src="../../public/ui/co-queue.png" width="760" alt="Hàng đợi xét duyệt">
+<img src="../../../public/ui/co-queue.png" width="760" alt="Hàng đợi xét duyệt">
 
 | Mục | Nội dung |
 |---|---|
@@ -68,7 +68,7 @@
 
 ## 3. Chi tiết hồ sơ
 
-<img src="../../public/ui/co-detail.png" width="760" alt="Chi tiết hồ sơ">
+<img src="../../../public/ui/co-detail.png" width="760" alt="Chi tiết hồ sơ">
 
 | Khối | Nội dung |
 |---|---|
@@ -93,7 +93,7 @@
 
 ### Hộp thoại
 
-<img src="../../public/ui/co-modal-request.png" width="500" alt="Yêu cầu bổ sung"> <img src="../../public/ui/co-modal-reject.png" width="500" alt="Từ chối">
+<img src="../../../public/ui/co-modal-request.png" width="500" alt="Yêu cầu bổ sung"> <img src="../../../public/ui/co-modal-reject.png" width="500" alt="Từ chối">
 
 | Hộp thoại | Trường | Kiểm tra | Kết quả |
 |---|---|---|---|
@@ -104,13 +104,13 @@
 
 ## 4. Chờ Checker
 
-<img src="../../public/ui/co-checker.png" width="760" alt="Chờ Checker">
+<img src="../../../public/ui/co-checker.png" width="760" alt="Chờ Checker">
 
 Hàng đợi lọc sẵn hồ sơ `PENDING_CHECKER`; cột Người xử lý hiện tên Maker.
 
 ## 5. Đã xử lý
 
-<img src="../../public/ui/co-done.png" width="760" alt="Đã xử lý">
+<img src="../../../public/ui/co-done.png" width="760" alt="Đã xử lý">
 
 | Mục | Nội dung |
 |---|---|
@@ -121,18 +121,18 @@ Hàng đợi lọc sẵn hồ sơ `PENDING_CHECKER`; cột Người xử lý hi�
 
 ## 6. Báo cáo SLA
 
-<img src="../../public/ui/co-sla.png" width="760" alt="Báo cáo SLA">
+<img src="../../../public/ui/co-sla.png" width="760" alt="Báo cáo SLA">
 
 | Mục | Nội dung |
 |---|---|
 | Thẻ số liệu | Hồ sơ đã xử lý (7 ngày) · Tỷ lệ đúng SLA (mục tiêu ≥ 95%) · Thời gian xử lý trung vị · Đang mở (số quá SLA) |
 | Biểu đồ | Cột theo ngày, tách đúng SLA / quá SLA |
 | Lý do chuyển duyệt nhiều nhất | 6 lý do, thanh ngang; ghi chú STP và tỷ lệ dùng ảnh in trên thẻ trong 30 ngày |
-| API | `GET /api/reports/sla?days=7` · `GET /api/reports/kpi?days=30` (định nghĩa chỉ số: [C18](../04-analytics/C18-kpi-metric-dictionary.md)) |
+| API | `GET /api/reports/sla?days=7` · `GET /api/reports/kpi?days=30` (định nghĩa chỉ số: [C18](../1.5-analytics/C18-kpi-metric-dictionary.md)) |
 
 ## 7. Cấu hình ngưỡng
 
-<img src="../../public/ui/co-config.png" width="760" alt="Cấu hình ngưỡng">
+<img src="../../../public/ui/co-config.png" width="760" alt="Cấu hình ngưỡng">
 
 | Mục | Nội dung |
 |---|---|
@@ -146,7 +146,7 @@ Hàng đợi lọc sẵn hồ sơ `PENDING_CHECKER`; cột Người xử lý hi�
 
 ## 8. Truy vết
 
-| Màn | Story | Quy tắc | UAT | Test case ([T02](../08-testing/T02-test-cases.md)) |
+| Màn | Story | Quy tắc | UAT | Test case ([T02](../1.4-testing/T02-test-cases.md)) |
 |---|---|---|---|---|
 | Hàng đợi | SCRUM-78 | RULE-12 | 18 | TC-CO-01 → 06 |
 | Chi tiết, PII, sàng lọc | SCRUM-79 | C10 §3–4 | 09 | TC-CO-07 → 12 |

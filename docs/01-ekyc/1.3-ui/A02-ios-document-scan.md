@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Liên quan | SCRUM-18 (OCR/NFC), [SCRUM-80](https://baohandao2303.atlassian.net/browse/SCRUM-80) (C11 nguồn sinh trắc học), C15 (hiệu năng) |
-| Mã nguồn | [`ios/AegisScan`](../../ios/AegisScan/README.md) – SwiftUI, iOS 16+, NFCPassportReader 3.0.1 (MIT) |
+| Mã nguồn | [`ios/AegisScan`](../../../ios/AegisScan/README.md) – SwiftUI, iOS 16+, NFCPassportReader 3.0.1 (MIT) |
 | Chuẩn | ICAO 9303: MRZ TD1/TD3, BAC, PACE, Passive Authentication (SOD), Chip Authentication |
 | Trạng thái | Bản mẫu chạy được trên iPhone. Chưa có xác thực CSCA, liveness và so khớp khuôn mặt |
 
