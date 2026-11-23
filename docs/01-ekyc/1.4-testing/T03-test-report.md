@@ -8,6 +8,7 @@
 | Người thực hiện | Han Dao (BA) |
 | Môi trường | macOS, Node 23.11, `ekyc-service` SQLite, Next.js dev; Chrome (trình duyệt tích hợp), iOS Simulator iPhone 16 Pro qua link HTTPS tạm |
 | Kế hoạch / test case | [T01](T01-test-plan.md) · [T02](T02-test-cases.md) |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Completion Report) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Tóm tắt
 
@@ -130,3 +131,30 @@ TD-11 là hồ sơ có sẵn trong hàng đợi (tạo lùi thời gian) để t
 1. Chạy vòng 2: 11 case chưa chạy và 4 case một phần, ưu tiên TC-NFR-11 trên iPhone thật.
 2. Đưa dữ liệu lên Postgres trên cloud và mã hoá cột PII, để đóng TC-NFR-04.
 3. Lên lịch SIT (C16) ngay khi có sandbox, rồi mới UAT (C17).
+
+## 7. Sai lệch so với kế hoạch
+
+| Kế hoạch (T01) | Thực tế | Lý do |
+|---|---|---|
+| Chạy E2E trên iPhone thật | Chỉ chạy trên iOS Simulator | Camera iPhone cần HTTPS; link HTTPS tạm có sau khi đã chạy vòng |
+| Thử Chrome, Edge, Safari | Chỉ Chrome | Chưa sắp xếp máy |
+| Kiểm trợ năng bằng công cụ | Chưa chạy | Chưa có công cụ đo tương phản, VoiceOver |
+| Phạm vi ban đầu chỉ CCCD | Thêm luồng hộ chiếu giữa vòng (TD-14, TD-15, 5 test tự động) | Yêu cầu bổ sung của PO |
+
+## 8. Bài học kinh nghiệm
+
+1. Chạy `next build` khi `next dev` đang chạy làm hỏng thư mục build dùng chung (DEF-08). Build và dev phải dùng thư mục riêng.
+2. Viết test case từ đặc tả giúp tìm lỗi trước khi chạy (DEF-01, 03, 04). Nên viết T02 trước khi code xong.
+3. Yêu cầu mới (hộ chiếu) được xây trước khi vào C03, nên ma trận truy vết bị thiếu. Yêu cầu mới phải vào C03 trước.
+
+## 9. Đầu ra tái sử dụng được
+
+Bộ hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), 54 test tự động, API đặt lại dữ liệu và tua giờ (`/api/dev/*`), script chụp màn hình (`tools/diagrams/screens.mjs`).
+
+## 10. Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (thực hiện) | Han Dao | 23/11/2026 | Đạt vòng nội bộ 1, chưa đủ điều kiện UAT |
+| QA Lead | | | |
+| PO | | | |

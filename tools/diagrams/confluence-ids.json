@@ -1,8 +1,9 @@
 {
-  "T01-test-plan": "16318698",
-  "T02-test-cases": "16351494",
-  "T03-test-report": "16253234",
-  "P01-terms-privacy": "16351516",
-  "U01-customer-app-ui-spec": "16351538",
-  "U02-compliance-ui-spec": "16253256"
+ "T01-test-plan": "16318698",
+ "T02-test-cases": "16351494",
+ "T03-test-report": "16253234",
+ "P01-terms-privacy": "16351516",
+ "U01-customer-app-ui-spec": "16351538",
+ "U02-compliance-ui-spec": "16253256",
+ "Q01-standards-conformance": "16253365"
 }

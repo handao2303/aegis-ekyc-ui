@@ -9,7 +9,7 @@ Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 47 d
 
 ## Cấu trúc thư mục
 
-Tài liệu chia theo **module**. Mã tài liệu giữ nguyên để không vỡ liên kết Jira: **A** kiến trúc · **C** hạng mục eKYC Completion · **P** pháp lý · **U** giao diện · **T** kiểm thử · **R** đối soát · **L** hạn mức.
+Tài liệu chia theo **module**. Mã tài liệu giữ nguyên để không vỡ liên kết Jira: **A** kiến trúc · **C** hạng mục eKYC Completion · **P** pháp lý · **U** giao diện · **T** kiểm thử · **Q** chất lượng tài liệu · **R** đối soát · **L** hạn mức. Chuẩn áp dụng cho từng loại tài liệu: [Q01](00-overview/Q01-standards-conformance.md) (ISO/IEC/IEEE 29148, 29119-3, BABOK v3, C4, BPMN 2.0, UML 2.5, WCAG 2.2, ISO/IEC 29100).
 
 ```
 docs/
@@ -32,6 +32,7 @@ flowchart LR
         A01["A01 Tổng quan giải pháp"]
         C01["C01 Đồng bộ Jira"]
         C03["C03 BRD/FSD/SRS v1.3 + RTM"]
+        Q01["Q01 Đối chiếu chuẩn"]
     end
     subgraph M1["Module 1 · eKYC"]
         subgraph B["1.1 Nghiệp vụ"]
@@ -65,6 +66,7 @@ flowchart LR
     U --> T
     B --> C18
     A01 --> M1
+    Q01 -. "đối chiếu chuẩn" .-> M1
     A01 --> R01
     A01 --> L01
     L01 -. "limit.authorization.processed" .-> R01
@@ -79,6 +81,7 @@ flowchart LR
 | [A01 Tổng quan giải pháp](00-overview/A01-solution-overview.md) | SCRUM-69 | Context, Container, Sequence, Flowchart ×4 | ✅ Hoàn tất |
 | [C01 Nhật ký đồng bộ Jira](00-overview/C01-jira-hygiene-log.md) | SCRUM-70 | — | ✅ Hoàn tất |
 | [C03 Requirements Addendum v1.3 & RTM](00-overview/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 Chờ PO & Compliance duyệt |
+| [Q01 Đối chiếu chuẩn quốc tế](00-overview/Q01-standards-conformance.md) | SCRUM-69 | — | ✅ v1.0 · 4 đạt · 9 một phần · 0 thiếu |
 
 ### Module 1 · eKYC
 

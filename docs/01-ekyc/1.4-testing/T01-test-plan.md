@@ -6,7 +6,8 @@
 | Epic | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69) |
 | Tài liệu đi kèm | [T02 Bộ test case](T02-test-cases.md) · [T03 Báo cáo kết quả](T03-test-report.md) · [C15 Hiệu năng](C15-performance-test-plan.md) · [C16 SIT](C16-sit-plan.md) · [C17 UAT](C17-uat-pack.md) |
 | Cơ sở | BRD/FSD/SRS v1.2 + addendum v1.3 ([C03](../../00-overview/C03-requirements-addendum-v1.3.md)), đặc tả C04–C13, giao diện [U01](../1.3-ui/U01-customer-app-ui-spec.md), [U02](../1.3-ui/U02-compliance-ui-spec.md), điều khoản [P01](../1.2-compliance-legal/P01-terms-privacy.md) |
-| Phiên bản | 1.0 · 23/11/2026 · Han Dao (BA) |
+| Phiên bản | 1.1 · 23/11/2026 · Han Dao (BA) |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Plan), thuật ngữ ISTQB – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Mục tiêu
 
@@ -107,3 +108,56 @@ Vòng đời lỗi: Mới → Đã xác nhận → Đang sửa → Chờ kiểm 
 | SIT | QA + Dev + đối tác | Biên bản C16 |
 | UAT | PO + Compliance | Biên bản C17 |
 | Quyết định go-live | PO | Ký biên bản |
+
+| Mốc | Ngày dự kiến |
+|---|---|
+| Vòng nội bộ 1 | 22 – 23/11/2026 (đã xong, T03) |
+| Vòng nội bộ 2 | Trong 1 tuần sau khi có iPhone thật và công cụ đo trợ năng |
+| SIT | Sau khi có sandbox (SCRUM-56) – chưa có ngày |
+| UAT | Sau SIT, khi C03 được duyệt |
+
+## 11. Đối tượng kiểm thử
+
+| Đối tượng | Phiên bản |
+|---|---|
+| App khách `/app/` (web) | Nhánh `main`, ghi commit trong mỗi báo cáo T03 |
+| Aegis Compliance `/compliance/` | Như trên |
+| `ekyc-service` (API, job nền, SQLite) | Như trên; `terms_version` 2026.11 |
+| App iPhone Aegis Scan (A02) | Bản mẫu, ngoài vòng nội bộ |
+
+## 12. Chiến lược kiểm thử lại và hồi quy
+
+| Tình huống | Làm gì |
+|---|---|
+| Sửa một lỗi | Chạy lại test case phát hiện lỗi + toàn bộ `npm run test:server` |
+| Thay đổi quy tắc trong `rules.ts` / `service.ts` | Toàn bộ test tự động + các case E2E mức Cao của nhóm bị ảnh hưởng |
+| Trước mỗi vòng SIT / UAT | Toàn bộ case mức Cao (hồi quy đầy đủ) |
+
+## 13. Tiêu chí tạm dừng và tiếp tục
+
+| Tạm dừng khi | Tiếp tục khi |
+|---|---|
+| Có lỗi Nghiêm trọng chặn luồng chính (không tạo được phiên, không ra quyết định) | Lỗi đã sửa, test tự động xanh |
+| Môi trường hoặc dữ liệu mẫu hỏng (backend không chạy, DB lỗi) | Đặt lại dữ liệu, health check 200 |
+| Hơn 20% case đã chạy trong ngày không đạt | Dev và BA xác định nguyên nhân chung |
+
+## 14. Chỉ số theo dõi
+
+Số case đã chạy / đạt / không đạt / chặn theo nhóm và mức ưu tiên; số lỗi mở theo mức; tỷ lệ yêu cầu (FR, RULE) đã có case đạt – lấy từ cột kiểm chứng trong C03.
+
+## 15. Đầu ra
+
+| Đầu ra | Nơi lưu |
+|---|---|
+| Kế hoạch (T01), test case (T02), báo cáo từng vòng (T03) | `docs/01-ekyc/1.4-testing/`, Confluence 1.4 Kiểm thử |
+| Test tự động | `server/test/*.test.ts` |
+| Lỗi | Jira, loại Bug, liên kết test case |
+| Biên bản SIT, UAT | C16, C17 |
+
+## 16. Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 23/11/2026 | Soạn bản 1.1 |
+| QA Lead | | | |
+| PO | | | |

@@ -8,6 +8,7 @@
 | Mã nguồn | `src/mobile/screens.tsx`, `src/ekyc/EkycContext.tsx` (gọi API), `src/ekyc/terms.ts` (điều khoản) |
 | Ảnh | Chụp tự động bằng `tools/diagrams/screens.mjs`, khung iPhone 390 × 844 |
 | Phiên bản | 1.0 · 23/11/2026 · Han Dao |
+| Chuẩn tham chiếu | WCAG 2.2 mức AA, ISO 9241-110 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Quy ước chung
 
@@ -34,10 +35,15 @@
 
 | Hạng mục | Quy định |
 |---|---|
-| Vùng chạm | Tối thiểu 44 × 44 pt |
+| Vùng chạm | Tối thiểu 44 × 44 pt (cao hơn mức 24 × 24 px của WCAG 2.2 SC 2.5.8, theo hướng dẫn của Apple) |
 | Tương phản | Chữ thường ≥ 4.5:1, chữ lớn ≥ 3:1 |
 | Trình đọc màn hình | Nút chụp có `aria-label`; hướng dẫn liveness và tiến độ đọc chip dùng `aria-live`; nhóm lựa chọn dùng `role="radiogroup"` |
 | Chuyển động | Hiệu ứng chỉ mang tính gợi ý; không chứa thông tin mà chỉ thấy được qua chuyển động |
+| Giới hạn thời gian (SC 2.2.1) | Trước khi phiên hết hạn (30 phút không thao tác) phải báo trước ít nhất 20 giây và cho bấm "Tiếp tục"; thử thách liveness không giới hạn giờ cứng, khách được làm lại – **chưa làm** |
+| Phóng to chữ (SC 1.4.4) | Chữ phóng to 200% (Dynamic Type / zoom trình duyệt) không mất nội dung, nút chính không bị che – **chưa kiểm** |
+| Báo lỗi (SC 3.3.1) | Mọi lỗi hiện bằng chữ, gần chỗ lỗi, không chỉ đổi màu |
+| Ngôn ngữ (SC 3.1.1) | `lang` của trang đổi theo VI/EN |
+| Cách thay thế (SC 3.3.8) | Khách không làm được xác thực khuôn mặt hoặc đọc chip được chuyển sang nhân viên xem xét (REFER) hoặc hướng dẫn ra quầy, không bị kẹt |
 
 ### 1.4 Bản đồ màn hình
 
