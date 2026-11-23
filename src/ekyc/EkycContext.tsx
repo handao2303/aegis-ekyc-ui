@@ -27,6 +27,10 @@ type Ctx = {
   clearError: () => void;
   /** NfcScan báo đã đọc chip (true) hay bỏ qua (false) */
   chipRead: React.MutableRefObject<boolean>;
+  /** Màn Đồng ý báo khách có chọn mục tuỳ chọn "Nhận ưu đãi" không */
+  marketing: React.MutableRefObject<boolean>;
+  /** Rút lại đồng ý (C12) – trả về thông điệp từ backend */
+  withdraw: (scope: "identity" | "screening" | "marketing") => Promise<{ result: string; message: string } | null>;
   outcome: Outcome | null;
   transition: (from: ScreenKey, to: ScreenKey) => Promise<ScreenKey | null>;
   refreshResult: () => Promise<ScreenKey | null>;
@@ -68,6 +72,7 @@ export function EkycProvider({ children }: { children: ReactNode }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const chipRead = useRef(true);
+  const marketing = useRef(false);
   const [demoDoc, setDemoDoc] = useState<DocKind>("CCCD");
   const docType: DocKind = live ? persona.ocr.doc_type ?? "CCCD" : demoDoc;
   /** Đổi loại giấy tờ: bản live chuyển sang hồ sơ mẫu tương ứng nhưng giữ phiên đang làm */
@@ -98,7 +103,7 @@ export function EkycProvider({ children }: { children: ReactNode }) {
       device_id: dev.id, device_model: persona.device.model, device_rooted: persona.device.rooted, phone: dev.phone, product: persona.product,
     });
     const s = { id: created.session_id, token: created.token, terms: created.terms_version };
-    await api("POST", `/api/sessions/${s.id}/consent`, { scopes: ["identity", "screening"], terms_version: s.terms }, h(s));
+    await api("POST", `/api/sessions/${s.id}/consent`, { scopes: ["identity", "screening", ...(marketing.current ? ["marketing"] : [])], terms_version: s.terms }, h(s));
     setSession(s); setResult(null); setDoc(null);
     return s;
   };
@@ -200,10 +205,19 @@ export function EkycProvider({ children }: { children: ReactNode }) {
     } catch (e) { setError((e as Error).message); return null; }
   }, [live, session]);
 
+  const withdraw = useCallback(async (scope: "identity" | "screening" | "marketing") => {
+    if (!live || !session) return null;
+    try {
+      const r = await api<{ result: string; message: string }>("POST", `/api/sessions/${session.id}/consents/withdraw`, { scope }, h(session));
+      if (r.result === "CANCELLED") { setSession(null); setResult(null); }
+      return r;
+    } catch (e) { setError((e as Error).message); return null; }
+  }, [live, session]);
+
   const value = useMemo<Ctx>(() => ({
-    live, docType, chooseDocType, persona, setPersona, session, result, doc, resumable, busy, error, clearError: () => setError(null), chipRead,
+    live, docType, chooseDocType, persona, setPersona, session, result, doc, resumable, busy, error, clearError: () => setError(null), chipRead, marketing, withdraw,
     outcome: result?.outcome ?? null, transition, refreshResult, newDevice,
-  }), [live, docType, persona, session, result, doc, resumable, busy, error, transition, refreshResult]); // eslint-disable-line react-hooks/exhaustive-deps
+  }), [live, docType, persona, session, result, doc, resumable, busy, error, transition, refreshResult, withdraw]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <EkycCtx.Provider value={value}>{children}</EkycCtx.Provider>;
 }

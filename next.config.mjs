@@ -11,6 +11,8 @@ export default function config(phase) {
   return {
     // Bản build là static export cho GitHub Pages; khi dev thì bỏ để dùng được rewrites
     ...(dev ? {} : { output: "export" }),
+    // Build dùng thư mục riêng để chạy deploy song song với dev server mà không làm hỏng cache của nhau
+    distDir: dev ? ".next" : ".next-build",
     basePath,
     trailingSlash: true,
     images: { unoptimized: true },

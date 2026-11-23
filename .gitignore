@@ -5,3 +5,4 @@ out/
 .DS_Store
 tools/diagrams/out/
 server/data/
+.next-build/

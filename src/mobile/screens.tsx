@@ -11,6 +11,8 @@ import { useLang } from "../i18n";
 import { useEkyc } from "../ekyc/EkycContext";
 import { PersonaPicker } from "../ekyc/Overlay";
 import { fmtTime } from "../ekyc/api";
+import { TERMS, TERMS_EFFECTIVE, TERMS_VERSION } from "../ekyc/terms";
+import { Modal } from "../components/ui";
 
 /* Định dạng dữ liệu thật từ backend */
 const dmy = (iso: string) => iso.split("-").reverse().join("/");
@@ -28,7 +30,7 @@ export type ScreenKey =
   | "intro" | "consent" | "reconsent" | "docType" | "captureFront" | "reviewFront" | "captureBack"
   | "ocrReview" | "nfc" | "unreadable" | "liveness" | "verifying"
   | "approved" | "refer" | "rejected" | "requestInfo" | "duplicate" | "resume" | "expiredDoc"
-  | "cardHome" | "boostOffer" | "boostLocked";
+  | "cardHome" | "boostOffer" | "boostLocked" | "privacy";
 
 export type Outcome = "approved" | "refer" | "rejected";
 export type ScreenProps = { go: (k: ScreenKey) => void; outcome: Outcome };
@@ -104,8 +106,10 @@ export function Intro({ go }: ScreenProps) {
 
 /* ---------- 01 Đồng ý ---------- */
 export function Consent({ go, reconsent }: ScreenProps & { reconsent?: boolean }) {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
+  const ek = useEkyc();
   const [v, setV] = useState<Record<string, boolean>>({});
+  const [terms, setTerms] = useState(false);
   const scopes = [
     { id: "scope-identity", label: tr("Xử lý dữ liệu định danh", "Process my identity data"), desc: tr("Ảnh giấy tờ, dữ liệu chip CCCD, ảnh khuôn mặt", "ID photos, chip data and a face image"), required: true },
     { id: "scope-screening", label: tr("Tra cứu tín dụng và kiểm tra tuân thủ", "Credit and compliance checks"), desc: tr("Theo quy định về phòng chống rửa tiền", "As required by anti-money-laundering rules"), required: true },
@@ -118,7 +122,7 @@ export function Consent({ go, reconsent }: ScreenProps & { reconsent?: boolean }
       step={0}
       onBack={() => go("intro")}
       footer={
-        <Button size="lg" block disabled={!ok} onClick={() => go(reconsent ? "liveness" : "docType")}>
+        <Button size="lg" block disabled={!ok} onClick={() => { if (ek) ek.marketing.current = !!v["scope-marketing"]; go(reconsent ? "liveness" : "docType"); }}>
           {ok ? tr("Đồng ý và tiếp tục", "Agree and continue") : tr("Chọn 2 mục bắt buộc", "Select the 2 required items")}
         </Button>
       }
@@ -136,17 +140,29 @@ export function Consent({ go, reconsent }: ScreenProps & { reconsent?: boolean }
           ))}
         </div>
       </Section>
-      <button className="interactive mt-4 flex w-full items-center gap-3 rounded-lg bg-bg-surface p-4 text-left shadow-raised">
+      <button onClick={() => setTerms(true)} aria-haspopup="dialog" className="interactive mt-4 flex w-full items-center gap-3 rounded-lg bg-bg-surface p-4 text-left shadow-raised">
         <FileText className="size-5 shrink-0 text-fg-tertiary" />
         <span className="min-w-0 flex-1">
           <span className="block text-body-sm font-semibold">{tr("Điều khoản và điều kiện", "Terms and conditions")}</span>
-          <span className="block text-caption text-fg-tertiary">{tr("Phiên bản 3.2 · hiệu lực 01/11/2026", "Version 3.2 · effective 1 Nov 2026")}</span>
+          <span className="block text-caption text-fg-tertiary">{tr(`Phiên bản ${TERMS_VERSION} · hiệu lực ${TERMS_EFFECTIVE.vi}`, `Version ${TERMS_VERSION} · effective ${TERMS_EFFECTIVE.en}`)}</span>
         </span>
         <ChevronRight className="size-5 text-fg-tertiary" />
       </button>
       <p className="mt-4 text-caption text-fg-tertiary">
         {tr("Bạn có thể rút lại sự đồng ý trong Cài đặt › Quyền riêng tư. Một số dữ liệu vẫn được lưu theo thời hạn pháp luật yêu cầu.", "You can withdraw consent in Settings › Privacy. Some data is kept for the period required by law.")}
       </p>
+      <Modal open={terms} onClose={() => setTerms(false)} title={tr("Điều khoản mở tài khoản trực tuyến", "Online account opening terms")}
+        footer={<Button onClick={() => setTerms(false)}>{tr("Đã đọc", "Done")}</Button>}>
+        <p className="text-caption text-fg-tertiary">{tr(`Phiên bản ${TERMS_VERSION} · hiệu lực ${TERMS_EFFECTIVE.vi}`, `Version ${TERMS_VERSION} · effective ${TERMS_EFFECTIVE.en}`)}</p>
+        <div className="mt-3 flex max-h-[55vh] flex-col gap-4 overflow-y-auto pr-1">
+          {TERMS.map((sec) => (
+            <section key={sec.h[0]}>
+              <h3 className="text-body-sm font-semibold">{lang === "en" ? sec.h[1] : sec.h[0]}</h3>
+              {sec.p.map((x) => <p key={x[0]} className="mt-1.5 text-body-sm text-fg-secondary">{lang === "en" ? x[1] : x[0]}</p>)}
+            </section>
+          ))}
+        </div>
+      </Modal>
     </Screen>
   );
 }
@@ -757,7 +773,7 @@ export function Refer({ go }: ScreenProps) {
       {ek?.live && ek.session
         ? <Button size="lg" block icon={<RefreshCw className="size-5" />} loading={ek.busy} onClick={() => ek.refreshResult().then((k) => k && k !== "refer" && go(k))}>{tr("Kiểm tra kết quả", "Check for a decision")}</Button>
         : <Button size="lg" block icon={<Bell className="size-5" />}>{tr("Bật thông báo", "Turn on notifications")}</Button>}
-      <Button variant="ghost" block onClick={() => go("intro")}>{tr("Về trang chủ", "Back to home")}</Button></>}>
+      <Button variant="ghost" block onClick={() => go("privacy")}>{tr("Quyền riêng tư & đồng ý", "Privacy & consent")}</Button></>}>
       <StatusMark tone="warning" icon={<Clock className="size-9" />} />
       <h2 className="mt-4 text-center text-[22px] font-bold">{tr("Hồ sơ đang được xem xét", "We're reviewing your application")}</h2>
       <p className="mt-1 text-center text-body-sm text-fg-secondary">{tr("Kết quả sẽ được gửi trong vòng 24 giờ.", "You'll hear from us within 24 hours.")}</p>
@@ -870,6 +886,59 @@ export function ExpiredDoc({ go }: ScreenProps) {
         </dl>
       </Section>
       <p className="mt-4 flex gap-2 text-caption text-fg-tertiary"><ShieldCheck className="size-4 shrink-0" />{tr("Chúng tôi không lưu ảnh giấy tờ đã hết hạn.", "We don't keep photos of expired documents.")}</p>
+    </Screen>
+  );
+}
+
+/* ---------- 14 Quyền riêng tư – rút lại đồng ý (C12, RULE-EKYC-15) ---------- */
+export function Privacy({ go }: ScreenProps) {
+  const { tr } = useLang();
+  const ek = useEkyc();
+  const [confirm, setConfirm] = useState<null | "identity" | "marketing">(null);
+  const [msg, setMsg] = useState<{ tone: "success" | "info"; text: string } | null>(null);
+  const hasAccount = !!ek?.result?.account_no;
+  const rows = [
+    { scope: "identity" as const, label: tr("Xử lý dữ liệu định danh", "Identity data"), desc: tr("Bắt buộc để mở và duy trì tài khoản", "Required to open and keep an account") },
+    { scope: "screening" as const, label: tr("Tra cứu tín dụng và kiểm tra tuân thủ", "Credit and compliance checks"), desc: tr("Bắt buộc theo quy định phòng, chống rửa tiền", "Required by anti-money-laundering law") },
+    { scope: "marketing" as const, label: tr("Nhận ưu đãi phù hợp", "Relevant offers"), desc: tr("Tuỳ chọn", "Optional") },
+  ];
+  const run = async (scope: "identity" | "marketing") => {
+    setConfirm(null);
+    if (!ek?.live || !ek.session) {
+      setMsg({ tone: "info", text: scope === "marketing" ? tr("Đã ngừng gửi ưu đãi.", "Offers turned off.") : tr("Bản demo: hồ sơ sẽ được huỷ và dữ liệu xoá trong 24 giờ.", "Demo: the application would be cancelled and data deleted within 24 hours.") });
+      return;
+    }
+    const r = await ek.withdraw(scope);
+    if (r) setMsg({ tone: r.result === "RETAINED" ? "info" : "success", text: r.message });
+  };
+  return (
+    <Screen title={tr("Quyền riêng tư", "Privacy")} onBack={() => go("intro")}>
+      <PageTitle title={tr("Dữ liệu và sự đồng ý", "Your data and consent")} desc={tr(`Bạn đã đồng ý điều khoản phiên bản ${TERMS_VERSION}.`, `You accepted terms version ${TERMS_VERSION}.`)} />
+      {msg && <Alert tone={msg.tone} className="mb-4" title={msg.text} />}
+      <Section>
+        <ul className="divide-y divide-[var(--border-subtle)] px-4">
+          {rows.map((r) => (
+            <li key={r.scope} className="flex items-center justify-between gap-3 py-3.5">
+              <span className="min-w-0">
+                <span className="block text-body-sm font-semibold">{r.label}</span>
+                <span className="block text-caption text-fg-tertiary">{r.desc}</span>
+              </span>
+              {r.scope !== "screening" && (
+                <Button size="sm" variant={r.scope === "identity" ? "danger" : "secondary"} onClick={() => setConfirm(r.scope as "identity" | "marketing")}>{tr("Rút lại", "Withdraw")}</Button>
+              )}
+            </li>
+          ))}
+        </ul>
+      </Section>
+      <p className="mt-4 text-caption text-fg-tertiary">{tr("Rút lại đồng ý xử lý dữ liệu định danh khi chưa có tài khoản sẽ huỷ hồ sơ và xoá dữ liệu trong 24 giờ. Khi đã có tài khoản, dữ liệu định danh vẫn được lưu theo quy định pháp luật.", "Withdrawing identity consent before an account is opened cancels the application and deletes data within 24 hours. Once you have an account, identity data is still kept as required by law.")}</p>
+      <Modal open={!!confirm} onClose={() => setConfirm(null)} title={confirm === "identity" ? tr("Rút lại đồng ý xử lý dữ liệu định danh?", "Withdraw identity data consent?") : tr("Ngừng nhận ưu đãi?", "Stop receiving offers?")}
+        footer={<><Button variant="ghost" onClick={() => setConfirm(null)}>{tr("Huỷ", "Cancel")}</Button><Button variant={confirm === "identity" ? "danger" : "primary"} onClick={() => confirm && run(confirm)}>{tr("Xác nhận", "Confirm")}</Button></>}>
+        <p className="text-body-sm text-fg-secondary">
+          {confirm === "identity"
+            ? hasAccount ? tr("Bạn đã có tài khoản nên dữ liệu định danh vẫn phải được lưu theo quy định. Chúng tôi sẽ ngừng mọi xử lý ngoài mục đích bắt buộc.", "You already have an account, so identity data must be kept by law. We'll stop all processing beyond what is required.") : tr("Hồ sơ mở tài khoản đang làm sẽ bị huỷ và dữ liệu được xoá trong 24 giờ.", "Your application will be cancelled and its data deleted within 24 hours.")
+            : tr("Bạn sẽ không nhận thông tin ưu đãi nữa. Có thể bật lại bất cứ lúc nào.", "You won't receive offers any more. You can turn this back on at any time.")}
+        </p>
+      </Modal>
     </Screen>
   );
 }
