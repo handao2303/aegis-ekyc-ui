@@ -77,7 +77,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 |---|---|
 | Mục đích | Đặt kỳ vọng: cần chuẩn bị gì, mất bao lâu (~3 phút) |
 | Thành phần | Hình minh hoạ · tiêu đề "Mở tài khoản chỉ trong 3 phút" · 4 bước (Đồng ý, Chụp giấy tờ, Quét chip, Khuôn mặt) · nút **Bắt đầu** · nút **Tiếp tục hồ sơ đang dở** |
-| Bản test | Khi có backend hiện ô **Bản test · hồ sơ mẫu** (TD-01 → TD-15) và dòng "Kỳ vọng" |
+| Bản test | Khi có backend hiện ô **Bản test · hồ sơ mẫu** (TD-01 → TD-16) và dòng "Kỳ vọng" |
 | Điều hướng | Bắt đầu → eKYC-01 · Tiếp tục hồ sơ → eKYC-10 (không có hồ sơ dở: thông báo "Không có hồ sơ đang làm dở trên máy này") |
 | API | Tiếp tục hồ sơ: `GET /api/sessions/resume?device_id=` |
 
@@ -161,6 +161,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 |---|---|
 | Trạng thái | Chờ → Đang đọc (thanh tiến độ %, `aria-live`) → Thành công ("Chữ ký số trên chip hợp lệ") |
 | Hướng dẫn | CCCD: "Áp CCCD vào mặt sau điện thoại". Hộ chiếu: "Áp bìa sau hộ chiếu vào điện thoại", gập hộ chiếu, đặt bìa có biểu tượng chip sát phần trên lưng máy |
+| Cảnh báo | Giấy tờ còn hạn dưới 30 ngày: "Giấy tờ sắp hết hạn" – vẫn đi tiếp |
 | Bỏ qua | "Điện thoại không có NFC?" → cảnh báo "Hồ sơ sẽ được duyệt thủ công" + **Vẫn bỏ qua** / **Thử quét lại** |
 | API | `POST /api/sessions/:id/chip` (DG1 + kết quả SOD) hoặc `{ skipped: true }` |
 | Giới hạn | Safari trên iPhone không có Web NFC: bản web mô phỏng bước đọc; đọc chip thật dùng app Aegis Scan ([A02](../05-architecture/A02-ios-document-scan.md)) |

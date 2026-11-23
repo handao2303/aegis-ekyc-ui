@@ -43,7 +43,7 @@
 | Bảng quyết định | RULE-09 trùng khách, RULE-10 hạn/tuổi, cây quyết định STP/REFER/REJECTED, RULE-13 cần Checker |
 | Phân vùng tương đương + giá trị biên | Tuổi (17/18, đúng ngày sinh nhật), hạn giấy tờ (hôm nay, < 30 ngày), liveness (0.69/0.70/0.85), điểm rủi ro (49.9/50/70/80), SLA (15.9/16/20/24h), 2 lần bổ sung |
 | Chuyển trạng thái | Vòng đời phiên C06, trạng thái hồ sơ C03, SLA C09 |
-| Kịch bản đầu cuối | 15 hồ sơ mẫu TD-01 → TD-15 |
+| Kịch bản đầu cuối | 16 hồ sơ mẫu TD-01 → TD-16 |
 | Phân quyền | Ma trận vai trò Officer / Trưởng nhóm / CS |
 | Kiểm tra theo checklist | Trợ năng, nội dung (không lộ AML/PEP), song ngữ |
 
@@ -57,7 +57,7 @@
 | Demo | GitHub Pages – không backend | Trình diễn giao diện |
 | SIT / UAT | Theo C16 / C17 | — |
 
-**Dữ liệu:** hồ sơ mẫu TD-01 → TD-15 (`server/src/personas.ts`, mô tả ở [C17 §4](../03-quality/C17-uat-pack.md)), 8 hồ sơ có sẵn trong hàng đợi, 4 nhân viên mẫu. Đặt lại dữ liệu: `POST /api/dev/reset`. Tua giờ để thử SLA/job: `POST /api/dev/clock/advance`. **Không dùng dữ liệu thật của khách.**
+**Dữ liệu:** hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`, mô tả ở [C17 §4](../03-quality/C17-uat-pack.md)), 8 hồ sơ có sẵn trong hàng đợi, 4 nhân viên mẫu. Đặt lại dữ liệu: `POST /api/dev/reset`. Tua giờ để thử SLA/job: `POST /api/dev/clock/advance`. **Không dùng dữ liệu thật của khách.**
 
 ## 6. Tiêu chí vào
 
