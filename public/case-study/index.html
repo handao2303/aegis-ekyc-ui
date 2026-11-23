@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aegis eKYC – Case study BA</title>
+<meta name="description" content="Case study Business Analysis: mở tài khoản ngân hàng trực tuyến (eKYC) – từ gap analysis, yêu cầu, quy tắc nghiệp vụ, đặc tả giao diện tới kiểm thử.">
+<link rel="icon" href="../icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2f4f8; --surface:#fff; --sunken:#e9edf3; --ink:#0d1b33; --ink-2:#45526b; --ink-3:#5f6b82;
+  --line:rgba(13,27,51,.10); --primary:#1849a9; --primary-soft:#ebf1fc;
+  --ok:#11734a; --ok-soft:#e7f5ee; --warn:#8a5a00; --warn-soft:#fdf3dd; --bad:#b42318; --bad-soft:#fdecea;
+  --hero:#0d1b33; --hero-ink:#fff; --hero-ink-2:#b9c4da; --accent:#f5a524;
+  --radius:16px; --shadow:0 1px 2px rgba(13,27,51,.06),0 8px 24px rgba(13,27,51,.06);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1424; --surface:#111d33; --sunken:#0e192d; --ink:#e8edf6; --ink-2:#b3bed2; --ink-3:#8f9bb3;
+  --line:rgba(232,237,246,.12); --primary:#7aa7ff; --primary-soft:#16274a;
+  --ok:#5fd39a; --ok-soft:#10301f; --warn:#f3c066; --warn-soft:#33270c; --bad:#ff8a7a; --bad-soft:#3a1714;
+  --hero:#060d19; --shadow:none;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b1424; --surface:#111d33; --sunken:#0e192d; --ink:#e8edf6; --ink-2:#b3bed2; --ink-3:#8f9bb3;
+  --line:rgba(232,237,246,.12); --primary:#7aa7ff; --primary-soft:#16274a;
+  --ok:#5fd39a; --ok-soft:#10301f; --warn:#f3c066; --warn-soft:#33270c; --bad:#ff8a7a; --bad-soft:#3a1714;
+  --hero:#060d19; --shadow:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Lexend,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--primary)}
+img{max-width:100%;display:block}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+html[lang="vi"] .en, html[lang="en"] .vi{display:none!important}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--hero) 92%,transparent);backdrop-filter:blur(8px);color:var(--hero-ink)}
+.bar .wrap{display:flex;align-items:center;gap:16px;height:56px}
+.bar b{font-weight:600;letter-spacing:.2px}
+.bar nav{display:flex;gap:18px;margin-left:auto;font-size:14px}
+.bar nav a{color:var(--hero-ink-2);text-decoration:none}
+.bar nav a:hover{color:#fff}
+.lang{background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:999px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer;min-height:32px}
+@media (max-width:760px){.bar nav{display:none}.lang{margin-left:auto}}
+
+/* hero */
+.hero{background:radial-gradient(1200px 400px at 85% -10%,rgba(122,167,255,.25),transparent),var(--hero);color:var(--hero-ink);padding:64px 0 72px}
+.hero .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center}
+.tag{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--hero-ink-2);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:4px 12px}
+.tag i{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.15;margin:18px 0 14px;font-weight:600;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p.lead{font-size:18px;color:var(--hero-ink-2);max-width:620px;margin:0 0 26px}
+.meta{display:grid;grid-template-columns:repeat(3,auto);gap:8px 28px;font-size:14px;color:var(--hero-ink-2);margin-bottom:28px;justify-content:start}
+.meta b{display:block;color:#fff;font-weight:500}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:12px;text-decoration:none;font-weight:500;font-size:15px}
+.btn.p{background:#fff;color:#0d1b33}
+.btn.s{border:1px solid rgba(255,255,255,.3);color:#fff}
+.phones{display:flex;gap:14px;justify-content:center}
+.phones img{width:46%;border-radius:22px;border:6px solid #1c2a45;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.phones img:nth-child(2){margin-top:40px}
+@media (max-width:860px){.hero .grid{grid-template-columns:1fr}.phones{max-width:360px;margin:0 auto}.meta{grid-template-columns:repeat(2,auto)}}
+
+/* sections */
+section{padding:64px 0}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--primary);margin:0 0 8px}
+h2{font-size:clamp(24px,3.4vw,32px);line-height:1.25;margin:0 0 14px;font-weight:600;letter-spacing:-.3px}
+.sub{color:var(--ink-2);max-width:720px;margin:0 0 32px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:-44px;position:relative}
+.stat{padding:18px 16px}
+.stat b{display:block;font-size:30px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--ink-2)}
+@media (max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* problem */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.gaps{list-style:none;padding:0;margin:0}
+.gaps li{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.gaps li:first-child{border-top:0}
+.gaps .k{flex:0 0 74px;font-size:12px;font-weight:600;color:var(--ink-3);padding-top:2px}
+.pad{padding:24px}
+.bars{display:grid;gap:14px}
+.barrow{display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:center;font-size:14px}
+.track{display:flex;height:30px;border-radius:8px;overflow:hidden;background:var(--sunken)}
+.track span{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.s-ok{background:var(--ok-soft);color:var(--ok)}.s-warn{background:var(--warn-soft);color:var(--warn)}.s-bad{background:var(--bad-soft);color:var(--bad)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--ink-2);margin-top:14px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:s}
+.step{padding:20px;position:relative}
+.step:before{counter-increment:s;content:counter(s,decimal-leading-zero);font-size:13px;font-weight:600;color:var(--primary);display:block;margin-bottom:8px}
+.step h3{font-size:16px;margin:0 0 6px;font-weight:600}
+.step p{margin:0;font-size:14px;color:var(--ink-2)}
+.step small{display:block;margin-top:10px;font-size:12px;color:var(--ink-3)}
+@media (max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.steps{grid-template-columns:1fr}}
+
+/* artifacts */
+.arts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.art{overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .15s}
+.art:hover{transform:translateY(-2px)}
+.art .img{height:180px;background:var(--sunken);overflow:hidden;display:flex;align-items:flex-start;justify-content:center}
+.art .img img{width:100%;height:100%;object-fit:cover;object-position:top}
+.art .img.contain img{object-fit:contain;padding:12px;background:#fff}
+.art .body{padding:18px}
+.art .code{font-size:12px;font-weight:600;color:var(--primary)}
+.art h3{font-size:16px;margin:4px 0 6px;font-weight:600}
+.art p{margin:0;font-size:14px;color:var(--ink-2)}
+.art .std{margin-top:12px;font-size:12px;color:var(--ink-3)}
+@media (max-width:900px){.arts{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.arts{grid-template-columns:1fr}}
+
+/* rule example */
+.rule{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--ink-3);font-weight:600;text-transform:uppercase;letter-spacing:.6px;background:var(--sunken)}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+
+/* gallery */
+.gallery{display:flex;gap:14px;overflow-x:auto;padding-bottom:12px;scroll-snap-type:x mandatory}
+.gallery figure{margin:0;flex:0 0 180px;scroll-snap-align:start}
+.gallery img{border-radius:18px;border:1px solid var(--line)}
+.gallery figcaption{font-size:12px;color:var(--ink-2);margin-top:8px}
+.wide{margin-top:20px;overflow:hidden}
+.wide img{width:100%}
+
+/* results & lessons */
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.res{padding:22px}
+.res b{font-size:28px;font-weight:600;display:block;line-height:1.2}
+.res p{margin:6px 0 0;font-size:14px;color:var(--ink-2)}
+@media (max-width:820px){.results{grid-template-columns:1fr}}
+.lessons{counter-reset:l;list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.lessons li{padding:18px 20px 18px 60px;position:relative}
+.lessons li:before{counter-increment:l;content:counter(l);position:absolute;left:20px;top:18px;width:26px;height:26px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.tools{display:flex;flex-wrap:wrap;gap:8px}
+.tools span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+.note{background:var(--warn-soft);color:var(--ink);border-radius:var(--radius);padding:18px 20px;font-size:14px}
+footer{padding:40px 0 56px;color:var(--ink-3);font-size:14px;border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <b>Han Dao · BA</b>
+    <nav>
+      <a href="#problem"><span class="vi">Bài toán</span><span class="en">Problem</span></a>
+      <a href="#process"><span class="vi">Cách làm</span><span class="en">Approach</span></a>
+      <a href="#artifacts"><span class="vi">Tài liệu</span><span class="en">Artifacts</span></a>
+      <a href="#results"><span class="vi">Kết quả</span><span class="en">Results</span></a>
+    </nav>
+    <button class="lang" id="lang" type="button" aria-label="Switch language">EN</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap grid">
+    <div>
+      <span class="tag"><i></i><span class="vi">Case study · Dự án tự thực hiện</span><span class="en">Case study · Self-initiated project</span></span>
+      <h1 class="vi">Mở tài khoản ngân hàng trực tuyến <em>đúng quy định</em> – từ khoảng trống đến sẵn sàng UAT</h1>
+      <h1 class="en">Online bank account opening that <em>meets regulation</em> – from gap analysis to UAT readiness</h1>
+      <p class="lead vi">Phân tích nghiệp vụ cho module eKYC của Aegis Bank (ngân hàng giả định): chụp giấy tờ, đọc chip CCCD / hộ chiếu, xác thực khuôn mặt, sàng lọc rủi ro và hàng đợi xét duyệt cho bộ phận Compliance.</p>
+      <p class="lead en">Business analysis for the eKYC module of Aegis Bank (a fictional bank): ID capture, chip reading for citizen ID cards and passports, face verification, risk screening and a review queue for Compliance.</p>
+      <div class="meta">
+        <div><span class="vi">Vai trò</span><span class="en">Role</span><b>Business Analyst</b></div>
+        <div><span class="vi">Thời gian</span><span class="en">When</span><b>11/2026</b></div>
+        <div><span class="vi">Lĩnh vực</span><span class="en">Domain</span><b>Banking · KYC · AML</b></div>
+      </div>
+      <div class="cta">
+        <a class="btn p" href="../app/"><span class="vi">Chạy thử app khách hàng</span><span class="en">Try the customer app</span> →</a>
+        <a class="btn s" href="https://github.com/handao2303/aegis-ekyc-ui/tree/main/docs"><span class="vi">Đọc bộ tài liệu</span><span class="en">Read the documents</span></a>
+      </div>
+    </div>
+    <div class="phones" aria-hidden="true">
+      <img src="../ui/app-nfc.png" alt="">
+      <img src="../ui/app-approved.png" alt="">
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="card stat"><b>25</b><span class="vi">tài liệu</span><span class="en">documents</span></div>
+    <div class="card stat"><b>47</b><span class="vi">sơ đồ</span><span class="en">diagrams</span></div>
+    <div class="card stat"><b>17</b><span class="vi">quy tắc nghiệp vụ</span><span class="en">business rules</span></div>
+    <div class="card stat"><b>106</b><span class="vi">test case</span><span class="en">test cases</span></div>
+    <div class="card stat"><b>26</b><span class="vi">màn hình đặc tả</span><span class="en">screens specified</span></div>
+    <div class="card stat"><b>0</b><span class="vi">yêu cầu pháp lý còn thiếu</span><span class="en">legal requirements missing</span></div>
+  </div>
+</div>
+
+<section id="problem">
+  <div class="wrap">
+    <p class="eyebrow"><span class="vi">Bài toán</span><span class="en">The problem</span></p>
+    <h2 class="vi">Bản MVP mở được tài khoản, nhưng chưa đủ điều kiện để chạy thật</h2>
+    <h2 class="en">The MVP could open accounts, but wasn't ready for production</h2>
+    <p class="sub vi">Rà soát luồng eKYC hiện có với quy định của Ngân hàng Nhà nước, luật bảo vệ dữ liệu cá nhân và luật phòng, chống rửa tiền cho thấy nhiều khoảng trống – cả về tuân thủ lẫn vận hành.</p>
+    <p class="sub en">Reviewing the existing eKYC flow against central bank rules, data protection law and anti-money-laundering law exposed gaps in both compliance and operations.</p>
+    <div class="two">
+      <div class="card pad">
+        <ul class="gaps">
+          <li><span class="k">CR-02/03</span><span><span class="vi">So khuôn mặt với ảnh in trên thẻ thay vì ảnh gốc trong chip – vẫn có thể duyệt tự động</span><span class="en">Face matched against the printed card photo, not the chip photo – yet could still auto-approve</span></span></li>
+          <li><span class="k">CR-11</span><span><span class="vi">Một người tự quyết hồ sơ khách rủi ro cao (PEP), không có người duyệt thứ hai</span><span class="en">One person could approve high-risk (PEP) customers, with no second reviewer</span></span></li>
+          <li><span class="k">CR-07/08</span><span><span class="vi">Khách không rút lại được đồng ý; dữ liệu không có thời hạn xoá</span><span class="en">Customers couldn't withdraw consent; no data deletion schedule</span></span></li>
+          <li><span class="k">Gap-01</span><span><span class="vi">Không chặn mở tài khoản trùng; không kiểm tra hạn giấy tờ và độ tuổi</span><span class="en">No duplicate-customer check; no document expiry or age check</span></span></li>
+          <li><span class="k">Gap-04/06</span><span><span class="vi">Hồ sơ nghi vấn chỉ có duyệt hoặc từ chối – không xin bổ sung được, không có SLA</span><span class="en">Flagged cases could only be approved or rejected – no request for more info, no SLA</span></span></li>
+        </ul>
+      </div>
+      <div class="card pad">
+        <h3 style="margin:0 0 4px;font-size:16px;font-weight:600"><span class="vi">15 yêu cầu pháp lý (C02)</span><span class="en">15 legal requirements (C02)</span></h3>
+        <p style="margin:0 0 18px;font-size:14px;color:var(--ink-2)"><span class="vi">Trước và sau khi hoàn thiện module</span><span class="en">Before and after the work</span></p>
+        <div class="bars">
+          <div class="barrow"><span class="vi">Trước</span><span class="en">Before</span>
+            <div class="track" role="img" aria-label="5 đạt, 2 một phần, 8 chưa có"><span class="s-ok" style="width:33.3%">5</span><span class="s-warn" style="width:13.3%">2</span><span class="s-bad" style="width:53.4%">8</span></div></div>
+          <div class="barrow"><span class="vi">Sau</span><span class="en">After</span>
+            <div class="track" role="img" aria-label="12 đạt, 3 một phần, 0 chưa có"><span class="s-ok" style="width:80%">12</span><span class="s-warn" style="width:20%">3</span></div></div>
+        </div>
+        <div class="legend"><span><i class="s-ok" style="background:var(--ok)"></i><span class="vi">Đáp ứng</span><span class="en">Met</span></span><span><i style="background:var(--warn)"></i><span class="vi">Một phần</span><span class="en">Partly</span></span><span><i style="background:var(--bad)"></i><span class="vi">Chưa có</span><span class="en">Missing</span></span></div>
+        <p style="margin:18px 0 0;font-size:13px;color:var(--ink-3)"><span class="vi">3 mục còn một phần đang chờ nhà cung cấp sinh trắc và Compliance chốt thời hạn lưu hồ sơ.</span><span class="en">The 3 partial items wait on a biometrics vendor and Compliance's decision on retention periods.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="process" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <p class="eyebrow"><span class="vi">Cách làm</span><span class="en">Approach</span></p>
+    <h2 class="vi">Mỗi yêu cầu đi từ văn bản pháp lý tới một test case</h2>
+    <h2 class="en">Every requirement traced from regulation to a test case</h2>
+    <p class="sub vi">Truy vết hai chiều: văn bản → yêu cầu → quy tắc → story Jira → màn hình → test case. Đổi một ngưỡng là biết ngay màn nào và case nào bị ảnh hưởng.</p>
+    <p class="sub en">Two-way traceability: regulation → requirement → rule → Jira story → screen → test case. Changing a threshold shows exactly which screens and tests are affected.</p>
+    <div class="steps">
+      <div class="card step"><h3 class="vi">Gap analysis</h3><h3 class="en">Gap analysis</h3><p class="vi">Đối chiếu luồng hiện có với 5 nhóm văn bản, lập 15 yêu cầu tuân thủ.</p><p class="en">Compared the flow with 5 groups of regulations; logged 15 compliance requirements.</p><small>C02</small></div>
+      <div class="card step"><h3 class="vi">Yêu cầu & truy vết</h3><h3 class="en">Requirements & RTM</h3><p class="vi">11 BR, 11 FR, NFR, mô hình trạng thái hồ sơ và ma trận truy vết.</p><p class="en">11 BRs, 11 FRs, NFRs, a case state model and a traceability matrix.</p><small>C03 · ISO/IEC/IEEE 29148</small></div>
+      <div class="card step"><h3 class="vi">Quy tắc nghiệp vụ</h3><h3 class="en">Business rules</h3><p class="vi">Bảng quyết định trùng khách, hợp lệ giấy tờ, Maker-Checker, SLA, velocity.</p><p class="en">Decision tables for duplicates, document validity, maker-checker, SLA, velocity.</p><small>C04–C13 · BABOK v3</small></div>
+      <div class="card step"><h3 class="vi">Quy trình vận hành</h3><h3 class="en">Operating process</h3><p class="vi">Swimlane xử lý hồ sơ REFER, ma trận thông báo, leo thang SLA 24 giờ.</p><p class="en">Swimlane for flagged cases, notification matrix, 24-hour SLA escalation.</p><small>C07–C10</small></div>
+      <div class="card step"><h3 class="vi">Đặc tả giao diện</h3><h3 class="en">UI specification</h3><p class="vi">20 màn app khách và 6 màn Compliance, có ảnh, nội dung, lỗi và API từng màn.</p><p class="en">20 customer screens and 6 Compliance screens with copy, errors and API per screen.</p><small>U01–U02 · WCAG 2.2</small></div>
+      <div class="card step"><h3 class="vi">Kiểm chứng bằng prototype</h3><h3 class="en">Validated with a prototype</h3><p class="vi">Prototype web và backend mẫu chạy đúng các quy tắc, để chứng minh đặc tả làm được.</p><p class="en">A web prototype and sample backend implement the rules, proving the spec is buildable.</p><small>16 hồ sơ mẫu / test personas</small></div>
+      <div class="card step"><h3 class="vi">Kiểm thử</h3><h3 class="en">Testing</h3><p class="vi">Kế hoạch, 106 test case, báo cáo vòng 1, kế hoạch SIT và bộ UAT có biên bản.</p><p class="en">Test plan, 106 test cases, round-1 report, SIT plan and a UAT pack with sign-off.</p><small>T01–T03, C15–C17 · ISO/IEC/IEEE 29119-3</small></div>
+      <div class="card step"><h3 class="vi">Tự rà soát theo chuẩn</h3><h3 class="en">Standards self-review</h3><p class="vi">Đối chiếu từng tài liệu với chuẩn quốc tế, sửa thiếu sót, ghi rõ phần còn lại.</p><p class="en">Checked each document against international standards, fixed gaps, logged the rest.</p><small>Q01</small></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow"><span class="vi">Ví dụ một quy tắc</span><span class="en">One rule, in detail</span></p>
+    <h2 class="vi">RULE-EKYC-13 · Khi nào cần người duyệt thứ hai</h2>
+    <h2 class="en">RULE-EKYC-13 · When a second reviewer is required</h2>
+    <p class="sub vi">Quy tắc viết thành bảng để Compliance duyệt được, dev cài được và tester kiểm được – cùng một nguồn.</p>
+    <p class="sub en">Written as a table so Compliance can sign it off, developers can build it and testers can test it – from one source.</p>
+    <div class="card rule">
+      <table>
+        <thead><tr><th><span class="vi">Điều kiện hồ sơ</span><span class="en">Case condition</span></th><th>Maker</th><th>Checker</th><th><span class="vi">Kiểm chứng</span><span class="en">Verified by</span></th></tr></thead>
+        <tbody>
+          <tr><td><span class="vi">Rủi ro thường, không cờ nhạy cảm</span><span class="en">Normal risk, no sensitive flag</span></td><td><span class="pill s-ok"><span class="vi">Duyệt</span><span class="en">Approves</span></span></td><td>—</td><td>TC-CO-18 · UAT-EKYC-08</td></tr>
+          <tr><td><span class="vi">Trùng PEP hoặc danh sách cấm</span><span class="en">PEP or sanctions match</span></td><td><span class="pill s-warn"><span class="vi">Đề xuất</span><span class="en">Proposes</span></span></td><td><span class="pill s-ok"><span class="vi">Bắt buộc, khác Maker</span><span class="en">Required, not the Maker</span></span></td><td>TC-CO-19 → 21 · UAT-EKYC-19</td></tr>
+          <tr><td><span class="vi">Điểm rủi ro ≥ 70</span><span class="en">Risk score ≥ 70</span></td><td><span class="pill s-warn"><span class="vi">Đề xuất</span><span class="en">Proposes</span></span></td><td><span class="pill s-ok"><span class="vi">Bắt buộc, khác Maker</span><span class="en">Required, not the Maker</span></span></td><td>TC-CO-19</td></tr>
+          <tr><td><span class="vi">Maker tự bấm duyệt Checker</span><span class="en">Maker tries to act as Checker</span></td><td colspan="2"><span class="pill s-bad"><span class="vi">Chặn · ghi audit CHECKER_BLOCKED_SAME_PERSON</span><span class="en">Blocked · audit CHECKER_BLOCKED_SAME_PERSON</span></span></td><td>TC-CO-20</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="artifacts" style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow"><span class="vi">Tài liệu tiêu biểu</span><span class="en">Key artifacts</span></p>
+    <h2 class="vi">Đọc bản đầy đủ trên GitHub</h2>
+    <h2 class="en">Read the full documents on GitHub</h2>
+    <p class="sub vi">Tài liệu viết bằng tiếng Việt, sơ đồ bằng Mermaid nên sửa được như văn bản và tự xuất ảnh.</p>
+    <p class="sub en">Documents are in Vietnamese; diagrams are Mermaid, so they're edited as text and exported automatically.</p>
+    <div class="arts">
+      <a class="card art" href="https://github.com/handao2303/aegis-ekyc-ui/blob/main/docs/00-overview/A01-solution-overview.md"><div class="img contain"><img src="../diagrams/A01-solution-overview-1.png" alt="Sơ đồ bối cảnh hệ thống" loading="lazy"></div><div class="body"><span class="code">A01</span><h3 class="vi">Tổng quan giải pháp</h3><h3 class="en">Solution overview</h3><p class="vi">Bối cảnh hệ thống, thành phần, luồng end-to-end, cây quyết định, bản đồ màn hình.</p><p class="en">System context, containers, end-to-end flow, decision tree, screen maps.</p><div class="std">C4 · UML</div></div></a>
+      <a class="card art" href="https://github.com/handao2303/aegis-ekyc-ui/blob/main/docs/00-overview/C03-requirements-addendum-v1.3.md"><div class="img contain"><img src="../diagrams/C03-requirements-addendum-v1.3-1.png" alt="Mô hình trạng thái hồ sơ" loading="lazy"></div><div class="body"><span class="code">C03</span><h3 class="vi">Yêu cầu v1.3 & ma trận truy vết</h3><h3 class="en">Requirements v1.3 & RTM</h3><p class="vi">BR, FR, NFR, quy tắc, mô hình trạng thái; mỗi yêu cầu gắn test case.</p><p class="en">BRs, FRs, NFRs, rules and a state model; every requirement linked to tests.</p><div class="std">ISO/IEC/IEEE 29148</div></div></a>
+      <a class="card art" href="https://github.com/handao2303/aegis-ekyc-ui/blob/main/docs/01-ekyc/1.1-business/C07-C09-refer-handling.md"><div class="img contain"><img src="../diagrams/C07-C09-refer-handling-1.png" alt="Swimlane xử lý hồ sơ REFER" loading="lazy"></div><div class="body"><span class="code">C07–C09</span><h3 class="vi">Xử lý hồ sơ nghi vấn</h3><h3 class="en">Handling flagged cases</h3><p class="vi">Yêu cầu bổ sung, ma trận thông báo, SLA 24 giờ và leo thang.</p><p class="en">Requests for more info, notification matrix, 24-hour SLA and escalation.</p><div class="std">BABOK · swimlane</div></div></a>
+      <a class="card art" href="https://github.com/handao2303/aegis-ekyc-ui/blob/main/docs/01-ekyc/1.3-ui/U01-customer-app-ui-spec.md"><div class="img"><img src="../ui/app-ocrReview.png" alt="Màn kiểm tra thông tin" loading="lazy"></div><div class="body"><span class="code">U01</span><h3 class="vi">Đặc tả 20 màn app khách</h3><h3 class="en">Spec for 20 customer screens</h3><p class="vi">Thành phần, nội dung, điều hướng, thông điệp lỗi, API và trợ năng từng màn.</p><p class="en">Components, copy, navigation, error messages, API and accessibility per screen.</p><div class="std">WCAG 2.2 AA</div></div></a>
+      <a class="card art" href="https://github.com/handao2303/aegis-ekyc-ui/blob/main/docs/01-ekyc/1.3-ui/U02-compliance-ui-spec.md"><div class="img"><img src="../ui/co-detail.png" alt="Màn chi tiết hồ sơ Compliance" loading="lazy"></div><div class="body"><span class="code">U02</span><h3 class="vi">Đặc tả Aegis Compliance</h3><h3 class="en">Aegis Compliance spec</h3><p class="vi">Hàng đợi, chi tiết hồ sơ, Maker-Checker, báo cáo SLA, cấu hình ngưỡng hai người duyệt.</p><p class="en">Queue, case detail, maker-checker, SLA report, two-person threshold changes.</p><div class="std">WCAG 2.2 AA</div></div></a>
+      <a class="card art" href="https://github.com/handao2303/aegis-ekyc-ui/blob/main/docs/01-ekyc/1.4-testing/T02-test-cases.md"><div class="img contain"><img src="../diagrams/C17-uat-pack-1.png" alt="Quy trình UAT" loading="lazy" onerror="this.parentNode.style.display='none'"></div><div class="body"><span class="code">T01–T03</span><h3 class="vi">Kế hoạch, 106 test case, báo cáo</h3><h3 class="en">Plan, 106 test cases, report</h3><p class="vi">Bảng quyết định, giá trị biên, chuyển trạng thái; lỗi phát hiện và rủi ro còn lại.</p><p class="en">Decision tables, boundary values, state transitions; defects found and residual risk.</p><div class="std">ISO/IEC/IEEE 29119-3 · ISTQB</div></div></a>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow"><span class="vi">Giao diện</span><span class="en">Screens</span></p>
+    <h2 class="vi">Từ đặc tả tới màn hình chạy được</h2>
+    <h2 class="en">From spec to working screens</h2>
+    <div class="gallery" tabindex="0" aria-label="Ảnh màn hình app khách hàng">
+      <figure><img src="../ui/app-consent.png" alt="" loading="lazy"><figcaption class="vi">eKYC-01 · Đồng ý theo từng mục đích</figcaption><figcaption class="en">eKYC-01 · Consent per purpose</figcaption></figure>
+      <figure><img src="../ui/app-docType-passport.png" alt="" loading="lazy"><figcaption class="vi">eKYC-02 · CCCD, thẻ Căn cước, hộ chiếu</figcaption><figcaption class="en">eKYC-02 · ID card or passport</figcaption></figure>
+      <figure><img src="../ui/app-nfc.png" alt="" loading="lazy"><figcaption class="vi">eKYC-03B · Đọc chip NFC</figcaption><figcaption class="en">eKYC-03B · NFC chip read</figcaption></figure>
+      <figure><img src="../ui/app-liveness.png" alt="" loading="lazy"><figcaption class="vi">eKYC-06 · Xác thực khuôn mặt</figcaption><figcaption class="en">eKYC-06 · Face verification</figcaption></figure>
+      <figure><img src="../ui/app-refer.png" alt="" loading="lazy"><figcaption class="vi">eKYC-09 · Đang xem xét, hạn 24 giờ</figcaption><figcaption class="en">eKYC-09 · Under review, 24-hour target</figcaption></figure>
+      <figure><img src="../ui/app-requestInfo.png" alt="" loading="lazy"><figcaption class="vi">eKYC-11 · Bổ sung hồ sơ</figcaption><figcaption class="en">eKYC-11 · Send more info</figcaption></figure>
+      <figure><img src="../ui/app-duplicate.png" alt="" loading="lazy"><figcaption class="vi">eKYC-12 · Đã có tài khoản</figcaption><figcaption class="en">eKYC-12 · Already a customer</figcaption></figure>
+      <figure><img src="../ui/app-privacy.png" alt="" loading="lazy"><figcaption class="vi">eKYC-14 · Rút lại đồng ý</figcaption><figcaption class="en">eKYC-14 · Withdraw consent</figcaption></figure>
+    </div>
+    <div class="card wide"><img src="../ui/co-queue.png" alt="Hàng đợi xét duyệt Aegis Compliance" loading="lazy"></div>
+  </div>
+</section>
+
+<section id="results" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <p class="eyebrow"><span class="vi">Kết quả</span><span class="en">Results</span></p>
+    <h2 class="vi">Đạt vòng kiểm thử nội bộ – và nói rõ vì sao chưa vào UAT</h2>
+    <h2 class="en">Passed internal testing – with a clear list of what blocks UAT</h2>
+    <div class="results">
+      <div class="card res"><b>91 / 106</b><p class="vi">test case đạt, 0 không đạt; 4 đạt một phần và 11 chưa chạy được ghi rõ lý do.</p><p class="en">test cases passed, 0 failed; 4 partial and 11 not run, each with a reason.</p></div>
+      <div class="card res"><b>9</b><p class="vi">lỗi phát hiện và sửa trước khi bàn giao – 3 lỗi tìm ra khi rà soát đặc tả và viết test case, chưa cần chạy thử.</p><p class="en">defects found and fixed before hand-off – 3 caught by reviewing the spec and writing test cases, before running anything.</p></div>
+      <div class="card res"><b>16</b><p class="vi">hồ sơ mẫu phủ mọi nhánh quyết định: duyệt tự động, chuyển duyệt, từ chối, trùng khách, hộ chiếu nước ngoài.</p><p class="en">test personas cover every decision branch: auto-approve, refer, reject, duplicate, foreign passport.</p></div>
+    </div>
+    <div class="note" style="margin-top:20px"><strong class="vi">Còn chặn UAT:</strong><strong class="en">Still blocking UAT:</strong> <span class="vi">kiểm thử tích hợp với sandbox thật của CIC, AML, Core Banking; nhà cung cấp sinh trắc; Pháp chế xác minh văn bản và chốt thời hạn lưu hồ sơ.</span><span class="en">integration testing against real CIC, AML and core banking sandboxes; a biometrics vendor; Legal confirming the regulations and data retention periods.</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap two">
+    <div>
+      <p class="eyebrow"><span class="vi">Bài học</span><span class="en">Lessons</span></p>
+      <h2 class="vi">Điều tôi sẽ làm sớm hơn</h2>
+      <h2 class="en">What I'd do earlier next time</h2>
+      <ol class="lessons">
+        <li class="card"><span class="vi">Đưa yêu cầu mới vào tài liệu yêu cầu <strong>trước</strong> khi làm. Luồng hộ chiếu được làm trước, nên ma trận truy vết bị hở cho tới lúc tự rà soát.</span><span class="en">Put new requirements in the requirements doc <strong>before</strong> building. Passport support was built first, which left a traceability gap until the self-review.</span></li>
+        <li class="card"><span class="vi">Viết test case ngay khi đặc tả xong – đây là cách rẻ nhất để tìm chỗ đặc tả còn mơ hồ.</span><span class="en">Write test cases as soon as the spec is done – the cheapest way to find ambiguity.</span></li>
+        <li class="card"><span class="vi">Chọn chuẩn tham chiếu từ đầu cho từng loại tài liệu, thay vì đối chiếu sau.</span><span class="en">Pick the reference standard for each document type up front, not afterwards.</span></li>
+      </ol>
+    </div>
+    <div>
+      <p class="eyebrow"><span class="vi">Công cụ</span><span class="en">Tools</span></p>
+      <h2 class="vi">Làm việc với</h2>
+      <h2 class="en">Worked with</h2>
+      <div class="tools">
+        <span>Jira</span><span>Confluence</span><span>Mermaid</span><span>GitHub</span><span>BPMN / UML</span><span>Decision tables</span><span>RTM</span><span>UI kit / design tokens</span><span>Next.js prototype</span><span>REST API</span><span>SQL</span><span>iOS Simulator</span>
+      </div>
+      <p class="eyebrow" style="margin-top:36px"><span class="vi">Lưu ý</span><span class="en">Disclaimer</span></p>
+      <p style="color:var(--ink-2);font-size:14px;margin:0"><span class="vi">Aegis Bank là ngân hàng giả định. Toàn bộ dữ liệu là dữ liệu mẫu, không có thông tin khách hàng thật. Số hiệu văn bản pháp lý là bản nháp để phân tích, cần Pháp chế xác minh. Camera, chip NFC và điểm sinh trắc trong bản demo là mô phỏng.</span><span class="en">Aegis Bank is fictional. All data is sample data; no real customer information. Regulation references are analysis drafts pending legal review. Camera, NFC chip and biometric scores in the demo are simulated.</span></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Han Dao · Business Analyst</span>
+    <span><a href="../app/"><span class="vi">App khách hàng</span><span class="en">Customer app</span></a> · <a href="../compliance/">Compliance</a> · <a href="https://github.com/handao2303/aegis-ekyc-ui/tree/main/docs"><span class="vi">Tài liệu</span><span class="en">Docs</span></a> · <a href="https://github.com/handao2303/aegis-ekyc-ui">GitHub</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('lang');
+  function set(l){root.lang=l;btn.textContent=l==='vi'?'EN':'VI';try{localStorage.setItem('cs-lang',l)}catch(e){}}
+  var q=new URLSearchParams(location.search).get('lang'), saved=null;
+  try{saved=localStorage.getItem('cs-lang')}catch(e){}
+  set(q==='en'||q==='vi'?q:(saved||'vi'));
+  btn.addEventListener('click',function(){set(root.lang==='vi'?'en':'vi')});
+})();
+</script>
+</body>
+</html>

@@ -2,7 +2,9 @@
 
 The eKYC module UI for **Aegis Bank**, a personal banking project. Bilingual (Vietnamese / English), with light and dark themes.
 
-- **Customer app** (`/app/`): online account opening (19 screens: main flow, results, edge cases) plus 3 credit card limit screens (LIM-M1 → M3).
+**BA case study:** [handao2303.github.io/aegis-ekyc-ui/case-study/](https://handao2303.github.io/aegis-ekyc-ui/case-study/) – the problem, approach, key artifacts and results in a 2-minute read.
+
+- **Customer app** (`/app/`): online account opening (20 screens: main flow, results, edge cases, privacy) plus 3 credit card limit screens (LIM-M1 → M3).
 - **Aegis Compliance** (`/compliance/`): review back-office. Queue, case detail, maker-checker, completed cases, SLA report and threshold settings.
 - **Aegis Reconciliation** (`/reconciliation/`): matching dashboard, no-code rules with segregation-of-duties checks, exceptions with AI root-cause suggestions and data lineage, GL entries with zero-touch vs maker-checker posting (REC-01 → 06).
 - **Aegis Credit Limit** (`/credit-limit/`): live ISO 8583 authorization monitor, card limit profiles with optimistic locking and Smart Fallback, Temporary Limit Boost, fraud monitor with SMS/App delivery status (LIM-W1 → W4).
@@ -11,11 +13,11 @@ The eKYC module UI for **Aegis Bank**, a personal banking project. Bilingual (Vi
 
 **Live demo:** [handao2303.github.io/aegis-ekyc-ui](https://handao2303.github.io/aegis-ekyc-ui/) · [Customer app](https://handao2303.github.io/aegis-ekyc-ui/app/) · [Compliance](https://handao2303.github.io/aegis-ekyc-ui/compliance/) · [Reconciliation](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) · [Credit limit](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/)
 
-> All sample data is fictional. Camera, NFC, liveness and verification results are simulated; no backend APIs are connected yet.
+> All sample data is fictional. Camera, NFC, liveness and verification results are simulated. The eKYC module runs against a sample backend (`server/`, `npm run dev:all`); the GitHub Pages build is a demo without a backend.
 
 ## Documentation
 
-Requirements, business rules, diagrams and test packs for the eKYC Completion epic live in [`docs/`](docs/README.md) (Vietnamese): 24 documents and 47 Mermaid diagrams, grouped by module. Start with the [solution overview](docs/00-overview/A01-solution-overview.md): system context, containers, end-to-end sequence, decision tree and screen maps. Module docs: [reconciliation](docs/02-reconciliation/R01-reconciliation-flow.md), [credit limit](docs/03-credit-limit/L01-credit-limit-flow.md), [iOS document scan](docs/01-ekyc/1.3-ui/A02-ios-document-scan.md).
+Requirements, business rules, diagrams and test packs for the eKYC Completion epic live in [`docs/`](docs/README.md) (Vietnamese): 25 documents and 47 Mermaid diagrams, grouped by module. Start with the [solution overview](docs/00-overview/A01-solution-overview.md): system context, containers, end-to-end sequence, decision tree and screen maps. Module docs: [reconciliation](docs/02-reconciliation/R01-reconciliation-flow.md), [credit limit](docs/03-credit-limit/L01-credit-limit-flow.md), [iOS document scan](docs/01-ekyc/1.3-ui/A02-ios-document-scan.md).
 
 ## Getting started
 
