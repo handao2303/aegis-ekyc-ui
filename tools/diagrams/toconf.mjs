@@ -32,12 +32,15 @@ for (const f of walk(docsDir)) {
   html = html.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, (m, inner) => (inner.includes("<table") ? inner : m));
   // bỏ thẻ input checkbox của GFM (nếu có), gọn khoảng trắng giữa thẻ
   html = html.replace(/>\s+</g, "><").trim();
+  // ảnh chụp màn hình đứng riêng → <figure> để Confluence nhận đúng
+  html = html.replace(/<p>((?:<img[^>]*>)+)<\/p>/g, (m, imgs) => imgs);
+  html = html.replace(/(<figure>)?(<img[^>]*>)/g, (m, fig, img) => (fig ? m : `<figure>${img}</figure>`));
   // bảng thông tin đầu trang (| | |) có hàng tiêu đề trống → bỏ
   html = html.replace(/<thead><tr>(?:<th><\/th>)+<\/tr><\/thead>/g, "");
   const src = `${GH}${relDoc}`;
   const head = slug === "README"
     ? `<div data-type="panel-info"><p>Bản gốc (Markdown + Mermaid) trên GitHub: <a href="${src}">${relDoc}</a>. Diagram là ảnh xuất từ Mermaid; sửa diagram ở bản gốc rồi xuất lại.</p></div>`
-    : `<div data-type="panel-info"><p>Bản gốc: <a href="${src}">${relDoc}</a> trên GitHub. Diagram là ảnh xuất từ Mermaid (${n} sơ đồ).</p></div>`;
+    : `<div data-type="panel-info"><p>Bản gốc: <a href="${src}">${relDoc}</a> trên GitHub. ${n ? `Diagram là ảnh xuất từ Mermaid (${n} sơ đồ).` : ""}</p></div>`;
   writeFileSync(join(outDir, `${slug}.html`), head + html);
   console.log(slug, IDS[slug], n, (head + html).length);
 }

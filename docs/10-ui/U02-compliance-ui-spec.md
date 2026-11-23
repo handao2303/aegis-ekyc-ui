@@ -142,7 +142,7 @@ Hàng đợi lọc sẵn hồ sơ `PENDING_CHECKER`; cột Người xử lý hi�
 | Đề xuất chờ duyệt | Giá trị cũ → mới, người đề xuất, lý do; nút Phê duyệt / Từ chối chỉ bật cho Trưởng nhóm khác người đề xuất |
 | Lịch sử | 20 thay đổi gần nhất: tham số, cũ → mới, kết quả, người đề xuất → người duyệt |
 | Kiểm tra | Giá trị trong khoảng cho phép (vd. SLA 1–168h); khác giá trị hiện tại |
-| API | `GET /api/config` · `POST /api/config/changes` · `POST /api/config/changes/:id/approve|reject` |
+| API | `GET /api/config` · `POST /api/config/changes` · `POST /api/config/changes/:id/approve` hoặc `/reject` |
 
 ## 8. Truy vết
 
