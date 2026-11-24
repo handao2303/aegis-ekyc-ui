@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Jira | [SCRUM-75](https://baohandao2303.atlassian.net/browse/SCRUM-75) |
-| BR / FR / RULE | BR-14 · FR-11 · RULE-11 |
+| BR / FR / RULE | BR-14 · FR-11a → d · RULE-11 |
 | UI | `Resume`, `Consent` (chế độ re-consent) |
 
 ## 1. Sơ đồ trạng thái phiên

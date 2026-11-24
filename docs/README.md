@@ -3,7 +3,7 @@
 Bộ tài liệu cho 3 module: **eKYC** (18 hạng mục của Epic [SCRUM-69 – eKYC Completion & Production Readiness](https://baohandao2303.atlassian.net/browse/SCRUM-69), kèm giao diện, kiểm thử và pháp lý), [Đối soát (SCRUM-7)](https://baohandao2303.atlassian.net/browse/SCRUM-7), [Hạn mức (SCRUM-8)](https://baohandao2303.atlassian.net/browse/SCRUM-8).
 Tổng quan và kế hoạch: [Gap Analysis & Delivery Plan (Confluence)](https://baohandao2303.atlassian.net/wiki/spaces/SCRUM/pages/15106049).
 
-Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 47 diagram, tất cả đã được kiểm tra cú pháp.
+Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 48 diagram, tất cả đã được kiểm tra cú pháp.
 
 **Bắt đầu từ đây:** [A01 Tổng quan giải pháp](00-overview/A01-solution-overview.md) – bối cảnh hệ thống, thành phần, luồng end-to-end, cây quyết định, bản đồ màn hình và cách triển khai UI.
 
@@ -19,7 +19,8 @@ docs/
 │   ├── 1.2-compliance-legal/    Tuân thủ & pháp lý
 │   ├── 1.3-ui/                  Giao diện
 │   ├── 1.4-testing/             Kiểm thử
-│   └── 1.5-analytics/           Đo lường
+│   ├── 1.5-analytics/           Đo lường
+│   └── 1.6-api-data/            API & dữ liệu
 ├── 02-reconciliation/           Module 2 · Đối soát
 └── 03-credit-limit/             Module 3 · Hạn mức
 ```
@@ -54,6 +55,10 @@ flowchart LR
         subgraph K["1.5 Đo lường"]
             C18["C18 KPI"]
         end
+        subgraph D["1.6 API & dữ liệu"]
+            A03["A03 Đặc tả API"]
+            D01["D01 Từ điển dữ liệu"]
+        end
     end
     R01["Module 2 · Đối soát<br/>R01"]
     L01["Module 3 · Hạn mức<br/>L01"]
@@ -65,6 +70,8 @@ flowchart LR
     B --> T
     U --> T
     B --> C18
+    B --> D
+    D --> T
     A01 --> M1
     Q01 -. "đối chiếu chuẩn" .-> M1
     A01 --> R01
@@ -80,7 +87,7 @@ flowchart LR
 |---|---|---|---|
 | [A01 Tổng quan giải pháp](00-overview/A01-solution-overview.md) | SCRUM-69 | Context, Container, Sequence, Flowchart ×4 | ✅ Hoàn tất |
 | [C01 Nhật ký đồng bộ Jira](00-overview/C01-jira-hygiene-log.md) | SCRUM-70 | — | ✅ Hoàn tất |
-| [C03 Requirements Addendum v1.3 & RTM](00-overview/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 Chờ PO & Compliance duyệt |
+| [C03 Requirements Addendum v1.3 & RTM](00-overview/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 draft3 · chờ PO & Compliance duyệt |
 | [Q01 Đối chiếu chuẩn quốc tế](00-overview/Q01-standards-conformance.md) | SCRUM-69 | — | ✅ v1.0 · 4 đạt · 9 một phần · 0 thiếu |
 
 ### Module 1 · eKYC
@@ -95,7 +102,7 @@ flowchart LR
 | | [C11 Nguồn ảnh sinh trắc học](01-ekyc/1.2-compliance-legal/C11-biometric-source.md) | SCRUM-80 | Flowchart | 🔧 Đặc tả xong, chờ C02 |
 | | [C12 Rút lại đồng ý & lưu trữ](01-ekyc/1.2-compliance-legal/C12-consent-retention.md) | SCRUM-81 | Flowchart, Sequence | ✅ Đặc tả + màn Quyền riêng tư + backend |
 | | [C13–C14 Chống gian lận](01-ekyc/1.2-compliance-legal/C13-C14-fraud-controls.md) | SCRUM-82, 83 | Flowchart, Sequence | 🔧 Velocity có backend; spike C14 chưa chạy |
-| | [P01 Điều khoản, quyền riêng tư & cơ sở pháp lý](01-ekyc/1.2-compliance-legal/P01-terms-privacy.md) | SCRUM-17, 71, 81 | Flowchart | 📝 Chờ Pháp chế & Compliance duyệt |
+| | [P01 Điều khoản, quyền riêng tư & cơ sở pháp lý](01-ekyc/1.2-compliance-legal/P01-terms-privacy.md) | SCRUM-17, 71, 81 | Flowchart | 📝 v0.3 · chờ Pháp chế & Compliance duyệt |
 | 1.3 Giao diện | [U01 Đặc tả giao diện app khách (20 màn)](01-ekyc/1.3-ui/U01-customer-app-ui-spec.md) | SCRUM-47 | Flowchart | ✅ v1.0, có ảnh từng màn |
 | | [U02 Đặc tả giao diện Aegis Compliance](01-ekyc/1.3-ui/U02-compliance-ui-spec.md) | SCRUM-48 | — | ✅ v1.0, có ảnh từng màn |
 | | [A02 App iPhone quét giấy tờ](01-ekyc/1.3-ui/A02-ios-document-scan.md) | SCRUM-18, 80 | Flowchart ×2, Sequence, State | 🔧 Bản mẫu chạy được, chưa có CSCA & liveness |
@@ -106,6 +113,8 @@ flowchart LR
 | | [C16 Kế hoạch SIT](01-ekyc/1.4-testing/C16-sit-plan.md) | SCRUM-85 | Flowchart, Sequence | ⛔ Kế hoạch xong, bị chặn bởi SCRUM-56 |
 | | [C17 Bộ UAT & biên bản](01-ekyc/1.4-testing/C17-uat-pack.md) | SCRUM-86 | Flowchart | ⛔ Bộ case xong, chờ C03 + C16 |
 | 1.5 Đo lường | [C18 KPI & từ điển chỉ số](01-ekyc/1.5-analytics/C18-kpi-metric-dictionary.md) | SCRUM-87 | Flowchart | ✅ Đặc tả + báo cáo SLA/KPI có backend |
+| 1.6 API & dữ liệu | [A03 Đặc tả API & mã lỗi](01-ekyc/1.6-api-data/A03-api-specification.md) | SCRUM-69, 85 | — | 📝 v1.0 · 27 API · 21 mã lỗi, chờ Tech Lead |
+| | [D01 Từ điển dữ liệu](01-ekyc/1.6-api-data/D01-data-dictionary.md) | SCRUM-69, 81 | ERD | 📝 v1.0 · 14 bảng, phân loại theo NĐ 13, chờ DPO |
 
 ### Module 2 · Đối soát
 

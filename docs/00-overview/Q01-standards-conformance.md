@@ -49,14 +49,16 @@ Cột "Mức" là sau khi sửa: **4 ✅ · 9 🟡 · 0 ❌**. Không còn mục
 
 | # | Việc | Tài liệu | Ưu tiên |
 |---|---|---|---|
-| 1 | Viết lại FR theo dạng "Hệ thống phải…", mỗi FR một yêu cầu kiểm chứng được; tách FR-11, FR-14 | C03 | Cao |
+| 1 | ~~Viết lại FR theo dạng "Hệ thống phải…", mỗi FR một yêu cầu kiểm chứng được; tách FR-11, FR-14~~ ✅ 24/11 (C03 draft3) | C03 | Cao |
 | 2 | Thêm phần thuật ngữ, giả định, ràng buộc, phụ thuộc | C03 | TB |
 | 3 | Thêm khối kiểm soát tài liệu (phiên bản · trạng thái · người soạn · người duyệt) cho C04–C13, C15, C18, A02 | Nhiều | TB |
 | 4 | Thêm tiêu chí nghiệm thu dạng Given/When/Then cho từng RULE | C06–C13 | TB |
 | 5 | Vẽ lại sơ đồ quy trình bằng công cụ BPMN (bpmn.io / Camunda Modeler) cho C07 và C10 | C07, C10 | Thấp |
 | 6 | Thêm chú giải C4 và bảng bên liên quan | A01 | Thấp |
 | 7 | Ghi kết quả thực tế cho từng test case vòng 2 (nhật ký chạy) | T02/T03 | TB |
-| 8 | Bổ sung mục chuyển dữ liệu ra nước ngoài và danh sách bên nhận sau khi Pháp chế trả lời | P01 | Cao, trước khi chọn nơi đặt database |
+| 8 | Bổ sung mục chuyển dữ liệu ra nước ngoài và danh sách bên nhận sau khi Pháp chế trả lời. 🟡 24/11: đã lập dự thảo P01 §4.1 (7 bên nhận, 2 phương án nơi đặt dữ liệu); còn chờ Pháp chế trả lời câu 6–8 | P01 | Cao, trước khi chọn nơi đặt database |
+| 9 | ~~Lập đặc tả API kèm mã lỗi~~ ✅ 24/11 (A03) | A03 | Cao |
+| 10 | ~~Lập từ điển dữ liệu, phân loại mức nhạy cảm và thời hạn lưu~~ ✅ 24/11 (D01) | D01 | Cao |
 
 ## 4. Quy ước từ nay
 
