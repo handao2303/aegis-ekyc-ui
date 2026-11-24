@@ -37,10 +37,14 @@ const RULES0: Rule[] = [
   { id: "MR-005", name: "Hoàn tiền NAPAS (refund)", type: "EXACT", keys: ["ref", "amount"], tolerance: "0 ₫", version: 1, status: "DRAFT", maker: "Phạm Thu Trang", hit: 0 },
 ];
 
-type ExStatus = "OPEN" | "IN_PROGRESS" | "ESCALATED" | "RESOLVED";
+// PENDING_POSTING: đã hạch toán điều chỉnh > ngưỡng, chờ Checker. Ngoại lệ chỉ đóng khi bút toán POSTED (DEF-REC-06)
+type ExStatus = "OPEN" | "IN_PROGRESS" | "ESCALATED" | "PENDING_POSTING" | "RESOLVED";
+type Resolution = "ADJUSTMENT" | "MANUAL_MATCH" | "REQUEST_DOCS";
 type Ex = {
   id: string; pair: string; kind: "UNMATCHED" | "PARTIAL" | "DUPLICATE"; amount: number; diff: number; ageH: number; dueH: number;
   owner?: string; status: ExStatus; causes: { vi: string; en: string; p: number }[];
+  resolution?: { type: Resolution; cause: string; override: boolean; note?: string; ref?: string };
+  waitingDocs?: string;
   internal: { ref: string; date: string; acct: string; amount: number }; external: { ref: string; date: string; acct: string; amount: number } | null;
 };
 const EX0: Ex[] = [
@@ -61,8 +65,8 @@ const EX0: Ex[] = [
     internal: { ref: "FT2611051209", date: "18/11 10:20", acct: "1903 2211 8899", amount: 9_870_000 }, external: { ref: "VS-881044", date: "19/11 06:08", acct: "4111 •••• 9981", amount: 9_820_650 } },
 ];
 
-type GLStatus = "POSTED" | "PENDING" | "REJECTED";
-type GL = { id: string; date: string; debit: string; credit: string; amount: number; source: string; mode: "ZERO_TOUCH" | "MAKER_CHECKER"; maker: string; checker?: string; status: GLStatus; memo: { vi: string; en: string } };
+type GLStatus = "POSTED" | "PENDING" | "RETURNED" | "REJECTED";
+type GL = { id: string; date: string; debit: string; credit: string; amount: number; source: string; mode: "ZERO_TOUCH" | "MAKER_CHECKER"; maker: string; checker?: string; status: GLStatus; memo: { vi: string; en: string }; rejectReason?: string; returnNote?: string; submits?: number };
 const GL0: GL[] = [
   { id: "GL-90311", date: "21/11 09:42", debit: "1131.02", credit: "4211.01", amount: 12_382_000, source: "MR-003 · BATCH-MC-1120", mode: "ZERO_TOUCH", maker: "system", status: "POSTED", memo: { vi: "Tất toán lô Mastercard", en: "Mastercard batch settlement" } },
   { id: "GL-90312", date: "21/11 09:44", debit: "6311.01", credit: "1131.03", amount: 241_250, source: "EXC-1124", mode: "ZERO_TOUCH", maker: ME, status: "POSTED", memo: { vi: "Điều chỉnh chênh lệch tỷ giá", en: "FX difference adjustment" } },
@@ -80,8 +84,15 @@ const CHART: Record<string, { labels: string[]; auto: number[]; zero: number[] }
 /* ---------- Tiện ích hiển thị ---------- */
 
 const ruleTone: Record<RuleStatus, PillTone> = { ACTIVE: "success", PENDING: "pending", DRAFT: "neutral" };
-const exTone: Record<ExStatus, PillTone> = { OPEN: "pending", IN_PROGRESS: "brand", ESCALATED: "error", RESOLVED: "success" };
-const glTone: Record<GLStatus, PillTone> = { POSTED: "success", PENDING: "warning", REJECTED: "error" };
+const exTone: Record<ExStatus, PillTone> = { OPEN: "pending", IN_PROGRESS: "brand", ESCALATED: "error", PENDING_POSTING: "warning", RESOLVED: "success" };
+const glTone: Record<GLStatus, PillTone> = { POSTED: "success", PENDING: "warning", RETURNED: "pending", REJECTED: "error" };
+const caseOf = (g: GL) => g.source.match(/EXC-\d+/)?.[0];
+/* Danh mục nguyên nhân chuẩn (REQ-REC-01) – chờ Kế toán + Data chốt (R02 §7 câu 3) */
+const CAUSES: { vi: string; en: string }[] = [
+  { vi: "Chênh lệch tỷ giá", en: "FX difference" }, { vi: "Phí chưa hạch toán", en: "Unbooked fee" },
+  { vi: "Dữ liệu đối tác về trễ", en: "Late partner data" }, { vi: "Sai mã tham chiếu", en: "Wrong reference" },
+  { vi: "Giao dịch trùng", en: "Duplicate transaction" }, { vi: "Giao dịch bị huỷ / đảo", en: "Reversed transaction" }, { vi: "Khác", en: "Other" },
+];
 const aging = (h: number) => (h < 24 ? "0–1d" : h < 72 ? "1–3d" : h < 168 ? "3–7d" : ">7d");
 
 /* ---------- App ---------- */
@@ -128,7 +139,8 @@ function RecApp() {
           update={(p) => setExs((xs) => xs.map((x) => (x.id === ex.id ? { ...x, ...p } : x)))}
           addGL={(g) => setGls((xs) => [g, ...xs])} />
       )}
-      {view === "gl" && <GLView gls={gls} setGls={setGls} />}
+      {view === "gl" && <GLView gls={gls} setGls={setGls}
+        onCase={(id, outcome) => setExs((xs) => xs.map((x) => (x.id !== id || x.status === "RESOLVED" ? x : outcome === "posted" ? { ...x, status: "RESOLVED" } : x.status === "PENDING_POSTING" ? { ...x, status: "IN_PROGRESS" } : x)))} />}
       <RuleForm open={ruleForm} onClose={() => setRuleForm(false)} onSave={(r) => { setRules((xs) => [r, ...xs]); setRuleForm(false); }} nextId={`MR-${String(rules.length + 1).padStart(3, "0")}`} />
     </OpsShell>
   );
@@ -307,14 +319,14 @@ function Exceptions({ exs, onOpen }: { exs: Ex[]; onOpen: (id: string) => void }
   const [q, setQ] = useState("");
   const [st, setSt] = useState<"open" | "all" | ExStatus>("open");
   const list = useMemo(() => exs.filter((e) => (st === "open" ? e.status !== "RESOLVED" : st === "all" ? true : e.status === st) && (e.id + e.pair).toLowerCase().includes(q.toLowerCase())), [exs, st, q]);
-  const label: Record<ExStatus, string> = { OPEN: tr("Mới", "Open"), IN_PROGRESS: tr("Đang xử lý", "In progress"), ESCALATED: tr("Đã leo thang", "Escalated"), RESOLVED: tr("Đã xử lý", "Resolved") };
+  const label: Record<ExStatus, string> = { OPEN: tr("Mới", "Open"), IN_PROGRESS: tr("Đang xử lý", "In progress"), ESCALATED: tr("Đã leo thang", "Escalated"), PENDING_POSTING: tr("Chờ hạch toán", "Awaiting posting"), RESOLVED: tr("Đã xử lý", "Resolved") };
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div><h2 className="text-title">{tr("Ngoại lệ đối soát", "Exceptions")}</h2><p className="text-body-sm text-fg-tertiary">{tr("Giao dịch không khớp hoặc khớp một phần, kèm gợi ý nguyên nhân từ AI.", "Unmatched or partially matched transactions, with AI root-cause suggestions.")}</p></div>
         <div className="flex flex-wrap gap-2">
           <SearchBox value={q} onChange={setQ} placeholder={tr("Tìm mã ngoại lệ", "Search exceptions")} />
-          <Select value={st} onChange={setSt} label={tr("Trạng thái", "Status")} options={[{ value: "open", label: tr("Đang mở", "Open") }, { value: "all", label: tr("Tất cả", "All") }, { value: "ESCALATED", label: label.ESCALATED }, { value: "RESOLVED", label: label.RESOLVED }]} />
+          <Select value={st} onChange={setSt} label={tr("Trạng thái", "Status")} options={[{ value: "open", label: tr("Đang mở", "Open") }, { value: "all", label: tr("Tất cả", "All") }, { value: "ESCALATED", label: label.ESCALATED }, { value: "PENDING_POSTING", label: label.PENDING_POSTING }, { value: "RESOLVED", label: label.RESOLVED }]} />
         </div>
       </div>
       <Panel pad={false}>
@@ -341,22 +353,55 @@ function Exceptions({ exs, onOpen }: { exs: Ex[]; onOpen: (id: string) => void }
 
 /* ---------- REC-05 Chi tiết ngoại lệ + truy vết ---------- */
 
+const MIN_NOTE = 10;
+const textCls = "w-full rounded-[12px] border border-line-subtle px-3 py-2 text-body-sm outline-none focus:border-[#b46cf6] disabled:bg-bg-sunken";
+
 function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]; onBack: () => void; update: (p: Partial<Ex>) => void; addGL: (g: GL) => void }) {
   const { tr, pick } = useLang();
-  const [cause, setCause] = useState(0);
-  const overdue = ex.ageH > ex.dueH && ex.status !== "RESOLVED";
-  const gl = gls.find((g) => g.source.includes(ex.id));
-  const resolve = () => {
-    const needsChecker = ex.diff > GL_THRESHOLD;
-    addGL({ id: `GL-${90320 + Math.floor(ex.diff % 97)}`, date: "21/11 10:30", debit: "6311.01", credit: "1131.03", amount: ex.diff, source: ex.id, mode: needsChecker ? "MAKER_CHECKER" : "ZERO_TOUCH", maker: ME, status: needsChecker ? "PENDING" : "POSTED", memo: { vi: `Điều chỉnh: ${ex.causes[cause].vi}`, en: `Adjustment: ${ex.causes[cause].en}` } });
-    update({ status: "RESOLVED", owner: ex.owner ?? ME });
+  const [cause, setCause] = useState<number | "other">(0);
+  const [otherCat, setOtherCat] = useState(0);
+  const [otherNote, setOtherNote] = useState("");
+  const [how, setHow] = useState<Resolution>(ex.kind === "DUPLICATE" || !ex.external ? "MANUAL_MATCH" : "ADJUSTMENT");
+  const [matchRef, setMatchRef] = useState("");
+  const [docsNote, setDocsNote] = useState("");
+  const done = ex.status === "RESOLVED";
+  const overdue = ex.ageH > ex.dueH && !done;
+  const linked = gls.filter((g) => g.source.includes(ex.id));
+  const gl = linked[0];
+  // REQ-REC-08: mỗi ngoại lệ tối đa 1 bút toán điều chỉnh đang chờ (DEF-REC-01)
+  const openGL = linked.find((g) => g.status === "PENDING" || g.status === "RETURNED");
+  const needsChecker = ex.diff > GL_THRESHOLD;
+
+  const causeOk = cause !== "other" || otherNote.trim().length >= MIN_NOTE;
+  const causeText = cause === "other" ? `${pick(CAUSES[otherCat])}: ${otherNote.trim()}` : pick(ex.causes[cause]);
+  const causeVi = cause === "other" ? `${CAUSES[otherCat].vi}: ${otherNote.trim()}` : ex.causes[cause].vi;
+  const causeEn = cause === "other" ? `${CAUSES[otherCat].en}: ${otherNote.trim()}` : ex.causes[cause].en;
+  const howOk = how === "ADJUSTMENT" ? !openGL : how === "MANUAL_MATCH" ? matchRef.trim().length >= 4 : docsNote.trim().length >= MIN_NOTE;
+  const canSubmit = !done && causeOk && howOk;
+
+  const submit = () => {
+    if (!canSubmit) return;
+    const owner = ex.owner ?? ME;
+    const resolution = { type: how, cause: causeText, override: cause === "other", note: cause === "other" ? otherNote.trim() : undefined };
+    if (how === "ADJUSTMENT") {
+      addGL({ id: `GL-${90320 + Math.floor(ex.diff % 97)}`, date: "21/11 10:30", debit: "6311.01", credit: "1131.03", amount: ex.diff, source: ex.id, mode: needsChecker ? "MAKER_CHECKER" : "ZERO_TOUCH", maker: ME, status: needsChecker ? "PENDING" : "POSTED", submits: 1, memo: { vi: `Điều chỉnh: ${causeVi}`, en: `Adjustment: ${causeEn}` } });
+      update({ owner, resolution, waitingDocs: undefined, status: needsChecker ? "PENDING_POSTING" : "RESOLVED" });
+    } else if (how === "MANUAL_MATCH") {
+      update({ owner, resolution: { ...resolution, ref: matchRef.trim() }, waitingDocs: undefined, status: "RESOLVED" });
+    } else {
+      update({ owner, resolution, waitingDocs: docsNote.trim(), status: "IN_PROGRESS" });
+      setDocsNote("");
+    }
   };
+
   const steps = [
     { t: "SourceTransaction", d: ex.internal.ref, ok: true },
-    { t: "MatchResult", d: ex.external ? `${ex.kind} · ${ex.pair}` : tr("Không tìm thấy đối ứng", "No counterpart found"), ok: !!ex.external },
+    { t: "MatchResult", d: ex.external ? `${ex.kind} · ${ex.pair}` : ex.resolution?.ref ? `${tr("Khớp thủ công", "Manual match")} · ${ex.resolution.ref}` : tr("Không tìm thấy đối ứng", "No counterpart found"), ok: !!ex.external || !!ex.resolution?.ref },
     { t: "ExceptionCase", d: ex.id, ok: true },
-    { t: "GLEntry", d: gl ? `${gl.id} · ${gl.status}` : tr("Chưa hạch toán", "Not posted yet"), ok: !!gl },
+    { t: "GLEntry", d: gl ? `${gl.id} · ${gl.status}` : ex.resolution?.type === "MANUAL_MATCH" ? tr("Không cần hạch toán", "No posting needed") : tr("Chưa hạch toán", "Not posted yet"), ok: !!gl },
   ];
+  const submitLabel = how === "ADJUSTMENT" ? tr("Tạo bút toán điều chỉnh", "Create adjustment entry") : how === "MANUAL_MATCH" ? tr("Khớp thủ công & đóng", "Match & close") : tr("Gửi yêu cầu chứng từ", "Request documents");
+
   return (
     <div className="flex flex-col gap-5">
       <button onClick={onBack} className="inline-flex w-fit items-center gap-1.5 text-body-sm font-semibold text-fg-secondary"><ArrowLeft className="size-4" />{tr("Danh sách ngoại lệ", "All exceptions")}</button>
@@ -365,9 +410,8 @@ function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]
         <Pill tone={exTone[ex.status]}>{ex.status}</Pill>
         <span className="text-body-sm text-fg-tertiary">{ex.pair} · {ex.kind} · aging {aging(ex.ageH)}</span>
         <div className="ml-auto flex flex-wrap gap-2">
-          {ex.status !== "RESOLVED" && !ex.owner && <GhostButton onClick={() => update({ owner: ME, status: "IN_PROGRESS" })}>{tr("Nhận xử lý", "Claim")}</GhostButton>}
-          {ex.status !== "RESOLVED" && ex.status !== "ESCALATED" && <GhostButton tone="danger" icon={AlertTriangle} onClick={() => update({ status: "ESCALATED" })}>{tr("Leo thang", "Escalate")}</GhostButton>}
-          {ex.status !== "RESOLVED" && <GradientButton icon={CheckCircle2} onClick={resolve}>{tr("Xử lý & hạch toán", "Resolve & post")}</GradientButton>}
+          {!done && !ex.owner && <GhostButton onClick={() => update({ owner: ME, status: ex.status === "OPEN" ? "IN_PROGRESS" : ex.status })}>{tr("Nhận xử lý", "Claim")}</GhostButton>}
+          {!done && ex.status !== "ESCALATED" && ex.status !== "PENDING_POSTING" && <GhostButton tone="danger" icon={AlertTriangle} onClick={() => update({ status: "ESCALATED" })}>{tr("Leo thang", "Escalate")}</GhostButton>}
         </div>
       </div>
 
@@ -375,6 +419,12 @@ function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]
         <div role="alert" className="flex gap-3 rounded-[16px] border border-[#f3c6c0] bg-[#fdf0ee] p-4 text-body-sm text-[#7a1a12]">
           <Clock className="mt-0.5 size-5 shrink-0" />
           <div><p className="font-semibold">{tr(`Quá hạn xử lý ${ex.ageH - ex.dueH} giờ`, `Overdue by ${ex.ageH - ex.dueH} hours`)}</p><p>{tr("Ngoại lệ đã vượt SLA và được leo thang tự động lên trưởng nhóm đối soát.", "This exception passed its SLA and was escalated to the team lead automatically.")} <RuleTag>RULE-REC-06</RuleTag></p></div>
+        </div>
+      )}
+      {ex.waitingDocs && !done && (
+        <div role="status" className="flex gap-3 rounded-[16px] bg-[#f3ecfe] p-4 text-body-sm text-[#4b2386]">
+          <Inbox className="mt-0.5 size-5 shrink-0" />
+          <div><p className="font-semibold">{tr("Đang chờ chứng từ bổ sung", "Waiting for supporting documents")}</p><p>{ex.waitingDocs}</p></div>
         </div>
       )}
 
@@ -398,21 +448,72 @@ function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]
           <p className="mt-4 flex items-center justify-between rounded-[12px] border border-line-subtle px-4 py-3 text-body-sm"><span className="text-fg-secondary">{tr("Chênh lệch", "Difference")}</span><span className="text-[18px] font-semibold tabular">{vnd(ex.diff, false)}</span></p>
         </Panel>
 
-        <Panel title={<span className="flex items-center gap-2"><Sparkles className="size-4 text-[#d98ca0]" />{tr("Nguyên nhân gợi ý", "Suggested causes")}</span>}>
+        <Panel title={<span className="flex items-center gap-2"><Sparkles className="size-4 text-[#d98ca0]" />{tr("Nguyên nhân", "Root cause")}</span>}>
           <ul role="radiogroup" aria-label={tr("Nguyên nhân", "Cause")} className="flex flex-col gap-2">
             {ex.causes.slice(0, 3).map((c, i) => (
               <li key={c.en}>
-                <button role="radio" aria-checked={cause === i} onClick={() => setCause(i)} disabled={ex.status === "RESOLVED"}
+                <button role="radio" aria-checked={cause === i} onClick={() => setCause(i)} disabled={done}
                   className={cx("interactive w-full rounded-[14px] border p-3 text-left", cause === i ? "border-[#b46cf6] bg-[#faf6ff]" : "border-line-subtle")}>
                   <span className="mb-2 flex justify-between gap-2 text-body-sm"><span className="font-medium">{pick(c)}</span><span className="font-semibold tabular">{c.p}%</span></span>
                   <Meter value={c.p} label={pick(c)} />
                 </button>
               </li>
             ))}
+            <li>
+              <button role="radio" aria-checked={cause === "other"} onClick={() => setCause("other")} disabled={done}
+                className={cx("interactive w-full rounded-[14px] border p-3 text-left text-body-sm font-medium", cause === "other" ? "border-[#b46cf6] bg-[#faf6ff]" : "border-line-subtle")}>
+                {tr("Nguyên nhân khác (không theo gợi ý AI)", "Other cause (override AI)")}
+              </button>
+            </li>
           </ul>
-          <p className="mt-3 text-caption text-fg-tertiary">{ex.diff > GL_THRESHOLD ? tr("Bút toán điều chỉnh > 50 triệu sẽ chờ Checker duyệt.", "Adjustments > 50m wait for a checker.") : tr("Bút toán điều chỉnh ≤ 50 triệu được hạch toán zero-touch.", "Adjustments ≤ 50m post zero-touch.")} <RuleTag>RULE-REC-04</RuleTag></p>
+          {cause === "other" && !done && (
+            <div className="mt-3 flex flex-col gap-2">
+              <Select value={String(otherCat)} onChange={(v) => setOtherCat(Number(v))} label={tr("Danh mục nguyên nhân", "Cause category")} options={CAUSES.map((c, i) => ({ value: String(i), label: pick(c) }))} />
+              <textarea aria-label={tr("Ghi chú nguyên nhân", "Cause note")} value={otherNote} onChange={(e) => setOtherNote(e.target.value)} rows={2} className={textCls}
+                placeholder={tr(`Mô tả nguyên nhân (tối thiểu ${MIN_NOTE} ký tự)`, `Describe the cause (at least ${MIN_NOTE} characters)`)} />
+              <p className="text-caption text-fg-tertiary">{tr("Lựa chọn này được ghi là override để huấn luyện lại mô hình.", "Recorded as an override for model retraining.")} <RuleTag>REQ-REC-01</RuleTag></p>
+            </div>
+          )}
         </Panel>
       </div>
+
+      <Panel title={tr("Xử lý ngoại lệ", "Resolve exception")} action={<RuleTag>UC-REC-04 · REQ-REC-02</RuleTag>}>
+        {done ? (
+          <p className="text-body-sm text-fg-secondary">
+            {tr("Đã đóng", "Closed")} · {ex.resolution ? `${ex.resolution.type === "MANUAL_MATCH" ? tr("Khớp thủ công", "Manual match") + (ex.resolution.ref ? ` (${ex.resolution.ref})` : "") : tr("Hạch toán điều chỉnh", "Adjustment")} · ${ex.resolution.cause}` : tr("Xử lý trước khi có hệ thống mới", "Resolved earlier")}
+          </p>
+        ) : (
+          <div className="flex flex-col gap-4">
+            <Segmented value={how} onChange={setHow} label={tr("Cách xử lý", "Resolution")} options={[
+              { value: "ADJUSTMENT", label: tr("Hạch toán điều chỉnh", "Adjustment") },
+              { value: "MANUAL_MATCH", label: tr("Khớp thủ công", "Manual match") },
+              { value: "REQUEST_DOCS", label: tr("Yêu cầu chứng từ", "Request documents") },
+            ]} />
+            {how === "ADJUSTMENT" && (openGL ? (
+              <div role="alert" className="flex gap-3 rounded-[14px] border border-[#f7d9a8] bg-[#fff7e8] p-4 text-body-sm text-[#7a4a00]">
+                <ShieldAlert className="mt-0.5 size-5 shrink-0" />
+                <div><p className="font-semibold">{tr(`Đã có bút toán ${openGL.id} (${vnd(openGL.amount)}) đang chờ Checker`, `${openGL.id} (${vnd(openGL.amount)}) is already awaiting a checker`)}</p><p>{tr("Không tạo thêm bút toán điều chỉnh cho ngoại lệ này. Chờ Checker duyệt, từ chối hoặc trả về.", "No further adjustment can be created for this exception until the checker decides.")} <RuleTag>REQ-REC-08</RuleTag></p></div>
+              </div>
+            ) : (
+              <p className="text-body-sm text-fg-secondary">{tr(`Tạo bút toán Nợ 6311.01 / Có 1131.03 số tiền ${vnd(ex.diff)}. `, `Creates Dr 6311.01 / Cr 1131.03 for ${vnd(ex.diff)}. `)}
+                {needsChecker ? tr("Trên 50 triệu: chờ Checker duyệt, ngoại lệ ở trạng thái Chờ hạch toán.", "Above 50m: waits for a checker; exception stays Awaiting posting.") : tr("Tới 50 triệu: hạch toán zero-touch, ngoại lệ đóng ngay.", "Up to 50m: posts zero-touch and closes the exception.")} <RuleTag>RULE-REC-04</RuleTag></p>
+            ))}
+            {how === "MANUAL_MATCH" && (
+              <label className="flex flex-col gap-1.5"><span className="text-body-sm font-semibold">{tr("Mã tham chiếu giao dịch đối ứng", "Counterpart reference")}</span>
+                <input value={matchRef} onChange={(e) => setMatchRef(e.target.value)} placeholder={ex.external?.ref ?? "NP-…"} className={cx(textCls, "h-11 tabular")} />
+                <span className="text-caption text-fg-tertiary">{tr("Khớp tay với bản ghi đối ứng, không sinh bút toán. Dùng cho giao dịch trùng hoặc dữ liệu đối tác đã về.", "Pairs with the counterpart record without a posting. For duplicates or late partner data.")}</span></label>
+            )}
+            {how === "REQUEST_DOCS" && (
+              <label className="flex flex-col gap-1.5"><span className="text-body-sm font-semibold">{tr("Chứng từ cần bổ sung", "Documents needed")}</span>
+                <textarea value={docsNote} onChange={(e) => setDocsNote(e.target.value)} rows={2} className={textCls} placeholder={tr(`vd. Sao kê NAPAS ngày 19/11 (tối thiểu ${MIN_NOTE} ký tự)`, `e.g. NAPAS statement for 19 Nov (at least ${MIN_NOTE} characters)`)} /></label>
+            )}
+            <div className="flex flex-wrap items-center gap-3">
+              <GradientButton icon={CheckCircle2} disabled={!canSubmit} onClick={submit}>{submitLabel}</GradientButton>
+              {!causeOk && <span className="text-caption text-[#b42318]">{tr(`Ghi chú nguyên nhân cần ít nhất ${MIN_NOTE} ký tự.`, `Cause note needs at least ${MIN_NOTE} characters.`)}</span>}
+            </div>
+          </div>
+        )}
+      </Panel>
 
       <Panel title={<span className="flex items-center gap-2"><GitBranch className="size-4" />{tr("Truy vết dữ liệu", "Data lineage")}</span>} action={<RuleTag>FR-REC-11 · UAT-REC-10</RuleTag>}>
         <ol className="grid grid-cols-1 gap-3 md:grid-cols-4">
@@ -432,16 +533,40 @@ function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]
 
 /* ---------- REC-06 Bút toán GL ---------- */
 
-function GLView({ gls, setGls }: { gls: GL[]; setGls: (f: (g: GL[]) => GL[]) => void }) {
+function GLView({ gls, setGls, onCase }: { gls: GL[]; setGls: (f: (g: GL[]) => GL[]) => void; onCase: (caseId: string, outcome: "posted" | "reopened") => void }) {
   const { tr, pick } = useLang();
   const [tab, setTab] = useState<"all" | "pending" | "zero">("all");
   const [msg, setMsg] = useState<{ tone: "ok" | "block"; text: string } | null>(null);
-  const list = gls.filter((g) => (tab === "pending" ? g.status === "PENDING" : tab === "zero" ? g.mode === "ZERO_TOUCH" : true));
-  const act = (g: GL, ok: boolean) => {
-    if (g.maker === ME) { setMsg({ tone: "block", text: tr(`Không thể duyệt ${g.id}: bạn là Maker của bút toán này.`, `Can't approve ${g.id}: you are its maker.`) }); return; }
-    setGls((xs) => xs.map((x) => (x.id === g.id ? { ...x, status: ok ? "POSTED" : "REJECTED", checker: ME } : x)));
-    setMsg({ tone: "ok", text: ok ? tr(`Đã duyệt và hạch toán ${g.id}.`, `${g.id} approved and posted.`) : tr(`Đã từ chối ${g.id}.`, `${g.id} rejected.`) });
+  const [dialog, setDialog] = useState<{ g: GL; kind: "reject" | "return" } | null>(null);
+  const [note, setNote] = useState("");
+  const list = gls.filter((g) => (tab === "pending" ? g.status === "PENDING" || g.status === "RETURNED" : tab === "zero" ? g.mode === "ZERO_TOUCH" : true));
+  const patch = (id: string, p: Partial<GL>) => setGls((xs) => xs.map((x) => (x.id === id ? { ...x, ...p } : x)));
+  const blockMaker = (g: GL) => {
+    if (g.maker !== ME) return false;
+    setMsg({ tone: "block", text: tr(`Không thể duyệt ${g.id}: bạn là Maker của bút toán này.`, `Can't approve ${g.id}: you are its maker.`) });
+    return true;
   };
+  const approve = (g: GL) => {
+    if (blockMaker(g)) return;
+    patch(g.id, { status: "POSTED", checker: ME });
+    const c = caseOf(g); if (c) onCase(c, "posted");
+    setMsg({ tone: "ok", text: tr(`Đã duyệt và hạch toán ${g.id}.`, `${g.id} approved and posted.`) });
+  };
+  const open = (g: GL, kind: "reject" | "return") => { if (blockMaker(g)) return; setNote(""); setDialog({ g, kind }); };
+  const confirm = () => {
+    if (!dialog || note.trim().length < MIN_NOTE) return;
+    const { g, kind } = dialog;
+    patch(g.id, kind === "reject" ? { status: "REJECTED", checker: ME, rejectReason: note.trim() } : { status: "RETURNED", checker: ME, returnNote: note.trim() });
+    const c = caseOf(g); if (c) onCase(c, "reopened");
+    setMsg({ tone: "ok", text: kind === "reject" ? tr(`Đã từ chối ${g.id}. Ngoại lệ liên quan mở lại để xử lý.`, `${g.id} rejected. The related exception is reopened.`) : tr(`Đã trả ${g.id} về Maker.`, `${g.id} returned to the maker.`) });
+    setDialog(null);
+  };
+  const resubmit = (g: GL) => {
+    patch(g.id, { status: "PENDING", submits: (g.submits ?? 1) + 1 });
+    setMsg({ tone: "ok", text: tr(`Đã trình lại ${g.id} (lần ${(g.submits ?? 1) + 1}).`, `${g.id} resubmitted (round ${(g.submits ?? 1) + 1}).`) });
+  };
+  const statusLabel = (s: GLStatus) => (s === "POSTED" ? tr("Đã hạch toán", "Posted") : s === "PENDING" ? tr("Chờ Checker", "Awaiting checker") : s === "RETURNED" ? tr("Trả về Maker", "Returned to maker") : tr("Từ chối", "Rejected"));
+  const small = "interactive rounded-full border border-line-subtle px-3 py-1.5 text-caption font-semibold";
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -451,24 +576,47 @@ function GLView({ gls, setGls }: { gls: GL[]; setGls: (f: (g: GL[]) => GL[]) => 
       {msg && <div role="status" className={cx("flex items-start gap-2 rounded-[14px] px-4 py-3 text-body-sm", msg.tone === "ok" ? "bg-[#e8f7ef] text-[#0f5132]" : "bg-[#fdf0ee] text-[#7a1a12]")}>{msg.tone === "ok" ? <CheckCircle2 className="mt-0.5 size-4" /> : <ShieldAlert className="mt-0.5 size-4" />}{msg.text}<button className="ml-auto font-semibold" onClick={() => setMsg(null)}>{tr("Đóng", "Dismiss")}</button></div>}
       <Panel pad={false}>
         <div className="px-5 pb-5">
-          <Table minWidth={1080} empty={list.length === 0} head={[tr("Bút toán", "Entry"), tr("Thời gian", "Time"), tr("Nợ / Có", "Debit / Credit"), tr("Số tiền", "Amount"), tr("Nguồn", "Source"), tr("Cơ chế", "Mode"), "Maker", tr("Trạng thái", "Status"), ""]}>
+          <Table minWidth={860} empty={list.length === 0} head={[tr("Bút toán", "Entry"), tr("Nợ / Có", "Debit / Credit"), tr("Số tiền", "Amount"), tr("Nguồn", "Source"), tr("Cơ chế · Maker", "Mode · Maker"), tr("Trạng thái", "Status")]}>
             {list.map((g) => (
               <tr key={g.id}>
-                <td><span className="font-semibold tabular">{g.id}</span><span className="block text-caption text-fg-tertiary">{pick(g.memo)}</span></td>
-                <td className="tabular">{g.date}</td>
-                <td className="tabular text-fg-secondary">{g.debit} / {g.credit}</td>
-                <td className={cx("tabular font-semibold", g.amount > GL_THRESHOLD && "text-[#8a5300]")}>{vnd(g.amount, false)}</td>
-                <td className="text-fg-secondary">{g.source}</td>
-                <td>{g.mode === "ZERO_TOUCH" ? <Pill tone="brand">Zero-touch</Pill> : <Pill tone="neutral">Maker-Checker</Pill>}</td>
-                <td className="text-fg-secondary">{g.maker === "system" ? tr("Hệ thống", "System") : g.maker}</td>
-                <td><Pill tone={glTone[g.status]}>{g.status === "POSTED" ? tr("Đã hạch toán", "Posted") : g.status === "PENDING" ? tr("Chờ Checker", "Awaiting checker") : tr("Từ chối", "Rejected")}</Pill></td>
-                <td className="whitespace-nowrap text-right">{g.status === "PENDING" && <span className="inline-flex gap-1.5"><button onClick={() => act(g, false)} className="interactive rounded-full border border-line-subtle px-3 py-1.5 text-caption font-semibold">{tr("Từ chối", "Reject")}</button><button onClick={() => act(g, true)} className="btn interactive rounded-full px-3 py-1.5 text-caption font-semibold text-white" style={{ background: "var(--grad-action)" }}>{tr("Duyệt", "Approve")}</button></span>}</td>
+                <td className="max-w-[220px]">
+                  <span className="block font-semibold tabular">{g.id}</span>
+                  <span className="block text-caption text-fg-tertiary"><span className="tabular">{g.date}</span> · {pick(g.memo)}</span>
+                  {g.status === "RETURNED" && g.returnNote && <span className="block text-caption text-[#6a2fb5]">{tr("Checker ghi chú", "Checker note")}: {g.returnNote}</span>}
+                  {g.status === "REJECTED" && g.rejectReason && <span className="block text-caption text-[#b42318]">{tr("Lý do từ chối", "Rejection reason")}: {g.rejectReason}</span>}
+                </td>
+                <td className="whitespace-nowrap tabular text-fg-secondary">{g.debit} / {g.credit}</td>
+                <td className={cx("whitespace-nowrap tabular font-semibold", g.amount > GL_THRESHOLD && "text-[#8a5300]")}>{vnd(g.amount, false)}</td>
+                <td className="max-w-[150px] break-words text-fg-secondary">{g.source}</td>
+                <td>
+                  {g.mode === "ZERO_TOUCH" ? <Pill tone="brand">Zero-touch</Pill> : <Pill tone="neutral">Maker-Checker</Pill>}
+                  <span className="mt-1 block text-caption text-fg-secondary">{g.maker === "system" ? tr("Hệ thống", "System") : g.maker}</span>
+                </td>
+                <td>
+                  <Pill tone={glTone[g.status]}>{statusLabel(g.status)}</Pill>
+                  {g.status === "PENDING" && <span className="mt-2 flex flex-wrap gap-1.5">
+                    <button onClick={() => approve(g)} className="btn interactive rounded-full px-3 py-1.5 text-caption font-semibold text-white" style={{ background: "var(--grad-action)" }}>{tr("Duyệt", "Approve")}</button>
+                    <button onClick={() => open(g, "return")} className={small} title={tr("Trả về Maker kèm ghi chú", "Return to maker with a note")}>{tr("Trả về", "Return")}</button>
+                    <button onClick={() => open(g, "reject")} className={small}>{tr("Từ chối", "Reject")}</button>
+                  </span>}
+                  {g.status === "RETURNED" && g.maker === ME && <span className="mt-2 flex"><button onClick={() => resubmit(g)} className={small}>{tr("Trình lại", "Resubmit")}</button></span>}
+                </td>
               </tr>
             ))}
           </Table>
         </div>
       </Panel>
       <p className="flex items-center gap-2 text-caption text-fg-tertiary"><ScrollText className="size-3.5" />{tr("Ngưỡng 50 triệu giữ theo baseline vì CR-002 (nâng ngưỡng) chưa được duyệt.", "The 50m threshold stays at baseline because CR-002 (raising it) is not approved.")}</p>
+
+      <Modal open={!!dialog} onClose={() => setDialog(null)} width={520}
+        title={dialog?.kind === "reject" ? tr(`Từ chối ${dialog?.g.id}`, `Reject ${dialog?.g.id}`) : tr(`Trả ${dialog?.g.id ?? ""} về Maker`, `Return ${dialog?.g.id ?? ""} to maker`)}
+        footer={<><GhostButton onClick={() => setDialog(null)}>{tr("Huỷ", "Cancel")}</GhostButton><GradientButton disabled={note.trim().length < MIN_NOTE} onClick={confirm}>{dialog?.kind === "reject" ? tr("Xác nhận từ chối", "Confirm rejection") : tr("Xác nhận trả về", "Confirm return")}</GradientButton></>}>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-body-sm font-semibold">{dialog?.kind === "reject" ? tr("Lý do từ chối", "Rejection reason") : tr("Ghi chú cho Maker", "Note to maker")}</span>
+          <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} className={textCls} placeholder={tr(`Tối thiểu ${MIN_NOTE} ký tự`, `At least ${MIN_NOTE} characters`)} />
+          <span className="text-caption text-fg-tertiary">{dialog?.kind === "reject" ? tr("Ngoại lệ liên quan được mở lại. Lý do lưu vào audit log.", "The related exception is reopened. The reason is written to the audit log.") : tr("Maker sửa và trình lại; bút toán giữ nguyên mã.", "The maker edits and resubmits; the entry keeps its ID.")} <RuleTag>{dialog?.kind === "reject" ? "REQ-REC-05" : "REQ-REC-06"}</RuleTag></span>
+        </label>
+      </Modal>
     </div>
   );
 }

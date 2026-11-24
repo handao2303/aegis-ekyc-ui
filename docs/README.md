@@ -121,9 +121,9 @@ flowchart LR
 | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|
 | [R01 Luồng, trạng thái & kiểm soát](02-reconciliation/R01-reconciliation-flow.md) | SCRUM-7, 49, 50 | Flowchart ×2, State ×2, Sequence, ERD | 🔧 Đặc tả + UI mẫu xong, chờ backend |
-| [R02 Yêu cầu bổ sung, điểm lệch baseline & RTM](02-reconciliation/R02-requirements-gap-rtm.md) | SCRUM-7, 23, 26, 50, 53 | State | 📝 v0.1 · 9 điểm chờ Kế toán trưởng quyết định · 20 yêu cầu |
-| [R03 Đặc tả giao diện REC-01 → 06](02-reconciliation/R03-ui-spec.md) | SCRUM-49 | — | ✅ v1.0, có ảnh từng màn |
-| [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ 20 ca UI · 15 đạt · 6 lỗi (2 High) · 9 ca backend chờ service |
+| [R02 Yêu cầu bổ sung, điểm lệch baseline & RTM](02-reconciliation/R02-requirements-gap-rtm.md) | SCRUM-7, 23, 26, 50, 53 | State | 📝 v0.2 · 9 điểm chờ Kế toán trưởng quyết định · 20 yêu cầu |
+| [R03 Đặc tả giao diện REC-01 → 06](02-reconciliation/R03-ui-spec.md) | SCRUM-49 | — | ✅ v1.1, có ảnh từng màn |
+| [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ v1.1 · 22 ca UI đạt 22 · 6 lỗi đã sửa · 9 ca backend chờ service |
 
 ### Module 3 · Hạn mức
 

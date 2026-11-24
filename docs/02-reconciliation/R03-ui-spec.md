@@ -7,7 +7,7 @@
 | Bản chạy | [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) – dữ liệu hư cấu, chưa nối backend |
 | Mã nguồn | `src/ops/Reconciliation.tsx`, khung dùng chung `src/ops/kit.tsx` |
 | Ảnh | 1280 × 860, tiếng Việt, chụp tự động bằng `tools/diagrams/rec-screens.mjs` |
-| Phiên bản | 1.0 · 24/11/2026 · Han Dao |
+| Phiên bản | 1.1 · 24/11/2026 · Han Dao |
 
 Quy tắc nghiệp vụ và điểm lệch baseline: [R02](R02-requirements-gap-rtm.md). Kết quả chạy thử trên giao diện: [R04](R04-test-plan-cases.md).
 
@@ -97,17 +97,24 @@ Aging trên UI chia 4 nhóm, BRD chia 3 nhóm – chờ quyết định D-REC-02
 
 | Vùng | Nội dung | Quy tắc |
 |---|---|---|
-| Đầu trang | Mã, trạng thái, cặp, loại, aging · nút **Nhận xử lý** (khi chưa có người), **Leo thang**, **Xử lý & hạch toán** | — |
+| Đầu trang | Mã, trạng thái, cặp, loại, aging · nút **Nhận xử lý** (khi chưa có người), **Leo thang** | — |
 | Banner quá hạn | "Quá hạn xử lý N giờ – đã leo thang tự động lên trưởng nhóm" | RULE-REC-06 (D-REC-03) |
 | So sánh giao dịch | Hai thẻ Nội bộ (CBS) và Đối tác: tham chiếu, thời gian, tài khoản, số tiền; thẻ đối tác trống ghi "Chưa có bản ghi đối ứng". Ô chênh lệch | — |
-| Nguyên nhân gợi ý | Top-3 nguyên nhân kèm % và thanh mức; chọn 1 trước khi hạch toán. Ghi chú ngưỡng: > 50 triệu chờ Checker, ≤ 50 triệu zero-touch | BR-REC-05, RULE-REC-04 |
+| Nguyên nhân | Top-3 gợi ý của AI kèm % và thanh mức, cộng lựa chọn **Nguyên nhân khác**: chọn từ danh mục 7 nhóm và ghi chú ≥ 10 ký tự, lưu là override | BR-REC-05, REQ-REC-01 |
+| Xử lý ngoại lệ | Chọn 1 trong 3 cách: **Hạch toán điều chỉnh** (mô tả bút toán và ngưỡng 50 triệu) · **Khớp thủ công** (nhập mã tham chiếu đối ứng, ≥ 4 ký tự, không sinh bút toán) · **Yêu cầu chứng từ** (ghi chú ≥ 10 ký tự; ngoại lệ hiện banner "Đang chờ chứng từ bổ sung") | UC-REC-04, REQ-REC-02 |
+| Khoá bút toán trùng | Ngoại lệ đã có bút toán đang chờ Checker hoặc bị trả về: cảnh báo vàng chỉ ra bút toán đó, nút **Tạo bút toán điều chỉnh** bị khoá | REQ-REC-08 |
 | Truy vết dữ liệu | 4 bước SourceTransaction → MatchResult → ExceptionCase → GLEntry; bước chưa có ghi "Không tìm thấy đối ứng" / "Chưa hạch toán" | FR-REC-11, UAT-REC-10 |
 
-| Hành vi | Hiện tại | Cần có |
-|---|---|---|
-| Xử lý & hạch toán | Luôn tạo bút toán điều chỉnh bằng đúng số chênh lệch, đóng ngoại lệ ngay | Chọn cách xử lý (REQ-REC-02); khoá khi đã có bút toán chờ duyệt (REQ-REC-08, DEF-REC-01); chỉ đóng khi bút toán đã post (DEF-REC-06) |
-| Chọn nguyên nhân | Chỉ 3 gợi ý | Thêm danh mục chuẩn + "Khác" có ghi chú (REQ-REC-01) |
-| Số tài khoản nội bộ | Hiện đầy đủ | Che giữa số (D-REC-09) |
+<img src="../../public/ui/rec-exception-locked.png" width="760" alt="REC-05 – ngoại lệ đã có bút toán chờ Checker, nút tạo bút toán bị khoá">
+
+| Kết quả xử lý | Trạng thái ngoại lệ |
+|---|---|
+| Khớp thủ công | `RESOLVED` ngay, truy vết bước 2 ghi mã đối ứng, bước 4 ghi "Không cần hạch toán" |
+| Hạch toán điều chỉnh tới 50 triệu | Bút toán zero-touch `POSTED`, ngoại lệ `RESOLVED` |
+| Hạch toán điều chỉnh trên 50 triệu | Bút toán `PENDING`, ngoại lệ **`PENDING_POSTING`** (Chờ hạch toán), vẫn trong danh sách đang mở. Checker duyệt → `RESOLVED`; từ chối hoặc trả về → `IN_PROGRESS` |
+| Yêu cầu chứng từ | Ngoại lệ ở `IN_PROGRESS`, có banner chờ chứng từ |
+
+**Còn thiếu:** che số tài khoản nội bộ (D-REC-09).
 
 ## 7. REC-06 Bút toán GL
 
@@ -116,12 +123,16 @@ Aging trên UI chia 4 nhóm, BRD chia 3 nhóm – chờ quyết định D-REC-02
 | Mục | Nội dung | Quy tắc |
 |---|---|---|
 | Bộ lọc | Tất cả · Chờ duyệt · Zero-touch | — |
-| Cột | Bút toán + diễn giải · thời gian · Nợ / Có · số tiền (màu cam khi > 50 triệu) · nguồn (rule hoặc ngoại lệ) · cơ chế Zero-touch / Maker-Checker · Maker · trạng thái | BR-REC-06 |
-| Dòng chờ duyệt | Nút **Từ chối** và **Duyệt** | RULE-REC-04 |
-| Maker bấm Duyệt / Từ chối bút toán của mình | Chặn: "bạn là Maker của bút toán này" | BR-REC-07 |
+| Cột | Bút toán (mã, thời gian, diễn giải) · Nợ / Có · số tiền (màu cam khi > 50 triệu) · nguồn (rule hoặc ngoại lệ) · cơ chế Zero-touch / Maker-Checker kèm Maker · trạng thái | BR-REC-06 |
+| Dòng chờ duyệt | Dưới nhãn trạng thái có 3 nút: **Duyệt** · **Trả về** · **Từ chối** | RULE-REC-04 |
+| Từ chối | Hộp thoại lý do; nút "Xác nhận từ chối" khoá khi lý do < 10 ký tự. Lý do hiện dưới bút toán; ngoại lệ liên quan mở lại | REQ-REC-05 |
+| Trả về | Hộp thoại ghi chú ≥ 10 ký tự; bút toán sang "Trả về Maker", hiện ghi chú của Checker. Maker thấy nút **Trình lại**, bút toán giữ mã, tăng số lần trình | REQ-REC-06 |
+| Maker bấm Duyệt / Trả về / Từ chối bút toán của mình | Chặn: "bạn là Maker của bút toán này" | BR-REC-07 |
 | Chân trang | "Ngưỡng 50 triệu giữ theo baseline vì CR-002 chưa được duyệt" | ASM-07, DEC-01 |
 
-**Còn thiếu:** lý do khi từ chối (REQ-REC-05), trả về Maker (REQ-REC-06), chuyển cấp (REQ-REC-10), kiểm tra người tạo rule không được duyệt (REQ-REC-07).
+<img src="../../public/ui/rec-gl-reject.png" width="620" alt="REC-06 – hộp thoại lý do từ chối">
+
+**Còn thiếu:** chuyển cấp duyệt cao hơn (REQ-REC-10), kiểm tra người tạo rule không được duyệt (REQ-REC-07) – cần UI có nhiều vai trò.
 
 ## 8. Trạng thái và thông điệp
 
@@ -129,8 +140,8 @@ Aging trên UI chia 4 nhóm, BRD chia 3 nhóm – chờ quyết định D-REC-02
 |---|---|---|
 | Nguồn | Đúng lịch · Trễ · Cách ly | `ok` · `delayed` · `quarantine` |
 | Quy tắc | Đang chạy · Chờ duyệt · Nháp | `ACTIVE` · `PENDING` · `DRAFT` |
-| Ngoại lệ | Mới · Đang xử lý · Đã leo thang · Đã xử lý | `OPEN` · `IN_PROGRESS` · `ESCALATED` · `RESOLVED` |
-| Bút toán | Đã hạch toán · Chờ Checker · Từ chối | `POSTED` · `PENDING` · `REJECTED` |
+| Ngoại lệ | Mới · Đang xử lý · Đã leo thang · Chờ hạch toán · Đã xử lý | `OPEN` · `IN_PROGRESS` · `ESCALATED` · `PENDING_POSTING` · `RESOLVED` |
+| Bút toán | Đã hạch toán · Chờ Checker · Trả về Maker · Từ chối | `POSTED` · `PENDING` · `RETURNED` · `REJECTED` |
 
 Trạng thái luôn có chữ đi kèm màu, không chỉ dùng màu (WCAG 2.2 tiêu chí 1.4.1). Banner chặn dùng `role="alert"`, thông báo kết quả dùng `role="status"`.
 
@@ -139,3 +150,4 @@ Trạng thái luôn có chữ đi kèm màu, không chỉ dùng màu (WCAG 2.2 t
 | Phiên bản | Ngày | Người | Thay đổi |
 |---|---|---|---|
 | 1.0 | 24/11/2026 | Han Dao | Bản đầu, có ảnh 6 màn, ghi phần còn thiếu so với baseline |
+| 1.1 | 24/11/2026 | Han Dao | Cập nhật REC-05, REC-06 sau khi sửa 6 lỗi của R04: 3 cách xử lý, nguyên nhân khác, khoá bút toán trùng, Chờ hạch toán, lý do từ chối, trả về Maker |

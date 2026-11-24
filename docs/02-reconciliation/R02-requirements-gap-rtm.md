@@ -5,7 +5,7 @@
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · Reconciliation Capability |
 | Baseline | BAS-BRD-v1.2 (Phần 2.2, 3.4, 4.2, 5.2, 6.2) · BAS-RAID-v1.2 (RSK-05/06/07/12/15, DEC-01, ASM-07) |
 | Đối chiếu với | [R01](R01-reconciliation-flow.md) (luồng & trạng thái) · UI mẫu `/reconciliation/` · kết quả chạy [R04](R04-test-plan-cases.md) |
-| Phiên bản | 0.1 – bản nháp |
+| Phiên bản | 0.2 – bản nháp |
 | Trạng thái | 📝 Chờ Kế toán trưởng, PO và Compliance quyết định 9 điểm ở §3 |
 | Người soạn | Han Dao (BA) · 24/11/2026 |
 
@@ -127,7 +127,7 @@ stateDiagram-v2
     CLOSED --> [*]
 ```
 
-Khác biệt chính với R01: ngoại lệ **chỉ đóng khi bút toán đã post**. Hiện UI mẫu đóng ngoại lệ ngay khi tạo bút toán chờ duyệt; nếu Checker từ chối, chênh lệch không còn ai theo dõi (DEF-REC-06).
+Khác biệt chính với R01: ngoại lệ **chỉ đóng khi bút toán đã post**. Bản UI mẫu ngày 24/11 trước đây đóng ngoại lệ ngay khi tạo bút toán chờ duyệt (DEF-REC-06); bản sửa đã làm theo sơ đồ này, giữ tên `RESOLVED` cho tới khi D-REC-01 được quyết định.
 
 ## 6. Ma trận truy vết (RTM)
 
@@ -172,3 +172,4 @@ Khác biệt chính với R01: ngoại lệ **chỉ đóng khi bút toán đã p
 | Phiên bản | Ngày | Người | Thay đổi |
 |---|---|---|---|
 | 0.1 | 24/11/2026 | Han Dao | Bản đầu: 9 điểm lệch baseline, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM |
+| 0.2 | 24/11/2026 | Han Dao | UI mẫu đã đáp ứng REQ-REC-01, 02, 05, 06, 08 và trạng thái `PENDING_POSTING` (R04 vòng 2) |
