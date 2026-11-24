@@ -3,7 +3,7 @@
 Bộ tài liệu cho 3 module: **eKYC** (18 hạng mục của Epic [SCRUM-69 – eKYC Completion & Production Readiness](https://baohandao2303.atlassian.net/browse/SCRUM-69), kèm giao diện, kiểm thử và pháp lý), [Đối soát (SCRUM-7)](https://baohandao2303.atlassian.net/browse/SCRUM-7), [Hạn mức (SCRUM-8)](https://baohandao2303.atlassian.net/browse/SCRUM-8).
 Tổng quan và kế hoạch: [Gap Analysis & Delivery Plan (Confluence)](https://baohandao2303.atlassian.net/wiki/spaces/SCRUM/pages/15106049).
 
-Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 48 diagram, tất cả đã được kiểm tra cú pháp.
+Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 49 diagram, tất cả đã được kiểm tra cú pháp.
 
 **Bắt đầu từ đây:** [A01 Tổng quan giải pháp](00-overview/A01-solution-overview.md) – bối cảnh hệ thống, thành phần, luồng end-to-end, cây quyết định, bản đồ màn hình và cách triển khai UI.
 
@@ -60,7 +60,7 @@ flowchart LR
             D01["D01 Từ điển dữ liệu"]
         end
     end
-    R01["Module 2 · Đối soát<br/>R01"]
+    R01["Module 2 · Đối soát<br/>R01–R04"]
     L01["Module 3 · Hạn mức<br/>L01"]
     C02 --> C03
     C03 --> B
@@ -121,6 +121,9 @@ flowchart LR
 | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|
 | [R01 Luồng, trạng thái & kiểm soát](02-reconciliation/R01-reconciliation-flow.md) | SCRUM-7, 49, 50 | Flowchart ×2, State ×2, Sequence, ERD | 🔧 Đặc tả + UI mẫu xong, chờ backend |
+| [R02 Yêu cầu bổ sung, điểm lệch baseline & RTM](02-reconciliation/R02-requirements-gap-rtm.md) | SCRUM-7, 23, 26, 50, 53 | State | 📝 v0.1 · 9 điểm chờ Kế toán trưởng quyết định · 20 yêu cầu |
+| [R03 Đặc tả giao diện REC-01 → 06](02-reconciliation/R03-ui-spec.md) | SCRUM-49 | — | ✅ v1.0, có ảnh từng màn |
+| [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ 20 ca UI · 15 đạt · 6 lỗi (2 High) · 9 ca backend chờ service |
 
 ### Module 3 · Hạn mức
 
@@ -139,4 +142,5 @@ flowchart LR
 | Thiết bị NFC thứ hai để đo hiệu năng | Dev/QA | C15 |
 | Master list CSCA, tài khoản Apple Developer để đọc chip | Dev | A02 |
 | Duyệt mẫu SMS/App khoá Boost, Notification Service thật | Risk/Legal/CSKH, Solution Owner | L01 (SCRUM-54) |
-| Backend reconciliation-service: lineage API (SCRUM-50), EOD cross-ledger (SCRUM-53) | Dev | R01, L01 |
+| Backend reconciliation-service: lineage API (SCRUM-50), EOD cross-ledger (SCRUM-53) | Dev | R01, R04 (TC-REC-B01 → B09), L01 |
+| Chốt 9 điểm lệch baseline của Đối soát (trạng thái ngoại lệ, aging, leo thang, RULE-REC-05…) | Kế toán trưởng, Ops, InfoSec | R02, UI Đối soát |

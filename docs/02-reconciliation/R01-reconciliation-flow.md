@@ -6,6 +6,9 @@
 | Story | SCRUM-22 → 26 (backend), [SCRUM-49](https://baohandao2303.atlassian.net/browse/SCRUM-49) (FE REC-01 → 06), [SCRUM-50](https://baohandao2303.atlassian.net/browse/SCRUM-50) (truy vết) |
 | UI mẫu | [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) · mã nguồn `src/ops/Reconciliation.tsx` |
 | Quy tắc chính | RULE-REC-04 (ngưỡng GL), RULE-REC-05 (phân tách nhiệm vụ), RULE-REC-06 (leo thang), FR-REC-11 (truy vết) |
+| Tài liệu đi kèm | [R02](R02-requirements-gap-rtm.md) yêu cầu bổ sung & RTM · [R03](R03-ui-spec.md) đặc tả giao diện · [R04](R04-test-plan-cases.md) kiểm thử |
+
+> ⚠️ Một số trạng thái và quy tắc trong tài liệu này khác BAS-BRD-v1.2 (trạng thái ngoại lệ, aging, điều kiện leo thang, ý nghĩa RULE-REC-05, trạng thái quy tắc, loại `DUPLICATE`). Danh sách và đề xuất xử lý: [R02 §3](R02-requirements-gap-rtm.md). Tài liệu này giữ nguyên tới khi Kế toán trưởng quyết định.
 
 ## 1. Luồng tổng thể
 
@@ -176,7 +179,7 @@ flowchart LR
 | Tỷ lệ khớp tự động | Giao dịch khớp không cần người ÷ tổng giao dịch | ≥ 95% |
 | MTTR | Thời gian trung bình từ lúc tạo đến khi xử lý xong ngoại lệ | ≤ 4h |
 | Giá trị chưa khớp | Tổng chênh lệch của ngoại lệ đang mở | Theo dõi |
-| Zero-touch | Bút toán tự hạch toán ÷ tổng bút toán | Theo dõi |
+| Zero-touch | Bút toán tự hạch toán ÷ tổng bút toán | ≥ 30% giai đoạn đầu (KPI-05) |
 | Trạng thái nạp nguồn | Đúng lịch / Trễ / Cách ly, kèm `last_updated_at` | UAT-REC-02, UAT-REC-09 |
 
 ## 8. Truy vết UAT

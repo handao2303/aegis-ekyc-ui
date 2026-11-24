@@ -7,5 +7,8 @@
  "U02-compliance-ui-spec": "16253256",
  "Q01-standards-conformance": "16253365",
  "A03-api-specification": "16580609",
- "D01-data-dictionary": "16613377"
+ "D01-data-dictionary": "16613377",
+ "R02-requirements-gap-rtm": "16646223",
+ "R03-ui-spec": "16777272",
+ "R04-test-plan-cases": "16646246"
 }

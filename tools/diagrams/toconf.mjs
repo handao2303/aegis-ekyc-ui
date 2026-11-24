@@ -30,6 +30,8 @@ for (const f of walk(docsDir)) {
   let html = marked.parse(md, { gfm: true });
   // Confluence: bảng không được nằm trong blockquote → bỏ khung trích dẫn
   html = html.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, (m, inner) => (inner.includes("<table") ? inner : m));
+  // khối cảnh báo ⚠️ → panel cảnh báo của Confluence
+  html = html.replace(/<blockquote>\s*<p>⚠️\s*([\s\S]*?)<\/blockquote>/g, (m, inner) => `<div data-type="panel-warning"><p>${inner}</div>`);
   // bỏ thẻ input checkbox của GFM (nếu có), gọn khoảng trắng giữa thẻ
   // Chỉ bỏ khoảng trắng quanh thẻ khối; giữ dấu cách giữa các thẻ inline (</strong> <code>)
   const BLOCK = "p|li|ul|ol|table|thead|tbody|tr|td|th|h[1-6]|div|figure|pre|blockquote|hr";

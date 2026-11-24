@@ -17,7 +17,7 @@ The eKYC module UI for **Aegis Bank**, a personal banking project. Bilingual (Vi
 
 ## Documentation
 
-Requirements, business rules, diagrams and test packs for the eKYC Completion epic live in [`docs/`](docs/README.md) (Vietnamese): 27 documents and 48 Mermaid diagrams, grouped by module. Start with the [solution overview](docs/00-overview/A01-solution-overview.md): system context, containers, end-to-end sequence, decision tree and screen maps. API and data: [API spec](docs/01-ekyc/1.6-api-data/A03-api-specification.md), [data dictionary](docs/01-ekyc/1.6-api-data/D01-data-dictionary.md). Module docs: [reconciliation](docs/02-reconciliation/R01-reconciliation-flow.md), [credit limit](docs/03-credit-limit/L01-credit-limit-flow.md), [iOS document scan](docs/01-ekyc/1.3-ui/A02-ios-document-scan.md).
+Requirements, business rules, diagrams and test packs for the eKYC Completion epic live in [`docs/`](docs/README.md) (Vietnamese): 30 documents and 49 Mermaid diagrams, grouped by module. Start with the [solution overview](docs/00-overview/A01-solution-overview.md): system context, containers, end-to-end sequence, decision tree and screen maps. API and data: [API spec](docs/01-ekyc/1.6-api-data/A03-api-specification.md), [data dictionary](docs/01-ekyc/1.6-api-data/D01-data-dictionary.md). Module docs: reconciliation ([flow](docs/02-reconciliation/R01-reconciliation-flow.md), [requirements & RTM](docs/02-reconciliation/R02-requirements-gap-rtm.md), [UI spec](docs/02-reconciliation/R03-ui-spec.md), [tests](docs/02-reconciliation/R04-test-plan-cases.md)), [credit limit](docs/03-credit-limit/L01-credit-limit-flow.md), [iOS document scan](docs/01-ekyc/1.3-ui/A02-ios-document-scan.md).
 
 ## Getting started
 
