@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.0 |
+| Phiên bản | 1.1 |
 | Trạng thái | 📝 Bản nháp, chờ Tech Lead và DPO (đầu mối bảo vệ dữ liệu) xác nhận |
 | Người soạn | Han Dao (BA) |
 | Ngày | 24/11/2026 |
@@ -189,7 +189,7 @@ erDiagram
 
 | Tình huống | `retention_until` | Xoá gì | Giữ lại | Job |
 |---|---|---|---|---|
-| Phiên bỏ dở quá T2 (7 ngày) → `EXPIRED` | Ngay | `ocr_json`, `chip_json`, `full_name`, `dob`, `sex`, `id_number_masked` | Trạng thái, mốc thời gian, `id_number_hash` (cho funnel và velocity) | `session-expire` |
+| Phiên bỏ dở quá T2 (7 ngày) → `EXPIRED` | Ngay | `ocr_json`, `chip_json`, `full_name`, `dob`, `sex`, `id_number_masked`, `passport_masked`, `phone`, `cic_json`, `liveness`, `face_match`; `recipient` và `payload` của thông báo | Trạng thái, mốc thời gian, `device_id`, `id_number_hash` (cho funnel và chống gian lận lặp lại) | `session-expire` |
 | Khách bấm "Làm lại từ đầu" → `CANCELLED` | Ngay | Như trên | Như trên | Gọi trực tiếp (API-10) |
 | Rút lại đồng ý khi chưa có TK | +24 giờ | Như trên | Như trên | `retention` |
 | Trùng khách → `STOPPED_DUPLICATE` | +7 ngày | Như trên | Như trên | `retention` |
@@ -197,7 +197,7 @@ erDiagram
 | Đã mở tài khoản | Không đặt (giữ suốt quan hệ + thời hạn PCRT) | — | Toàn bộ | — |
 | `audit_event`, `kyc_decisions`, `consents` | Không xoá ở tầng ứng dụng | — | Toàn bộ | — |
 
-> ⚠️ **Khoảng trống:** job xoá không xoá `phone`, `device_id`, `cic_json`, `liveness`, `face_match`, `velocity_events` và `notifications.recipient`. Theo P01 các trường này cũng là dữ liệu cá nhân, cần quyết định giữ (có lý do) hay xoá cùng. Ghi vào câu hỏi cho DPO ở §7.
+> ✅ **24/11 đã sửa khoảng trống:** bản 1.0 ghi nhận job xoá bỏ sót `phone`, `cic_json`, `liveness`, `face_match` và người nhận thông báo. Nay mọi đường xoá (huỷ phiên, hết hạn, job `retention`) dùng chung một hàm `purgePersonalData` xoá cả các trường này. `velocity_events` quá 30 ngày (cửa sổ dài nhất của C13) bị xoá mỗi lần chạy job. Còn giữ `device_id` và `id_number_hash` để chống gian lận lặp lại – **chờ DPO trả lời câu 1–2 ở §7**; nếu DPO không đồng ý, chỉ cần thêm 2 trường này vào hàm.
 
 ## 6. Kiểm soát cần có ở production
 
@@ -223,3 +223,4 @@ erDiagram
 | Phiên bản | Ngày | Người | Nội dung |
 |---|---|---|---|
 | 1.0 | 24/11/2026 | Han Dao | Bản đầu, lập từ lược đồ ekyc-service |
+| 1.1 | 24/11/2026 | Han Dao | Job xoá dữ liệu xoá thêm số điện thoại, điểm sinh trắc, CIC, người nhận thông báo; xoá velocity quá 30 ngày |

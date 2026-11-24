@@ -299,7 +299,7 @@ export class EkycService {
   cancel(id: string, token: string) {
     const s = this.sessionForToken(id, token);
     if (inList(s.status, FINAL) || inList(s.status, IN_QUEUE)) throw new ApiError(409, "INVALID_STATE", "Không huỷ được hồ sơ đã gửi");
-    this.purge(id);
+    this.purgePersonalData(id);
     this.touch(id, { status: "CANCELLED", decided_at: clock.now() });
     return { status: "CANCELLED" };
   }
@@ -372,10 +372,17 @@ export class EkycService {
       id, status, actor.id, makerId, checkerId, note ?? null, now);
     this.audit(id, actor, status === "STP_APPROVED" ? "AUTO_APPROVED" : checkerId ? "CHECKER_APPROVE" : "DECISION_APPROVE", { after: { account_no: accountNo } });
     this.event("ekyc.decision.completed", id, { decision: status, account_no: accountNo, product: s.product });
-    this.notify(id, "EKYC_APPROVED", ["PUSH", "SMS"], s.phone, { account_no: accountNo });
+    // Push đi qua APNs/FCM ở nước ngoài → không mang số tài khoản (P01 §4.1); số tài khoản chỉ gửi qua SMS
+    this.notify(id, "EKYC_APPROVED", ["PUSH"], s.phone, {});
+    this.notify(id, "EKYC_APPROVED", ["SMS"], s.phone, { account_no: accountNo });
   }
-  private purge(id: string) {
-    this.db.patchSession(id, { ocr_json: null, chip_json: null, full_name: null, dob: null, sex: null, id_number_masked: null, purged_at: clock.now() });
+  /** Xoá dữ liệu cá nhân của một hồ sơ (C12, D01 §5). Giữ device_id và id_number_hash cho chống gian lận lặp lại – chờ DPO chốt (D01 §7) */
+  purgePersonalData(id: string) {
+    this.db.patchSession(id, {
+      ocr_json: null, chip_json: null, full_name: null, dob: null, sex: null, id_number_masked: null, passport_masked: null,
+      phone: null, cic_json: null, liveness: null, face_match: null, purged_at: clock.now(),
+    });
+    this.db.run("UPDATE notifications SET recipient = NULL, payload = NULL WHERE session_id = ?", id);
   }
 
   /* ================= Compliance: hàng đợi & xét duyệt ================= */

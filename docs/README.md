@@ -113,8 +113,8 @@ flowchart LR
 | | [C16 Kế hoạch SIT](01-ekyc/1.4-testing/C16-sit-plan.md) | SCRUM-85 | Flowchart, Sequence | ⛔ Kế hoạch xong, bị chặn bởi SCRUM-56 |
 | | [C17 Bộ UAT & biên bản](01-ekyc/1.4-testing/C17-uat-pack.md) | SCRUM-86 | Flowchart | ⛔ Bộ case xong, chờ C03 + C16 |
 | 1.5 Đo lường | [C18 KPI & từ điển chỉ số](01-ekyc/1.5-analytics/C18-kpi-metric-dictionary.md) | SCRUM-87 | Flowchart | ✅ Đặc tả + báo cáo SLA/KPI có backend |
-| 1.6 API & dữ liệu | [A03 Đặc tả API & mã lỗi](01-ekyc/1.6-api-data/A03-api-specification.md) | SCRUM-69, 85 | — | 📝 v1.0 · 27 API · 21 mã lỗi, chờ Tech Lead |
-| | [D01 Từ điển dữ liệu](01-ekyc/1.6-api-data/D01-data-dictionary.md) | SCRUM-69, 81 | ERD | 📝 v1.0 · 14 bảng, phân loại theo NĐ 13, chờ DPO |
+| 1.6 API & dữ liệu | [A03 Đặc tả API & mã lỗi](01-ekyc/1.6-api-data/A03-api-specification.md) | SCRUM-69, 85 | — | 📝 v1.1 · 27 API · 21 mã lỗi, chờ Tech Lead |
+| | [D01 Từ điển dữ liệu](01-ekyc/1.6-api-data/D01-data-dictionary.md) | SCRUM-69, 81 | ERD | 📝 v1.1 · 14 bảng, phân loại theo NĐ 13, chờ DPO |
 
 ### Module 2 · Đối soát
 

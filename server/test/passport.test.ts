@@ -32,6 +32,7 @@ test("C04 · hộ chiếu Việt Nam của người đã có tài khoản bằng
   const td08 = findPersona("TD-08").ocr; // khách cũ, đã có tài khoản
   const { doc } = await run(svc, "TD-14", { ocr: { ...findPersona("TD-14").ocr, full_name: td08.full_name, id_number: td08.id_number, dob: td08.dob } });
   assert.equal(doc!.next, "DUPLICATE");
+  assert.doesNotMatch(doc!.reason!.message, /CCCD/, "thông điệp không được nói CCCD khi khách dùng hộ chiếu");
 });
 
 test("C05 · hộ chiếu không hợp lệ bị chặn ở bước giấy tờ", async () => {

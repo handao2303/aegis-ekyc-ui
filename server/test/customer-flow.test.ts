@@ -15,8 +15,11 @@ test("UAT-EKYC-01 · TD-01 happy path có NFC → STP_APPROVED, có số TK và 
   assert.equal(res!.status, "STP_APPROVED");
   assert.equal(res!.outcome, "approved");
   assert.match(res!.account_no!, /^1903\d{8}$/);
-  const n = svc.db.get("SELECT template, channels, status FROM notifications WHERE session_id = ?", s.session_id)!;
-  assert.deepEqual({ ...n }, { template: "EKYC_APPROVED", channels: "PUSH+SMS", status: "SENT" });
+  const ns = svc.db.all("SELECT template, channels, status, payload FROM notifications WHERE session_id = ? ORDER BY id", s.session_id);
+  assert.deepEqual(ns.map((n) => [n.template, n.channels, n.status]), [["EKYC_APPROVED", "PUSH", "SENT"], ["EKYC_APPROVED", "SMS", "SENT"]]);
+  // P01 §4.1: Push đi qua APNs/FCM ở nước ngoài, không được mang số tài khoản
+  assert.doesNotMatch(ns[0].payload, new RegExp(res!.account_no!));
+  assert.match(ns[1].payload, new RegExp(res!.account_no!));
   assert.ok(svc.db.get("SELECT 1 FROM events WHERE type = 'ekyc.decision.completed' AND session_id = ?", s.session_id), "phát sự kiện cho limit-service");
 });
 
@@ -150,6 +153,28 @@ test("UAT-EKYC-20 · chip sai chữ ký số → REFER CHIP_AUTH_FAILED", async 
   assert.equal(chip!.chip_verified, false);
   assert.equal(res!.status, "REFER");
   assert.deepEqual(reasons(svc, s.session_id), ["CHIP_AUTH_FAILED"]);
+});
+
+test("D01 §5 · xoá dữ liệu cá nhân gồm cả số điện thoại, điểm sinh trắc, CIC và người nhận thông báo", async () => {
+  const svc = setup();
+  const { s, res } = await run(svc, "TD-03"); // REFER → có điểm sinh trắc, CIC, thông báo
+  assert.equal(res!.status, "REFER");
+  svc.withdrawConsent(s.session_id, s.token, "identity");
+  svc.db.run("UPDATE sessions SET retention_until = ? WHERE id = ?", clock.now() - 1, s.session_id);
+  runJobs(svc);
+  const row = svc.db.get("SELECT phone, cic_json, liveness, face_match, full_name, device_id, id_number_hash, purged_at FROM sessions WHERE id = ?", s.session_id)!;
+  assert.deepEqual([row.phone, row.cic_json, row.liveness, row.face_match, row.full_name], [null, null, null, null, null]);
+  assert.ok(row.device_id && row.id_number_hash, "giữ cho chống gian lận, chờ DPO (D01 §7)");
+  assert.ok(row.purged_at);
+  assert.equal(svc.db.get("SELECT COUNT(*) AS n FROM notifications WHERE session_id = ? AND (recipient IS NOT NULL OR payload IS NOT NULL)", s.session_id)!.n, 0);
+});
+
+test("C13 · bộ đếm velocity quá 30 ngày bị xoá", async () => {
+  const svc = setup();
+  await run(svc, "TD-01", {}, "consent");
+  assert.ok(svc.db.get("SELECT COUNT(*) AS n FROM velocity_events")!.n > 0);
+  clock.advance(31 * D); runJobs(svc);
+  assert.equal(svc.db.get("SELECT COUNT(*) AS n FROM velocity_events")!.n, 0);
 });
 
 test("UAT-EKYC-21 · rút lại đồng ý khi đang làm → huỷ, xoá trong 24h", async () => {

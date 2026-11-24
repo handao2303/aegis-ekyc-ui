@@ -4,7 +4,7 @@ Backend cho module eKYC: phiên mở tài khoản của khách và hàng đợi 
 
 ```bash
 npm start      # http://localhost:8787 – lần đầu tự tạo dữ liệu mẫu ở data/aegis.db
-npm test       # 53 test, gồm UAT-EKYC-01 → 26 trong C17 (có hộ chiếu)
+npm test       # 56 test, gồm UAT-EKYC-01 → 26 trong C17 (có hộ chiếu)
 npm run dev    # tự khởi động lại khi sửa code
 ```
 

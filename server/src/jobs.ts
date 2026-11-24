@@ -41,7 +41,8 @@ export function expireSessions(svc: EkycService) {
   const rows = svc.db.all("SELECT id FROM sessions WHERE status = 'ABANDONED' AND last_activity_at < ?", now - cfg.expire_after_days * D);
   for (const r of rows) {
     // Xoá ảnh và dữ liệu chip ngay khi hết hạn (C06), chỉ giữ metadata ẩn danh cho funnel
-    svc.db.patchSession(r.id, { status: "EXPIRED", decided_at: now, retention_until: now, ocr_json: null, chip_json: null, full_name: null, dob: null, sex: null, id_number_masked: null, purged_at: now });
+    svc.db.patchSession(r.id, { status: "EXPIRED", decided_at: now, retention_until: now });
+    svc.purgePersonalData(r.id);
     svc.audit(r.id, SYS, "DATA_PURGED", { reason: "EXPIRED" });
     svc.event("ekyc.session.expired", r.id);
   }
@@ -107,8 +108,10 @@ export function retention(svc: EkycService) {
   const now = clock.now();
   const rows = svc.db.all("SELECT id FROM sessions WHERE retention_until IS NOT NULL AND retention_until < ? AND purged_at IS NULL", now);
   for (const r of rows) {
-    svc.db.patchSession(r.id, { ocr_json: null, chip_json: null, full_name: null, dob: null, sex: null, id_number_masked: null, purged_at: now });
+    svc.purgePersonalData(r.id);
     svc.audit(r.id, SYS, "DATA_PURGED");
   }
+  // Bộ đếm velocity chỉ cần cửa sổ dài nhất (30 ngày, C13); quá hạn thì xoá vì key chứa số điện thoại / mã thiết bị
+  svc.db.run("DELETE FROM velocity_events WHERE created_at < ?", now - 30 * D);
   return rows.length;
 }

@@ -111,7 +111,7 @@ Bản tiếng Anh nằm trong `src/ekyc/terms.ts` và phải được dịch thu
 
 **Quy tắc áp dụng ngay, không phụ thuộc phương án**
 
-1. Nội dung Push (R-07) **không** chứa họ tên, số giấy tờ, số tài khoản. Chỉ gửi câu chung và deep link; app tự tải chi tiết qua API sau khi mở. *(Hiện mẫu `EKYC_APPROVED` ở mục 5 có `{account_no}` – cần bỏ khỏi bản Push, chỉ giữ ở SMS nếu Pháp chế đồng ý.)*
+1. Nội dung Push (R-07) **không** chứa họ tên, số giấy tờ, số tài khoản. Chỉ gửi câu chung và deep link; app tự tải chi tiết qua API sau khi mở. *(✅ 24/11: `EKYC_APPROVED` đã tách thành 2 bản – Push không có số tài khoản, SMS có số tài khoản. Bản SMS chờ Pháp chế đồng ý.)*
 2. Mỗi bên nhận R-02, R-03, R-06 phải có hợp đồng xử lý dữ liệu nêu mục đích, thời hạn lưu, nghĩa vụ xoá và báo sự cố.
 3. Danh sách bên nhận sau khi chốt được đưa vào mục 2 §3 và màn eKYC-14, đổi `terms_version` và yêu cầu khách đồng ý lại.
 
@@ -127,7 +127,8 @@ Bản tiếng Anh nằm trong `src/ekyc/terms.ts` và phải được dịch thu
 
 | Mẫu | Kênh | Nội dung tiếng Việt (bản nháp) |
 |---|---|---|
-| `EKYC_APPROVED` | Push + SMS | Aegis Bank: Mở tài khoản thành công. Số tài khoản {account_no}. Không chia sẻ mã OTP cho bất kỳ ai. |
+| `EKYC_APPROVED` | Push | Mở tài khoản thành công. Mở ứng dụng để xem số tài khoản. |
+| `EKYC_APPROVED` | SMS | Aegis Bank: Mở tài khoản thành công. Số tài khoản {account_no}. Không chia sẻ mã OTP cho bất kỳ ai. |
 | `EKYC_UNDER_REVIEW` | Push | Hồ sơ mở tài khoản của bạn đang được xem xét. Chúng tôi sẽ báo kết quả trong vòng 24 giờ. |
 | `EKYC_REJECTED` | Push + SMS | Aegis Bank: Hiện chưa thể mở tài khoản trực tuyến cho bạn. Vui lòng đến chi nhánh gần nhất hoặc gọi 1900 6868. |
 | `EKYC_INFO_REQUESTED` | Push + SMS | Aegis Bank: Vui lòng bổ sung {hạng mục} trước {hạn} để hoàn tất mở tài khoản: {deep link} |

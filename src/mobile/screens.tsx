@@ -845,11 +845,12 @@ export function RequestInfo({ go }: ScreenProps) {
 export function Duplicate({ go }: ScreenProps) {
   const { tr } = useLang();
   const ek = useEkyc();
+  const passport = ek?.docType === "PASSPORT";
   const id = ek?.live ? (ek.persona.ocr.id_number ? maskId(ek.persona.ocr.id_number) : ek.persona.ocr.passport_no ?? "") : "089 •••• 5678";
   return (
     <Screen title={tr("Mở tài khoản", "Open an account")} footer={<><Button size="lg" block onClick={() => go("intro")}>{tr("Đăng nhập", "Log in")}</Button><Button variant="ghost" block>{tr("Quên mật khẩu", "Forgot password")}</Button></>}>
-      <PageTitle title={tr("Bạn đã có tài khoản Aegis", "You already have an Aegis account")} desc={tr("Số CCCD này đã được dùng để mở tài khoản. Vui lòng đăng nhập.", "This ID number is already linked to an account. Please log in.")} />
-      <Section className="flex items-center gap-3 p-4"><UserCheck className="size-6 text-action-subtle-fg" /><span className="text-body-sm">{tr("CCCD", "ID")} <span className="font-semibold tabular">{id}</span></span></Section>
+      <PageTitle title={tr("Bạn đã có tài khoản Aegis", "You already have an Aegis account")} desc={passport ? tr("Hộ chiếu này đã được dùng để mở tài khoản. Vui lòng đăng nhập.", "This passport is already linked to an account. Please log in.") : tr("Số CCCD này đã được dùng để mở tài khoản. Vui lòng đăng nhập.", "This ID number is already linked to an account. Please log in.")} />
+      <Section className="flex items-center gap-3 p-4"><UserCheck className="size-6 text-action-subtle-fg" /><span className="text-body-sm">{passport ? tr("Hộ chiếu", "Passport") : tr("CCCD", "ID")} <span className="font-semibold tabular">{id}</span></span></Section>
       <Alert tone="warning" className="mt-4" title={tr("Không phải bạn mở tài khoản này?", "Didn't open this account?")}>{tr("Gọi ngay 1900 6868 để khoá tài khoản.", "Call 1900 6868 now to lock it.")}</Alert>
     </Screen>
   );

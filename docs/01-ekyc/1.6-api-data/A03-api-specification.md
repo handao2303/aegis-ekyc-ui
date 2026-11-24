@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.0 |
+| Phiên bản | 1.1 |
 | Trạng thái | 📝 Bản nháp, chờ Tech Lead xác nhận |
 | Người soạn | Han Dao (BA) |
 | Ngày | 24/11/2026 |
@@ -251,11 +251,11 @@ Hàng đợi: `REFER`, `REFER_RESUBMITTED`, `PENDING_CHECKER`, `PENDING_CUSTOMER
 |---|---|---|
 | `DOC_EXPIRED` | Giấy tờ hết hạn | Giấy tờ đã hết hạn. Vui lòng cập nhật giấy tờ mới. |
 | `UNDER_AGE` | Chưa đủ tuổi | Chưa đủ điều kiện độ tuổi cho sản phẩm này. |
-| `STOPPED_DUPLICATE` | Đã có tài khoản | Số CCCD này đã có tài khoản. Vui lòng đăng nhập. |
+| `STOPPED_DUPLICATE` | Đã có tài khoản | Giấy tờ này đã được dùng để mở tài khoản. Vui lòng đăng nhập. |
 | `NO_RESPONSE` | Quá hạn bổ sung | Hồ sơ đã bị huỷ do quá hạn bổ sung. |
 | `GENERAL` | Mọi lý do còn lại, gồm `RISK_HIGH`, `SANCTION_MATCH`, `LIVENESS_FAILED`, `FACE_MISMATCH`, `MANUAL_REJECT` | Hiện chưa thể mở tài khoản trực tuyến… liên hệ quầy hoặc 1900 6868. |
 
-> ⚠️ Thông điệp `STOPPED_DUPLICATE` nói "Số CCCD" cả khi khách dùng hộ chiếu. Cần sửa thành "giấy tờ này" (ghi nhận cho vòng sửa sau).
+> ✅ 24/11: thông điệp `STOPPED_DUPLICATE` trước đây nói "Số CCCD" cả khi khách dùng hộ chiếu, đã đổi thành "Giấy tờ này". Màn eKYC-12 trên app hiện "Hộ chiếu" hoặc "CCCD" theo loại giấy tờ.
 
 ## 6. Sự kiện phát ra (cho Notification, Đối soát, Hạn mức)
 
@@ -271,6 +271,8 @@ Hàng đợi: `REFER`, `REFER_RESUBMITTED`, `PENDING_CHECKER`, `PENDING_CUSTOMER
 | `ops.notification.dead_letter` | Gửi thông báo thất bại 3 lần | `template` |
 
 Tài khoản Core Banking được tạo **trước** khi phát `ekyc.decision.completed`, khoá idempotency là `session_id` (SIT-10).
+
+Thông báo `EKYC_APPROVED` gửi thành 2 bản: Push **không** có số tài khoản (đi qua APNs/FCM ở nước ngoài, P01 §4.1), SMS có số tài khoản (chờ Pháp chế xác nhận).
 
 ## 7. Chưa có, cần trước production
 
@@ -290,3 +292,4 @@ Tài khoản Core Banking được tạo **trước** khi phát `ekyc.decision.c
 | Phiên bản | Ngày | Người | Nội dung |
 |---|---|---|---|
 | 1.0 | 24/11/2026 | Han Dao | Bản đầu, lập từ code ekyc-service |
+| 1.1 | 24/11/2026 | Han Dao | Sửa thông điệp `STOPPED_DUPLICATE` cho hộ chiếu; tách Push / SMS của `EKYC_APPROVED` |

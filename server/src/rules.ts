@@ -146,7 +146,7 @@ export function customerSafeReason(code: RejectReason | "STOPPED_DUPLICATE" | st
   switch (code) {
     case "DOC_EXPIRED": return { code, message: "Giấy tờ đã hết hạn. Vui lòng cập nhật giấy tờ mới." };
     case "UNDER_AGE": return { code, message: "Chưa đủ điều kiện độ tuổi cho sản phẩm này." };
-    case "STOPPED_DUPLICATE": return { code, message: "Số CCCD này đã có tài khoản. Vui lòng đăng nhập." };
+    case "STOPPED_DUPLICATE": return { code, message: "Giấy tờ này đã được dùng để mở tài khoản. Vui lòng đăng nhập." };
     case "NO_RESPONSE": return { code, message: "Hồ sơ đã bị huỷ do quá hạn bổ sung." };
     default: return { code: "GENERAL", message: "Hiện chưa thể mở tài khoản trực tuyến. Vui lòng liên hệ quầy giao dịch hoặc tổng đài 1900 6868." };
   }
