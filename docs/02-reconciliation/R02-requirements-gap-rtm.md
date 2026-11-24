@@ -5,7 +5,7 @@
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · Reconciliation Capability |
 | Baseline | BAS-BRD-v1.2 (Phần 2.2, 3.4, 4.2, 5.2, 6.2) · BAS-RAID-v1.2 (RSK-05/06/07/12/15, DEC-01, ASM-07) |
 | Đối chiếu với | [R01](R01-reconciliation-flow.md) (luồng & trạng thái) · UI mẫu `/reconciliation/` · kết quả chạy [R04](R04-test-plan-cases.md) |
-| Phiên bản | 0.2 – bản nháp |
+| Phiên bản | 0.3 – bản nháp |
 | Trạng thái | 📝 Chờ Kế toán trưởng, PO và Compliance quyết định 9 điểm ở §3 |
 | Người soạn | Han Dao (BA) · 24/11/2026 |
 
@@ -22,7 +22,7 @@ Cách viết yêu cầu theo ISO/IEC/IEEE 29148:2018: mỗi yêu cầu một câ
 | BR-REC-05 | Top-3 nguyên nhân kèm xác suất (Explainable AI) | Should | R01 §3 | REC-04, REC-05 | Chưa có |
 | BR-REC-06 | GLEntry hạch toán kép, bất biến | Must | R01 §4 | Một cặp Nợ/Có mỗi bút toán | Chưa có |
 | BR-REC-07 | Điều chỉnh > 50 triệu bắt buộc Maker-Checker | Must | R01 §4 | REC-05, REC-06 | Chưa có |
-| BR-REC-08 | Người cấu hình rule không được duyệt Exception giá trị lớn (SoD) | Must | R01 §2 (hiểu khác – xem D-REC-04) | Chưa kiểm tra đúng nghĩa baseline | Chưa có |
+| BR-REC-08 | Người cấu hình rule không được duyệt Exception giá trị lớn (SoD) | Must | R01 §2 (hiểu khác – xem D-REC-04) | REC-06 chặn người tạo quy tắc duyệt bút toán > 50 triệu sinh từ quy tắc đó (REQ-REC-07) | Chưa có |
 | BR-REC-09 | Dashboard KPI vận hành | Should | R01 §7 | REC-01 | Chưa có |
 | BR-REC-10 | Truy vết từ giao dịch nguồn tới GL và báo cáo | Should | R01 §5 | REC-05 (4 bước) | Chưa có (SCRUM-50) |
 
@@ -35,7 +35,7 @@ Module 2 hiện **chỉ có UI mẫu chạy dữ liệu hư cấu**, chưa có `
 | [R01](R01-reconciliation-flow.md) | Luồng tổng thể, trạng thái, sequence Maker-Checker, ERD truy vết |
 | **R02** (tài liệu này) | Điểm lệch so với baseline, yêu cầu bổ sung, dữ liệu cần thêm, RTM |
 | [R03](R03-ui-spec.md) | Đặc tả giao diện REC-01 → REC-06, có ảnh |
-| [R04](R04-test-plan-cases.md) | Kế hoạch kiểm thử, 20 test case, kết quả chạy trên UI mẫu, lỗi |
+| [R04](R04-test-plan-cases.md) | Kế hoạch kiểm thử, 25 test case giao diện, kết quả chạy trên UI mẫu, lỗi |
 
 ## 3. Điểm lệch giữa baseline và R01 / UI mẫu – cần quyết định
 
@@ -46,7 +46,7 @@ R01 và UI mẫu được dựng theo Design Spec (SCRUM-49) nên có vài chỗ
 | D-REC-01 | Trạng thái ExceptionCase | `OPEN`, `IN_PROGRESS`, `CLOSED` | `OPEN`, `IN_PROGRESS`, `ESCALATED`, `RESOLVED` | Giữ 4 trạng thái nhưng đổi `RESOLVED` → `CLOSED` cho khớp BRD. Thêm `PENDING_POSTING` khi bút toán điều chỉnh còn chờ Checker (xem §5 và DEF-REC-06) | Kế toán trưởng |
 | D-REC-02 | Aging bucket | `0-1D`, `1-3D`, `>3D` | `0–1d`, `1–3d`, `3–7d`, `>7d` | Theo BRD (3 nhóm) cho dữ liệu và báo cáo. Nếu vận hành cần tách `>7d` thì đưa vào CR | Kế toán trưởng |
 | D-REC-03 | Điều kiện leo thang (RULE-REC-06) | Tồn đọng > 3 ngày | SLA theo loại và giá trị (24h / 48h / 72h) | Giữ ngưỡng 3 ngày của BRD làm mặc định. SLA theo loại là yêu cầu mới, cần CR và bảng SLA do Ops chốt | Ops + PO |
-| D-REC-04 | Ý nghĩa RULE-REC-05 (SoD) | Người tạo/sửa MatchingRule **không được duyệt Exception giá trị lớn** của case sinh ra từ rule đó | Người tạo rule không được tự duyệt **rule** của mình | Cả hai đều cần. Giữ RULE-REC-05 đúng nghĩa BRD (REQ-REC-07, chưa có trên UI). Kiểm soát "duyệt rule" là yêu cầu riêng REQ-REC-09 (nguồn: AC của SCRUM-23) | Compliance / InfoSec |
+| D-REC-04 | Ý nghĩa RULE-REC-05 (SoD) | Người tạo/sửa MatchingRule **không được duyệt Exception giá trị lớn** của case sinh ra từ rule đó | Người tạo rule không được tự duyệt **rule** của mình | Cả hai đều cần. Giữ RULE-REC-05 đúng nghĩa BRD (REQ-REC-07, UI mẫu đã có từ v0.3). Kiểm soát "duyệt rule" là yêu cầu riêng REQ-REC-09 (nguồn: AC của SCRUM-23) | Compliance / InfoSec |
 | D-REC-05 | Trạng thái MatchingRule | `ACTIVE`, `INACTIVE` | `DRAFT`, `PENDING`, `ACTIVE`, `RETIRED` | Dùng vòng đời của R01 (cần cho Maker-Checker rule). `INACTIVE` của BRD = `RETIRED` | Kế toán trưởng |
 | D-REC-06 | Ngoại lệ loại `DUPLICATE` | MatchResult chỉ có `MATCHED`, `UNMATCHED`, `PARTIAL`; trùng file/message bị loại ở bước nạp theo checksum | Có ngoại lệ `DUPLICATE` | Tách 2 loại: **trùng kỹ thuật** (cùng checksum) loại ở bước nạp, chỉ ghi log; **trùng nghiệp vụ** (khách chuyển 2 lần, khác checksum) thành ngoại lệ `DUPLICATE`. Thêm giá trị này vào `ExceptionCase.kind` | Kế toán trưởng |
 | D-REC-07 | Mục tiêu Zero-touch (KPI-05) | ≥ 30% giai đoạn đầu | R01 ghi "Theo dõi"; UI không hiện mục tiêu | Theo BRD: ≥ 30%. **Đã sửa R01 §7** vì đây là lỗi chép, không phải lựa chọn | — (đã sửa) |
@@ -139,8 +139,8 @@ Khác biệt chính với R01: ngoại lệ **chỉ đóng khi bút toán đã p
 | BR-REC-04 | UC-REC-03 | RULE-REC-03 | REQ-REC-15 | — | TC-REC-B05 | — |
 | BR-REC-05 | UC-REC-04 | RULE-REC-06, 07 | REQ-REC-01, 02, 03, 04 | REC-04, REC-05 | TC-REC-08, 09, 10, 12, 15 | — |
 | BR-REC-06 | UC-REC-05 | RULE-REC-08 | REQ-REC-08, 11 | REC-06 | TC-REC-20 · TC-REC-B06 | — |
-| BR-REC-07 | UC-REC-05 | RULE-REC-04 | FR-REC-09 · REQ-REC-05, 06, 10 | REC-05, REC-06 | TC-REC-13, 14, 16, 17, 18, 19 | UAT-REC-07 |
-| BR-REC-08 | UC-REC-02, 05 | RULE-REC-05 | REQ-REC-07 | REC-06 | TC-REC-B07 | — |
+| BR-REC-07 | UC-REC-05 | RULE-REC-04 | FR-REC-09 · REQ-REC-05, 06, 10 | REC-05, REC-06 | TC-REC-13, 14, 16, 17, 18, 19, 24, 25 | UAT-REC-07 |
+| BR-REC-08 | UC-REC-02, 05 | RULE-REC-05 | REQ-REC-07 | REC-06 | TC-REC-23 · TC-REC-B07 | — |
 | BR-REC-09 | UC-REC-06 | — | FR-REC-10 · REQ-REC-04, 17, 18 | REC-01 | TC-REC-01, 02 | UAT-REC-09 |
 | BR-REC-10 | UC-REC-06 | — | FR-REC-11 · REQ-REC-19 | REC-05 | TC-REC-11 · TC-REC-B08 | UAT-REC-10 |
 | BR-LIM-10 | — | — | REQ-REC-20 | — | TC-REC-B09 | UAT-LIM-08 |
@@ -173,3 +173,4 @@ Khác biệt chính với R01: ngoại lệ **chỉ đóng khi bút toán đã p
 |---|---|---|---|
 | 0.1 | 24/11/2026 | Han Dao | Bản đầu: 9 điểm lệch baseline, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM |
 | 0.2 | 24/11/2026 | Han Dao | UI mẫu đã đáp ứng REQ-REC-01, 02, 05, 06, 08 và trạng thái `PENDING_POSTING` (R04 vòng 2) |
+| 0.3 | 24/11/2026 | Han Dao | UI mẫu có 3 vai trò UAT, đáp ứng REQ-REC-07 (RULE-REC-05 đúng nghĩa baseline) |

@@ -172,5 +172,37 @@ t = await text();
 check("TC-REC-13", "Điều chỉnh > 50 triệu không tự hạch toán, chờ Checker (RULE-REC-04, UAT-REC-07)", /PENDING/.test(await lineageGL()), `GLEntry: ${await lineageGL()}`);
 check("TC-REC-21", "Ngoại lệ chờ bút toán > 50 triệu ở trạng thái Chờ hạch toán, chưa đóng (DEF-REC-06)", t.includes("PENDING_POSTING"), t.includes("PENDING_POSTING") ? "EXC-1125 → PENDING_POSTING" : "Ngoại lệ đã đóng");
 
+// ---------- Nhiều vai trò (Checker thật) ----------
+const signInAs = async (name) => {
+  await page.evaluate((name) => {
+    const sel = [...document.querySelectorAll("select")].find((x) => !x.closest("[role=dialog]") && [...x.options].some((o) => o.value === "Phạm Thu Trang"));
+    Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value").set.call(sel, name);
+    sel.dispatchEvent(new Event("change", { bubbles: true }));
+  }, name);
+  await sleep(500);
+};
+// RULE-REC-05: Quân tạo MR-002 → không duyệt được GL-90314 (86,4 triệu từ MR-002)
+await fresh();
+await signInAs("Đỗ Minh Quân");
+await click("Bút toán GL");
+await click("Duyệt", { exact: true, within: "GL-90314" });
+t = await text();
+check("TC-REC-23", "Người tạo quy tắc không duyệt được điều chỉnh > 50 triệu sinh từ quy tắc đó (RULE-REC-05, REQ-REC-07)", t.includes("bạn là người tạo quy tắc MR-002"), (t.match(/Không thể duyệt GL-90314[^\n]+/) || ["Duyệt được"])[0]);
+await shot("rec-gl-rule-sod");
+// Trang (không tạo MR-002, không phải Maker) trả về → Nam trình lại → Trang duyệt
+await signInAs("Phạm Thu Trang");
+await click("Trả về", { exact: true, within: "GL-90314" });
+await setVal("[role=dialog] textarea", "Bổ sung bảng kê lô Visa VS-883190");
+await click("Xác nhận trả về", { exact: true });
+await signInAs("Lê Hoàng Nam");
+const canResubmit = await page.evaluate(() => [...document.querySelectorAll("tr")].some((r) => r.innerText.includes("GL-90314") && [...r.querySelectorAll("button")].some((b) => b.innerText.trim() === "Trình lại")));
+await click("Trình lại", { exact: true, within: "GL-90314" });
+t = await text();
+check("TC-REC-24", "Maker trình lại bút toán bị trả về, bút toán giữ mã và tăng số lần trình (REQ-REC-06)", canResubmit && t.includes("Đã trình lại GL-90314 (lần 2)"), (t.match(/Đã trình lại[^\n]+/) || ["không trình lại được"])[0]);
+await signInAs("Phạm Thu Trang");
+await click("Duyệt", { exact: true, within: "GL-90314" });
+t = await text();
+check("TC-REC-25", "Checker khác Maker và khác người tạo quy tắc duyệt được bút toán trình lại", t.includes("Đã duyệt và hạch toán GL-90314"), (t.match(/Đã duyệt[^\n]+/) || ["không duyệt được"])[0]);
+
 console.log(JSON.stringify(results, null, 1));
 await browser.close();

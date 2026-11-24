@@ -7,7 +7,7 @@
 | Bản chạy | [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) – dữ liệu hư cấu, chưa nối backend |
 | Mã nguồn | `src/ops/Reconciliation.tsx`, khung dùng chung `src/ops/kit.tsx` |
 | Ảnh | 1280 × 860, tiếng Việt, chụp tự động bằng `tools/diagrams/rec-screens.mjs` |
-| Phiên bản | 1.1 · 24/11/2026 · Han Dao |
+| Phiên bản | 1.2 · 24/11/2026 · Han Dao |
 
 Quy tắc nghiệp vụ và điểm lệch baseline: [R02](R02-requirements-gap-rtm.md). Kết quả chạy thử trên giao diện: [R04](R04-test-plan-cases.md).
 
@@ -18,9 +18,10 @@ Quy tắc nghiệp vụ và điểm lệch baseline: [R02](R02-requirements-gap-
 | Menu trái | Logo "Aegis Đối soát · Khớp giao dịch & GL" · ô tìm kiếm (⌘K) · Tổng quan · Quy tắc đối soát (số quy tắc chờ duyệt) · Ngoại lệ (số đang mở) · Bút toán GL (số chờ Checker) · thẻ người dùng + vai trò + đăng xuất |
 | Thanh trên | Lời chào theo tên · mô tả ngắn · VI/EN · kỳ báo cáo (Hôm nay / 7 ngày / Tháng) · **Xuất** · chuông cảnh báo |
 | Cảnh báo mẫu | File ví điện tử bị cách ly · ngoại lệ quá hạn đã leo thang · bút toán > 50 triệu chờ Checker |
+| Đăng nhập UAT với vai trò | Ô chọn ngay dưới thanh trên: Lê Hoàng Nam (chuyên viên) · Phạm Thu Trang (Checker) · Đỗ Minh Quân (trưởng nhóm, người tạo MR-002, MR-003). Cũng chọn được qua đường dẫn `?as=trang`, `?as=quan`. Chỉ dùng trên UAT; production lấy vai trò từ SSO |
 | Nhãn quy tắc | Mỗi chỗ áp dụng quy tắc có nhãn xám (vd. `RULE-REC-04`, `UAT-REC-09`) để tester và kiểm toán đối chiếu |
 
-### Phân quyền hiển thị (đề xuất – UI mẫu chỉ có một người dùng)
+### Phân quyền hiển thị (đề xuất – UI mẫu chưa ẩn chức năng theo vai trò, chỉ chặn bằng SoD)
 
 | Chức năng | Chuyên viên | Checker | Trưởng nhóm | Kế toán trưởng / QL vận hành |
 |---|---|---|---|---|
@@ -128,11 +129,14 @@ Aging trên UI chia 4 nhóm, BRD chia 3 nhóm – chờ quyết định D-REC-02
 | Từ chối | Hộp thoại lý do; nút "Xác nhận từ chối" khoá khi lý do < 10 ký tự. Lý do hiện dưới bút toán; ngoại lệ liên quan mở lại | REQ-REC-05 |
 | Trả về | Hộp thoại ghi chú ≥ 10 ký tự; bút toán sang "Trả về Maker", hiện ghi chú của Checker. Maker thấy nút **Trình lại**, bút toán giữ mã, tăng số lần trình | REQ-REC-06 |
 | Maker bấm Duyệt / Trả về / Từ chối bút toán của mình | Chặn: "bạn là Maker của bút toán này" | BR-REC-07 |
+| Người tạo quy tắc bấm Duyệt bút toán > 50 triệu sinh từ quy tắc đó | Chặn: "bạn là người tạo quy tắc MR-xxx sinh ra giao dịch này". Cột Cơ chế · Maker ghi quy tắc nguồn và người tạo để Checker thấy trước | RULE-REC-05, REQ-REC-07 |
 | Chân trang | "Ngưỡng 50 triệu giữ theo baseline vì CR-002 chưa được duyệt" | ASM-07, DEC-01 |
 
 <img src="../../public/ui/rec-gl-reject.png" width="620" alt="REC-06 – hộp thoại lý do từ chối">
 
-**Còn thiếu:** chuyển cấp duyệt cao hơn (REQ-REC-10), kiểm tra người tạo rule không được duyệt (REQ-REC-07) – cần UI có nhiều vai trò.
+<img src="../../public/ui/rec-gl-rule-sod.png" width="760" alt="REC-06 – người tạo quy tắc MR-002 không duyệt được bút toán sinh từ MR-002">
+
+**Còn thiếu:** chuyển cấp duyệt cao hơn (REQ-REC-10).
 
 ## 8. Trạng thái và thông điệp
 
@@ -151,3 +155,4 @@ Trạng thái luôn có chữ đi kèm màu, không chỉ dùng màu (WCAG 2.2 t
 |---|---|---|---|
 | 1.0 | 24/11/2026 | Han Dao | Bản đầu, có ảnh 6 màn, ghi phần còn thiếu so với baseline |
 | 1.1 | 24/11/2026 | Han Dao | Cập nhật REC-05, REC-06 sau khi sửa 6 lỗi của R04: 3 cách xử lý, nguyên nhân khác, khoá bút toán trùng, Chờ hạch toán, lý do từ chối, trả về Maker |
+| 1.2 | 24/11/2026 | Han Dao | Ô đăng nhập UAT với 3 vai trò; kiểm RULE-REC-05 đúng nghĩa baseline khi duyệt bút toán |

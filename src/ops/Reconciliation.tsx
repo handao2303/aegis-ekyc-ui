@@ -1,5 +1,5 @@
 /* Aegis Đối soát – REC-01 → REC-06 (SCRUM-49), truy vết dữ liệu (SCRUM-50). Dữ liệu hư cấu. */
-import { useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle, ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Clock, Database, GitBranch, Inbox,
   LayoutDashboard, ListChecks, Plus, ScrollText, ShieldAlert, Sparkles, Timer, Wallet, Zap,
@@ -10,7 +10,15 @@ import {
   GhostButton, GradientButton, HBars, LineChart, Meter, OpsShell, Panel, Pill, type PillTone, RuleTag, SearchBox, Segmented, Select, StatCard, Table, pct, vnd,
 } from "./kit";
 
-const ME = "Lê Hoàng Nam";
+const NAM = "Lê Hoàng Nam";
+/* Người dùng UAT – đổi vai trò để kiểm Maker-Checker và RULE-REC-05 (R04 §2) */
+const USERS = [
+  { name: NAM, vi: "Chuyên viên đối soát", en: "Reconciliation officer" },
+  { name: "Phạm Thu Trang", vi: "Kiểm soát viên (Checker)", en: "Controller (checker)" },
+  { name: "Đỗ Minh Quân", vi: "Trưởng nhóm đối soát", en: "Reconciliation lead" },
+];
+const MeCtx = createContext(NAM);
+const useMe = () => useContext(MeCtx);
 const GL_THRESHOLD = 50_000_000; // RULE-REC-04 – giữ baseline vì CR-002 chưa duyệt
 
 type View = "dashboard" | "rules" | "exceptions" | "gl";
@@ -31,7 +39,7 @@ type RuleStatus = "ACTIVE" | "PENDING" | "DRAFT";
 type Rule = { id: string; name: string; type: RuleType; keys: string[]; tolerance: string; version: number; status: RuleStatus; maker: string; checker?: string; hit: number };
 const RULES0: Rule[] = [
   { id: "MR-001", name: "CBS ↔ NAPAS · khớp tuyệt đối", type: "EXACT", keys: ["ref", "amount", "date"], tolerance: "0 ₫ · 0 ngày", version: 7, status: "ACTIVE", maker: "Phạm Thu Trang", checker: "Lê Hoàng Nam", hit: 71.2 },
-  { id: "MR-002", name: "CBS ↔ Visa · lệch tỷ giá", type: "FUZZY", keys: ["amount", "date", "account"], tolerance: "±0,5% · ±1 ngày", version: 4, status: "ACTIVE", maker: "Lê Hoàng Nam", checker: "Phạm Thu Trang", hit: 14.6 },
+  { id: "MR-002", name: "CBS ↔ Visa · lệch tỷ giá", type: "FUZZY", keys: ["amount", "date", "account"], tolerance: "±0,5% · ±1 ngày", version: 4, status: "ACTIVE", maker: "Đỗ Minh Quân", checker: "Phạm Thu Trang", hit: 14.6 },
   { id: "MR-003", name: "Gộp phí N:1 Mastercard", type: "N1", keys: ["batch", "amount"], tolerance: "≤ 20 giao dịch/lô", version: 2, status: "ACTIVE", maker: "Đỗ Minh Quân", checker: "Lê Hoàng Nam", hit: 6.3 },
   { id: "MR-004", name: "Ví điện tử · mã tham chiếu rút gọn", type: "FUZZY", keys: ["ref", "amount"], tolerance: "Levenshtein ≤ 2", version: 1, status: "PENDING", maker: "Lê Hoàng Nam", hit: 0 },
   { id: "MR-005", name: "Hoàn tiền NAPAS (refund)", type: "EXACT", keys: ["ref", "amount"], tolerance: "0 ₫", version: 1, status: "DRAFT", maker: "Phạm Thu Trang", hit: 0 },
@@ -41,26 +49,26 @@ const RULES0: Rule[] = [
 type ExStatus = "OPEN" | "IN_PROGRESS" | "ESCALATED" | "PENDING_POSTING" | "RESOLVED";
 type Resolution = "ADJUSTMENT" | "MANUAL_MATCH" | "REQUEST_DOCS";
 type Ex = {
-  id: string; pair: string; kind: "UNMATCHED" | "PARTIAL" | "DUPLICATE"; amount: number; diff: number; ageH: number; dueH: number;
+  id: string; pair: string; rule: string; kind: "UNMATCHED" | "PARTIAL" | "DUPLICATE"; amount: number; diff: number; ageH: number; dueH: number;
   owner?: string; status: ExStatus; causes: { vi: string; en: string; p: number }[];
   resolution?: { type: Resolution; cause: string; override: boolean; note?: string; ref?: string };
   waitingDocs?: string;
   internal: { ref: string; date: string; acct: string; amount: number }; external: { ref: string; date: string; acct: string; amount: number } | null;
 };
 const EX0: Ex[] = [
-  { id: "EXC-1124", pair: "CBS ↔ Visa", kind: "PARTIAL", amount: 48_250_000, diff: 241_250, ageH: 30, dueH: 24, owner: ME, status: "IN_PROGRESS",
+  { id: "EXC-1124", pair: "CBS ↔ Visa", rule: "MR-002", kind: "PARTIAL", amount: 48_250_000, diff: 241_250, ageH: 30, dueH: 24, owner: NAM, status: "IN_PROGRESS",
     causes: [{ vi: "Chênh lệch tỷ giá quy đổi USD/VND", en: "USD/VND conversion difference", p: 78 }, { vi: "Phí chuyển đổi ngoại tệ chưa hạch toán", en: "Unbooked FX fee", p: 15 }, { vi: "Làm tròn của tổ chức thẻ", en: "Card scheme rounding", p: 7 }],
     internal: { ref: "FT2611093321", date: "20/11 14:02", acct: "1903 6688 2025", amount: 48_250_000 }, external: { ref: "VS-883102", date: "21/11 06:10", acct: "4111 •••• 1234", amount: 48_008_750 } },
-  { id: "EXC-1125", pair: "CBS ↔ NAPAS", kind: "UNMATCHED", amount: 125_000_000, diff: 125_000_000, ageH: 52, dueH: 48, status: "ESCALATED",
+  { id: "EXC-1125", pair: "CBS ↔ NAPAS", rule: "MR-001", kind: "UNMATCHED", amount: 125_000_000, diff: 125_000_000, ageH: 52, dueH: 48, status: "ESCALATED",
     causes: [{ vi: "Giao dịch NAPAS chưa về (T+1)", en: "NAPAS record not yet received (T+1)", p: 64 }, { vi: "Sai mã tham chiếu do nhập tay", en: "Manually mistyped reference", p: 24 }, { vi: "Giao dịch bị huỷ phía ngân hàng nhận", en: "Reversed by the beneficiary bank", p: 12 }],
     internal: { ref: "FT2611080017", date: "19/11 09:41", acct: "0071 0003 4567", amount: 125_000_000 }, external: null },
-  { id: "EXC-1127", pair: "Mastercard N:1", kind: "PARTIAL", amount: 12_400_000, diff: 18_000, ageH: 6, dueH: 24, status: "OPEN",
+  { id: "EXC-1127", pair: "Mastercard N:1", rule: "MR-003", kind: "PARTIAL", amount: 12_400_000, diff: 18_000, ageH: 6, dueH: 24, status: "OPEN",
     causes: [{ vi: "Thiếu 1 giao dịch phí trong lô", en: "One fee transaction missing from batch", p: 71 }, { vi: "Phí interchange thay đổi", en: "Interchange fee changed", p: 22 }, { vi: "Lô bị tách 2 file", en: "Batch split across two files", p: 7 }],
     internal: { ref: "BATCH-MC-1120", date: "20/11 23:59", acct: "GL 1131.02", amount: 12_400_000 }, external: { ref: "IPM-77812", date: "21/11 06:05", acct: "GL 1131.02", amount: 12_382_000 } },
-  { id: "EXC-1128", pair: "CBS ↔ NAPAS", kind: "DUPLICATE", amount: 3_500_000, diff: 3_500_000, ageH: 2, dueH: 24, status: "OPEN",
+  { id: "EXC-1128", pair: "CBS ↔ NAPAS", rule: "MR-001", kind: "DUPLICATE", amount: 3_500_000, diff: 3_500_000, ageH: 2, dueH: 24, status: "OPEN",
     causes: [{ vi: "Khách bấm chuyển 2 lần", en: "Customer submitted twice", p: 82 }, { vi: "NAPAS gửi lại bản ghi", en: "NAPAS resent the record", p: 18 }],
     internal: { ref: "FT2611095510", date: "21/11 08:12", acct: "1903 1122 3344", amount: 3_500_000 }, external: { ref: "NP-5510-DUP", date: "21/11 08:12", acct: "1903 1122 3344", amount: 3_500_000 } },
-  { id: "EXC-1120", pair: "CBS ↔ Visa", kind: "PARTIAL", amount: 9_870_000, diff: 49_350, ageH: 70, dueH: 72, owner: "Phạm Thu Trang", status: "RESOLVED",
+  { id: "EXC-1120", pair: "CBS ↔ Visa", rule: "MR-002", kind: "PARTIAL", amount: 9_870_000, diff: 49_350, ageH: 70, dueH: 72, owner: "Phạm Thu Trang", status: "RESOLVED",
     causes: [{ vi: "Chênh lệch tỷ giá quy đổi USD/VND", en: "USD/VND conversion difference", p: 91 }],
     internal: { ref: "FT2611051209", date: "18/11 10:20", acct: "1903 2211 8899", amount: 9_870_000 }, external: { ref: "VS-881044", date: "19/11 06:08", acct: "4111 •••• 9981", amount: 9_820_650 } },
 ];
@@ -69,9 +77,9 @@ type GLStatus = "POSTED" | "PENDING" | "RETURNED" | "REJECTED";
 type GL = { id: string; date: string; debit: string; credit: string; amount: number; source: string; mode: "ZERO_TOUCH" | "MAKER_CHECKER"; maker: string; checker?: string; status: GLStatus; memo: { vi: string; en: string }; rejectReason?: string; returnNote?: string; submits?: number };
 const GL0: GL[] = [
   { id: "GL-90311", date: "21/11 09:42", debit: "1131.02", credit: "4211.01", amount: 12_382_000, source: "MR-003 · BATCH-MC-1120", mode: "ZERO_TOUCH", maker: "system", status: "POSTED", memo: { vi: "Tất toán lô Mastercard", en: "Mastercard batch settlement" } },
-  { id: "GL-90312", date: "21/11 09:44", debit: "6311.01", credit: "1131.03", amount: 241_250, source: "EXC-1124", mode: "ZERO_TOUCH", maker: ME, status: "POSTED", memo: { vi: "Điều chỉnh chênh lệch tỷ giá", en: "FX difference adjustment" } },
+  { id: "GL-90312", date: "21/11 09:44", debit: "6311.01", credit: "1131.03", amount: 241_250, source: "EXC-1124", mode: "ZERO_TOUCH", maker: NAM, status: "POSTED", memo: { vi: "Điều chỉnh chênh lệch tỷ giá", en: "FX difference adjustment" } },
   { id: "GL-90313", date: "21/11 09:51", debit: "1131.01", credit: "4211.05", amount: 125_000_000, source: "EXC-1125", mode: "MAKER_CHECKER", maker: "Phạm Thu Trang", status: "PENDING", memo: { vi: "Treo chờ NAPAS T+1", en: "Suspense pending NAPAS T+1" } },
-  { id: "GL-90314", date: "21/11 10:03", debit: "1131.01", credit: "4211.01", amount: 86_400_000, source: "MR-002 · VS-883190", mode: "MAKER_CHECKER", maker: ME, status: "PENDING", memo: { vi: "Điều chỉnh lô Visa > 50 triệu", en: "Visa batch adjustment > 50m" } },
+  { id: "GL-90314", date: "21/11 10:03", debit: "1131.01", credit: "4211.01", amount: 86_400_000, source: "MR-002 · VS-883190", mode: "MAKER_CHECKER", maker: NAM, status: "PENDING", memo: { vi: "Điều chỉnh lô Visa > 50 triệu", en: "Visa batch adjustment > 50m" } },
   { id: "GL-90309", date: "20/11 17:20", debit: "6311.01", credit: "1131.03", amount: 49_350, source: "EXC-1120", mode: "ZERO_TOUCH", maker: "Phạm Thu Trang", status: "POSTED", memo: { vi: "Điều chỉnh chênh lệch tỷ giá", en: "FX difference adjustment" } },
 ];
 
@@ -98,7 +106,13 @@ const aging = (h: number) => (h < 24 ? "0–1d" : h < 72 ? "1–3d" : h < 168 ? 
 /* ---------- App ---------- */
 
 function RecApp() {
-  const { tr } = useLang();
+  const { tr, pick } = useLang();
+  const [me, setMe] = useState(() => {
+    if (typeof window === "undefined") return NAM;
+    const as = new URLSearchParams(window.location.search).get("as");
+    return USERS.find((u) => u.name.split(" ").at(-1)?.toLowerCase() === as?.toLowerCase())?.name ?? NAM;
+  });
+  const meUser = USERS.find((u) => u.name === me)!;
   const [view, setView] = useState<View>("dashboard");
   const [period, setPeriod] = useState("7d");
   const [rules, setRules] = useState(RULES0);
@@ -120,9 +134,10 @@ function RecApp() {
   const ex = exs.find((e) => e.id === openEx);
 
   return (
+    <MeCtx.Provider value={me}>
     <OpsShell
-      module="reconciliation" nav={nav} view={view} onView={go} user={ME} role={tr("Chuyên viên đối soát", "Reconciliation officer")}
-      greeting={tr("Chào buổi sáng, Nam", "Good morning, Nam")}
+      module="reconciliation" nav={nav} view={view} onView={go} user={me} role={pick(meUser)}
+      greeting={tr(`Chào buổi sáng, ${me.split(" ").at(-1)}`, `Good morning, ${me.split(" ").at(-1)}`)}
       subtitle={tr("Tình hình đối soát giao dịch và các việc cần xử lý hôm nay.", "Today's reconciliation status and what needs your attention.")}
       period={period} onPeriod={setPeriod} onExport={() => {}}
       alerts={[
@@ -131,6 +146,11 @@ function RecApp() {
         { title: tr("2 bút toán > 50 triệu chờ Checker", "2 entries > 50m awaiting checker"), time: "10:03", tone: "pending" },
       ]}
     >
+      <div className="mb-4 flex flex-wrap items-center gap-2 rounded-[14px] border border-dashed border-line-subtle px-4 py-2 text-body-sm">
+        <span className="font-semibold">{tr("Đăng nhập UAT với vai trò", "UAT sign-in as")}</span>
+        <Select value={me} onChange={setMe} label={tr("Người dùng UAT", "UAT user")} options={USERS.map((u) => ({ value: u.name, label: `${u.name} · ${pick(u)}` }))} />
+        <span className="text-caption text-fg-tertiary">{tr("Chỉ có trên môi trường UAT, để kiểm Maker-Checker.", "UAT only, for testing maker-checker.")} <RuleTag>RULE-REC-05</RuleTag></span>
+      </div>
       {view === "dashboard" && <Dashboard period={period} exs={exs} gls={gls} onOpenEx={(id) => { setView("exceptions"); setOpenEx(id); }} go={go} />}
       {view === "rules" && <Rules rules={rules} setRules={setRules} onNew={() => setRuleForm(true)} />}
       {view === "exceptions" && !ex && <Exceptions exs={exs} onOpen={setOpenEx} />}
@@ -139,10 +159,11 @@ function RecApp() {
           update={(p) => setExs((xs) => xs.map((x) => (x.id === ex.id ? { ...x, ...p } : x)))}
           addGL={(g) => setGls((xs) => [g, ...xs])} />
       )}
-      {view === "gl" && <GLView gls={gls} setGls={setGls}
+      {view === "gl" && <GLView gls={gls} setGls={setGls} rules={rules} exs={exs}
         onCase={(id, outcome) => setExs((xs) => xs.map((x) => (x.id !== id || x.status === "RESOLVED" ? x : outcome === "posted" ? { ...x, status: "RESOLVED" } : x.status === "PENDING_POSTING" ? { ...x, status: "IN_PROGRESS" } : x)))} />}
       <RuleForm open={ruleForm} onClose={() => setRuleForm(false)} onSave={(r) => { setRules((xs) => [r, ...xs]); setRuleForm(false); }} nextId={`MR-${String(rules.length + 1).padStart(3, "0")}`} />
     </OpsShell>
+    </MeCtx.Provider>
   );
 }
 
@@ -227,6 +248,7 @@ function Dashboard({ period, exs, gls, onOpenEx, go }: { period: string; exs: Ex
 
 function Rules({ rules, setRules, onNew }: { rules: Rule[]; setRules: (f: (r: Rule[]) => Rule[]) => void; onNew: () => void }) {
   const { tr } = useLang();
+  const ME = useMe();
   const [q, setQ] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const list = rules.filter((r) => (r.name + r.id).toLowerCase().includes(q.toLowerCase()));
@@ -270,12 +292,14 @@ function Rules({ rules, setRules, onNew }: { rules: Rule[]; setRules: (f: (r: Ru
 
 function RuleForm({ open, onClose, onSave, nextId }: { open: boolean; onClose: () => void; onSave: (r: Rule) => void; nextId: string }) {
   const { tr } = useLang();
+  const ME = useMe();
   const [name, setName] = useState("");
   const [type, setType] = useState<RuleType>("FUZZY");
   const [keys, setKeys] = useState<string[]>(["ref", "amount"]);
   const [amountTol, setAmountTol] = useState("0,5");
   const [dayTol, setDayTol] = useState("1");
   const [checker, setChecker] = useState("Phạm Thu Trang");
+  useEffect(() => { if (open) setChecker(USERS.find((u) => u.name !== ME)!.name); }, [open, ME]);
   const sod = checker === ME;
   const valid = name.trim().length >= 4 && keys.length >= 1 && !sod;
   const allKeys = [{ id: "ref", l: tr("Mã tham chiếu", "Reference") }, { id: "amount", l: tr("Số tiền", "Amount") }, { id: "date", l: tr("Ngày giao dịch", "Date") }, { id: "account", l: tr("Tài khoản", "Account") }, { id: "batch", l: tr("Mã lô", "Batch") }];
@@ -299,7 +323,7 @@ function RuleForm({ open, onClose, onSave, nextId }: { open: boolean; onClose: (
           </div>
         )}
         <div className="flex flex-col gap-1.5"><span className="text-body-sm font-semibold">{tr("Người duyệt (Checker)", "Approver (checker)")}</span>
-          <Select value={checker} onChange={setChecker} label={tr("Người duyệt", "Approver")} options={[{ value: "Phạm Thu Trang", label: "Phạm Thu Trang" }, { value: "Đỗ Minh Quân", label: "Đỗ Minh Quân" }, { value: ME, label: `${ME} (${tr("bạn", "you")})` }]} /></div>
+          <Select value={checker} onChange={setChecker} label={tr("Người duyệt", "Approver")} options={USERS.map((u) => ({ value: u.name, label: u.name === ME ? `${u.name} (${tr("bạn", "you")})` : u.name }))} /></div>
         {sod && (
           <div role="alert" className="flex gap-3 rounded-[14px] border border-[#f3c6c0] bg-[#fdf0ee] p-4 text-body-sm text-[#7a1a12]">
             <ShieldAlert className="mt-0.5 size-5 shrink-0" />
@@ -358,6 +382,7 @@ const textCls = "w-full rounded-[12px] border border-line-subtle px-3 py-2 text-
 
 function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]; onBack: () => void; update: (p: Partial<Ex>) => void; addGL: (g: GL) => void }) {
   const { tr, pick } = useLang();
+  const ME = useMe();
   const [cause, setCause] = useState<number | "other">(0);
   const [otherCat, setOtherCat] = useState(0);
   const [otherNote, setOtherNote] = useState("");
@@ -533,8 +558,11 @@ function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]
 
 /* ---------- REC-06 Bút toán GL ---------- */
 
-function GLView({ gls, setGls, onCase }: { gls: GL[]; setGls: (f: (g: GL[]) => GL[]) => void; onCase: (caseId: string, outcome: "posted" | "reopened") => void }) {
+function GLView({ gls, setGls, onCase, rules, exs }: { gls: GL[]; setGls: (f: (g: GL[]) => GL[]) => void; onCase: (caseId: string, outcome: "posted" | "reopened") => void; rules: Rule[]; exs: Ex[] }) {
   const { tr, pick } = useLang();
+  const ME = useMe();
+  // Quy tắc đã sinh ra giao dịch của bút toán: lấy trực tiếp từ nguồn, hoặc qua ngoại lệ liên quan
+  const ruleOf = (g: GL) => rules.find((r) => r.id === (g.source.match(/MR-\d+/)?.[0] ?? exs.find((e) => e.id === caseOf(g))?.rule));
   const [tab, setTab] = useState<"all" | "pending" | "zero">("all");
   const [msg, setMsg] = useState<{ tone: "ok" | "block"; text: string } | null>(null);
   const [dialog, setDialog] = useState<{ g: GL; kind: "reject" | "return" } | null>(null);
@@ -548,6 +576,12 @@ function GLView({ gls, setGls, onCase }: { gls: GL[]; setGls: (f: (g: GL[]) => G
   };
   const approve = (g: GL) => {
     if (blockMaker(g)) return;
+    // RULE-REC-05 (BR-REC-08, REQ-REC-07): người tạo quy tắc không duyệt điều chỉnh lớn sinh từ quy tắc đó
+    const r = ruleOf(g);
+    if (g.amount > GL_THRESHOLD && r && r.maker === ME) {
+      setMsg({ tone: "block", text: tr(`Không thể duyệt ${g.id}: bạn là người tạo quy tắc ${r.id} sinh ra giao dịch này (RULE-REC-05 – phân tách nhiệm vụ).`, `Can't approve ${g.id}: you created rule ${r.id}, which produced this transaction (RULE-REC-05 – segregation of duties).`) });
+      return;
+    }
     patch(g.id, { status: "POSTED", checker: ME });
     const c = caseOf(g); if (c) onCase(c, "posted");
     setMsg({ tone: "ok", text: tr(`Đã duyệt và hạch toán ${g.id}.`, `${g.id} approved and posted.`) });
@@ -591,6 +625,7 @@ function GLView({ gls, setGls, onCase }: { gls: GL[]; setGls: (f: (g: GL[]) => G
                 <td>
                   {g.mode === "ZERO_TOUCH" ? <Pill tone="brand">Zero-touch</Pill> : <Pill tone="neutral">Maker-Checker</Pill>}
                   <span className="mt-1 block text-caption text-fg-secondary">{g.maker === "system" ? tr("Hệ thống", "System") : g.maker}</span>
+                  {ruleOf(g) && <span className="block text-caption text-fg-tertiary">{tr("Quy tắc", "Rule")} {ruleOf(g)!.id} · {ruleOf(g)!.maker}</span>}
                 </td>
                 <td>
                   <Pill tone={glTone[g.status]}>{statusLabel(g.status)}</Pill>
