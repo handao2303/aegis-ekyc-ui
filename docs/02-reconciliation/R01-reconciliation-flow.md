@@ -8,7 +8,7 @@
 | Quy tắc chính | RULE-REC-04 (ngưỡng GL), RULE-REC-05 (phân tách nhiệm vụ), RULE-REC-06 (leo thang), FR-REC-11 (truy vết) |
 | Phiên bản | 1.1 · 25/11/2026 · Han Dao (BA) |
 | Trạng thái | 🔧 Đặc tả + UI mẫu xong, chờ `reconciliation-service`; 9 điểm lệch baseline chờ Kế toán trưởng (R02 §3) |
-| Tài liệu đi kèm | [R02](R02-requirements-gap-rtm.md) yêu cầu bổ sung & RTM · [R03](R03-ui-spec.md) đặc tả giao diện · [R04](R04-test-plan-cases.md) kiểm thử |
+| Tài liệu đi kèm | [R02](R02-requirements-gap-rtm.md) yêu cầu bổ sung & RTM · [R03](R03-ui-spec.md) đặc tả giao diện · [R04](R04-test-plan-cases.md) kiểm thử · [R05](R05-api-data-dictionary.md) API & từ điển dữ liệu |
 
 > ⚠️ Một số trạng thái và quy tắc trong tài liệu này khác BAS-BRD-v1.2 (trạng thái ngoại lệ, aging, điều kiện leo thang, ý nghĩa RULE-REC-05, trạng thái quy tắc, loại `DUPLICATE`). Danh sách và đề xuất xử lý: [R02 §3](R02-requirements-gap-rtm.md). Các điểm lệch đó giữ nguyên tới khi Kế toán trưởng quyết định. Bản 1.1 (25/11) chỉ cập nhật §2–§4 cho khớp UI mẫu sau R04 vòng 2: 3 cách xử lý ngoại lệ, trạng thái `PENDING_POSTING`, trả về / trình lại bút toán, kiểm RULE-REC-05 theo nghĩa baseline.
 
@@ -223,7 +223,7 @@ Ca kiểm thử chi tiết và kết quả (25/25 đạt): [R04 §3](R04-test-pl
 |---|---|---|---|---|
 | 0.1 | 22/11/2026 | Han Dao | `8a99253` | Bản đầu: luồng tổng thể, trạng thái quy tắc và ngoại lệ, Maker-Checker GL, truy vết |
 | 1.0 | 24/11/2026 | Han Dao | `7afda2b` | Cảnh báo điểm lệch baseline, liên kết R02–R04 |
-| 1.1 | 25/11/2026 | Han Dao | — | §2–§4 khớp UI mẫu sau R04 vòng 2: 3 cách xử lý ngoại lệ, `PENDING_POSTING`, `RETURNED` và trình lại, RULE-REC-05 theo nghĩa baseline; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
+| 1.1 | 25/11/2026 | Han Dao | — | §2–§4 khớp UI mẫu sau R04 vòng 2: 3 cách xử lý ngoại lệ, `PENDING_POSTING`, `RETURNED` và trình lại, RULE-REC-05 theo nghĩa baseline; liên kết R05; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
 
 ### Phê duyệt
 

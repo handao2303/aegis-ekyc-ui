@@ -5,7 +5,7 @@
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · Reconciliation Capability |
 | Baseline | BAS-BRD-v1.2 (Phần 2.2, 3.4, 4.2, 5.2, 6.2) · BAS-RAID-v1.2 (RSK-05/06/07/12/15, DEC-01, ASM-07) |
 | Đối chiếu với | [R01](R01-reconciliation-flow.md) (luồng & trạng thái) · UI mẫu `/reconciliation/` · kết quả chạy [R04](R04-test-plan-cases.md) |
-| Phiên bản | 0.3 – bản nháp |
+| Phiên bản | 0.4 – bản nháp |
 | Trạng thái | 📝 Chờ Kế toán trưởng, PO và Compliance quyết định 9 điểm ở §3 |
 | Người soạn | Han Dao (BA) · 24/11/2026 |
 
@@ -36,6 +36,7 @@ Module 2 hiện **chỉ có UI mẫu chạy dữ liệu hư cấu**, chưa có `
 | **R02** (tài liệu này) | Điểm lệch so với baseline, yêu cầu bổ sung, dữ liệu cần thêm, RTM |
 | [R03](R03-ui-spec.md) | Đặc tả giao diện REC-01 → REC-06, có ảnh |
 | [R04](R04-test-plan-cases.md) | Kế hoạch kiểm thử, 25 test case giao diện, kết quả chạy trên UI mẫu, lỗi |
+| [R05](R05-api-data-dictionary.md) | Đặc tả API và từ điển dữ liệu đề xuất cho `reconciliation-service`; dữ liệu ở §5 được chi tiết hoá tại đây |
 
 ## 3. Điểm lệch giữa baseline và R01 / UI mẫu – cần quyết định
 
@@ -174,3 +175,4 @@ Khác biệt chính với R01: ngoại lệ **chỉ đóng khi bút toán đã p
 | 0.1 | 24/11/2026 | Han Dao | Bản đầu: 9 điểm lệch baseline, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM |
 | 0.2 | 24/11/2026 | Han Dao | UI mẫu đã đáp ứng REQ-REC-01, 02, 05, 06, 08 và trạng thái `PENDING_POSTING` (R04 vòng 2) |
 | 0.3 | 24/11/2026 | Han Dao | UI mẫu có 3 vai trò UAT, đáp ứng REQ-REC-07 (RULE-REC-05 đúng nghĩa baseline) |
+| 0.4 | 25/11/2026 | Han Dao | Thêm R05 (API và từ điển dữ liệu) vào bản đồ tài liệu §2 |
