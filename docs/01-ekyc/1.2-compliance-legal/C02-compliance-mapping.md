@@ -79,20 +79,20 @@ Trạng thái trong bảng trên là lúc lập tài liệu (21/11). Sau khi xâ
 | CR-11 | ✅ | Maker-Checker cho PEP/Sanction/rủi ro ≥ 70 – UAT-EKYC-19 |
 | CR-12 | 🟡 | Tham số lưu trữ đã có (`retention_rejected_days`); chờ Compliance chốt thời hạn |
 | CR-13 | ✅ | Audit chỉ ghi thêm, ghi xem hồ sơ / xem PII / quyết định – NFR-AUD-03 |
-| CR-14 | ✅ | Tuổi theo sản phẩm (15 / 18, cấu hình được) – UAT-EKYC-14 |
+| CR-14 | 🟡 | Tuổi theo sản phẩm (15 / 18, cấu hình được) – UAT-EKYC-14. **25/11:** khách 15 tuổi là trẻ em theo Luật Trẻ em 2016; Luật 91/2025 Điều 19 về dữ liệu của trẻ em – cần Pháp chế chốt tuổi tối thiểu kênh trực tuyến (P01 PR-02) |
 | CR-15 | ✅ | Chặn giấy tờ hết hạn, cảnh báo còn < 30 ngày – UAT-EKYC-13 |
 
-Sau cập nhật: **12 ✅ · 3 🟡 · 0 ❌**. Còn chặn go-live: CR-02 (nhà cung cấp sinh trắc), CR-12 (thời hạn lưu – chờ trả lời câu hỏi 3).
+Sau cập nhật: **11 ✅ · 4 🟡 · 0 ❌** (25/11: CR-14 về 🟡). Còn chặn go-live: CR-02 (nhà cung cấp sinh trắc), CR-12 (thời hạn lưu – chờ trả lời câu hỏi 3), CR-14 (tuổi tối thiểu và dữ liệu trẻ em).
 
 ## 3. Tổng hợp
 
 | Trạng thái | Số yêu cầu |
 |---|---|
-| ✅ Đáp ứng | 5 (sau 23/11: 12) |
-| 🟡 Một phần | 2 (sau 23/11: 3) |
+| ✅ Đáp ứng | 5 (sau 23/11: 12; sau 25/11: 11) |
+| 🟡 Một phần | 2 (sau 23/11: 3; sau 25/11: 4) |
 | ❌ Chưa có | 8 (sau 23/11: 0) |
 
-**Ưu tiên chặn go-live (21/11):** CR-02, CR-03, CR-07, CR-08, CR-11, CR-12. **Còn lại sau 23/11:** CR-02, CR-12.
+**Ưu tiên chặn go-live (21/11):** CR-02, CR-03, CR-07, CR-08, CR-11, CR-12. **Còn lại sau 25/11:** CR-02, CR-12, CR-14.
 
 ## 4. Câu hỏi mở cho Compliance
 
