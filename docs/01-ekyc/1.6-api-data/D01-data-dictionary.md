@@ -163,7 +163,7 @@ erDiagram
 
 | Tham số | Mặc định | Giới hạn | Đơn vị | Nguồn |
 |---|---|---|---|---|
-| `min_age_payment` / `min_age_credit` | 15 / 18 | 14–25 / 18–25 | tuổi | C05, RULE-10 |
+| `min_age_payment` / `min_age_credit` | 16 / 18 | 16–25 / 18–25 | tuổi | C05, RULE-10, P01 PR-02 (đổi từ 15 / 14–25 ngày 25/11) |
 | `expiry_warning_days` | 30 | 0–180 | ngày | C05 |
 | `prior_rejection_days` | 30 | 0–365 | ngày | C04, RULE-09 |
 | `abandon_after_minutes` (T1) | 30 | 5–240 | phút | C06, RULE-11 |
@@ -225,4 +225,4 @@ erDiagram
 |---|---|---|---|
 | 1.0 | 24/11/2026 | Han Dao | Bản đầu, lập từ lược đồ ekyc-service |
 | 1.1 | 24/11/2026 | Han Dao | Job xoá dữ liệu xoá thêm số điện thoại, điểm sinh trắc, CIC, người nhận thông báo; xoá velocity quá 30 ngày |
-| 1.2 | 25/11/2026 | Han Dao | Căn cứ phân loại đổi từ NĐ 13/2023 (hết hiệu lực 01/01/2026) sang Luật 91/2025/QH15 + NĐ 356/2025; thêm câu hỏi DPO về số tài khoản |
+| 1.2 | 25/11/2026 | Han Dao | Căn cứ phân loại đổi từ NĐ 13/2023 (hết hiệu lực 01/01/2026) sang Luật 91/2025/QH15 + NĐ 356/2025; thêm câu hỏi DPO về số tài khoản; `min_age_payment` 15 → 16 |

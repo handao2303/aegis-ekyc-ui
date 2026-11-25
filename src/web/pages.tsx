@@ -189,6 +189,7 @@ const LIVE_FIELDS: { key: string; label: [string, string]; hint: [string, string
   { key: "info_deadline_days", label: ["Hạn khách bổ sung (ngày)", "Customer response deadline (days)"], hint: ["Quá hạn → REJECTED", "After this → REJECTED"], step: 1 },
   { key: "max_capture_failures", label: ["Số lần chụp lại tối đa", "Max photo retries"], hint: ["Vượt → chuyển duyệt tay", "Exceeded → manual review"], step: 1 },
   { key: "velocity_device_sessions_24h", label: ["Số phiên tối đa / thiết bị / 24h", "Max sessions per device / 24h"], hint: ["Vượt → chặn thiết bị 24h", "Exceeded → device blocked 24h"], step: 1 },
+  { key: "min_age_payment", label: ["Tuổi tối thiểu – tài khoản thanh toán trực tuyến", "Minimum age – online payment account"], hint: ["Không dưới 16 (P01 PR-02, Luật 91/2025)", "Not below 16 (P01 PR-02)"], step: 1 },
   { key: "min_age_credit", label: ["Tuổi tối thiểu – sản phẩm tín dụng", "Minimum age – credit products"], hint: ["Chờ Compliance xác nhận (C02)", "Pending Compliance confirmation (C02)"], step: 1 },
 ];
 

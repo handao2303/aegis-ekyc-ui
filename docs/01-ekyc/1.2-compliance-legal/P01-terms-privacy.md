@@ -18,7 +18,7 @@ Rà soát toàn bộ P01 và bản điều khoản đang chạy trên app (`src/
 | Mã | Mức | Vấn đề | Bằng chứng | Đã sửa trong bản 2026.12 | Ai chốt |
 |---|---|---|---|---|---|
 | PR-01 | 🔴 Nghiêm trọng | Cơ sở pháp lý đã lỗi thời: P01, C02, D01, Q01 vẫn dẫn **Nghị định 13/2023**, văn bản này không còn hiệu lực từ 01/01/2026. Điều khoản phát hành tháng 11–12/2026 phải dẫn luật mới | Luật 91/2025/QH15 hiệu lực 01/01/2026; NĐ 356/2025/NĐ-CP thay NĐ 13/2023 từ cùng ngày | §4 L-03, §4.1, §6; sửa tham chiếu trong C02, D01, Q01 | Pháp chế xác nhận số điều |
-| PR-02 | 🔴 Nghiêm trọng | Khách **15 tuổi** được mở tài khoản (`min_age_payment = 15`) nhưng người dưới 16 tuổi là trẻ em (Luật Trẻ em 2016). Theo Luật 91/2025 (Điều 19), với trẻ em, người đại diện theo pháp luật thực hiện quyền của chủ thể dữ liệu. App không có bước nào cho người đại diện, và sinh trắc là dữ liệu nhạy cảm | `server/src/config.ts`: `min_age_payment: 15`; C04–C05 RULE-EKYC-10 | Điều khoản §1 tạm ghi "từ đủ 16 tuổi"; đề xuất đổi tham số thành 16 cho kênh trực tuyến tới khi có luồng người đại diện | Pháp chế + PO |
+| PR-02 | 🔴 Nghiêm trọng | Khách **15 tuổi** được mở tài khoản (`min_age_payment = 15`) nhưng người dưới 16 tuổi là trẻ em (Luật Trẻ em 2016). Theo Luật 91/2025 (Điều 19), với trẻ em, người đại diện theo pháp luật thực hiện quyền của chủ thể dữ liệu. App không có bước nào cho người đại diện, và sinh trắc là dữ liệu nhạy cảm | `server/src/config.ts` (trước 25/11): `min_age_payment: 15`; C04–C05 RULE-EKYC-10 | Điều khoản §1 ghi "từ đủ 16 tuổi". **✅ 25/11: backend đã đổi `min_age_payment` = 16, giới hạn cấu hình 16–25** (không hạ dưới 16 được; giá trị cũ dưới 16 trong DB bị bỏ qua). Pháp chế vẫn cần xác nhận trước khi phát hành | Pháp chế + PO |
 | PR-03 | 🟠 Cao | Tra cứu CIC, sàng lọc AML/PEP và việc lưu hồ sơ theo luật phòng, chống rửa tiền được trình bày là **"đồng ý bắt buộc"**, nhưng khách lại không rút được – trái với bản chất của sự đồng ý. Đây là xử lý để thực hiện **nghĩa vụ pháp luật**, nên thông báo thay vì xin đồng ý | P01 §3 dòng `screening` "Không tách riêng trên app" | §2 mục 3 tách "Căn cứ xử lý": đồng ý (sinh trắc, ưu đãi) và nghĩa vụ pháp luật (PCRT, CIC, lưu hồ sơ); §3 thêm cột căn cứ | Pháp chế xác nhận trường hợp xử lý không cần đồng ý trong Luật 91 |
 | PR-04 | 🟠 Cao | Điều khoản hứa "hồ sơ bỏ dở **xoá** sau 7 ngày", "rút lại đồng ý **xoá** trong 24 giờ", nhưng hệ thống vẫn giữ `device_id`, `id_number_hash` (chống mở hồ sơ lặp lại), bộ đếm velocity 30 ngày và nhật ký thao tác. Khách không được báo | D01 §5 (24/11); `purgePersonalData` trong `server/src/service.ts` | §2 mục 6 nêu rõ dữ liệu còn giữ, mục đích và thời hạn (đề xuất 30 ngày, khớp cửa sổ dài nhất của C13) | DPO (D01 §7 câu 1–2) |
 | PR-05 | 🟠 Cao | Điều khoản **không nêu bên nhận dữ liệu** và việc gửi dữ liệu ra nước ngoài. Ít nhất thông báo Push đi qua Apple/Google (máy chủ ở nước ngoài); nơi đặt database và nhà cung cấp AML/sinh trắc chưa chốt | §4.1 R-01 → R-07 chưa đưa vào §2 | §2 thêm mục 5 "Chia sẻ dữ liệu" và câu về chuyển dữ liệu ra nước ngoài | Pháp chế + Solution Owner |
@@ -31,7 +31,7 @@ Rà soát toàn bộ P01 và bản điều khoản đang chạy trên app (`src/
 | PR-12 | ⚪ Thấp | Ngày hiệu lực "01/11/2026" đã qua mà bản này chưa được duyệt | Thông tin đầu trang | Bản 2026.12 hiệu lực theo ngày duyệt | — |
 | PR-13 | ⚪ Thấp | Thiếu luật áp dụng, cách giải quyết tranh chấp, cách báo khi điều khoản thay đổi | Câu hỏi 4 mục 6 | §2 mục 10 | Pháp chế |
 
-**App chưa đổi.** Màn eKYC-01 vẫn hiện bản `2026.11`. Khi Pháp chế duyệt bản 2026.12: cập nhật `src/ekyc/terms.ts` và `terms_version` (cần 2 người duyệt, mục 1), đổi `min_age_payment` nếu PR-02 được chốt, rồi khách có hồ sơ dở sẽ được hỏi đồng ý lại (eKYC-01R).
+**App chưa đổi.** Màn eKYC-01 vẫn hiện bản `2026.11`. Khi Pháp chế duyệt bản 2026.12: cập nhật `src/ekyc/terms.ts` và `terms_version` (cần 2 người duyệt, mục 1), (`min_age_payment` đã đổi thành 16 từ 25/11), rồi khách có hồ sơ dở sẽ được hỏi đồng ý lại (eKYC-01R).
 
 ## 1. Quy trình quản lý điều khoản
 
@@ -125,10 +125,10 @@ Nếu Pháp chế chốt PR-03: app bỏ ô tick `screening` ở màn đồng ý
 | L-03 | **Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15** (hiệu lực 01/01/2026) và **Nghị định 356/2025/NĐ-CP** hướng dẫn (hiệu lực 01/01/2026, thay Nghị định 13/2023/NĐ-CP) | Quyền của chủ thể dữ liệu (Điều 4); căn cứ xử lý có và không cần đồng ý; dữ liệu nhạy cảm (sinh trắc, tín dụng, tài khoản – danh mục mở rộng ở NĐ 356); dữ liệu trẻ em (Điều 19); đánh giá tác động xử lý; chuyển dữ liệu xuyên biên giới; nhân sự bảo vệ dữ liệu; thời hạn trả lời yêu cầu | Đồng ý theo phạm vi; đồng ý lại khi đổi điều khoản; màn eKYC-14; job xoá dữ liệu; nhật ký | Số điều cụ thể; thời hạn trả lời từng loại yêu cầu; căn cứ xử lý không cần đồng ý cho PCRT (PR-03); trẻ em 15 tuổi (PR-02) |
 | L-03a | Nghị định 330/2026/NĐ-CP về xử phạt vi phạm hành chính về bảo vệ dữ liệu cá nhân (*theo tóm tắt, hiệu lực 19/8/2026 – cần xác minh*) | Mức phạt khi vi phạm | — | Số hiệu, hiệu lực |
 | L-04 | Luật Phòng, chống rửa tiền 2022 và văn bản hướng dẫn | Nhận biết khách hàng; PEP, danh sách cấm; cấp có thẩm quyền duyệt khách rủi ro cao; lưu hồ sơ | Sàng lọc AML/PEP; Maker-Checker cho PEP/Sanction/rủi ro ≥ 70; audit bất biến; tham số lưu trữ | Thời hạn lưu hồ sơ KYC |
-| L-05 | Bộ luật Dân sự và quy định sản phẩm | Độ tuổi tối thiểu | Tham số `min_age_payment` 15, `min_age_credit` 18 | Ngưỡng tuổi từng sản phẩm |
+| L-05 | Bộ luật Dân sự và quy định sản phẩm | Độ tuổi tối thiểu | Tham số `min_age_payment` 16 (từ 25/11, trước là 15), `min_age_credit` 18 | Ngưỡng tuổi từng sản phẩm |
 | L-06 | Luật Căn cước 2023 | Thẻ Căn cước mẫu mới dùng song song với CCCD | eKYC-02 chấp nhận cả hai loại thẻ | Giá trị của CCCD cũ còn hạn |
 | L-07 | Quy định về hộ chiếu gắn chip của công dân Việt Nam | Hộ chiếu có in số định danh cá nhân | Tra trùng hộ chiếu VN theo số định danh | Cách đọc số định danh từ chip hộ chiếu |
-| L-08 | Luật Trẻ em 2016 | Trẻ em là người dưới 16 tuổi – kết hợp Luật 91/2025 Điều 19 về dữ liệu của trẻ em | `min_age_payment` hiện là 15 (PR-02) | Khách 15 tuổi có được tự đồng ý xử lý sinh trắc khi mở TK trực tuyến không |
+| L-08 | Luật Trẻ em 2016 | Trẻ em là người dưới 16 tuổi – kết hợp Luật 91/2025 Điều 19 về dữ liệu của trẻ em | `min_age_payment` = 16 từ 25/11 (PR-02) | Khách 15 tuổi có được tự đồng ý xử lý sinh trắc khi mở TK trực tuyến không |
 
 ### 4.1 Bên nhận dữ liệu và chuyển dữ liệu ra nước ngoài (dự thảo – chờ trả lời câu 6–8 ở mục 6; đã đưa vào §2 mục 5 bản 2026.12)
 
@@ -211,4 +211,4 @@ Quy tắc: không nhắc AML, PEP, CIC, "gian lận"; không chứa số giấy 
 | Phiên bản | Ngày | Người | Thay đổi |
 |---|---|---|---|
 | 0.3 | 24/11/2026 | Han Dao | Thêm mục 4.1 bên nhận dữ liệu, chuyển dữ liệu ra nước ngoài; tách Push / SMS |
-| 0.4 | 25/11/2026 | Han Dao | Rà soát theo Luật 91/2025/QH15 và NĐ 356/2025 (thay NĐ 13): 13 phát hiện (mục 0); bản điều khoản đề xuất 2026.12; căn cứ xử lý; trẻ em; dữ liệu giữ lại để chống gian lận; câu hỏi 9–12 |
+| 0.4 | 25/11/2026 | Han Dao | Rà soát theo Luật 91/2025/QH15 và NĐ 356/2025 (thay NĐ 13): 13 phát hiện (mục 0); bản điều khoản đề xuất 2026.12; căn cứ xử lý; trẻ em; dữ liệu giữ lại để chống gian lận; câu hỏi 9–12. Cùng ngày: backend đổi tuổi tối thiểu kênh trực tuyến thành 16 |

@@ -181,6 +181,15 @@ test("UAT-EKYC-23 · đổi ngưỡng cần trưởng nhóm khác người đề
   assert.deepEqual(a, ["CONFIG_CHANGE_REQUESTED", "CONFIG_CHANGE_REQUESTED", "CONFIG_CHANGE_APPROVED"]);
 });
 
+test("P01 PR-02 · không hạ tuổi tối thiểu trực tuyến dưới 16; giá trị cũ 15 trong DB bị bỏ qua", () => {
+  const svc = setup();
+  const anh = staff(svc, "u-anh");
+  assert.throws(() => svc.requestConfigChange(anh, { key: "min_age_payment", value: 15, reason: "Thử hạ tuổi về 15" }), /16–25/);
+  // DB của bản cũ đã lưu 15 → hệ thống dùng mặc định 16
+  svc.db.run("INSERT INTO config (key, value) VALUES ('min_age_payment', '15') ON CONFLICT(key) DO UPDATE SET value = excluded.value");
+  assert.equal(svc.cfg().min_age_payment, 16);
+});
+
 test("Báo cáo SLA và KPI tính được trên dữ liệu thật", async () => {
   const svc = setup();
   await run(svc, "TD-01");

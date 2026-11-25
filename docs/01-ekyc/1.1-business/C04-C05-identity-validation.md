@@ -41,7 +41,7 @@ flowchart TD
 | 5 | OCR ≠ chip ở trường định danh | Cờ `DOC_DATA_MISMATCH` → REFER | (không hiển thị) |
 | 6 | Hộ chiếu nước ngoài | Cờ `FOREIGN_NATIONAL` → REFER để kiểm tra thị thực / thẻ tạm trú | Hồ sơ được nhân viên xem xét |
 
-Ngưỡng tuổi chờ Compliance trả lời câu hỏi số 1 trong [C02](../1.2-compliance-legal/C02-compliance-mapping.md). Giá trị đề xuất: tài khoản thanh toán **15**, sản phẩm có hạn mức tín dụng **18**. Đây là tham số cấu hình, không viết cố định trong code.
+Ngưỡng tuổi chờ Compliance trả lời câu hỏi số 1 trong [C02](../1.2-compliance-legal/C02-compliance-mapping.md). Giá trị đang dùng: tài khoản thanh toán **16** (đổi từ 15 ngày 25/11 vì người dưới 16 tuổi là trẻ em – xem [P01](../1.2-compliance-legal/P01-terms-privacy.md) PR-02), sản phẩm có hạn mức tín dụng **18**. Đây là tham số cấu hình, không viết cố định trong code.
 
 ## 3. RULE-EKYC-09 · Trùng khách hàng
 

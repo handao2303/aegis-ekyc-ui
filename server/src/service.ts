@@ -37,7 +37,13 @@ export class EkycService {
   /* ================= Hạ tầng chung ================= */
   cfg(): Config {
     const c: Row = { ...DEFAULT_CONFIG };
-    for (const r of this.db.all<{ key: string; value: string }>("SELECT key, value FROM config")) c[r.key] = JSON.parse(r.value);
+    for (const r of this.db.all<{ key: string; value: string }>("SELECT key, value FROM config")) {
+      const v = JSON.parse(r.value);
+      const b = CONFIG_BOUNDS[r.key as ConfigKey];
+      // Giá trị đã duyệt trước đây nhưng nay nằm ngoài giới hạn (vd. min_age_payment = 15) → dùng mặc định
+      if (b && typeof v === "number" && (v < b[0] || v > b[1])) continue;
+      c[r.key] = v;
+    }
     return c as Config;
   }
   audit(sessionId: string | null, actor: Actor, action: string, opts: { before?: unknown; after?: unknown; reason?: string; ip?: string } = {}) {

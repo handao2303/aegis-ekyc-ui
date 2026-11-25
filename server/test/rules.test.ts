@@ -16,7 +16,12 @@ test("RULE-EKYC-10: hết hạn, chưa đủ tuổi, sắp hết hạn", () => {
   assert.deepEqual(checkDocument({ dob: "1990-01-01", expiry: "2025-03-15" }, "payment", cfg, NOW), { ok: false, reject: "DOC_EXPIRED", message: "Giấy tờ đã hết hạn" });
   const minor = { dob: "2009-05-20", expiry: "2034-05-20" };
   assert.equal(checkDocument(minor, "credit", cfg, NOW).ok, false, "17 tuổi không mở được sản phẩm tín dụng (18)");
-  assert.equal(checkDocument(minor, "payment", cfg, NOW).ok, true, "17 tuổi mở được tài khoản thanh toán (15)");
+  assert.equal(checkDocument(minor, "payment", cfg, NOW).ok, true, "17 tuổi mở được tài khoản thanh toán (16)");
+  // P01 PR-02: tuổi tối thiểu kênh trực tuyến là 16 – đúng ngày sinh nhật 16 tuổi thì được, thiếu 1 ngày thì không
+  assert.equal(cfg.min_age_payment, 16);
+  assert.equal(checkDocument({ dob: "2010-11-22", expiry: "2034-01-01" }, "payment", cfg, NOW).ok, true);
+  assert.deepEqual(checkDocument({ dob: "2010-11-23", expiry: "2034-01-01" }, "payment", cfg, NOW), { ok: false, reject: "UNDER_AGE", message: "Chưa đủ điều kiện độ tuổi" });
+  assert.equal(checkDocument({ dob: "2011-03-01", expiry: "2034-01-01" }, "payment", cfg, NOW).ok, false, "15 tuổi không mở được trực tuyến");
   const soon = checkDocument({ dob: "1990-01-01", expiry: "2026-12-10" }, "payment", cfg, NOW);
   assert.ok(soon.ok && soon.warnings.includes("DOC_EXPIRING_SOON"));
   // Đúng ngày sinh nhật 18 tuổi

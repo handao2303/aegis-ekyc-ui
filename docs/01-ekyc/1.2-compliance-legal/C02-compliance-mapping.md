@@ -79,7 +79,7 @@ Trạng thái trong bảng trên là lúc lập tài liệu (21/11). Sau khi xâ
 | CR-11 | ✅ | Maker-Checker cho PEP/Sanction/rủi ro ≥ 70 – UAT-EKYC-19 |
 | CR-12 | 🟡 | Tham số lưu trữ đã có (`retention_rejected_days`); chờ Compliance chốt thời hạn |
 | CR-13 | ✅ | Audit chỉ ghi thêm, ghi xem hồ sơ / xem PII / quyết định – NFR-AUD-03 |
-| CR-14 | 🟡 | Tuổi theo sản phẩm (15 / 18, cấu hình được) – UAT-EKYC-14. **25/11:** khách 15 tuổi là trẻ em theo Luật Trẻ em 2016; Luật 91/2025 Điều 19 về dữ liệu của trẻ em – cần Pháp chế chốt tuổi tối thiểu kênh trực tuyến (P01 PR-02) |
+| CR-14 | 🟡 | Tuổi theo sản phẩm, cấu hình được – UAT-EKYC-14. **25/11:** khách 15 tuổi là trẻ em theo Luật Trẻ em 2016 (Luật 91/2025 Điều 19 về dữ liệu của trẻ em) → đã đổi tuổi tối thiểu tài khoản thanh toán trực tuyến thành **16**, tín dụng giữ 18. Chờ Pháp chế xác nhận (P01 PR-02) |
 | CR-15 | ✅ | Chặn giấy tờ hết hạn, cảnh báo còn < 30 ngày – UAT-EKYC-13 |
 
 Sau cập nhật: **11 ✅ · 4 🟡 · 0 ❌** (25/11: CR-14 về 🟡). Còn chặn go-live: CR-02 (nhà cung cấp sinh trắc), CR-12 (thời hạn lưu – chờ trả lời câu hỏi 3), CR-14 (tuổi tối thiểu và dữ liệu trẻ em).
