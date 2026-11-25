@@ -132,7 +132,7 @@ Nếu Pháp chế chốt PR-03: app bỏ ô tick `screening` ở màn đồng ý
 
 ### 4.1 Bên nhận dữ liệu và chuyển dữ liệu ra nước ngoài (dự thảo – chờ trả lời câu 6–8 ở mục 6; đã đưa vào §2 mục 5 bản 2026.12)
 
-> ⚠️ Mục này do BA lập từ kiến trúc A01 và luồng dữ liệu D01 để Pháp chế có danh sách cụ thể mà rà. Bên nhận, nơi đặt dữ liệu và nghĩa vụ pháp lý **chưa được Pháp chế xác nhận**. Chưa được đưa vào nội dung điều khoản ở mục 2.
+> ⚠️ Mục này do BA lập từ kiến trúc A01 và luồng dữ liệu D01 để Pháp chế có danh sách cụ thể mà rà. Bên nhận, nơi đặt dữ liệu và nghĩa vụ pháp lý **chưa được Pháp chế xác nhận**. Bản điều khoản 2026.12 (mục 2 §5) đã nêu các bên nhận này, tên nhà cung cấp và nơi đặt dữ liệu còn để trống.
 
 **Danh sách bên nhận dữ liệu**
 
@@ -151,7 +151,7 @@ Nếu Pháp chế chốt PR-03: app bỏ ô tick `screening` ở màn đồng ý
 | Phương án | Ưu | Nhược / nghĩa vụ | Ảnh hưởng tài liệu |
 |---|---|---|---|
 | A. Đặt toàn bộ ở Việt Nam (vùng cloud tại Việt Nam hoặc trung tâm dữ liệu của ngân hàng) | Không phát sinh chuyển dữ liệu ra nước ngoài cho phần lưu trữ chính | Phụ thuộc dịch vụ cloud có sẵn tại Việt Nam; A01 phải đổi nếu không dùng Google Cloud | A01 §2 |
-| B. Đặt ở nước ngoài (vd. Singapore) | Dùng được kiến trúc A01 hiện tại | Phải lập hồ sơ đánh giá tác động chuyển dữ liệu cá nhân xuyên biên giới theo Luật 91/2025 và NĐ 356/2025 (*theo tóm tắt: báo cáo theo Mẫu số 09, nộp trong 60 ngày kể từ khi bắt đầu chuyển, cập nhật định kỳ 6 tháng – Pháp chế đối chiếu toàn văn*); điều khoản phải nêu việc chuyển; cần xác minh thêm quy định lưu trữ dữ liệu tại Việt Nam của luật an ninh mạng và quy định ngành ngân hàng | P01 mục 2 §3, mục 3; D01; C02 |
+| B. Đặt ở nước ngoài (vd. Singapore) | Dùng được kiến trúc A01 hiện tại | Phải lập hồ sơ đánh giá tác động chuyển dữ liệu cá nhân xuyên biên giới theo Luật 91/2025 và NĐ 356/2025 (*theo tóm tắt: báo cáo theo Mẫu số 09, nộp trong 60 ngày kể từ khi bắt đầu chuyển, cập nhật định kỳ 6 tháng – Pháp chế đối chiếu toàn văn*); điều khoản phải nêu việc chuyển; cần xác minh thêm quy định lưu trữ dữ liệu tại Việt Nam của luật an ninh mạng và quy định ngành ngân hàng | P01 mục 2 §5, mục 3; D01; C02 |
 
 **Quy tắc áp dụng ngay, không phụ thuộc phương án**
 
@@ -163,7 +163,7 @@ Nếu Pháp chế chốt PR-03: app bỏ ô tick `screening` ở màn đồng ý
 
 | Mục | Đề xuất | Trạng thái |
 |---|---|---|
-| Đầu mối bảo vệ dữ liệu cá nhân | Bộ phận hoặc người được ngân hàng chỉ định, có email và địa chỉ riêng, nêu ở mục 2 §8 | Chờ ngân hàng chỉ định |
+| Đầu mối bảo vệ dữ liệu cá nhân | Bộ phận hoặc người được ngân hàng chỉ định, có email và địa chỉ riêng, nêu ở mục 2 §9 | Chờ ngân hàng chỉ định |
 | Kênh nhận yêu cầu | App (Cài đặt › Quyền riêng tư), tổng đài 1900 6868, chi nhánh | Đã có trên app và điều khoản |
 | Thời hạn trả lời | Theo thời hạn luật định cho từng loại yêu cầu (xem, sửa, xoá, rút đồng ý) | Pháp chế điền con số cụ thể |
 
