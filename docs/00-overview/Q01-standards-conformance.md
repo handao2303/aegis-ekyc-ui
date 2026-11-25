@@ -20,7 +20,7 @@
 | Kiến trúc | Mô hình C4, ISO/IEC/IEEE 42010 | A01, A02 |
 | Sơ đồ | BPMN 2.0 (quy trình), UML 2.5 (trạng thái, tuần tự) | Mọi tài liệu có diagram |
 | Giao diện và trợ năng | WCAG 2.2 mức AA, ISO 9241-110 | U01, U02 |
-| Quyền riêng tư | ISO/IEC 29100, Nghị định 13/2023/NĐ-CP | P01, C12 |
+| Quyền riêng tư | ISO/IEC 29100, Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15, Nghị định 356/2025/NĐ-CP (thay NĐ 13/2023 từ 01/01/2026) | P01, C12 |
 
 ## 2. Kết quả tổng hợp
 
@@ -40,7 +40,7 @@ Mức đánh giá: ✅ Đạt · 🟡 Đạt một phần · ❌ Thiếu
 | Sơ đồ trạng thái, tuần tự | UML 2.5 | ✅ | Đúng ký hiệu | — | — |
 | U01 App khách | WCAG 2.2 AA | 🟡 | Vùng chạm, tương phản, trình đọc màn hình, chuyển động | (1) Giới hạn thời gian: phiên hết hạn sau 30 phút và thử thách liveness không báo trước, không cho kéo dài (SC 2.2.1); (2) phóng to chữ 200% (SC 1.4.4); (3) báo lỗi bằng chữ (SC 3.3.1); (4) khai báo ngôn ngữ trang (SC 3.1.1); (5) cách xác thực thay thế khi khách không làm được liveness (SC 3.3.8) | Thêm (1)–(5) vào quy ước |
 | U02 Compliance | WCAG 2.2 AA | 🟡 | Bàn phím, nhãn có chữ kèm màu | Thứ tự focus, vùng thông báo `aria-live` cho kết quả thao tác | — |
-| P01 Điều khoản, quyền riêng tư | ISO 29100, NĐ 13 | 🟡 | Đồng ý theo mục đích, quyền rút lại, thời hạn lưu, bảo mật, liên hệ | (1) Danh sách bên nhận dữ liệu (CIC, nhà cung cấp AML, sinh trắc); (2) chuyển dữ liệu ra nước ngoài, nếu đặt database ngoài Việt Nam thì phải có hồ sơ đánh giá tác động chuyển dữ liệu; (3) đầu mối bảo vệ dữ liệu; (4) thời hạn trả lời yêu cầu của chủ thể dữ liệu | Thêm vào câu hỏi cho Pháp chế |
+| P01 Điều khoản, quyền riêng tư | ISO 29100, Luật 91/2025, NĐ 356/2025 | 🟡 | Đồng ý theo mục đích, quyền rút lại, thời hạn lưu, bảo mật, liên hệ | (1) Danh sách bên nhận dữ liệu (CIC, nhà cung cấp AML, sinh trắc); (2) chuyển dữ liệu ra nước ngoài, nếu đặt database ngoài Việt Nam thì phải có hồ sơ đánh giá tác động chuyển dữ liệu; (3) đầu mối bảo vệ dữ liệu; (4) thời hạn trả lời yêu cầu của chủ thể dữ liệu | Thêm vào câu hỏi cho Pháp chế |
 | C01, C18 | — | — | Nhật ký và từ điển chỉ số, không có chuẩn bắt buộc | — | — |
 
 Cột "Mức" là sau khi sửa: **4 ✅ · 9 🟡 · 0 ❌**. Không còn mục nào thiếu hoàn toàn.

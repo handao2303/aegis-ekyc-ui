@@ -2,25 +2,25 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.1 |
+| Phiên bản | 1.2 |
 | Trạng thái | 📝 Bản nháp, chờ Tech Lead và DPO (đầu mối bảo vệ dữ liệu) xác nhận |
 | Người soạn | Han Dao (BA) |
 | Ngày | 24/11/2026 |
 | Jira | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69), [SCRUM-81](https://baohandao2303.atlassian.net/browse/SCRUM-81) (lưu trữ) |
 | Nguồn | Lược đồ `server/src/db.ts`, tham số `server/src/config.ts`, đối chiếu ngày 24/11/2026 |
-| Chuẩn tham chiếu | BABOK v3 §10.15 Data Dictionary; phân loại dữ liệu theo Nghị định 13/2023/NĐ-CP (dữ liệu cá nhân cơ bản / nhạy cảm) và ISO/IEC 29100 |
+| Chuẩn tham chiếu | BABOK v3 §10.15 Data Dictionary; phân loại dữ liệu theo Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 và Nghị định 356/2025/NĐ-CP (thay Nghị định 13/2023 từ 01/01/2026) – dữ liệu cá nhân cơ bản / nhạy cảm – và ISO/IEC 29100 |
 | Liên quan | [A03](A03-api-specification.md) (API), [C10](../1.1-business/C10-maker-checker-audit.md) (audit), [C12](../1.2-compliance-legal/C12-consent-retention.md) (lưu trữ), [P01](../1.2-compliance-legal/P01-terms-privacy.md) (quyền riêng tư) |
 
-Tài liệu định nghĩa **mỗi trường dữ liệu**: ý nghĩa, kiểu, nguồn, mức nhạy cảm và thời hạn lưu. Dùng cho Dev (lược đồ), QA (dữ liệu test), Compliance và Pháp chế (hồ sơ xử lý dữ liệu cá nhân theo NĐ 13).
+Tài liệu định nghĩa **mỗi trường dữ liệu**: ý nghĩa, kiểu, nguồn, mức nhạy cảm và thời hạn lưu. Dùng cho Dev (lược đồ), QA (dữ liệu test), Compliance và Pháp chế (hồ sơ xử lý dữ liệu cá nhân theo Luật 91/2025 và NĐ 356/2025).
 
 ## 1. Quy ước
 
 **Mức phân loại**
 
-| Mức | Ý nghĩa | Theo NĐ 13 | Ví dụ |
+| Mức | Ý nghĩa | Theo Luật 91/2025 + NĐ 356/2025 (*số điều: Pháp chế đối chiếu*) | Ví dụ |
 |---|---|---|---|
-| 🔴 **S** – Nhạy cảm | Dữ liệu sinh trắc, tín dụng, kết quả sàng lọc | Dữ liệu cá nhân nhạy cảm (Điều 2 khoản 4: sinh trắc học, thông tin tín dụng) | Ảnh khuôn mặt, điểm liveness, kết quả CIC, cờ PEP |
-| 🟠 **P** – Cá nhân | Xác định được một người | Dữ liệu cá nhân cơ bản (Điều 2 khoản 3) | Họ tên, ngày sinh, số định danh, số điện thoại |
+| 🔴 **S** – Nhạy cảm | Dữ liệu sinh trắc, tín dụng, kết quả sàng lọc | Dữ liệu cá nhân nhạy cảm (sinh trắc học, thông tin tín dụng; NĐ 356 mở rộng thêm tài khoản và lịch sử giao dịch tài chính – xem câu hỏi 4 ở §7) | Ảnh khuôn mặt, điểm liveness, kết quả CIC, cờ PEP |
+| 🟠 **P** – Cá nhân | Xác định được một người | Dữ liệu cá nhân cơ bản | Họ tên, ngày sinh, số định danh, số điện thoại |
 | 🟡 **I** – Nội bộ | Không xác định người nhưng không công khai | — | Trạng thái, lý do REFER, mã nhân viên |
 | ⚪ **N** – Không nhạy cảm | Cấu hình, mã kỹ thuật | — | Ngưỡng SLA, mã template |
 
@@ -216,7 +216,8 @@ erDiagram
 |---|---|---|
 | 1 | Có giữ `phone`, `device_id`, điểm sinh trắc, kết quả CIC sau khi xoá hồ sơ không, với mục đích gì? | §5, job `retention` |
 | 2 | `id_number_hash` có còn là dữ liệu cá nhân sau khi xoá họ tên không (có thể dò lại bằng cách hash thử)? | Velocity, chống gian lận lặp lại |
-| 3 | Điểm liveness và face match có tính là dữ liệu sinh trắc theo NĐ 13 không, hay chỉ ảnh gốc mới tính? | Phân loại 🔴 S |
+| 3 | Điểm liveness và face match có tính là dữ liệu sinh trắc theo Luật 91/2025 và NĐ 356/2025 không, hay chỉ ảnh gốc mới tính? | Phân loại 🔴 S |
+| 4 | NĐ 356/2025 mở rộng danh mục dữ liệu nhạy cảm (theo các bản tóm tắt: tài khoản, lịch sử giao dịch tài chính). `account_no` có phải nâng từ 🟠 P lên 🔴 S không? Nếu có, SMS `EKYC_APPROVED` có được chứa số tài khoản không? (P01 PR-11) | Phân loại `account_no`, mẫu SMS |
 
 ## 8. Nhật ký thay đổi
 
@@ -224,3 +225,4 @@ erDiagram
 |---|---|---|---|
 | 1.0 | 24/11/2026 | Han Dao | Bản đầu, lập từ lược đồ ekyc-service |
 | 1.1 | 24/11/2026 | Han Dao | Job xoá dữ liệu xoá thêm số điện thoại, điểm sinh trắc, CIC, người nhận thông báo; xoá velocity quá 30 ngày |
+| 1.2 | 25/11/2026 | Han Dao | Căn cứ phân loại đổi từ NĐ 13/2023 (hết hiệu lực 01/01/2026) sang Luật 91/2025/QH15 + NĐ 356/2025; thêm câu hỏi DPO về số tài khoản |

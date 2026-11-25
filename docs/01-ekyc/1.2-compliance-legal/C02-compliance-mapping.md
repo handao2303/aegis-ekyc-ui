@@ -14,7 +14,7 @@
 |---|---|---|---|
 | L-01 | Quy định NHNN về mở tài khoản thanh toán (vd. Thông tư 17/2024/TT-NHNN) | Mở tài khoản bằng phương thức điện tử, đối chiếu sinh trắc học với dữ liệu chip / CSDL dân cư | Điều khoản cụ thể, ngày hiệu lực, các sửa đổi |
 | L-02 | Quy định NHNN về an toàn giao dịch trực tuyến (vd. Quyết định 2345/QĐ-NHNN) | Xác thực sinh trắc học khi giao dịch | Phạm vi áp dụng cho bước mở tài khoản |
-| L-03 | Nghị định 13/2023/NĐ-CP và Luật Bảo vệ dữ liệu cá nhân | Đồng ý, rút lại đồng ý, dữ liệu nhạy cảm (sinh trắc học), DPIA | Văn bản nào đang có hiệu lực, thời hạn lưu trữ |
+| L-03 | Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 và Nghị định 356/2025/NĐ-CP (cùng hiệu lực 01/01/2026; NĐ 356 thay Nghị định 13/2023/NĐ-CP) | Đồng ý, rút lại đồng ý, dữ liệu nhạy cảm (sinh trắc học), dữ liệu trẻ em, đánh giá tác động, chuyển dữ liệu xuyên biên giới | Số điều cụ thể, thời hạn lưu trữ – xem P01 mục 0 |
 | L-04 | Luật Phòng, chống rửa tiền 2022 và văn bản hướng dẫn | Nhận biết khách hàng, PEP, danh sách cấm, lưu trữ hồ sơ | Thời hạn lưu hồ sơ KYC |
 | L-05 | Bộ luật Dân sự (năng lực hành vi) và quy định sản phẩm | Độ tuổi tối thiểu mở tài khoản / dùng sản phẩm tín dụng | Ngưỡng tuổi cho từng sản phẩm |
 
