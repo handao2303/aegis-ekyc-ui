@@ -186,7 +186,7 @@ Dữ liệu dựng lại từ dữ liệu mẫu của UI (`src/ops/Reconciliatio
 
 > **BIÊN BẢN NGHIỆM THU UAT – MODULE ĐỐI SOÁT (Aegis)**
 >
-> Phiên bản phát hành: ______ · Môi trường: UAT · Thời gian: ___/___/______ – ___/___/______
+> Phiên bản phát hành: ______ · Môi trường: UAT · Thời gian: từ ……/……/………… đến ……/……/…………
 >
 > | Chỉ số | Kết quả |
 > |---|---|

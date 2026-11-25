@@ -94,7 +94,7 @@ Ký hiệu nguồn: hồ sơ mẫu `TD-xx` chuẩn bị theo bảng ở mục 4.
 
 > **BIÊN BẢN NGHIỆM THU UAT – MODULE eKYC (Aegis)**
 >
-> Phiên bản phát hành: ______ · Môi trường: UAT · Thời gian: ___/___/______ – ___/___/______
+> Phiên bản phát hành: ______ · Môi trường: UAT · Thời gian: từ ……/……/………… đến ……/……/…………
 >
 > | Chỉ số | Kết quả |
 > |---|---|
