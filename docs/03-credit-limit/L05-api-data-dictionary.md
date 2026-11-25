@@ -96,7 +96,7 @@ Cột **Nguồn**: *BRD* = có trong BRD §3.5; *L02* = bổ sung ở L02 §5; *
 | `rrn` | CHAR(12) | ✅ | F37 | BRD |
 | `transmission_at` | ms | ✅ | F7 | L02 |
 | `terminal_id`, `merchant_id`, `mcc` | TEXT | — | F41, F42, F18 | BRD (F41) · Đề xuất |
-| `dedup_key` | TEXT UNIQUE | ✅ | `stan|rrn|terminal_id|MMDD(F7)|message_type` – khoá chống trùng (REQ-LIM-01, *cần xác minh*) | Đề xuất |
+| `dedup_key` | TEXT UNIQUE | ✅ | `stan + rrn + terminal_id + MMDD(F7) + message_type` – khoá chống trùng (REQ-LIM-01, *cần xác minh*) | Đề xuất |
 | `original_auth_id` | UUID | — | Giao dịch gốc của reversal / advice | L02 |
 | `decision` | TEXT | ✅ | `APPROVE` · `DECLINE` (BRD). Reversal: `REVERSED` hoặc `UNMATCHED` | BRD |
 | `response_code` | CHAR(2) | ✅ | F39 – xem §5.2 | BRD |

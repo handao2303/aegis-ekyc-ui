@@ -19,7 +19,7 @@
 | BR-LIM-03 | Chống trùng bằng STAN + RRN | Must | ✅ §1 | ⚠️ log chỉ có STAN, không có RRN | Thiếu RRN trên UI – REQ-LIM-01 |
 | BR-LIM-04 | Smart Fallback CASA, debit hold + bút toán đối ứng | Should | ✅ §2 | ✅ M1 công tắc, W2 bảng HOLD/SETTLED/RELEASED | Chưa có fallback từng phần, bút toán – REQ-LIM-05, 06 |
 | BR-LIM-05 | Behavioral Score → Boost Eligibility | Should | ✅ §4 | ✅ W3 cột Score | Chưa có ngưỡng – D-LIM-07 |
-| BR-LIM-06 | Boost time-boxed theo chu kỳ sao kê, trần % | Should | ⚠️ 72 giờ | ❌ 72 giờ, không có % | Lệch – D-LIM-01, REQ-LIM-07 |
+| BR-LIM-06 | Boost time-boxed theo chu kỳ sao kê, trần % | Should | ⚠️ 72 giờ | ❌ 72 giờ, không có % | Lệch – D-LIM-01, REQ-LIM-08 |
 | BR-LIM-07 | Phát hiện lạm dụng, khoá Boost **đồng thời** gửi SMS/App (CR-003) | Should | ✅ §5 | ✅ W4, M3 · ⚠️ khoá thủ công ở W3 không gửi | D-LIM-08 |
 | BR-LIM-08 | Reversal MTI 0420 tự động | Must | ⚠️ ghi 0400 | ❌ 0400, gắn DECLINED, hiếm khi hiện | Lệch – D-LIM-03, DEF-LIM-01 |
 | BR-LIM-09 | Circuit breaker + timeout budget từng bước | Must | ⚠️ chỉ breaker CBS | ⚠️ một breaker CBS | D-LIM-06 |

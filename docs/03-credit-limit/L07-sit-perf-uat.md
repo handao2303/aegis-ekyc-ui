@@ -176,7 +176,7 @@ flowchart LR
 
 > **BIÊN BẢN NGHIỆM THU UAT – MODULE HẠN MỨC TÍN DỤNG THỜI GIAN THỰC (Aegis)**
 >
-> Phiên bản phát hành: ______ · Môi trường: UAT · Thời gian: ___/___/______ – ___/___/______
+> Phiên bản phát hành: ______ · Môi trường: UAT · Thời gian: từ ……/……/………… đến ……/……/…………
 >
 > | Chỉ số | Kết quả |
 > |---|---|

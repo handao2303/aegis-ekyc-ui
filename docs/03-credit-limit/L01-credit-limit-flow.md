@@ -99,7 +99,7 @@ stateDiagram-v2
 
 | Quy tắc | Chi tiết |
 |---|---|
-| Thời hạn | Boost luôn có giờ kết thúc (mẫu: 72 giờ). Hết hạn thì tự trở về hạn mức gốc, không cần thao tác |
+| Thời hạn | Boost luôn có giờ kết thúc (UI mẫu: 72 giờ, baseline: chu kỳ sao kê – xem dưới). Hết hạn thì tự trở về hạn mức gốc, không cần thao tác |
 | Hiển thị cho khách | Hạn mức mới, thời hạn, tự trở về, phí. Phải tick "hiểu điều kiện khoá" mới nhận được |
 | Mở khoá phía ngân hàng | Bắt buộc nhập lý do (≥ 10 ký tự), ghi audit |
 | Trạng thái theo baseline | Entity TemporaryLimitBoost (BRD §3.5) chỉ có `ACTIVE`, `EXPIRED`, `LOCKED_SUSPECTED_FRAUD`. `OFFERED` và `DECLINED` là trạng thái của **lời mời** (đề xuất bảng `boost_offers` ở [L05](L05-api-data-dictionary.md)), không phải của Boost. `LOCKED` trên sơ đồ = `LOCKED_SUSPECTED_FRAUD` |
@@ -166,7 +166,7 @@ flowchart LR
 |---|---|
 | UAT-LIM-01 | Màn W2 báo xung đột version khi giao dịch khác cập nhật trước |
 | UAT-LIM-03/04 | Lịch sử FallbackTransaction HOLD / SETTLED / RELEASED; công tắc Smart Fallback ở M1 |
-| UAT-LIM-05 | Log có MTI 0400 (reversal) |
+| UAT-LIM-05 | Log phải có reversal MTI 0420 – UI mẫu chưa đạt (TC-LIM-07, DEF-LIM-01) |
 | UAT-LIM-06 | M1 đếm ngược tới lúc Boost hết hạn; W3 có tab EXPIRED |
 | UAT-LIM-07 | W4 có trạng thái gửi SMS/App và gửi lại; M3 cho khách xác nhận |
 | UAT-LIM-10 | PAN luôn che ở mọi màn |

@@ -13,5 +13,12 @@
  "R04-test-plan-cases": "16646246",
  "R05-api-data-dictionary": "17072258",
  "R06-nfr-kpi": "17203201",
- "R07-sit-perf-uat": "17235969"
+ "R07-sit-perf-uat": "17235969",
+ "L01-credit-limit-flow": "16253160",
+ "L02-requirements-gap-rtm": "17367041",
+ "L03-ui-spec": "17235991",
+ "L04-test-plan-cases": "17039484",
+ "L05-api-data-dictionary": "17039506",
+ "L06-nfr-kpi": "17203226",
+ "L07-sit-perf-uat": "17236013"
 }
