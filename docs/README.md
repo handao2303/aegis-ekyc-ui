@@ -3,7 +3,7 @@
 Bộ tài liệu cho 3 module: **eKYC** (18 hạng mục của Epic [SCRUM-69 – eKYC Completion & Production Readiness](https://baohandao2303.atlassian.net/browse/SCRUM-69), kèm giao diện, kiểm thử và pháp lý), [Đối soát (SCRUM-7)](https://baohandao2303.atlassian.net/browse/SCRUM-7), [Hạn mức (SCRUM-8)](https://baohandao2303.atlassian.net/browse/SCRUM-8).
 Tổng quan và kế hoạch: [Gap Analysis & Delivery Plan (Confluence)](https://baohandao2303.atlassian.net/wiki/spaces/SCRUM/pages/15106049).
 
-Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 52 diagram, tất cả đã được kiểm tra cú pháp.
+Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 55 diagram, tất cả đã được kiểm tra cú pháp.
 
 **Bắt đầu từ đây:** [A01 Tổng quan giải pháp](00-overview/A01-solution-overview.md) – bối cảnh hệ thống, thành phần, luồng end-to-end, cây quyết định, bản đồ màn hình và cách triển khai UI.
 
@@ -61,7 +61,7 @@ flowchart LR
         end
     end
     R01["Module 2 · Đối soát<br/>R01–R07"]
-    L01["Module 3 · Hạn mức<br/>L01"]
+    L01["Module 3 · Hạn mức<br/>L01–L07"]
     C02 --> C03
     C03 --> B
     C03 --> P
@@ -125,14 +125,20 @@ flowchart LR
 | [R03 Đặc tả giao diện REC-01 → 06](02-reconciliation/R03-ui-spec.md) | SCRUM-49 | — | ✅ v1.3, có ảnh từng màn |
 | [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–2](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ v1.3 · 25 ca UI đạt 25 · 6 lỗi đã sửa · 9 ca backend chờ service |
 | [R05 Đặc tả API & từ điển dữ liệu (đề xuất)](02-reconciliation/R05-api-data-dictionary.md) | SCRUM-7, 22–26, 50, 53 | ERD | 📝 v0.1 · 11 bảng · 32 API · 13 mã lỗi riêng, chờ Tech Lead & Kế toán trưởng |
-| [R06 Yêu cầu phi chức năng & từ điển KPI](02-reconciliation/R06-nfr-kpi.md) | SCRUM-7, 53 | — | 📝 v0.1 · 23 NFR theo ISO/IEC 25010 · 5 KPI, chờ Tech Lead & Ops chốt ngưỡng |
+| [R06 Yêu cầu phi chức năng & từ điển KPI](02-reconciliation/R06-nfr-kpi.md) | SCRUM-7, 53 | — | 📝 v0.2 · 23 NFR theo ISO/IEC 25010 · 5 KPI đã đối chiếu BRD §1.9, chờ Tech Lead & Ops chốt ngưỡng |
 | [R07 SIT, hiệu năng, UAT & biên bản nghiệm thu](02-reconciliation/R07-sit-perf-uat.md) | SCRUM-7, 22–26, 50, 53 | Flowchart ×2 | ⛔ v0.1 · 13 SIT · 6 hiệu năng · 18 UAT, chờ backend và sandbox đối tác |
 
 ### Module 3 · Hạn mức
 
 | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|
-| [L01 Authorization, Boost & gian lận](03-credit-limit/L01-credit-limit-flow.md) | SCRUM-8, 51, 52, 54 | Sequence ×2, Flowchart ×2, State ×2 | 🔧 Đặc tả + UI mẫu xong, chờ Notification thật |
+| [L01 Authorization, Boost & gian lận](03-credit-limit/L01-credit-limit-flow.md) | SCRUM-8, 51, 52, 54 | Sequence ×2, Flowchart ×2, State ×2 | 🔧 v1.1 · Đã đối chiếu BRD (MTI 0420, trạng thái Boost), chờ Notification thật |
+| [L02 Yêu cầu bổ sung, điểm lệch baseline & RTM](03-credit-limit/L02-requirements-gap-rtm.md) | SCRUM-8, 27–30, 53, 54 | — | 📝 v0.1 · 9 điểm chờ PO, Risk, Vận hành thẻ quyết định · 20 yêu cầu |
+| [L03 Đặc tả giao diện LIM-W1 → W4, M1 → M3](03-credit-limit/L03-ui-spec.md) | SCRUM-51, 52 | — | 📝 v0.1, 15 ảnh chụp tự động |
+| [L04 Kiểm thử: kế hoạch, test case, kết quả vòng 1](03-credit-limit/L04-test-plan-cases.md) | SCRUM-8, 51, 52 | — | ✅ v1.0 · 33 ca UI, đạt 31 · 7 lỗi mở · 10 ca backend chờ service |
+| [L05 Đặc tả API & từ điển dữ liệu (đề xuất)](03-credit-limit/L05-api-data-dictionary.md) | SCRUM-27–30, 38, 53, 54 | ERD | 📝 v0.1 · 12 bảng · ISO 8583 · 29 API · 12 mã lỗi riêng |
+| [L06 Yêu cầu phi chức năng & KPI-07 → 09](03-credit-limit/L06-nfr-kpi.md) | SCRUM-8 | — | 📝 v0.1 · 22 NFR theo ISO/IEC 25010 · 3 KPI + 8 chỉ số vận hành |
+| [L07 SIT, hiệu năng, UAT & biên bản nghiệm thu](03-credit-limit/L07-sit-perf-uat.md) | SCRUM-8, 27–30, 51–54 | Flowchart ×2 | ⛔ v0.1 · 12 SIT · 6 hiệu năng · 21 UAT, chờ `limit-service` và simulator ISO 8583 |
 
 ## Việc còn lại ngoài tài liệu
 
@@ -144,6 +150,8 @@ flowchart LR
 | Sandbox đối tác DEP-01→04, 07–09 | Solution Owner | C16 |
 | Thiết bị NFC thứ hai để đo hiệu năng | Dev/QA | C15 |
 | Master list CSCA, tài khoản Apple Developer để đọc chip | Dev | A02 |
-| Duyệt mẫu SMS/App khoá Boost, Notification Service thật | Risk/Legal/CSKH, Solution Owner | L01 (SCRUM-54) |
+| Duyệt mẫu SMS/App khoá Boost, Notification Service thật | Risk/Legal/CSKH, Solution Owner | L01, L07 (SCRUM-54) |
+| Xác minh mã `limit-service` (SCRUM-27 → 30, 38); simulator ISO 8583, mock CASA | Tech Lead, Vận hành thẻ | L04 (TC-LIM-B01 → B10), L07 |
+| Chốt 9 điểm lệch baseline của Hạn mức (thời hạn Boost, MTI reversal, kiểm soát đồng thời…) | PO, Risk tín dụng, Vận hành thẻ, Tech Lead | L02, UI Hạn mức |
 | Backend reconciliation-service: lineage API (SCRUM-50), EOD cross-ledger (SCRUM-53) | Dev | R01, R04 (TC-REC-B01 → B09), L01 |
 | Chốt 9 điểm lệch baseline của Đối soát (trạng thái ngoại lệ, aging, leo thang, RULE-REC-05…) | Kế toán trưởng, Ops, InfoSec | R02, UI Đối soát |

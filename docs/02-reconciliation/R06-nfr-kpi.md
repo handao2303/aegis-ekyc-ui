@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.1 · 25/11/2026 · Han Dao (BA) |
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
 | Trạng thái | 📝 Bản nháp – chờ Tech Lead, Ops và Kế toán trưởng chốt các ngưỡng đánh dấu *đề xuất* |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · liên quan [SCRUM-53](https://baohandao2303.atlassian.net/browse/SCRUM-53) (EOD) |
 | Nguồn | BAS-BRD-v1.2 (BR-REC, RULE-REC, KPI) qua [R02](R02-requirements-gap-rtm.md) · chỉ số trên REC-01 ở [R01 §7](R01-reconciliation-flow.md) · bảng dữ liệu ở [R05](R05-api-data-dictionary.md) |
@@ -65,15 +65,15 @@ Mỗi yêu cầu viết một câu "Hệ thống phải…", có ngưỡng đo �
 
 ## 2. Từ điển chỉ số KPI
 
-Mã KPI theo bảng KPI của BRD v1.2 như các tài liệu R đang dùng. R03 ghi 4 thẻ trên REC-01 là KPI-03 → 06; **thứ tự gán mã cho từng thẻ dưới đây suy từ R02 và R03, cần đối chiếu bảng KPI gốc**.
+Mã, tên và mục tiêu KPI lấy từ bảng *Business Success Metrics* của BAS-BRD-v1.2 §1.9 (đã đối chiếu 25/11/2026). Cột **Công thức** là cách tính BA đề xuất trên lược đồ R05.
 
 | Mã | Chỉ số | Định nghĩa | Công thức (trên bảng R05) | Mục tiêu | Nguồn mục tiêu | Chiều cắt | Màn |
 |---|---|---|---|---|---|---|---|
-| KPI-03 | Tỷ lệ khớp tự động | Giao dịch khớp không cần người ÷ tổng giao dịch hợp lệ đã chạy khớp trong kỳ | `count(txn trong match MATCHED do engine) / count(txn dq_status = VALID)` | ≥ 95% | R01 §7, R03 §2 | Ngày, nguồn, quy tắc | REC-01 |
-| KPI-04 | MTTR | Thời gian trung bình từ lúc tạo tới lúc đóng ngoại lệ | `avg(closed_at − opened_at)` trên ngoại lệ đóng trong kỳ | ≤ 4 giờ | R01 §7 · câu hỏi T+1 ở R02 §7 | Ngày, loại ngoại lệ, người xử lý | REC-01 |
-| KPI-05 | Zero-touch | Bút toán tự hạch toán ÷ tổng bút toán đã hạch toán | `count(gl POSTED, mode = ZERO_TOUCH) / count(gl POSTED)` | ≥ 30% giai đoạn đầu | BRD, D-REC-07 · nghĩa theo D-REC-08 | Ngày, nguồn | REC-01, REC-06 |
-| KPI-06 | Giá trị chưa khớp | Tổng chênh lệch của ngoại lệ đang mở tại thời điểm đo | `sum(diff_amount)` với `status ≠ RESOLVED` | Theo dõi; ngưỡng cảnh báo cấu hình (REQ-REC-18) | R01 §7 | Nguồn, loại ngoại lệ, aging | REC-01 |
-| KPI-09 | Độ trễ và sai lệch đối chiếu với Hạn mức | (a) Thời gian từ khi sự kiện phát ra tới khi ghi nhận; (b) số dòng lệch EOD chưa có người phụ trách | (a) `percentile_95(processed_at − payload.processed_at)`; (b) `count(eod_diffs, owner_id IS NULL)` | (a) < 10 giây; (b) 0 | R02 REQ-REC-20, TC-REC-B09 | Ngày | Báo cáo EOD |
+| KPI-03 | Tỷ lệ khớp tự động (Auto-Match Rate) | Giao dịch khớp không cần người ÷ tổng giao dịch hợp lệ đã chạy khớp trong kỳ | `count(txn trong match MATCHED do engine) / count(txn dq_status = VALID)` | ≥ 95% | BRD §1.9 | Ngày, nguồn, quy tắc | REC-01 |
+| KPI-04 | MTTR xử lý ngoại lệ | Thời gian trung bình từ lúc tạo tới lúc đóng ngoại lệ | `avg(closed_at − opened_at)` trên ngoại lệ đóng trong kỳ | ≤ 4 giờ | BRD §1.9 · câu hỏi T+1 ở R02 §7 | Ngày, loại ngoại lệ, người xử lý | REC-01 |
+| KPI-05 | Zero-touch Rate | Bút toán tự hạch toán ÷ tổng bút toán đã hạch toán | `count(gl POSTED, mode = ZERO_TOUCH) / count(gl POSTED)` | ≥ 30% giai đoạn đầu | BRD §1.9 · nghĩa theo D-REC-08 | Ngày, nguồn | REC-01, REC-06 |
+| KPI-06 | Giá trị tồn đọng cuối ngày (Outstanding Value) | Tổng chênh lệch của ngoại lệ còn mở lúc chốt ngày nghiệp vụ | `sum(diff_amount)` với `status ≠ RESOLVED` tại 23:59 của `business_date` | Giảm dần theo từng chu kỳ vận hành (so kỳ trước); ngưỡng cảnh báo trong ngày cấu hình (REQ-REC-18) | BRD §1.9 | Nguồn, loại ngoại lệ, aging | REC-01 |
+| KPI-09 | Sai lệch đối soát chéo Ledger cuối ngày (chung với Module 3) | (a) Số dòng lệch EOD chưa giải trình; (b) phụ: độ trễ nhận sự kiện từ Hạn mức | (a) `count(eod_diffs)` có `status = OPEN` hoặc `note` trống; (b) `percentile_95(processed_at − payload.processed_at)` | (a) Bằng 0 hoặc giải trình 100% (BRD); (b) < 10 giây (*đề xuất*, SCRUM-53) | BRD §1.9 · R02 REQ-REC-20, TC-REC-B09 | Ngày | Báo cáo EOD |
 
 **Chỉ số vận hành bổ sung** (không có mã KPI trong baseline – BA đề xuất để theo dõi chất lượng; không dùng làm tiêu chí nghiệm thu):
 
@@ -121,10 +121,17 @@ SELECT count(*) FILTER (WHERE mode = 'ZERO_TOUCH')::numeric / nullif(count(*), 0
 FROM gl_entries
 WHERE status = 'POSTED' AND posted_at >= :from_ms AND posted_at < :to_ms;
 
--- KPI-09 (b): dòng lệch EOD chưa có người phụ trách
-SELECT r.business_date, count(d.*) AS unowned
-FROM eod_runs r LEFT JOIN eod_diffs d ON d.run_id = r.run_id AND d.owner_id IS NULL
+-- KPI-09 (a): dòng lệch EOD chưa giải trình (mục tiêu 0) và dòng chưa có người phụ trách
+SELECT r.business_date,
+       count(d.diff_id) FILTER (WHERE d.status = 'OPEN' OR coalesce(d.note, '') = '') AS unexplained,
+       count(d.diff_id) FILTER (WHERE d.owner_id IS NULL)                            AS unowned
+FROM eod_runs r LEFT JOIN eod_diffs d ON d.run_id = r.run_id
 GROUP BY 1;
+
+-- KPI-06: giá trị tồn đọng lúc chốt ngày; chạy lúc 23:59, lưu vào báo cáo ngày để so với kỳ trước
+SELECT sum(abs(diff_amount)) AS outstanding_value, count(*) AS open_cases
+FROM exception_cases
+WHERE status <> 'RESOLVED' AND opened_at < :end_of_day_ms;
 ```
 
 ## 4. Truy vết
@@ -145,7 +152,7 @@ GROUP BY 1;
 |---|---|---|
 | 1 | Chốt các ngưỡng *đề xuất* ở §1 (thời gian nạp, khớp, API, EOD, sẵn sàng, RPO/RTO) | Tech Lead + Ops |
 | 2 | Khối lượng giao dịch thực tế theo nguồn và mức tăng dự kiến 2 năm để định cỡ kiểm thử hiệu năng | Ops + Data |
-| 3 | Xác nhận mã KPI-03 → 06 tương ứng với 4 thẻ REC-01 theo bảng KPI gốc của BRD | PO |
+| 3 | ~~Xác nhận mã KPI-03 → 06~~ – đã đối chiếu BRD §1.9 ngày 25/11/2026. Còn lại: PO chốt KPI-06 so sánh với kỳ nào (ngày trước hay trung bình 7 ngày) | PO |
 | 4 | Giờ làm việc của nhóm đối soát (để tính sẵn sàng và SLA leo thang) | Ops |
 
 ## 6. Kiểm soát tài liệu
@@ -154,7 +161,8 @@ GROUP BY 1;
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.1 | 25/11/2026 | Han Dao | — | Bản đầu: 23 yêu cầu phi chức năng theo ISO/IEC 25010, từ điển 5 KPI và 5 chỉ số vận hành, truy vấn kiểm chứng |
+| 0.2 | 25/11/2026 | Han Dao | — | Đối chiếu bảng KPI gốc BRD §1.9: KPI-06 là giá trị tồn đọng cuối ngày, mục tiêu giảm dần; KPI-09 lấy mục tiêu baseline "bằng 0 hoặc giải trình 100%", độ trễ sự kiện chuyển thành chỉ số phụ; bỏ ghi chú "cần đối chiếu" |
+| 0.1 | 25/11/2026 | Han Dao | e5293ba | Bản đầu: 23 yêu cầu phi chức năng theo ISO/IEC 25010, từ điển 5 KPI và 5 chỉ số vận hành, truy vấn kiểm chứng |
 
 ### Phê duyệt
 

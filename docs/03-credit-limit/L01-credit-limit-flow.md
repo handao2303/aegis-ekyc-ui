@@ -5,7 +5,11 @@
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · Real-time Credit Limit |
 | Story | SCRUM-27 → 30, 38 (backend), [SCRUM-51](https://baohandao2303.atlassian.net/browse/SCRUM-51) (FE mobile LIM-M1 → M3), [SCRUM-52](https://baohandao2303.atlassian.net/browse/SCRUM-52) (FE web LIM-W1 → W4), SCRUM-53 (đối chiếu EOD), SCRUM-54 (Notification) |
 | UI mẫu | Web: [/credit-limit/](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) · Mobile: [/app/?screen=cardHome](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome) |
-| Quy tắc chính | BR-LIM-02 (khoá lạc quan), BR-LIM-07 (khoá Boost), SLA p99 < 2s, NFR-SEC-04 (che PAN) |
+| Quy tắc chính | BR-LIM-02 (kiểm soát đồng thời), BR-LIM-07 (khoá Boost), SLA p99 < 2s, NFR-SEC-04 (che PAN) |
+| Baseline | BAS-BRD-v1.2 §2.3 (BR-LIM-01 → 10), §3.5 (5 entity), §4.3 (UC-LIM-01 → 06), §5.3 (RULE-LIM-01 → 08), §6.3 (US-LIM-01 → 06) · BAS-RAID-v1.2 |
+| Bộ tài liệu | L01 luồng · [L02](L02-requirements-gap-rtm.md) yêu cầu, điểm lệch, RTM · [L03](L03-ui-spec.md) giao diện · [L04](L04-test-plan-cases.md) kiểm thử UI · [L05](L05-api-data-dictionary.md) API, dữ liệu · [L06](L06-nfr-kpi.md) NFR, KPI · [L07](L07-sit-perf-uat.md) SIT, hiệu năng, UAT |
+| Phiên bản | 1.1 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | 🔧 Luồng mục tiêu. Có 9 điểm lệch với baseline chờ quyết định ở [L02 §3](L02-requirements-gap-rtm.md) |
 
 ## 1. Xử lý một giao dịch thẻ (ISO 8583)
 
@@ -43,7 +47,9 @@ sequenceDiagram
     LIM-)LIM: Phát limit.authorization.processed → đối soát EOD (SCRUM-53)
 ```
 
-Huỷ giao dịch (MTI 0400 – reversal) giải phóng đúng số đã trừ, kể cả phần tạm giữ ở CASA (UAT-LIM-05).
+Huỷ giao dịch (MTI **0420** – reversal, hoặc 0120 – advice; BR-LIM-08, UC-LIM-05) giải phóng đúng số đã trừ, kể cả phần tạm giữ ở CASA (UAT-LIM-05). UI mẫu đang ghi reversal là 0400 kèm quyết định DECLINED – lệch baseline, xem DEF-LIM-01 ở [L04](L04-test-plan-cases.md).
+
+> ⚠️ **Kiểm soát đồng thời.** Sơ đồ trên vẽ cách ghi có điều kiện version (optimistic). Baseline UC-LIM-02 lấy khoá dòng hoặc khoá phân tán + trừ nguyên tử (CAS) làm luồng chính, optimistic chỉ là luồng phụ khi tải thấp. Cách chọn chờ Tech Lead chốt ở D-LIM-02 ([L02 §3](L02-requirements-gap-rtm.md)). Dù chọn cách nào, quá thời gian chờ khoá thì từ chối fail-safe (RULE-LIM-01).
 
 ## 2. Cây quyết định
 
@@ -96,6 +102,8 @@ stateDiagram-v2
 | Thời hạn | Boost luôn có giờ kết thúc (mẫu: 72 giờ). Hết hạn thì tự trở về hạn mức gốc, không cần thao tác |
 | Hiển thị cho khách | Hạn mức mới, thời hạn, tự trở về, phí. Phải tick "hiểu điều kiện khoá" mới nhận được |
 | Mở khoá phía ngân hàng | Bắt buộc nhập lý do (≥ 10 ký tự), ghi audit |
+| Trạng thái theo baseline | Entity TemporaryLimitBoost (BRD §3.5) chỉ có `ACTIVE`, `EXPIRED`, `LOCKED_SUSPECTED_FRAUD`. `OFFERED` và `DECLINED` là trạng thái của **lời mời** (đề xuất bảng `boost_offers` ở [L05](L05-api-data-dictionary.md)), không phải của Boost. `LOCKED` trên sơ đồ = `LOCKED_SUSPECTED_FRAUD` |
+| Thời hạn theo baseline | BR-LIM-06, RULE-LIM-06: hết hiệu lực **sau chu kỳ sao kê kế tiếp**, trần theo % hạn mức gốc. UI mẫu đang dùng 72 giờ – điểm lệch D-LIM-01 |
 
 ## 5. Phát hiện bất thường → khoá Boost → báo khách
 
@@ -162,3 +170,25 @@ flowchart LR
 | UAT-LIM-06 | M1 đếm ngược tới lúc Boost hết hạn; W3 có tab EXPIRED |
 | UAT-LIM-07 | W4 có trạng thái gửi SMS/App và gửi lại; M3 cho khách xác nhận |
 | UAT-LIM-10 | PAN luôn che ở mọi màn |
+
+Ca kiểm thử chi tiết và kết quả chạy trên UI mẫu (31/33 đạt): [L04](L04-test-plan-cases.md). Kịch bản UAT đầy đủ: [L07 §3](L07-sit-perf-uat.md).
+
+## 8. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `b8931f8` | Bản đầu cùng UI mẫu web và mobile: ISO 8583, cây quyết định, circuit breaker, Boost, gian lận |
+| 1.0 | 23/11/2026 | Han Dao | `792bbfa` | Chuyển vào `docs/03-credit-limit`, thêm bản đồ màn hình và truy vết UAT |
+| 1.1 | 25/11/2026 | Han Dao | — | Đối chiếu BAS-BRD-v1.2: reversal MTI 0420/0120, cách kiểm soát đồng thời của UC-LIM-02, trạng thái và thời hạn Boost theo baseline; liên kết bộ L02 → L07; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Risk tín dụng | | | |
+| Vận hành thẻ | | | |
+| Tech Lead | | | |
