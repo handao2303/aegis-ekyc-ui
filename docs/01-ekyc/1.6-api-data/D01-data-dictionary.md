@@ -226,3 +226,11 @@ erDiagram
 | 1.0 | 24/11/2026 | Han Dao | Bản đầu, lập từ lược đồ ekyc-service |
 | 1.1 | 24/11/2026 | Han Dao | Job xoá dữ liệu xoá thêm số điện thoại, điểm sinh trắc, CIC, người nhận thông báo; xoá velocity quá 30 ngày |
 | 1.2 | 25/11/2026 | Han Dao | Căn cứ phân loại đổi từ NĐ 13/2023 (hết hiệu lực 01/01/2026) sang Luật 91/2025/QH15 + NĐ 356/2025; thêm câu hỏi DPO về số tài khoản; `min_age_payment` 15 → 16 |
+
+## 9. Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Tech Lead | | | |
+| DPO (đầu mối bảo vệ dữ liệu) | | | |

@@ -2,10 +2,12 @@
 
 | | |
 |---|---|
+| Phiên bản | 1.1 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Bộ 108 case · chờ QA Lead duyệt |
 | Kế hoạch | [T01](T01-test-plan.md) · kết quả chạy: [T03](T03-test-report.md) |
 | Dữ liệu | Hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), nhân viên `u-anh`, `u-yen` (Officer), `u-huy` (Trưởng nhóm), `u-trang` (CS) |
 | Môi trường | `npm run dev:all`; app `/app/`, Compliance `/compliance/`; đặt lại dữ liệu `POST /api/dev/reset` |
-| Tổng | 41 app khách · 31 Compliance · 12 API · 6 job nền · 16 phi chức năng = **106 test case** |
+| Tổng | 42 app khách · 32 Compliance · 12 API · 6 job nền · 16 phi chức năng = **108 test case** (25/11: thêm TC-APP-42, TC-CO-32 cho tuổi tối thiểu 16) |
 
 **Ưu tiên:** C = Cao (chặn phát hành) · TB = Trung bình · T = Thấp.
 **Cách chạy:** **Tự động** = có test trong `server/test` (tên test ghi trong cột) · **E2E** = chạy tay trên app/trình duyệt · **Cả hai**.
@@ -37,6 +39,7 @@
 | TC-APP-14 | Giấy tờ hết hạn | TD-09 (hết hạn 15/03/2025) | Xác nhận thông tin | eKYC-13, ngày hết hạn tô đỏ; phiên `REJECTED`, lý do `DOC_EXPIRED` | C | RULE-10, UAT-13 | Cả hai (*UAT-EKYC-13*) |
 | TC-APP-15 | Còn hạn dưới 30 ngày | TD-16 | Xác nhận thông tin | Vẫn sang eKYC-03B, có cảnh báo "Giấy tờ sắp hết hạn"; kết quả cuối STP | TB | RULE-10 #2 | Cả hai (*C05 #2 · CCCD còn hạn dưới 30 ngày*) |
 | TC-APP-16 | Chưa đủ tuổi – sản phẩm tín dụng | TD-10 (sinh 20/05/2009) | Xác nhận thông tin | eKYC-08 lý do "Chưa đủ điều kiện độ tuổi"; `UNDER_AGE` | C | RULE-10, UAT-14 | Tự động (*UAT-EKYC-14*) |
+| TC-APP-42 | Tuổi tối thiểu tài khoản thanh toán trực tuyến (16) | Ngày sinh 22/11/2010 (tròn 16), 23/11/2010 (thiếu 1 ngày), 01/03/2011 (15 tuổi); hệ thống ngày 22/11/2026 | Xác nhận thông tin, sản phẩm `payment` | Tròn 16 → đi tiếp; thiếu 1 ngày và 15 tuổi → eKYC-08 "Chưa đủ điều kiện độ tuổi", `UNDER_AGE` | C | RULE-10, P01 PR-02, UAT-27 | Tự động (*RULE-EKYC-10*) |
 | TC-APP-17 | Đã có tài khoản | TD-08 | Xác nhận thông tin | eKYC-12, số đã che; không gọi được bước liveness | C | RULE-09, UAT-12 | Tự động (*UAT-EKYC-12*) |
 | TC-APP-18 | Hộ chiếu VN của người đã có TK bằng CCCD | TD-14 với số định danh của TD-08 | Xác nhận thông tin | `STOPPED_DUPLICATE` | C | RULE-09 | Tự động (*C04 · hộ chiếu Việt Nam…*) |
 
@@ -135,6 +138,7 @@
 | TC-CO-29 | Người đề xuất tự duyệt | `u-huy` đề xuất | `u-huy` bấm Phê duyệt | Nút khoá; API 403 | C | NFR-SEC-05 | Tự động (cùng test) |
 | TC-CO-30 | Officer duyệt | `u-yen` | Phê duyệt đề xuất | 403 "Chỉ trưởng nhóm…" | C | NFR-SEC-05 | Tự động (cùng test) |
 | TC-CO-31 | Trưởng nhóm khác duyệt | `u-anh` đề xuất, `u-huy` duyệt | Phê duyệt | Áp dụng ngay; audit REQUESTED → APPROVED; lịch sử thay đổi cập nhật | C | NFR-SEC-05 | Cả hai |
+| TC-CO-32 | Không hạ tuổi thanh toán dưới 16 | `u-anh` | Đề xuất `min_age_payment` = 15; DB cũ đang lưu 15 | 422 `OUT_OF_RANGE` "Giá trị phải trong khoảng 16–25"; giá trị 15 cũ bị bỏ qua, hệ thống dùng 16 | C | NFR-SEC-05, P01 PR-02 | Tự động (*P01 PR-02*) |
 
 ## 3. API (TC-API)
 
@@ -184,3 +188,20 @@
 | TC-NFR-14 | Màn hình hẹp (Compliance) | Rộng < 1024px | Menu chuyển thành thanh ngang, bảng cuộn ngang | T | E2E |
 | TC-NFR-15 | Thời gian quyết định | Đo `POST …/liveness` | Local < 100 ms; production P95 < 3s theo C15 | TB | E2E (đo) |
 | TC-NFR-16 | Chế độ demo | Mở bản GitHub Pages | Chạy không cần backend, không lỗi console | T | E2E |
+
+## 6. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 1.0 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
+| 1.1 | 25/11/2026 | Han Dao | — | Thêm TC-APP-42, TC-CO-32 (tuổi tối thiểu 16); tổng 108 case; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| QA Lead | | | |
+| Product Owner | | | |

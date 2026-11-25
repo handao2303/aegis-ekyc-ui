@@ -2,8 +2,9 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.6 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | 📝 Bản nháp – chờ Compliance xác nhận |
 | Jira | [SCRUM-71](https://baohandao2303.atlassian.net/browse/SCRUM-71) · Spike |
-| Trạng thái tài liệu | **Bản nháp v0.1 – chờ Compliance xác nhận** |
 | Đầu ra cho | C03 (BRD v1.3), C05, C11, C12 |
 
 > ⚠️ Số hiệu và nội dung văn bản dưới đây là **điểm khởi đầu để rà soát**, viết dựa trên hiểu biết chung về quy định Việt Nam. Trước khi đưa vào BRD, phải đối chiếu bản gốc và tình trạng hiệu lực trên cổng văn bản chính thức (vbpl.vn, sbv.gov.vn). Cột "Cần xác minh" đánh dấu những chỗ chưa chắc chắn.
@@ -107,3 +108,16 @@ Sau cập nhật: **11 ✅ · 4 🟡 · 0 ❌** (25/11: CR-14 về 🟡). Còn c
 |---|---|---|---|
 | BA | Han Dao | 21/11/2026 | Soạn bản nháp |
 | Compliance | | | |
+
+## 6. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 23/11/2026 | Han Dao | `361be3e` | Cập nhật trạng thái sau khi có backend mẫu ekyc-service |
+| 0.3 | 25/11/2026 | Han Dao | `ecf5d7e` | Đổi căn cứ từ NĐ 13/2023 sang Luật 91/2025/QH15 + NĐ 356/2025 |
+| 0.4 | 25/11/2026 | Han Dao | `b4ad5b4` | CR-14 về 🟡 chờ quyết định tuổi tối thiểu (P01 PR-02) |
+| 0.5 | 25/11/2026 | Han Dao | `d93f67e` | Tuổi tối thiểu tài khoản thanh toán trực tuyến 15 → 16, giới hạn 16–25 (P01 PR-02) |
+| 0.6 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |

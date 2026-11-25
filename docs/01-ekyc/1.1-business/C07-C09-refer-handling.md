@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Hoàn tất đặc tả + UI + backend, có test UAT · chờ PO, Compliance duyệt |
 | Jira | [SCRUM-76](https://baohandao2303.atlassian.net/browse/SCRUM-76) (C07) · [SCRUM-77](https://baohandao2303.atlassian.net/browse/SCRUM-77) (C08) · [SCRUM-78](https://baohandao2303.atlassian.net/browse/SCRUM-78) (C09) |
 | BR / FR / RULE | BR-15/16/17 · FR-12/13/14 · RULE-12 |
 | UI | App: `Refer`, `RequestInfo` · Compliance: hàng đợi, badge SLA, modal "Yêu cầu bổ sung", chuông thông báo |
@@ -119,3 +121,20 @@ stateDiagram-v2
 | Báo cáo | Số hồ sơ xử lý, % đúng SLA, trung vị thời gian xử lý, số Breach (màn Báo cáo SLA, C18) |
 
 **Câu hỏi mở cho PO:** SLA tính theo giờ lịch (24/7) hay giờ làm việc? Bản mẫu đang tính theo giờ lịch.
+
+## 5. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Compliance | | | |

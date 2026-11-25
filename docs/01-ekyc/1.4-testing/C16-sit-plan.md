@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ⛔ Kế hoạch xong · bị chặn bởi SCRUM-56 (sandbox đối tác) |
 | Jira | [SCRUM-85](https://baohandao2303.atlassian.net/browse/SCRUM-85) · bị chặn bởi [SCRUM-56](https://baohandao2303.atlassian.net/browse/SCRUM-56) · chặn [SCRUM-86](https://baohandao2303.atlassian.net/browse/SCRUM-86) |
 
 ## 1. Bản đồ tích hợp
@@ -74,3 +76,20 @@ sequenceDiagram
 | **Ra** | 100% kịch bản chạy · không còn lỗi Critical/High · lỗi Medium có kế hoạch xử lý · cập nhật trạng thái DEP trong SCRUM-56 |
 
 Dependency nào chưa có sandbox thì ghi vào RAID và **đánh dấu là điều kiện của UAT**, không bỏ qua.
+
+## 5. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| QA Lead | | | |
+| Product Owner | | | |

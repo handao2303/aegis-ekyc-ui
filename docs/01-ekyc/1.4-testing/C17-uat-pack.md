@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.3 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ⛔ Bộ kịch bản xong · chờ C03 duyệt và SIT (C16) |
 | Jira | [SCRUM-86](https://baohandao2303.atlassian.net/browse/SCRUM-86) · bị chặn bởi [SCRUM-72](https://baohandao2303.atlassian.net/browse/SCRUM-72), [SCRUM-85](https://baohandao2303.atlassian.net/browse/SCRUM-85) |
 | Người soạn | BA · Người nghiệm thu: PO + Compliance |
 | Dữ liệu | Hồ sơ mẫu có nhãn kỳ vọng; **không dùng dữ liệu thật của khách** |
@@ -60,6 +62,7 @@ Ký hiệu nguồn: hồ sơ mẫu `TD-xx` chuẩn bị theo bảng ở mục 4.
 | UAT-EKYC-24 | Song ngữ VI/EN | — | Toàn bộ màn hình đổi ngôn ngữ, giữ lựa chọn | — | Should |
 | UAT-EKYC-25 | Hộ chiếu Việt Nam gắn chip | TD-14 | Chụp 1 trang, đọc chip ở bìa → STP_APPROVED | BR-12, 13 | Must |
 | UAT-EKYC-26 | Hộ chiếu nước ngoài | TD-15 | REFER `FOREIGN_NATIONAL`; Compliance thấy quốc tịch, số hộ chiếu đã che | BR-12 | Must |
+| UAT-EKYC-27 | Khách dưới 16 tuổi mở tài khoản thanh toán trực tuyến | Ngày sinh 01/03/2011 (15 tuổi) | REJECTED `UNDER_AGE`; khách tròn 16 tuổi đi tiếp bình thường | BR-13, P01 PR-02 | Must |
 
 ## 4. Dữ liệu mẫu
 
@@ -74,7 +77,7 @@ Ký hiệu nguồn: hồ sơ mẫu `TD-xx` chuẩn bị theo bảng ở mục 4.
 | TD-07 | Ảnh xấu | Ảnh mờ, loá |
 | TD-08 | Khách cũ | CCCD đã có tài khoản active |
 | TD-09 | Hết hạn | `expiry_date` = 15/03/2025 |
-| TD-10 | 17 tuổi | Sinh 2009 |
+| TD-10 | 17 tuổi | Sinh 2009 – bị chặn sản phẩm tín dụng (18), được mở tài khoản thanh toán (16) |
 | TD-11 | Hồ sơ cũ | Tạo lùi thời gian vào hàng đợi 17h / 25h |
 | TD-12 | Chip giả | Chữ ký số không hợp lệ |
 | TD-13 | Nhiều danh tính | Cùng `device_id`, 2 CCCD khác nhau |
@@ -108,3 +111,21 @@ Ký hiệu nguồn: hồ sơ mẫu `TD-xx` chuẩn bị theo bảng ở mục 4.
 > | Product Owner | | | |
 > | Compliance | | | |
 > | BA | | | |
+
+## 7. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 23/11/2026 | Han Dao | `c70e906` | Bổ sung luồng hộ chiếu gắn chip (Việt Nam và nước ngoài) |
+| 0.3 | 25/11/2026 | Han Dao | — | Thêm UAT-EKYC-27 (dưới 16 tuổi, tài khoản thanh toán); làm rõ TD-10; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| QA Lead | | | |
+| Product Owner | | | |

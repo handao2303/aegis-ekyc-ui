@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | 🔧 Bản mẫu chạy được · chưa có CSCA, liveness, so khớp khuôn mặt |
 | Liên quan | SCRUM-18 (OCR/NFC), [SCRUM-80](https://baohandao2303.atlassian.net/browse/SCRUM-80) (C11 nguồn sinh trắc học), C15 (hiệu năng) |
 | Mã nguồn | [`ios/AegisScan`](../../../ios/AegisScan/README.md) – SwiftUI, iOS 16+, NFCPassportReader 3.0.1 (MIT) |
 | Chuẩn | ICAO 9303: MRZ TD1/TD3, BAC, PACE, Passive Authentication (SOD), Chip Authentication |
@@ -139,3 +141,20 @@ Toàn bộ xử lý nằm trên máy, không lưu và không gửi ảnh hay d�
 2. Thêm selfie + liveness, so với ảnh DG2 (C11 – `match_source = CHIP_DG2`).
 3. Gửi kết quả đọc chip lên `ekyc-service` (thay cho bước OCR/NFC của web).
 4. Đo P95 thời gian đọc chip trên 2 dòng máy (C15, đóng SCRUM-57).
+
+## 9. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 22/11/2026 | Han Dao | `8a99253` | Bản đầu |
+| 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Tech Lead | | | |

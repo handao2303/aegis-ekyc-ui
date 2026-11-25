@@ -7,7 +7,7 @@
 | Bản chạy | [Bản demo](https://handao2303.github.io/aegis-ekyc-ui/app/) · bản nối backend: `npm run dev:all` rồi mở `/app/` |
 | Mã nguồn | `src/mobile/screens.tsx`, `src/ekyc/EkycContext.tsx` (gọi API), `src/ekyc/terms.ts` (điều khoản) |
 | Ảnh | Chụp tự động bằng `tools/diagrams/screens.mjs`, khung iPhone 390 × 844 |
-| Phiên bản | 1.0 · 23/11/2026 · Han Dao |
+| Phiên bản | 1.1 · 25/11/2026 · Han Dao |
 | Chuẩn tham chiếu | WCAG 2.2 mức AA, ISO 9241-110 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Quy ước chung
@@ -313,3 +313,22 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 | eKYC-10 | SCRUM-75 | RULE-11 | 15 | TC-APP-34 → 36 |
 | eKYC-11 | SCRUM-76 | C07 | 16 | TC-APP-37 → 38 |
 | eKYC-14 | SCRUM-81 | RULE-15 | 21 | TC-APP-39 → 41 |
+
+## 5. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.8 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
+| 0.9 | 23/11/2026 | Han Dao | `4813f91` | Đồng bộ với Confluence: hồ sơ mẫu TD-16, cảnh báo giấy tờ sắp hết hạn |
+| 1.0 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
+| 1.1 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Tech Lead | | | |

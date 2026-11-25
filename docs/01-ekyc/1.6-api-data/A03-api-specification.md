@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.1 |
+| Phiên bản | 1.2 |
 | Trạng thái | 📝 Bản nháp, chờ Tech Lead xác nhận |
 | Người soạn | Han Dao (BA) |
-| Ngày | 24/11/2026 |
+| Ngày | 25/11/2026 |
 | Jira | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69), [SCRUM-85](https://baohandao2303.atlassian.net/browse/SCRUM-85) (SIT) |
 | Nguồn | Code `server/src/http.ts`, `service.ts`, `config.ts` (ekyc-service), đối chiếu ngày 24/11/2026 |
 | Chuẩn tham chiếu | Cấu trúc theo OpenAPI 3.1 (đường dẫn, tham số, thân, phản hồi); ngữ nghĩa mã HTTP theo RFC 9110 |
@@ -220,7 +220,7 @@ Server gọi CIC, AML rồi chạy cây quyết định (A01 §4). Response gi�
 | 422 | `CONSENT_REQUIRED` | Chưa chọn đủ 2 mục bắt buộc | API-02 | Đánh dấu ô bắt buộc |
 | 422 | `MISSING_ITEMS` | Thiếu hạng mục bổ sung; kèm `missing` | API-13 | Đánh dấu hạng mục còn thiếu |
 | 422 | `FORBIDDEN_CONTENT` | Lời nhắn có từ bị cấm | API-25 | Báo ngay trong ô lời nhắn |
-| 422 | `OUT_OF_RANGE` | Giá trị cấu hình ngoài giới hạn | API-30 | Hiện giới hạn hợp lệ |
+| 422 | `OUT_OF_RANGE` | Giá trị cấu hình ngoài giới hạn (vd. `min_age_payment` 16–25) | API-30 | Hiện giới hạn hợp lệ |
 | 429 | `TRY_LATER` | Chạm velocity | API-01 | Thông điệp chung "Vui lòng thử lại sau", không nói lý do (C13) |
 | 500 | `INTERNAL` | Lỗi không lường trước | Mọi API | Báo lỗi chung, ghi log có mã truy vết |
 | 503 | `CIC_UNAVAILABLE` | CIC vẫn chưa phản hồi khi thử lại | API-28 | Giữ hồ sơ ở `CIC_TIMEOUT`, cho thử lại sau |
@@ -293,3 +293,12 @@ Thông báo `EKYC_APPROVED` gửi thành 2 bản: Push **không** có số tài 
 |---|---|---|---|
 | 1.0 | 24/11/2026 | Han Dao | Bản đầu, lập từ code ekyc-service |
 | 1.1 | 24/11/2026 | Han Dao | Sửa thông điệp `STOPPED_DUPLICATE` cho hộ chiếu; tách Push / SMS của `EKYC_APPROVED` |
+| 1.2 | 25/11/2026 | Han Dao | Ghi giới hạn `min_age_payment` 16–25 ở mã lỗi `OUT_OF_RANGE`; thêm mục phê duyệt |
+
+## 9. Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Tech Lead | | | |
+| QA Lead | | | |

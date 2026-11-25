@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Đặc tả + báo cáo SLA/KPI có backend · chờ PO duyệt |
 | Jira | [SCRUM-87](https://baohandao2303.atlassian.net/browse/SCRUM-87) |
 | UI | Màn **Báo cáo SLA** trong Aegis Compliance (bản mẫu: [pages.tsx](../../../src/web/pages.tsx)) |
 | Nguồn dữ liệu | Sự kiện trạng thái phiên (C06), `kyc_decisions`, `audit_event` (C10) → DWH |
@@ -76,3 +78,20 @@ GROUP BY 1;
 - Chỉ nhóm PO và Compliance được xem.
 - Số liệu phải khớp truy vấn kiểm chứng ở mục 4 (sai lệch 0%).
 - Trạng thái luôn có chữ đi kèm màu (đúng nguyên tắc design system).
+
+## 6. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Data/BI | | | |

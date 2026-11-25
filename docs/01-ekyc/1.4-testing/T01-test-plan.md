@@ -6,7 +6,7 @@
 | Epic | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69) |
 | Tài liệu đi kèm | [T02 Bộ test case](T02-test-cases.md) · [T03 Báo cáo kết quả](T03-test-report.md) · [C15 Hiệu năng](C15-performance-test-plan.md) · [C16 SIT](C16-sit-plan.md) · [C17 UAT](C17-uat-pack.md) |
 | Cơ sở | BRD/FSD/SRS v1.2 + addendum v1.3 ([C03](../../00-overview/C03-requirements-addendum-v1.3.md)), đặc tả C04–C13, giao diện [U01](../1.3-ui/U01-customer-app-ui-spec.md), [U02](../1.3-ui/U02-compliance-ui-spec.md), điều khoản [P01](../1.2-compliance-legal/P01-terms-privacy.md) |
-| Phiên bản | 1.1 · 23/11/2026 · Han Dao (BA) |
+| Phiên bản | 1.2 · 25/11/2026 · Han Dao (BA) |
 | Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Plan), thuật ngữ ISTQB – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Mục tiêu
@@ -161,3 +161,14 @@ Số case đã chạy / đạt / không đạt / chặn theo nhóm và mức ưu
 | BA (soạn) | Han Dao | 23/11/2026 | Soạn bản 1.1 |
 | QA Lead | | | |
 | PO | | | |
+
+## 17. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.9 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
+| 1.0 | 23/11/2026 | Han Dao | `4813f91` | Đồng bộ với Confluence: hồ sơ mẫu TD-16, cảnh báo giấy tờ sắp hết hạn |
+| 1.1 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
+| 1.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |

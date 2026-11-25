@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | 🔧 Kế hoạch xong · chờ thiết bị NFC thứ hai và môi trường |
 | Jira | [SCRUM-84](https://baohandao2303.atlassian.net/browse/SCRUM-84) · liên quan [SCRUM-57](https://baohandao2303.atlassian.net/browse/SCRUM-57) |
 | Yêu cầu | NFR-PERF-02 (mỗi bước < 3s P95) · NFR-PERF-03 (toàn luồng ≤ 3 phút P90) |
 
@@ -45,3 +47,20 @@ flowchart TB
 | P-01 | Sony SO-51A | 4 | — | 306 ms | — | 3000 ms | Chưa đủ mẫu (từ SCRUM-57) |
 | P-01 | | | | | | 3000 ms | |
 | P-02 | | | | | | 3000 ms | |
+
+## 5. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| QA Lead | | | |
+| Product Owner | | | |

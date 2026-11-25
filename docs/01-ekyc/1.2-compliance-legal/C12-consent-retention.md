@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Đặc tả + màn Quyền riêng tư + backend · chờ Compliance chốt thời hạn lưu (C02 câu 3) |
 | Jira | [SCRUM-81](https://baohandao2303.atlassian.net/browse/SCRUM-81) · bị chặn bởi [SCRUM-71](https://baohandao2303.atlassian.net/browse/SCRUM-71) |
 | BR / FR / RULE | BR-20 · FR-17 · RULE-15 · NFR-RET-01 · đáp ứng CR-07, CR-08, CR-12 |
 
@@ -67,3 +69,20 @@ sequenceDiagram
 | Cách xoá | Xoá file trên Storage + xoá/ẩn danh cột PII trong DB |
 | Báo cáo | Số bản ghi theo loại, thời gian chạy, lỗi; gửi kênh vận hành |
 | Kiểm thử | Tạo dữ liệu có `retention_until` quá khứ → chạy job → kiểm tra file không còn, metadata đã ẩn danh, có log xoá |
+
+## 5. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Compliance | | | |
+| Pháp chế | | | |

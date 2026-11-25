@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.3 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Hoàn tất đặc tả + UI + backend, có test UAT · chờ PO, Compliance duyệt |
 | Jira | [SCRUM-75](https://baohandao2303.atlassian.net/browse/SCRUM-75) |
 | BR / FR / RULE | BR-14 · FR-11a → d · RULE-11 |
 | UI | `Resume`, `Consent` (chế độ re-consent) |
@@ -87,3 +89,21 @@ sequenceDiagram
 |---|---|
 | Khách đổi thiết bị | Tìm phiên theo CCCD hash sau khi chụp giấy tờ; nếu thấy phiên trên thiết bị khác → hỏi khách, đồng thời tăng bộ đếm velocity (C13) |
 | CMS không trả `latest_terms_version` | Không cho đi tiếp (theo IF-02), hiển thị lỗi thử lại |
+
+## 6. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 24/11/2026 | Han Dao | `0e9f330` | Đồng bộ với A03, D01 và FR viết lại trong C03 |
+| 0.3 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Compliance | | | |

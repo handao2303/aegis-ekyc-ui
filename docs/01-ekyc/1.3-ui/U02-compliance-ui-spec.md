@@ -7,7 +7,7 @@
 | Bản chạy | [Bản demo](https://handao2303.github.io/aegis-ekyc-ui/compliance/) · bản nối backend: `/compliance/` khi chạy `npm run dev:all` |
 | Mã nguồn | `src/web/CompliancePage.tsx`, `src/web/pages.tsx`, `src/web/store.tsx` (gọi API) |
 | Ảnh | Màn hình 1280 × 860, chế độ demo |
-| Phiên bản | 1.0 · 23/11/2026 · Han Dao |
+| Phiên bản | 1.1 · 25/11/2026 · Han Dao |
 
 ## 1. Khung ứng dụng
 
@@ -136,12 +136,12 @@ Hàng đợi lọc sẵn hồ sơ `PENDING_CHECKER`; cột Người xử lý hi�
 
 | Mục | Nội dung |
 |---|---|
-| Tham số | Điểm rủi ro tối đa để duyệt tự động (50) · Điểm tự từ chối (80) · Điểm cần Checker (70) · Liveness đạt (0.85) · Liveness biên (0.70) · SLA (24h) · Hạn khách bổ sung (5 ngày) · Số lần chụp lại (3) · Phiên/thiết bị/24h (3) · Tuổi tối thiểu tín dụng (18) |
+| Tham số | Điểm rủi ro tối đa để duyệt tự động (50) · Điểm tự từ chối (80) · Điểm cần Checker (70) · Liveness đạt (0.85) · Liveness biên (0.70) · SLA (24h) · Hạn khách bổ sung (5 ngày) · Số lần chụp lại (3) · Phiên/thiết bị/24h (3) · Tuổi tối thiểu tài khoản thanh toán trực tuyến (16, không cho dưới 16 – P01 PR-02) · Tuổi tối thiểu tín dụng (18) |
 | Sửa | Ô số; dòng đã sửa có nhãn "Đã sửa"; hiện ô **Lý do thay đổi** (≥ 10 ký tự) |
 | Gửi | **Gửi phê duyệt** tạo 1 đề xuất cho mỗi tham số đã sửa |
 | Đề xuất chờ duyệt | Giá trị cũ → mới, người đề xuất, lý do; nút Phê duyệt / Từ chối chỉ bật cho Trưởng nhóm khác người đề xuất |
 | Lịch sử | 20 thay đổi gần nhất: tham số, cũ → mới, kết quả, người đề xuất → người duyệt |
-| Kiểm tra | Giá trị trong khoảng cho phép (vd. SLA 1–168h); khác giá trị hiện tại |
+| Kiểm tra | Giá trị trong khoảng cho phép (vd. SLA 1–168h, tuổi thanh toán 16–25); khác giá trị hiện tại. Giá trị cũ ngoài khoảng còn lưu trong DB bị bỏ qua, hệ thống dùng mặc định |
 | API | `GET /api/config` · `POST /api/config/changes` · `POST /api/config/changes/:id/approve` hoặc `/reject` |
 
 ## 8. Truy vết
@@ -153,4 +153,21 @@ Hàng đợi lọc sẵn hồ sơ `PENDING_CHECKER`; cột Người xử lý hi�
 | Yêu cầu bổ sung | SCRUM-76 | C07 | 16 | TC-CO-13 → 17 |
 | Maker-Checker | SCRUM-79 | RULE-13 | 08, 19 | TC-CO-18 → 24 |
 | Báo cáo SLA | SCRUM-78, 87 | C18 | — | TC-CO-25 → 26 |
-| Cấu hình ngưỡng | SCRUM-79 | NFR-SEC-05 | 23 | TC-CO-27 → 31 |
+| Cấu hình ngưỡng | SCRUM-79 | NFR-SEC-05 | 23 | TC-CO-27 → 32 |
+
+## 9. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 1.0 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
+| 1.1 | 25/11/2026 | Han Dao | — | Màn Cấu hình ngưỡng: thêm tham số tuổi tối thiểu thanh toán (16–25), TC-CO-32; ảnh chụp lại; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Tech Lead | | | |

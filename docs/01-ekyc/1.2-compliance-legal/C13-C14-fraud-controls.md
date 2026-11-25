@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | 🔧 C13 velocity có backend · spike C14 chưa chạy |
 | Jira | [SCRUM-82](https://baohandao2303.atlassian.net/browse/SCRUM-82) (C13 – Story) · [SCRUM-83](https://baohandao2303.atlassian.net/browse/SCRUM-83) (C14 – Spike) |
 | BR / FR / RULE | BR-21 · FR-18 · RULE-16 |
 | UI | Thẻ "Thiết bị" và lý do `DEVICE_MULTI_IDENTITY` trong Compliance; ngưỡng phiên/thiết bị trong Cấu hình ngưỡng |
@@ -98,3 +100,20 @@ ISO/IEC 30107-3 (đánh giá PAD); chứng nhận iBeta của nhà cung cấp li
 | # | Nhóm | Kịch bản | Thiết bị | Kết quả (PASS/FAIL hệ thống) | Kỳ vọng | Ghi chú |
 |---|---|---|---|---|---|---|
 | 1 | 2D | Ảnh in A4 | | | Bị chặn | |
+
+## 4. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Compliance | | | |
+| Pháp chế | | | |

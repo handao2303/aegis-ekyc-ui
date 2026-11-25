@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Hoàn tất đặc tả + UI + backend, có test UAT · chờ PO, Compliance duyệt |
 | Jira | [SCRUM-79](https://baohandao2303.atlassian.net/browse/SCRUM-79) |
 | BR / FR / RULE | BR-18 · FR-15 · RULE-13 · NFR-AUD-03, NFR-SEC-05 |
 | UI | Chi tiết hồ sơ (nút "Phê duyệt · gửi Checker", "Xem họ tên đầy đủ"), lịch sử hồ sơ, Cấu hình ngưỡng |
@@ -104,3 +106,20 @@ erDiagram
 | CS / Vận hành | ✅ (che PII) | — | — | — | — | — |
 
 Chi tiết RBAC/ABAC: SCRUM-55.
+
+## 5. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Compliance | | | |

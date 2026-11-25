@@ -2,9 +2,11 @@
 
 | | |
 |---|---|
+| Phiên bản | 1.1 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Đạt vòng nội bộ 1 (91 đạt · 0 lỗi mở), hồi quy 25/11 đạt · chưa đủ điều kiện UAT · chờ QA Lead, PO duyệt |
 | Vòng | Kiểm thử hệ thống nội bộ, trước SIT |
-| Thời gian | 22 – 23/11/2026 |
-| Phiên bản | `main` @ commit `a97e848` + bản sửa trong báo cáo này |
+| Thời gian | 22 – 23/11/2026 · hồi quy 25/11/2026 |
+| Mã nguồn | `main` @ commit `a97e848` + bản sửa trong báo cáo này |
 | Người thực hiện | Han Dao (BA) |
 | Môi trường | macOS, Node 23.11, `ekyc-service` SQLite, Next.js dev; Chrome (trình duyệt tích hợp), iOS Simulator iPhone 16 Pro qua link HTTPS tạm |
 | Kế hoạch / test case | [T01](T01-test-plan.md) · [T02](T02-test-cases.md) |
@@ -24,6 +26,8 @@
 | Lỗi phát hiện | 9 – **đã sửa cả 9**, kiểm lại đạt |
 
 **Kết luận:** Module 1 đạt vòng kiểm thử nội bộ. **Chưa đủ điều kiện vào UAT** vì: (1) SIT với sandbox đối tác chưa chạy (C16); (2) 2 test case mức Cao mới đạt một phần (TC-NFR-04 mã hoá cột PII, TC-NFR-11 thử trên iPhone thật); (3) trợ năng chưa được kiểm bằng công cụ.
+
+> **Hồi quy 25/11/2026** (mục 3.5): bộ test case tăng lên **108** (thêm TC-APP-42, TC-CO-32 cho tuổi tối thiểu 16), test tự động backend **57 / 57 đạt**. Hai case mới đạt, không phát sinh lỗi. Kết luận vòng 1 không đổi.
 
 ## 2. Kết quả theo nhóm
 
@@ -102,6 +106,26 @@ TD-11 là hồ sơ có sẵn trong hàng đợi (tạo lùi thời gian) để t
 | TC-CO-03, 24 | Chưa chạy | Ưu tiên TB | Vòng 2 |
 | TC-NFR-06 → 10, 12, 14 | Chưa chạy | Cần thiết bị Android, VoiceOver, công cụ đo tương phản | Vòng 2 trước UAT |
 
+### 3.5 Hồi quy 25/11/2026
+
+Chạy lại sau hai thay đổi: bản sửa quyền riêng tư ngày 24/11 (thông báo trùng khách an toàn cho hộ chiếu, Push không kèm số tài khoản, xoá thêm số điện thoại, dữ liệu sinh trắc, CIC và bộ đếm velocity cũ) và tuổi tối thiểu tài khoản thanh toán trực tuyến 15 → 16 (P01 PR-02). Lệnh `npm test` trong `server/`: **57 test, 0 lỗi**.
+
+| File | Số test | Thay đổi so với vòng 1 |
+|---|---|---|
+| `rules.test.ts` | 7 | Ca tuổi viết lại: tròn 16 đúng ngày được, thiếu 1 ngày và 15 tuổi bị `UNDER_AGE` |
+| `customer-flow.test.ts` | 26 | +2: các bản sửa quyền riêng tư 24/11 |
+| `compliance.test.ts` | 16 | +1: *P01 PR-02* – đề xuất 15 bị chặn, giá trị 15 cũ trong DB bị bỏ qua |
+| `passport.test.ts` | 5 | — |
+| `http.test.ts` | 3 | — |
+
+| Mã | Kết quả | Bằng chứng |
+|---|---|---|
+| TC-APP-42 | ✅ Đạt | `rules.test.ts` – *RULE-EKYC-10* |
+| TC-CO-32 | ✅ Đạt | `compliance.test.ts` – *P01 PR-02*; gọi `POST /api/config/changes` trên backend đang chạy với giá trị 15 → 422 "Giá trị phải trong khoảng 16–25" |
+| TC-APP-16, TC-CO-27 → 31 | ✅ Vẫn đạt | Cùng bộ test |
+
+Tổng sau hồi quy: 108 case · 93 đạt · 4 một phần · 11 chưa chạy · 0 không đạt. Hồi quy không chạy lại E2E trên giao diện ngoài màn Cấu hình ngưỡng.
+
 ## 4. Lỗi phát hiện
 
 | Mã | Mô tả | Mức | Phát hiện bởi | Trạng thái |
@@ -149,7 +173,7 @@ TD-11 là hồ sơ có sẵn trong hàng đợi (tạo lùi thời gian) để t
 
 ## 9. Đầu ra tái sử dụng được
 
-Bộ hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), 54 test tự động, API đặt lại dữ liệu và tua giờ (`/api/dev/*`), script chụp màn hình (`tools/diagrams/screens.mjs`).
+Bộ hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), 54 test tự động (57 từ 25/11), API đặt lại dữ liệu và tua giờ (`/api/dev/*`), script chụp màn hình (`tools/diagrams/screens.mjs`).
 
 ## 10. Phê duyệt
 
@@ -158,3 +182,13 @@ Bộ hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), 54 test tự đ�
 | BA (thực hiện) | Han Dao | 23/11/2026 | Đạt vòng nội bộ 1, chưa đủ điều kiện UAT |
 | QA Lead | | | |
 | PO | | | |
+
+## 11. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.9 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
+| 1.0 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
+| 1.1 | 25/11/2026 | Han Dao | — | Thêm mục 3.5 hồi quy 25/11: 57/57 test tự động, 2 case mới đạt; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |

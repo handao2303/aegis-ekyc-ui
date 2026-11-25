@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.5 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Hoàn tất đặc tả + UI + backend, có test UAT · chờ PO, Compliance duyệt |
 | Jira | [SCRUM-73](https://baohandao2303.atlassian.net/browse/SCRUM-73) (C04) · [SCRUM-74](https://baohandao2303.atlassian.net/browse/SCRUM-74) (C05) |
 | BR / FR / RULE | BR-12, BR-13 · FR-09, FR-10 · RULE-09, RULE-10 |
 | UI | `Duplicate`, `ExpiredDoc`, `OcrReview` trong [screens.tsx](../../../src/mobile/screens.tsx) |
@@ -83,3 +85,23 @@ Hộ chiếu chỉ chụp **trang thông tin** (MRZ 2 dòng × 44 ký tự, TD3)
 ## 6. Tiêu chí nghiệm thu (rút gọn)
 
 Xem ticket để có đầy đủ. UAT: UAT-EKYC-12, 13, 14, 25, 26 trong [C17](../1.4-testing/C17-uat-pack.md).
+
+## 7. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 23/11/2026 | Han Dao | `c70e906` | Bổ sung luồng hộ chiếu gắn chip (Việt Nam và nước ngoài) |
+| 0.3 | 23/11/2026 | Han Dao | `ffb0ba3` | Sắp xếp lại bảng; thêm kịch bản hộ chiếu |
+| 0.4 | 25/11/2026 | Han Dao | `d93f67e` | Tuổi tối thiểu tài khoản thanh toán trực tuyến 15 → 16, giới hạn 16–25 (P01 PR-02) |
+| 0.5 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Compliance | | | |

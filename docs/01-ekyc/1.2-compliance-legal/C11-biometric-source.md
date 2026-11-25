@@ -2,6 +2,8 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Trạng thái | 🔧 Đặc tả xong · chờ C02 và nhà cung cấp so khớp khuôn mặt |
 | Jira | [SCRUM-80](https://baohandao2303.atlassian.net/browse/SCRUM-80) · bị chặn bởi [SCRUM-71](https://baohandao2303.atlassian.net/browse/SCRUM-71) |
 | BR / FR / RULE | BR-19 · FR-16 · RULE-14 · đáp ứng CR-02, CR-03, CR-04 |
 | UI | Màn Quét chip (cảnh báo khi bỏ qua NFC), thẻ "Khuôn mặt" trong chi tiết hồ sơ |
@@ -58,3 +60,20 @@ flowchart TD
 |---|---|
 | Tỷ lệ máy không NFC cao → nhiều REFER, quá tải hàng đợi | Theo dõi KPI "Tỷ lệ NFC fallback" (C18); nếu > 25% cân nhắc ưu tiên DEP-08 |
 | Dự án cá nhân không có quyền truy cập C06 | Dùng DG2 làm nguồn chính; C06 mô phỏng bằng mock có ghi rõ giới hạn (RAID R-02) |
+
+## 7. Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
+| 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Compliance | | | |
+| Pháp chế | | | |
