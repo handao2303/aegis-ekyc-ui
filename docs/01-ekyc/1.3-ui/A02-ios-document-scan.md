@@ -3,7 +3,6 @@
 | | |
 |---|---|
 | Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
-| Trạng thái | 🔧 Bản mẫu chạy được · chưa có CSCA, liveness, so khớp khuôn mặt |
 | Liên quan | SCRUM-18 (OCR/NFC), [SCRUM-80](https://baohandao2303.atlassian.net/browse/SCRUM-80) (C11 nguồn sinh trắc học), C15 (hiệu năng) |
 | Mã nguồn | [`ios/AegisScan`](../../../ios/AegisScan/README.md) – SwiftUI, iOS 16+, NFCPassportReader 3.0.1 (MIT) |
 | Chuẩn | ICAO 9303: MRZ TD1/TD3, BAC, PACE, Passive Authentication (SOD), Chip Authentication |

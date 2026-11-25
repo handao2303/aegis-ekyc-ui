@@ -306,7 +306,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 | Màn | Story | Quy tắc | UAT ([C17](../1.4-testing/C17-uat-pack.md)) | Test case ([T02](../1.4-testing/T02-test-cases.md)) |
 |---|---|---|---|---|
 | eKYC-01, 01R | SCRUM-17, 46 | Đồng ý theo phạm vi | 03 | TC-APP-01 → 06 |
-| eKYC-02 → 05 | SCRUM-18, 73, 74 | RULE-09, 10 | 12, 13, 14, 25, 26 | TC-APP-07 → 18 |
+| eKYC-02 → 05 | SCRUM-18, 73, 74 | RULE-09, 10 | 12, 13, 14, 25, 26, 27 | TC-APP-07 → 18, TC-APP-42 |
 | eKYC-03B | SCRUM-18, 80 | RULE-14 | 02, 20 | TC-APP-19 → 22 |
 | eKYC-06 → 09 | SCRUM-19, 39, 40 | Cây quyết định A01 §4 | 01, 04 → 07, 22 | TC-APP-23 → 32 |
 | eKYC-03C | SCRUM-41 | RULE-07 | 10 | TC-APP-33 |
@@ -323,7 +323,7 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 | 0.8 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
 | 0.9 | 23/11/2026 | Han Dao | `4813f91` | Đồng bộ với Confluence: hồ sơ mẫu TD-16, cảnh báo giấy tờ sắp hết hạn |
 | 1.0 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
-| 1.1 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 1.1 | 25/11/2026 | Han Dao | — | Truy vết thêm UAT-EKYC-27, TC-APP-42 (tuổi tối thiểu 16); thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
 
 ### Phê duyệt
 

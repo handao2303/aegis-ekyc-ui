@@ -42,7 +42,7 @@
 | Kỹ thuật | Áp dụng cho |
 |---|---|
 | Bảng quyết định | RULE-09 trùng khách, RULE-10 hạn/tuổi, cây quyết định STP/REFER/REJECTED, RULE-13 cần Checker |
-| Phân vùng tương đương + giá trị biên | Tuổi (17/18, đúng ngày sinh nhật), hạn giấy tờ (hôm nay, < 30 ngày), liveness (0.69/0.70/0.85), điểm rủi ro (49.9/50/70/80), SLA (15.9/16/20/24h), 2 lần bổ sung |
+| Phân vùng tương đương + giá trị biên | Tuổi (15/16 tài khoản thanh toán, 17/18 tín dụng, đúng ngày sinh nhật), hạn giấy tờ (hôm nay, < 30 ngày), liveness (0.69/0.70/0.85), điểm rủi ro (49.9/50/70/80), SLA (15.9/16/20/24h), 2 lần bổ sung |
 | Chuyển trạng thái | Vòng đời phiên C06, trạng thái hồ sơ C03, SLA C09 |
 | Kịch bản đầu cuối | 16 hồ sơ mẫu TD-01 → TD-16 |
 | Phân quyền | Ma trận vai trò Officer / Trưởng nhóm / CS |
@@ -171,4 +171,4 @@ Số case đã chạy / đạt / không đạt / chặn theo nhóm và mức ưu
 | 0.9 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
 | 1.0 | 23/11/2026 | Han Dao | `4813f91` | Đồng bộ với Confluence: hồ sơ mẫu TD-16, cảnh báo giấy tờ sắp hết hạn |
 | 1.1 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
-| 1.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 1.2 | 25/11/2026 | Han Dao | — | Giá trị biên tuổi 15/16 cho tài khoản thanh toán (P01 PR-02); thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |

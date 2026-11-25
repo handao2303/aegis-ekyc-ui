@@ -6,7 +6,7 @@
 | Jira | SCRUM-48 (FE Compliance), SCRUM-76 → 79, SCRUM-87 |
 | Bản chạy | [Bản demo](https://handao2303.github.io/aegis-ekyc-ui/compliance/) · bản nối backend: `/compliance/` khi chạy `npm run dev:all` |
 | Mã nguồn | `src/web/CompliancePage.tsx`, `src/web/pages.tsx`, `src/web/store.tsx` (gọi API) |
-| Ảnh | Màn hình 1280 × 860, chế độ demo |
+| Ảnh | Màn hình 1280 × 860, chế độ demo; riêng Cấu hình ngưỡng chụp toàn trang khi nối backend (25/11) |
 | Phiên bản | 1.1 · 25/11/2026 · Han Dao |
 
 ## 1. Khung ứng dụng
