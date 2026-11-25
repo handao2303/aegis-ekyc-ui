@@ -11,5 +11,7 @@
  "R02-requirements-gap-rtm": "16646223",
  "R03-ui-spec": "16777272",
  "R04-test-plan-cases": "16646246",
- "R05-api-data-dictionary": "17072258"
+ "R05-api-data-dictionary": "17072258",
+ "R06-nfr-kpi": "17203201",
+ "R07-sit-perf-uat": "17235969"
 }
