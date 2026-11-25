@@ -7,7 +7,7 @@
 | Đối tượng kiểm thử | UI mẫu [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) bản trên GitHub Pages ngày 24/11/2026 |
 | Yêu cầu nguồn | BAS-BRD-v1.2 §2.2, §4.2, §5.2 · [R01](R01-reconciliation-flow.md) · [R02](R02-requirements-gap-rtm.md) |
 | Người thực hiện | Han Dao (BA) |
-| Phiên bản | 1.2 · 24/11/2026 (vòng 2 sau khi sửa lỗi, thêm vai trò Checker) |
+| Phiên bản | 1.3 · 25/11/2026 (vòng 2 sau khi sửa lỗi, thêm vai trò Checker) |
 
 ## 1. Tóm tắt kết quả
 
@@ -137,3 +137,13 @@ Giới hạn của vòng 2 ban đầu (chỉ có một người dùng nên chưa
 | 1.0 | 24/11/2026 | Han Dao | Kế hoạch, 20 ca UI đã chạy (15 đạt), 9 ca backend viết sẵn, 6 lỗi |
 | 1.1 | 24/11/2026 | Han Dao | Vòng 2 sau khi sửa 6 lỗi: 22 ca UI, 22 đạt, 0 lỗi mở |
 | 1.2 | 24/11/2026 | Han Dao | Thêm vai trò Checker và trưởng nhóm vào UI mẫu; TC-REC-23 → 25 (RULE-REC-05, trình lại): 25/25 đạt |
+| 1.3 | 25/11/2026 | Han Dao | Thêm mục phê duyệt (ISO/IEC/IEEE 29119-3) |
+
+## Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| QA Lead | | | |
+| Product Owner | | | |
+| Kế toán trưởng | | | |

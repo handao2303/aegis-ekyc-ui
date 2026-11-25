@@ -7,7 +7,7 @@
 | Bản chạy | [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) – dữ liệu hư cấu, chưa nối backend |
 | Mã nguồn | `src/ops/Reconciliation.tsx`, khung dùng chung `src/ops/kit.tsx` |
 | Ảnh | 1280 × 860, tiếng Việt, chụp tự động bằng `tools/diagrams/rec-screens.mjs` |
-| Phiên bản | 1.2 · 24/11/2026 · Han Dao |
+| Phiên bản | 1.3 · 25/11/2026 · Han Dao |
 
 Quy tắc nghiệp vụ và điểm lệch baseline: [R02](R02-requirements-gap-rtm.md). Kết quả chạy thử trên giao diện: [R04](R04-test-plan-cases.md).
 
@@ -156,3 +156,13 @@ Trạng thái luôn có chữ đi kèm màu, không chỉ dùng màu (WCAG 2.2 t
 | 1.0 | 24/11/2026 | Han Dao | Bản đầu, có ảnh 6 màn, ghi phần còn thiếu so với baseline |
 | 1.1 | 24/11/2026 | Han Dao | Cập nhật REC-05, REC-06 sau khi sửa 6 lỗi của R04: 3 cách xử lý, nguyên nhân khác, khoá bút toán trùng, Chờ hạch toán, lý do từ chối, trả về Maker |
 | 1.2 | 24/11/2026 | Han Dao | Ô đăng nhập UAT với 3 vai trò; kiểm RULE-REC-05 đúng nghĩa baseline khi duyệt bút toán |
+| 1.3 | 25/11/2026 | Han Dao | Thêm mục phê duyệt (ISO/IEC/IEEE 29148) |
+
+## Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Kế toán trưởng / Quản lý vận hành | | | |
+| Tech Lead | | | |
