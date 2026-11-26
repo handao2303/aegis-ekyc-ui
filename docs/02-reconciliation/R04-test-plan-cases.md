@@ -8,6 +8,7 @@
 | Yêu cầu nguồn | BAS-BRD-v1.2 §2.2, §4.2, §5.2 · [R01](R01-reconciliation-flow.md) · [R02](R02-requirements-gap-rtm.md) |
 | Người thực hiện | Han Dao (BA) |
 | Phiên bản | 1.4 · 26/11/2026 (vòng 2 sau khi sửa lỗi, thêm vai trò Checker; hồi quy 26/11) |
+| Trạng thái | ✅ Vòng UI 25/25 đạt · ⛔ 9 ca backend chờ `reconciliation-service` |
 
 ## 1. Tóm tắt kết quả
 

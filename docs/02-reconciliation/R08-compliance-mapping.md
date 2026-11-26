@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.1 · 26/11/2026 · Han Dao (BA) |
+| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 📝 Bản nháp – chờ Kế toán trưởng, Compliance, Pháp chế và InfoSec xác nhận |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) |
 | Tương đương Module 1 | [C02](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) (compliance mapping) và [P01](../01-ekyc/1.2-compliance-legal/P01-terms-privacy.md) (cơ sở pháp lý, dữ liệu cá nhân) |
@@ -78,12 +78,12 @@ Trạng thái: ✅ Đáp ứng trong thiết kế (R01 → R07 và UI mẫu) · 
 
 Bổ sung vào [R02 §4](R02-requirements-gap-rtm.md) khi được duyệt.
 
-| Mã | Yêu cầu | Nguồn | Ưu tiên |
-|---|---|---|---|
-| REQ-REC-21 | Hệ thống phải cho trưởng nhóm đánh dấu một ngoại lệ là "nghi vấn AML" và chuyển sang hàng đợi của bộ phận AML, giữ liên kết tới giao dịch gốc; người chuyển không xem được kết quả xử lý AML. | CR-REC-07, LR-06 | Should |
-| REQ-REC-22 | Hệ thống phải chuyển file sao kê gốc sang kho lưu trữ sau thời gian trực tuyến cấu hình được và xoá khi hết thời hạn lưu, có nhật ký. | CR-REC-09, LR-01, LR-07 | Should |
-| REQ-REC-23 | Hệ thống phải che hoặc token hoá số thẻ ngay ở bước nạp file TC33 / IPM; file gốc chứa PAN chỉ nằm trong vùng lưu trữ thuộc phạm vi PCI, mã hoá, có kiểm soát truy cập riêng. | CR-REC-10, LR-08 | Must |
-| REQ-REC-24 | Mỗi nguồn đối tác có tham số hạn tra soát; ngoại lệ của nguồn đó cảnh báo trước hạn tra soát *3 ngày làm việc* (*đề xuất*). | CR-REC-11, LR-09 | Should |
+| Mã | Yêu cầu | Nguồn | Tiêu chí nghiệm thu | Ưu tiên |
+|---|---|---|---|---|
+| REQ-REC-21 | Hệ thống phải cho trưởng nhóm đánh dấu một ngoại lệ là "nghi vấn AML" và chuyển sang hàng đợi của bộ phận AML, giữ liên kết tới giao dịch gốc; người chuyển không xem được kết quả xử lý AML. | CR-REC-07, LR-06 | Trưởng nhóm đánh dấu "nghi vấn AML" → ngoại lệ xuất hiện ở hàng đợi AML có liên kết giao dịch; người chuyển mở lại không thấy kết quả AML | Should |
+| REQ-REC-22 | Hệ thống phải chuyển file sao kê gốc sang kho lưu trữ sau thời gian trực tuyến cấu hình được và xoá khi hết thời hạn lưu, có nhật ký. | CR-REC-09, LR-01, LR-07 | Đặt thời gian trực tuyến 1 ngày, tua đồng hồ → file gốc chuyển sang kho lưu trữ; hết hạn lưu → file bị xoá, nhật ký ghi cả hai thao tác | Should |
+| REQ-REC-23 | Hệ thống phải che hoặc token hoá số thẻ ngay ở bước nạp file TC33 / IPM; file gốc chứa PAN chỉ nằm trong vùng lưu trữ thuộc phạm vi PCI, mã hoá, có kiểm soát truy cập riêng. | CR-REC-10, LR-08 | Nạp file TC33 / IPM mẫu có PAN → `source_transactions` chỉ chứa PAN đã che hoặc token; tài khoản không thuộc vùng PCI không đọc được file gốc (SIT-REC, R07) | Must |
+| REQ-REC-24 | Mỗi nguồn đối tác có tham số hạn tra soát; ngoại lệ của nguồn đó cảnh báo trước hạn tra soát *3 ngày làm việc* (*đề xuất*). | CR-REC-11, LR-09 | Nguồn có hạn tra soát 10 ngày làm việc → ngoại lệ hiện cảnh báo ở ngày làm việc thứ 7 | Should |
 
 ## 5. Câu hỏi cho Pháp chế, Compliance, InfoSec
 
@@ -102,6 +102,7 @@ Bổ sung vào [R02 §4](R02-requirements-gap-rtm.md) khi được duyệt.
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 0.1 | 26/11/2026 | Han Dao | — | Bản đầu: 9 nhóm văn bản, 12 yêu cầu tuân thủ (6 ✅ · 5 🟡 · 1 ❌), bảng dữ liệu cá nhân, 4 yêu cầu mới REQ-REC-21 → 24, câu hỏi mở |
+| 0.2 | 26/11/2026 | Han Dao | — | Thêm cột Tiêu chí nghiệm thu cho REQ-REC-21 → 24 |
 
 ### Phê duyệt
 

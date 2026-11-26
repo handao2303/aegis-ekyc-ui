@@ -9,6 +9,7 @@
 | Ảnh | Chụp tự động bằng `tools/diagrams/screens.mjs`, khung iPhone 390 × 844 |
 | Phiên bản | 1.1 · 25/11/2026 · Han Dao |
 | Chuẩn tham chiếu | WCAG 2.2 mức AA, ISO 9241-110 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Trạng thái | ✅ Mô tả UI đang chạy, có ảnh từng màn · chờ PO, UX duyệt |
 
 ## 1. Quy ước chung
 

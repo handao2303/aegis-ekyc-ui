@@ -134,20 +134,20 @@ flowchart LR
 | [R05 Đặc tả API & từ điển dữ liệu (đề xuất)](02-reconciliation/R05-api-data-dictionary.md) | SCRUM-7, 22–26, 50, 53 | ERD | 📝 v0.2 · 11 bảng · 32 API · 13 mã lỗi riêng, chờ Tech Lead & Kế toán trưởng |
 | [R06 Yêu cầu phi chức năng & từ điển KPI](02-reconciliation/R06-nfr-kpi.md) | SCRUM-7, 53 | — | 📝 v0.2 · 23 NFR theo ISO/IEC 25010 · 5 KPI đã đối chiếu BRD §1.9, chờ Tech Lead & Ops chốt ngưỡng |
 | [R07 SIT, hiệu năng, UAT & biên bản nghiệm thu](02-reconciliation/R07-sit-perf-uat.md) | SCRUM-7, 22–26, 50, 53 | Flowchart ×2 | ⛔ v0.1 · 13 SIT · 6 hiệu năng · 18 UAT, chờ backend và sandbox đối tác |
-| [R08 Tuân thủ, cơ sở pháp lý & dữ liệu cá nhân](02-reconciliation/R08-compliance-mapping.md) | SCRUM-7 | Flowchart | 📝 v0.1 · 12 yêu cầu tuân thủ (6 ✅ · 5 🟡 · 1 ❌) · chờ Pháp chế, Kế toán trưởng |
+| [R08 Tuân thủ, cơ sở pháp lý & dữ liệu cá nhân](02-reconciliation/R08-compliance-mapping.md) | SCRUM-7 | Flowchart | 📝 v0.2 · 12 yêu cầu tuân thủ (6 ✅ · 5 🟡 · 1 ❌) · REQ-REC-21 → 24 có tiêu chí nghiệm thu · chờ Pháp chế, Kế toán trưởng |
 
 ### Module 3 · Hạn mức
 
 | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|
 | [L01 Authorization, Boost & gian lận](03-credit-limit/L01-credit-limit-flow.md) | SCRUM-8, 51, 52, 54 | Sequence ×2, Flowchart ×2, State ×2 | 🔧 v1.2 · Đã đối chiếu BRD (MTI 0420, trạng thái Boost), chờ Notification thật |
-| [L02 Yêu cầu bổ sung, điểm lệch baseline & RTM](03-credit-limit/L02-requirements-gap-rtm.md) | SCRUM-8, 27–30, 53, 54 | — | 📝 v0.2 · 9 điểm chờ PO, Risk, Vận hành thẻ quyết định · 20 yêu cầu |
+| [L02 Yêu cầu bổ sung, điểm lệch baseline & RTM](03-credit-limit/L02-requirements-gap-rtm.md) | SCRUM-8, 27–30, 53, 54 | — | 📝 v0.3 · 9 điểm chờ PO, Risk, Vận hành thẻ quyết định · 20 yêu cầu có tiêu chí nghiệm thu |
 | [L03 Đặc tả giao diện LIM-W1 → W4, M1 → M3](03-credit-limit/L03-ui-spec.md) | SCRUM-51, 52 | — | 📝 v0.3 · 16 ảnh chụp tự động (chụp lại 26/11) |
 | [L04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–2](03-credit-limit/L04-test-plan-cases.md) | SCRUM-8, 51, 52 | — | ✅ v1.3 · vòng 2: 36 ca UI, đạt 34 · 4 lỗi đã sửa · 6 lỗi mở (chờ quyết định) · 10 ca backend chờ service |
 | [L05 Đặc tả API & từ điển dữ liệu (đề xuất)](03-credit-limit/L05-api-data-dictionary.md) | SCRUM-27–30, 38, 53, 54 | ERD | 📝 v0.2 · 12 bảng · ISO 8583 · 29 API · 12 mã lỗi riêng |
 | [L06 Yêu cầu phi chức năng & KPI-07 → 09](03-credit-limit/L06-nfr-kpi.md) | SCRUM-8 | — | 📝 v0.2 · 22 NFR theo ISO/IEC 25010 · 3 KPI + 8 chỉ số vận hành |
 | [L07 SIT, hiệu năng, UAT & biên bản nghiệm thu](03-credit-limit/L07-sit-perf-uat.md) | SCRUM-8, 27–30, 51–54 | Flowchart ×2 | ⛔ v0.1 · 12 SIT · 6 hiệu năng · 21 UAT, chờ `limit-service` và simulator ISO 8583 |
-| [L08 Tuân thủ, điều khoản cho khách & dữ liệu cá nhân](03-credit-limit/L08-compliance-terms.md) | SCRUM-8, 54 | Flowchart | 📝 v0.1 · 12 yêu cầu tuân thủ (1 ✅ · 7 🟡 · 4 ❌) · dự thảo điều khoản Boost, Smart Fallback, 5 mẫu thông báo |
+| [L08 Tuân thủ, điều khoản cho khách & dữ liệu cá nhân](03-credit-limit/L08-compliance-terms.md) | SCRUM-8, 54 | Flowchart | 📝 v0.2 · 12 yêu cầu tuân thủ (1 ✅ · 7 🟡 · 4 ❌) · dự thảo điều khoản Boost, Smart Fallback, 5 mẫu thông báo |
 
 ## Việc còn lại ngoài tài liệu
 

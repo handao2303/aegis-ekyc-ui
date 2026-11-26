@@ -8,6 +8,8 @@
 | Mã nguồn | `src/ops/Reconciliation.tsx`, khung dùng chung `src/ops/kit.tsx` |
 | Ảnh | 1280 × 860, tiếng Việt, chụp tự động bằng `tools/diagrams/rec-screens.mjs` |
 | Phiên bản | 1.3 · 25/11/2026 · Han Dao |
+| Chuẩn tham chiếu | WCAG 2.2 mức AA · PCI DSS (che số thẻ, số tài khoản) – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
+| Trạng thái | ✅ Mô tả UI mẫu đang chạy, có ảnh từng màn · chờ Kế toán trưởng, PO duyệt |
 
 Quy tắc nghiệp vụ và điểm lệch baseline: [R02](R02-requirements-gap-rtm.md). Kết quả chạy thử trên giao diện: [R04](R04-test-plan-cases.md).
 

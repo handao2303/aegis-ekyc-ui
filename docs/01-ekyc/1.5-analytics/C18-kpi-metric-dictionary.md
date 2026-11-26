@@ -7,6 +7,7 @@
 | Jira | [SCRUM-87](https://baohandao2303.atlassian.net/browse/SCRUM-87) |
 | UI | Màn **Báo cáo SLA** trong Aegis Compliance (bản mẫu: [pages.tsx](../../../src/web/pages.tsx)) |
 | Nguồn dữ liệu | Sự kiện trạng thái phiên (C06), `kyc_decisions`, `audit_event` (C10) → DWH |
+| Chuẩn tham chiếu | ISO/IEC 25010 (đặc tính chất lượng đo được) · không có chuẩn bắt buộc cho từ điển chỉ số – [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Luồng dữ liệu
 

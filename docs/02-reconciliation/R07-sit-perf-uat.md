@@ -109,13 +109,13 @@ Dữ liệu tổng hợp, sinh bằng script; tỷ lệ lệch 3–5% để có 
 
 ```mermaid
 flowchart LR
-    A["SIT đạt<br/>hiệu năng đạt"] --> B["Chuẩn bị dữ liệu<br/>TD-REC-01 → 08"]
+    A(["SIT đạt<br/>hiệu năng đạt"]) --> B["Chuẩn bị dữ liệu<br/>TD-REC-01 → 08"]
     B --> C["Kế toán chạy<br/>kịch bản UAT"]
     C --> D{"Có lỗi<br/>Critical / High?"}
     D -- "Có" --> E["Sửa và chạy lại<br/>ca bị ảnh hưởng"]
     E --> C
     D -- "Không" --> F["Tổng hợp kết quả<br/>mẫu §4.1"]
-    F --> G["Ký biên bản<br/>nghiệm thu §4.2"]
+    F --> G(["Ký biên bản<br/>nghiệm thu §4.2"])
 ```
 
 | Vai trò | Người | Việc |

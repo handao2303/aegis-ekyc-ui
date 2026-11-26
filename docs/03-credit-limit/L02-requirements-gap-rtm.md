@@ -5,7 +5,7 @@
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · Real-time Credit Limit |
 | Baseline | BAS-BRD-v1.2 §2.3 BR-LIM-01 → 10 · §3.5 entity · §4.3 UC-LIM-01 → 06 · §5.3 RULE-LIM-01 → 08 · §6.3 US-LIM-01 → 06 · §1.9 KPI-07 → 09 · BAS-RAID-v1.2 (RSK-08 → 11, 14, 16 · DEP-05 → 07, 10 · ISS-03, 04) · CR-003 (đã duyệt 20/09/2026) |
 | Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (cách viết và thuộc tính yêu cầu) · BABOK v3 *Trace Requirements*, *Assess Requirements Changes* · ISO 8583 · PCI DSS v4.0 (che PAN) |
-| Phiên bản | 0.2 – bản nháp · 26/11/2026 · Han Dao (BA) |
+| Phiên bản | 0.3 · 26/11/2026 · Han Dao (BA) – bản nháp |
 | Trạng thái | 📝 Chờ PO, Risk tín dụng, Vận hành thẻ và Tech Lead quyết định 9 điểm ở §3 |
 
 ## 1. Phạm vi baseline và mức độ đáp ứng hiện tại
@@ -60,48 +60,48 @@ Viết theo ISO/IEC/IEEE 29148: một ý, kiểm chứng được, có nguồn. 
 
 ### 4.1 Authorization và reversal (UC-LIM-01, 02, 05)
 
-| Mã | Yêu cầu | Nguồn | Ưu tiên |
-|---|---|---|---|
-| REQ-LIM-01 | Hệ thống phải nhận diện bản tin trùng theo khoá `stan + rrn + terminal_id + ngày giao dịch (F7)` và trả lại đúng kết quả lần đầu, không trừ hạn mức lần hai. Log và W1 phải hiện RRN. | BR-LIM-03, RULE-LIM-03 · STAN có thể lặp lại theo ngày (*cần Vận hành thẻ xác nhận*) | Must |
-| REQ-LIM-02 | Khi hết ngân sách thời gian hoặc không lấy được khoá, hệ thống phải trả 0110 từ chối với một mã F39 riêng cho fail-safe và ghi lý do `TIMEOUT_FAILSAFE`. | UC-LIM-01, 02 luồng ngoại lệ · mã F39 cụ thể *cần xác minh* với tổ chức thẻ | Must |
-| REQ-LIM-03 | Reversal không tìm thấy giao dịch gốc theo STAN/RRN phải được đưa vào hàng chờ "Reversal không khớp" trên W1 để vận hành xử lý tay. | UC-LIM-05 luồng ngoại lệ · RSK-10 | Must |
-| REQ-LIM-04 | Reversal đến trễ nhưng còn trong cửa sổ hợp lệ vẫn được xử lý và ghi độ trễ so với giao dịch gốc. | UC-LIM-05 luồng phụ · cửa sổ *đề xuất 24 giờ* | Should |
+| Mã | Yêu cầu | Nguồn | Tiêu chí nghiệm thu | Ưu tiên |
+|---|---|---|---|---|
+| REQ-LIM-01 | Hệ thống phải nhận diện bản tin trùng theo khoá `stan + rrn + terminal_id + ngày giao dịch (F7)` và trả lại đúng kết quả lần đầu, không trừ hạn mức lần hai. Log và W1 phải hiện RRN. | BR-LIM-03, RULE-LIM-03 · STAN có thể lặp lại theo ngày (*cần Vận hành thẻ xác nhận*) | Gửi cùng 0100 (trùng STAN, RRN, terminal, F7) 3 lần → 3 lần nhận cùng 0110, hạn mức trừ 1 lần, 2 dòng log có `is_duplicate = true`; W1 có cột RRN (TC-LIM-B02, TC-LIM-34) | Must |
+| REQ-LIM-02 | Khi hết ngân sách thời gian hoặc không lấy được khoá, hệ thống phải trả 0110 từ chối với một mã F39 riêng cho fail-safe và ghi lý do `TIMEOUT_FAILSAFE`. | UC-LIM-01, 02 luồng ngoại lệ · mã F39 cụ thể *cần xác minh* với tổ chức thẻ | Mock CASA trễ quá ngân sách → nhận 0110 từ chối trong ≤ 2 s với mã F39 fail-safe đã chốt, log ghi `TIMEOUT_FAILSAFE` (TC-LIM-B09) | Must |
+| REQ-LIM-03 | Reversal không tìm thấy giao dịch gốc theo STAN/RRN phải được đưa vào hàng chờ "Reversal không khớp" trên W1 để vận hành xử lý tay. | UC-LIM-05 luồng ngoại lệ · RSK-10 | Gửi 0420 với STAN/RRN không có gốc → không đổi hạn mức, dòng mới xuất hiện ở hàng chờ "Reversal không khớp" trên W1 (TC-LIM-B05) | Must |
+| REQ-LIM-04 | Reversal đến trễ nhưng còn trong cửa sổ hợp lệ vẫn được xử lý và ghi độ trễ so với giao dịch gốc. | UC-LIM-05 luồng phụ · cửa sổ *đề xuất 24 giờ* | Gửi 0420 sau giao dịch gốc 23 giờ → được xử lý, log ghi độ trễ; sau 25 giờ → vào hàng chờ tay | Should |
 
 ### 4.2 Smart Fallback (UC-LIM-03)
 
-| Mã | Yêu cầu | Nguồn | Ưu tiên |
-|---|---|---|---|
-| REQ-LIM-05 | Hệ thống phải hỗ trợ fallback toàn phần và từng phần theo cấu hình sản phẩm; ghi `fallback_type` và phần trừ vào hạn mức, phần trừ vào CASA. | UC-LIM-03 luồng phụ, BRD §3.5 FallbackTransaction | Should |
-| REQ-LIM-06 | Mỗi giao dịch fallback phải sinh bút toán đối ứng thẻ ↔ CASA và phát sự kiện để Module 2 đối chiếu cuối ngày. | UC-LIM-03 bước 3, 4 · BR-LIM-10 | Should |
-| REQ-LIM-07 | Khách chỉ bật Smart Fallback cho CASA đứng tên mình và đang hoạt động; tắt có hiệu lực với giao dịch kế tiếp. | UC-LIM-03 tiền điều kiện | Should |
+| Mã | Yêu cầu | Nguồn | Tiêu chí nghiệm thu | Ưu tiên |
+|---|---|---|---|---|
+| REQ-LIM-05 | Hệ thống phải hỗ trợ fallback toàn phần và từng phần theo cấu hình sản phẩm; ghi `fallback_type` và phần trừ vào hạn mức, phần trừ vào CASA. | UC-LIM-03 luồng phụ, BRD §3.5 FallbackTransaction | Cấu hình `PARTIAL_ALLOWED`, khả dụng 1 tr, giao dịch 3 tr → `fallback_type = PARTIAL`, phần thẻ 1 tr, phần CASA 2 tr; cấu hình `FULL_ONLY` → toàn bộ 3 tr trừ CASA (TC-LIM-B04) | Should |
+| REQ-LIM-06 | Mỗi giao dịch fallback phải sinh bút toán đối ứng thẻ ↔ CASA và phát sự kiện để Module 2 đối chiếu cuối ngày. | UC-LIM-03 bước 3, 4 · BR-LIM-10 | Mỗi FallbackTransaction có `gl_ref` khác rỗng và đúng 1 sự kiện `limit.authorization.processed` có `fallback` ≠ null; EOD không có dòng lệch `MISSING_GL` (TC-LIM-B10) | Should |
+| REQ-LIM-07 | Khách chỉ bật Smart Fallback cho CASA đứng tên mình và đang hoạt động; tắt có hiệu lực với giao dịch kế tiếp. | UC-LIM-03 tiền điều kiện | Chọn CASA không đứng tên khách hoặc đã đóng → lỗi `CASA_NOT_ELIGIBLE`; tắt công tắc rồi giao dịch vượt khả dụng → từ chối 51, không trừ CASA (UAT-LIM-P03) | Should |
 
 ### 4.3 Temporary Limit Boost (UC-LIM-04)
 
-| Mã | Yêu cầu | Nguồn | Ưu tiên |
-|---|---|---|---|
-| REQ-LIM-08 | Số tiền Boost không vượt `boost_percentage` × hạn mức gốc; W3 hiện cả số tiền và %. | BR-LIM-06, RULE-LIM-05 | Should |
-| REQ-LIM-09 | Khi Boost hết hạn mà dư nợ lớn hơn hạn mức gốc, hệ thống không tự huỷ giao dịch đã duyệt; khả dụng về 0 và các giao dịch mới bị từ chối cho tới khi khách trả bớt. | RULE-LIM-06 · tình huống biên chưa có trong BRD – *Risk xác nhận* | Should |
-| REQ-LIM-10 | Hệ thống không cấp Boost nếu điểm hành vi giảm quá ngưỡng hoặc thẻ có cờ gian lận mở, kể cả khi lần đánh giá trước đã đủ điều kiện. | UC-LIM-04 luồng ngoại lệ | Should |
-| REQ-LIM-11 | Màn M2 phải hiện: hạn mức mới, ngày giờ hết hạn, việc tự trở về hạn mức gốc, phí, điều kiện có thể bị khoá; khách phải xác nhận mới nhận được. | BR-LIM-06, CR-003 (minh bạch) · TC-LIM-27 | Must |
-| REQ-LIM-12 | Khách có thể chủ động yêu cầu xét Boost sớm hơn kỳ đánh giá. | UC-LIM-04 luồng phụ · chưa có UI | Could |
+| Mã | Yêu cầu | Nguồn | Tiêu chí nghiệm thu | Ưu tiên |
+|---|---|---|---|---|
+| REQ-LIM-08 | Số tiền Boost không vượt `boost_percentage` × hạn mức gốc; W3 hiện cả số tiền và %. | BR-LIM-06, RULE-LIM-05 | Thẻ hạn mức 80 tr, trần 12,5% → Boost tối đa 10 tr; đề xuất 11 tr bị từ chối `BOOST_CAP_EXCEEDED`; W3 hiện cột % (TC-LIM-B06) | Should |
+| REQ-LIM-09 | Khi Boost hết hạn mà dư nợ lớn hơn hạn mức gốc, hệ thống không tự huỷ giao dịch đã duyệt; khả dụng về 0 và các giao dịch mới bị từ chối cho tới khi khách trả bớt. | RULE-LIM-06 · tình huống biên chưa có trong BRD – *Risk xác nhận* | Dư nợ 85 tr, hạn mức gốc 80 tr, Boost hết hạn → không giao dịch nào bị huỷ, khả dụng = 0, giao dịch mới nhận 51 (TC-LIM-B07) | Should |
+| REQ-LIM-10 | Hệ thống không cấp Boost nếu điểm hành vi giảm quá ngưỡng hoặc thẻ có cờ gian lận mở, kể cả khi lần đánh giá trước đã đủ điều kiện. | UC-LIM-04 luồng ngoại lệ | Thẻ đủ điểm ở kỳ trước nhưng có case gian lận `OPEN` hoặc điểm giảm dưới ngưỡng → không sinh `boost_offers` ở kỳ này (TC-LIM-B06) | Should |
+| REQ-LIM-11 | Màn M2 phải hiện: hạn mức mới, ngày giờ hết hạn, việc tự trở về hạn mức gốc, phí, điều kiện có thể bị khoá; khách phải xác nhận mới nhận được. | BR-LIM-06, CR-003 (minh bạch) · TC-LIM-27 | M2 hiện đủ 5 nội dung; nút Nhận khoá tới khi tick ô xác nhận; API-L43 thiếu `acknowledged` trả `ACK_REQUIRED` (TC-LIM-27) | Must |
+| REQ-LIM-12 | Khách có thể chủ động yêu cầu xét Boost sớm hơn kỳ đánh giá. | UC-LIM-04 luồng phụ · chưa có UI | Khách bấm "Xét lại hạn mức tạm thời" → hệ thống chạy đánh giá trong ≤ 1 phút và hiện kết quả (có hoặc không có lời mời) | Could |
 
 ### 4.4 Giám sát gian lận và thông báo (UC-LIM-06, CR-003)
 
-| Mã | Yêu cầu | Nguồn | Ưu tiên |
-|---|---|---|---|
-| REQ-LIM-13 | Khi khoá Boost (tự động hoặc thủ công), hệ thống phải gửi SMS và App push trong cùng giao dịch nghiệp vụ, lưu `delivery_status` từng kênh. | BR-LIM-07, CR-003 · D-LIM-08 | Must (nếu go-live Boost – DEC-02) |
-| REQ-LIM-14 | Gửi thất bại thì tự gửi lại *tối đa 3 lần (sau 1, 5, 15 phút)*; vẫn lỗi thì hiện cảnh báo trên W4 và cho Risk gửi lại tay. | RSK-14 · TC-LIM-21 | Must |
-| REQ-LIM-15 | Nội dung thông báo dùng mẫu đã được Risk/Legal/CSKH duyệt, nêu lý do và kênh khiếu nại, không chứa PAN đầy đủ, OTP hay đường link. | UC-LIM-06 bước 4 · ISS-03, ACT-05 | Must |
-| REQ-LIM-16 | Khiếu nại của khách về việc bị khoá Boost được chuyển thành case cho Vận hành thẻ. | UC-LIM-06 luồng ngoại lệ | Should |
-| REQ-LIM-17 | Đóng case gian lận phải chọn kết luận (`CONFIRMED_FRAUD`, `FALSE_POSITIVE`, `CUSTOMER_CONFIRMED`) và ghi chú, để làm dữ liệu cải thiện mô hình. | UC-LIM-06 hậu điều kiện · TC-LIM-23 | Should |
-| REQ-LIM-18 | Người khoá Boost thủ công không được tự mở khoá Boost đó (phân tách nhiệm vụ). | *Đề xuất* theo nguyên tắc SoD của Module 2 | Could |
+| Mã | Yêu cầu | Nguồn | Tiêu chí nghiệm thu | Ưu tiên |
+|---|---|---|---|---|
+| REQ-LIM-13 | Khi khoá Boost (tự động hoặc thủ công), hệ thống phải gửi SMS và App push trong cùng giao dịch nghiệp vụ, lưu `delivery_status` từng kênh. | BR-LIM-07, CR-003 · D-LIM-08 | Khoá Boost (tự động hoặc thủ công) → trong cùng giao dịch DB có 2 dòng `notifications` (SMS, APP) `PENDING`; sau khi gửi mỗi dòng có `delivery_status` (TC-LIM-B08, UAT-LIM-07) | Must (nếu go-live Boost – DEC-02) |
+| REQ-LIM-14 | Gửi thất bại thì tự gửi lại *tối đa 3 lần (sau 1, 5, 15 phút)*; vẫn lỗi thì hiện cảnh báo trên W4 và cho Risk gửi lại tay. | RSK-14 · TC-LIM-21 | Mock SMS lỗi → gửi lại đúng lịch 1, 5, 15 phút; lần 4 vẫn lỗi → W4 hiện FAILED và nút Gửi lại (TC-LIM-21) | Must |
+| REQ-LIM-15 | Nội dung thông báo dùng mẫu đã được Risk/Legal/CSKH duyệt, nêu lý do và kênh khiếu nại, không chứa PAN đầy đủ, OTP hay đường link. | UC-LIM-06 bước 4 · ISS-03, ACT-05 | Mọi thông báo gửi đi khớp mã mẫu đã duyệt; quét nội dung không có PAN 16 số, chuỗi OTP hay URL (TC-LIM-22) | Must |
+| REQ-LIM-16 | Khiếu nại của khách về việc bị khoá Boost được chuyển thành case cho Vận hành thẻ. | UC-LIM-06 luồng ngoại lệ | Khách bấm "Không phải tôi" hoặc gọi tổng đài khiếu nại → tạo case cho Vận hành thẻ liên kết với case gian lận (UAT-LIM-P10) | Should |
+| REQ-LIM-17 | Đóng case gian lận phải chọn kết luận (`CONFIRMED_FRAUD`, `FALSE_POSITIVE`, `CUSTOMER_CONFIRMED`) và ghi chú, để làm dữ liệu cải thiện mô hình. | UC-LIM-06 hậu điều kiện · TC-LIM-23 | Đóng case thiếu kết luận hoặc ghi chú < 10 ký tự → không đóng được; đóng thành công lưu `conclusion`, `closed_by`, `close_note` (TC-LIM-23) | Should |
+| REQ-LIM-18 | Người khoá Boost thủ công không được tự mở khoá Boost đó (phân tách nhiệm vụ). | *Đề xuất* theo nguyên tắc SoD của Module 2 | Risk A khoá thủ công, Risk A mở khoá → lỗi `SOD_SELF_UNLOCK`; Risk B mở khoá được (UAT-LIM-P07) | Could |
 
 ### 4.5 Bảo mật, đối chiếu cuối ngày
 
-| Mã | Yêu cầu | Nguồn | Ưu tiên |
-|---|---|---|---|
-| REQ-LIM-19 | PAN phải được che (6 số đầu + 4 số cuối hoặc chỉ 4 số cuối) ở mọi màn, file xuất, log, sự kiện và bằng chứng UAT. | NFR-SEC-04, PCI DSS 3.4 · RSK-16 · UAT-LIM-10 | Must |
-| REQ-LIM-20 | Mọi giao dịch đã duyệt, reversal và fallback phát sự kiện `limit.authorization.processed` có `messageId` duy nhất; cuối ngày xuất ledger để Module 2 đối chiếu, dòng lệch phải được giải trình. | BR-LIM-10, RULE-LIM-08, KPI-09 · REQ-REC-20 | Should |
+| Mã | Yêu cầu | Nguồn | Tiêu chí nghiệm thu | Ưu tiên |
+|---|---|---|---|---|
+| REQ-LIM-19 | PAN phải được che (6 số đầu + 4 số cuối hoặc chỉ 4 số cuối) ở mọi màn, file xuất, log, sự kiện và bằng chứng UAT. | NFR-SEC-04, PCI DSS 3.4 · RSK-16 · UAT-LIM-10 | Quét toàn bộ màn, file xuất, log, payload sự kiện, ảnh bằng chứng UAT → không có PAN 16 số (TC-LIM-04, 25, SIT-LIM-10, UAT-LIM-10) | Must |
+| REQ-LIM-20 | Mọi giao dịch đã duyệt, reversal và fallback phát sự kiện `limit.authorization.processed` có `messageId` duy nhất; cuối ngày xuất ledger để Module 2 đối chiếu, dòng lệch phải được giải trình. | BR-LIM-10, RULE-LIM-08, KPI-09 · REQ-REC-20 | Gửi lại cùng `messageId` → Module 2 không sinh GLEntry thứ hai; báo cáo EOD lệch = 0 hoặc mọi dòng có người phụ trách (TC-LIM-B10, TC-REC-B09) | Should |
 
 ## 5. Dữ liệu cần thêm vào mô hình BRD §3.5
 
@@ -154,6 +154,7 @@ Mã ca backend (TC-LIM-Bxx) ở [L04 §4](L04-test-plan-cases.md); SIT, PERF và
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
+| 0.3 | 26/11/2026 | Han Dao | — | Thêm cột Tiêu chí nghiệm thu cho REQ-LIM-01 → 20 (ISO/IEC/IEEE 29148: yêu cầu kiểm chứng được), dẫn ca test L04, L07 |
 | 0.2 | 26/11/2026 | Han Dao | — | Thêm L08 vào bản đồ tài liệu; yêu cầu tuân thủ REQ-LIM-21 → 26 ở L08 §5 chờ duyệt để chuyển vào §4 |
 | 0.1 | 25/11/2026 | Han Dao | `273d6b3` | Bản đầu: đánh giá 10 BR, 9 điểm lệch, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM, câu hỏi mở |
 

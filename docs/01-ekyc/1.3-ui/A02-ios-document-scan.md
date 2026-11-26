@@ -44,7 +44,7 @@ flowchart TD
     CK -- "Không" --> F
     CK -- "Có" --> ST{"Trùng kết quả<br/>khung trước?"}
     ST -- "Chưa" --> F
-    ST -- "Rồi" --> OK["Chốt MRZ, rung báo"]
+    ST -- "Rồi" --> OK(["Chốt MRZ, rung báo"])
 ```
 
 | Trường | TD1 (CCCD) | TD3 (hộ chiếu) |

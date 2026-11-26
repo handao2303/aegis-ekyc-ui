@@ -8,6 +8,8 @@
 | Mã nguồn | `src/web/CompliancePage.tsx`, `src/web/pages.tsx`, `src/web/store.tsx` (gọi API) |
 | Ảnh | Màn hình 1280 × 860, chế độ demo; riêng Cấu hình ngưỡng chụp toàn trang khi nối backend (25/11) |
 | Phiên bản | 1.1 · 25/11/2026 · Han Dao |
+| Trạng thái | ✅ Mô tả UI đang chạy, có ảnh từng màn · chờ PO, Compliance duyệt |
+| Chuẩn tham chiếu | WCAG 2.2 mức AA – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Khung ứng dụng
 

@@ -9,6 +9,7 @@
 | Ngày bắt đầu | 15/11/2026 – bắt đầu dự án |
 | Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
 | Chuẩn tham chiếu | Mô hình C4 (Context, Container) · ISO/IEC/IEEE 42010 · UML 2.5 (sequence) |
+| Trạng thái | ✅ v1.2 · chờ Solution Owner / Kiến trúc sư duyệt |
 
 ## 1. Bối cảnh hệ thống (System Context)
 
@@ -137,21 +138,21 @@ Nhánh REFER và REJECTED: xem [C07–C09](../01-ekyc/1.1-business/C07-C09-refer
 
 ```mermaid
 flowchart TD
-    A["Đủ dữ liệu phiên"] --> B{"Đã có tài khoản?<br/>(C04)"}
-    B -- "Có" --> X1["Dừng · mời đăng nhập"]
+    A(["Đủ dữ liệu phiên"]) --> B{"Đã có tài khoản?<br/>(C04)"}
+    B -- "Có" --> X1(["Dừng · mời đăng nhập"])
     B -- "Không" --> C{"Giấy tờ hợp lệ,<br/>đủ tuổi? (C05)"}
-    C -- "Không" --> R1["REJECTED<br/>DOC_EXPIRED / UNDER_AGE"]
+    C -- "Không" --> R1(["REJECTED<br/>DOC_EXPIRED / UNDER_AGE"])
     C -- "Có" --> D{"Nguồn ảnh<br/>so khớp (C11)"}
     D -- "OCR-only" --> RF["REFER"]
     D -- "Chip hợp lệ" --> E{"Liveness &<br/>face match"}
     E -- "Vùng biên" --> RF
     E -- "Đạt" --> F{"Rủi ro<br/>CIC + AML"}
-    F -- "Cao" --> R2["REJECTED"]
+    F -- "Cao" --> R2(["REJECTED"])
     F -- "PEP / trung bình" --> RF
     F -- "Thấp" --> G{"Velocity / thiết bị<br/>(C13)"}
     G -- "Nghi vấn" --> RF
-    G -- "Sạch" --> OK["STP_APPROVED"]
-    RF --> Q["Hàng đợi Compliance<br/>SLA 24h (C09)"]
+    G -- "Sạch" --> OK(["STP_APPROVED"])
+    RF --> Q(["Hàng đợi Compliance<br/>SLA 24h (C09)"])
 ```
 
 ## 5. Bản đồ màn hình – App khách hàng

@@ -7,12 +7,13 @@
 | Jira | [SCRUM-86](https://baohandao2303.atlassian.net/browse/SCRUM-86) · bị chặn bởi [SCRUM-72](https://baohandao2303.atlassian.net/browse/SCRUM-72), [SCRUM-85](https://baohandao2303.atlassian.net/browse/SCRUM-85) |
 | Người soạn | BA · Người nghiệm thu: PO + Compliance |
 | Dữ liệu | Hồ sơ mẫu có nhãn kỳ vọng; **không dùng dữ liệu thật của khách** |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Quy trình UAT
 
 ```mermaid
 flowchart LR
-    A["Entry criteria đạt"] --> B["Chuẩn bị dữ liệu mẫu<br/>& tài khoản test"]
+    A(["Entry criteria đạt"]) --> B["Chuẩn bị dữ liệu mẫu<br/>& tài khoản test"]
     B --> C["Chạy kịch bản"]
     C --> D{"Lỗi?"}
     D -- "Có" --> E["Ghi Bug trên Jira<br/>gắn UAT case"]
@@ -20,7 +21,7 @@ flowchart LR
     F --> C
     D -- "Không" --> G{"Exit criteria đạt?"}
     G -- "Chưa" --> C
-    G -- "Đạt" --> H["Ký biên bản nghiệm thu"]
+    G -- "Đạt" --> H(["Ký biên bản nghiệm thu"])
 ```
 
 ## 2. Điều kiện

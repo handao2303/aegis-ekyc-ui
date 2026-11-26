@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.1 · 26/11/2026 · Han Dao (BA) |
+| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 📝 Bản nháp – chờ Compliance, Pháp chế, Risk tín dụng, InfoSec và CSKH xác nhận |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · liên quan [SCRUM-54](https://baohandao2303.atlassian.net/browse/SCRUM-54) (thông báo) |
 | Tương đương Module 1 | [C02](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) (compliance mapping) và [P01](../01-ekyc/1.2-compliance-legal/P01-terms-privacy.md) (điều khoản, quyền riêng tư) |
@@ -115,14 +115,14 @@ Mã `LIM-N0x` là mã tài liệu. Trong Notification Service dùng cùng quy ư
 
 Bổ sung vào [L02 §4](L02-requirements-gap-rtm.md) khi được duyệt.
 
-| Mã | Yêu cầu | Nguồn | Ưu tiên |
-|---|---|---|---|
-| REQ-LIM-21 | Khi Boost hết hạn, hệ thống phải gửi LIM-N03 cho chủ thẻ trong vòng *15 phút* (*đề xuất*). | CR-LIM-02 | Should |
-| REQ-LIM-22 | Khi hạn mức gốc được điều chỉnh (nếu giữ W2 – D-LIM-09), hệ thống phải gửi LIM-N04 và lưu bằng chứng đã gửi. | CR-LIM-02 | Should |
-| REQ-LIM-23 | Smart Fallback mặc định tắt; khi khách bật, hệ thống phải lưu bằng chứng đồng ý (phiên bản điều khoản §4.1, thời điểm, thiết bị) như `consents` của Module 1. | CR-LIM-04, LL-03 | Must |
-| REQ-LIM-24 | Hệ thống chỉ chấm điểm hành vi và mời Boost cho khách có phạm vi `limit_scoring` còn hiệu lực; khách rút lại thì dừng từ kỳ đánh giá kế tiếp và huỷ lời mời đang mở. | CR-LIM-06, LL-05 | Must |
-| REQ-LIM-25 | Risk đóng case với kết luận `CONFIRMED_FRAUD` thì hệ thống phải tạo yêu cầu cho bộ phận AML, giữ liên kết tới giao dịch. | CR-LIM-09, LL-07 | Should |
-| REQ-LIM-26 | Hệ thống chỉ tạo hồ sơ hạn mức từ `ekyc.decision.completed` khi `decision` là `STP_APPROVED` / `APPROVED` **và** `product = credit`; sự kiện `payment` hoặc `REJECTED` bị bỏ qua có ghi log. | CR-LIM-12, C05 | Must |
+| Mã | Yêu cầu | Nguồn | Tiêu chí nghiệm thu | Ưu tiên |
+|---|---|---|---|---|
+| REQ-LIM-21 | Khi Boost hết hạn, hệ thống phải gửi LIM-N03 cho chủ thẻ trong vòng *15 phút* (*đề xuất*). | CR-LIM-02 | Đẩy đồng hồ qua `expires_at` → LIM-N03 gửi trong ≤ 15 phút, có `notifications` tương ứng | Should |
+| REQ-LIM-22 | Khi hạn mức gốc được điều chỉnh (nếu giữ W2 – D-LIM-09), hệ thống phải gửi LIM-N04 và lưu bằng chứng đã gửi. | CR-LIM-02 | Duyệt điều chỉnh hạn mức gốc → LIM-N04 gửi, `notifications.delivery_status` được lưu | Should |
+| REQ-LIM-23 | Smart Fallback mặc định tắt; khi khách bật, hệ thống phải lưu bằng chứng đồng ý (phiên bản điều khoản §4.1, thời điểm, thiết bị) như `consents` của Module 1. | CR-LIM-04, LL-03 | Thẻ mới: công tắc ở trạng thái tắt; bật → hiện điều khoản §4.1, sau xác nhận có dòng `consents` (scope `smart_fallback`, `terms_version`, thời điểm, thiết bị) | Must |
+| REQ-LIM-24 | Hệ thống chỉ chấm điểm hành vi và mời Boost cho khách có phạm vi `limit_scoring` còn hiệu lực; khách rút lại thì dừng từ kỳ đánh giá kế tiếp và huỷ lời mời đang mở. | CR-LIM-06, LL-05 | Khách rút `limit_scoring` → kỳ đánh giá kế tiếp không chấm điểm thẻ đó, lời mời `OFFERED` chuyển `EXPIRED` | Must |
+| REQ-LIM-25 | Risk đóng case với kết luận `CONFIRMED_FRAUD` thì hệ thống phải tạo yêu cầu cho bộ phận AML, giữ liên kết tới giao dịch. | CR-LIM-09, LL-07 | Đóng case `CONFIRMED_FRAUD` → có yêu cầu mới ở hàng đợi AML, liên kết `case_id` và giao dịch | Should |
+| REQ-LIM-26 | Hệ thống chỉ tạo hồ sơ hạn mức từ `ekyc.decision.completed` khi `decision` là `STP_APPROVED` / `APPROVED` **và** `product = credit`; sự kiện `payment` hoặc `REJECTED` bị bỏ qua có ghi log. | CR-LIM-12, C05 | Phát `ekyc.decision.completed` với `product = payment` hoặc `REJECTED` → không tạo `card_limit_profiles`, log ghi lý do bỏ qua; `STP_APPROVED` + `credit` → tạo đúng 1 hồ sơ | Must |
 
 ## 6. Câu hỏi cho Pháp chế, Compliance, Risk, CSKH
 
@@ -142,6 +142,7 @@ Bổ sung vào [L02 §4](L02-requirements-gap-rtm.md) khi được duyệt.
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 0.1 | 26/11/2026 | Han Dao | — | Bản đầu: 9 nhóm văn bản, 12 yêu cầu tuân thủ (1 ✅ · 7 🟡 · 4 ❌), 5 phạm vi đồng ý, dự thảo điều khoản Smart Fallback và Boost, 5 mẫu thông báo, 6 yêu cầu mới REQ-LIM-21 → 26 |
+| 0.2 | 26/11/2026 | Han Dao | — | Thêm cột Tiêu chí nghiệm thu cho REQ-LIM-21 → 26 |
 
 ### Phê duyệt
 

@@ -5,6 +5,7 @@
 | Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
 | Trạng thái | ⛔ Kế hoạch xong · bị chặn bởi SCRUM-56 (sandbox đối tác) |
 | Jira | [SCRUM-85](https://baohandao2303.atlassian.net/browse/SCRUM-85) · bị chặn bởi [SCRUM-56](https://baohandao2303.atlassian.net/browse/SCRUM-56) · chặn [SCRUM-86](https://baohandao2303.atlassian.net/browse/SCRUM-86) |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Bản đồ tích hợp
 

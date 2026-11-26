@@ -9,6 +9,7 @@
 | Phiên bản | 1.1 · 25/11/2026 · Han Dao (BA) |
 | Trạng thái | 🔧 Đặc tả + UI mẫu xong, chờ `reconciliation-service`; 9 điểm lệch baseline chờ Kế toán trưởng (R02 §3) |
 | Tài liệu đi kèm | [R02](R02-requirements-gap-rtm.md) yêu cầu bổ sung & RTM · [R03](R03-ui-spec.md) đặc tả giao diện · [R04](R04-test-plan-cases.md) kiểm thử · [R05](R05-api-data-dictionary.md) API & từ điển dữ liệu |
+| Chuẩn tham chiếu | BPMN 2.0 · UML 2.5 (state, sequence) · IIBA BABOK v3 – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
 
 > ⚠️ Một số trạng thái và quy tắc trong tài liệu này khác BAS-BRD-v1.2 (trạng thái ngoại lệ, aging, điều kiện leo thang, ý nghĩa RULE-REC-05, trạng thái quy tắc, loại `DUPLICATE`). Danh sách và đề xuất xử lý: [R02 §3](R02-requirements-gap-rtm.md). Các điểm lệch đó giữ nguyên tới khi Kế toán trưởng quyết định. Bản 1.1 (25/11) chỉ cập nhật §2–§4 cho khớp UI mẫu sau R04 vòng 2: 3 cách xử lý ngoại lệ, trạng thái `PENDING_POSTING`, trả về / trình lại bút toán, kiểm RULE-REC-05 theo nghĩa baseline.
 

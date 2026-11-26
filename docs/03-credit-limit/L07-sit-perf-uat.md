@@ -100,13 +100,13 @@ Công cụ *đề xuất*: bộ sinh tải ISO 8583 (ví dụ jPOS) cho cổng t
 
 ```mermaid
 flowchart LR
-    A["SIT đạt<br/>hiệu năng đạt"] --> B["Chuẩn bị dữ liệu<br/>TD-LIM-01 → 08"]
+    A(["SIT đạt<br/>hiệu năng đạt"]) --> B["Chuẩn bị dữ liệu<br/>TD-LIM-01 → 08"]
     B --> C["Vận hành thẻ, Risk<br/>chạy kịch bản"]
     C --> D{"Có lỗi<br/>Critical / High?"}
     D -- "Có" --> E["Sửa và chạy lại<br/>ca bị ảnh hưởng"]
     E --> C
     D -- "Không" --> F["Tổng hợp kết quả<br/>mẫu §4.1"]
-    F --> G["Ký biên bản<br/>§4.2"]
+    F --> G(["Ký biên bản<br/>§4.2"])
 ```
 
 | Vai trò | Người | Việc |

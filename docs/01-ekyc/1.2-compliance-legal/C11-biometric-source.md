@@ -7,6 +7,7 @@
 | Jira | [SCRUM-80](https://baohandao2303.atlassian.net/browse/SCRUM-80) · bị chặn bởi [SCRUM-71](https://baohandao2303.atlassian.net/browse/SCRUM-71) |
 | BR / FR / RULE | BR-19 · FR-16 · RULE-14 · đáp ứng CR-02, CR-03, CR-04 |
 | UI | Màn Quét chip (cảnh báo khi bỏ qua NFC), thẻ "Khuôn mặt" trong chi tiết hồ sơ |
+| Chuẩn tham chiếu | ISO/IEC 30107-3 (phát hiện giả mạo sinh trắc) · ISO/IEC 29100 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Vấn đề
 

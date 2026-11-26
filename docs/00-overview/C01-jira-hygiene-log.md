@@ -7,6 +7,8 @@
 | Người thực hiện | Han Dao (BA/PO) |
 | Kết quả | **Hoàn tất 6/6 hạng mục** |
 | Phiên bản | 1.1 · 26/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Hoàn tất 6/6 hạng mục · chờ PO, Tech Lead duyệt v1.1 |
+| Chuẩn tham chiếu | Không có chuẩn bắt buộc (nhật ký); kiểm soát tài liệu theo ISO/IEC/IEEE 29148 – [Q01](Q01-standards-conformance.md) |
 
 ## Thay đổi đã thực hiện
 

@@ -7,6 +7,7 @@
 | Jira | [SCRUM-75](https://baohandao2303.atlassian.net/browse/SCRUM-75) |
 | BR / FR / RULE | BR-14 · FR-11a → d · RULE-11 |
 | UI | `Resume`, `Consent` (chế độ re-consent) |
+| Chuẩn tham chiếu | IIBA BABOK v3 · UML 2.5 (state, sequence) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Sơ đồ trạng thái phiên
 

@@ -6,17 +6,18 @@
 | Trạng thái | 🔧 Kế hoạch xong · chờ thiết bị NFC thứ hai và môi trường |
 | Jira | [SCRUM-84](https://baohandao2303.atlassian.net/browse/SCRUM-84) · liên quan [SCRUM-57](https://baohandao2303.atlassian.net/browse/SCRUM-57) |
 | Yêu cầu | NFR-PERF-02 (mỗi bước < 3s P95) · NFR-PERF-03 (toàn luồng ≤ 3 phút P90) |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 · ISO/IEC 25010 (hiệu năng) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Điểm đo trên luồng
 
 ```mermaid
 flowchart TB
-    A["Consent"] --> B["OCR<br/>⏱ T1"]
+    A(["Consent"]) --> B["OCR<br/>⏱ T1"]
     B --> C["NFC<br/>⏱ T2"]
     C --> D["Liveness + Face match<br/>⏱ T3"]
     D --> E["CIC + AML/PEP<br/>⏱ T4"]
     E --> F["Risk-score + quyết định<br/>⏱ T5"]
-    F --> G["Kết quả"]
+    F --> G(["Kết quả"])
     A -. "⏱ T_total (trừ thời gian khách thao tác)" .-> G
 ```
 

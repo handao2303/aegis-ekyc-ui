@@ -7,6 +7,7 @@
 | Jira | [SCRUM-73](https://baohandao2303.atlassian.net/browse/SCRUM-73) (C04) · [SCRUM-74](https://baohandao2303.atlassian.net/browse/SCRUM-74) (C05) |
 | BR / FR / RULE | BR-12, BR-13 · FR-09, FR-10 · RULE-09, RULE-10 |
 | UI | `Duplicate`, `ExpiredDoc`, `OcrReview` trong [screens.tsx](../../../src/mobile/screens.tsx) |
+| Chuẩn tham chiếu | IIBA BABOK v3 (bảng quyết định, quy tắc nghiệp vụ) · ISO/IEC/IEEE 29148:2018 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 Hai kiểm tra này chạy **ngay sau OCR/NFC và trước Liveness**. Mục đích là dừng sớm hồ sơ không hợp lệ, không tốn chi phí gọi Liveness và CIC.
 
@@ -14,22 +15,22 @@ Hai kiểm tra này chạy **ngay sau OCR/NFC và trước Liveness**. Mục đ�
 
 ```mermaid
 flowchart TD
-    A["OCR + NFC hoàn tất"] --> B{"Giấy tờ còn hạn?"}
-    B -- "Hết hạn" --> R1["REJECTED · DOC_EXPIRED<br/>Màn: Giấy tờ hết hạn"]
+    A(["OCR + NFC hoàn tất"]) --> B{"Giấy tờ còn hạn?"}
+    B -- "Hết hạn" --> R1(["REJECTED · DOC_EXPIRED<br/>Màn: Giấy tờ hết hạn"])
     B -- "Còn hạn" --> C{"Đủ tuổi theo sản phẩm?"}
-    C -- "Chưa đủ" --> R2["REJECTED · UNDER_AGE"]
+    C -- "Chưa đủ" --> R2(["REJECTED · UNDER_AGE"])
     C -- "Đủ" --> D{"OCR khớp chip?<br/>họ tên · ngày sinh · số CCCD"}
     D -- "Lệch" --> F1["Gắn cờ DOC_DATA_MISMATCH"]
     D -- "Khớp" --> E
     F1 --> E{"Tra số CCCD"}
-    E -- "Có tài khoản active" --> S1["Dừng · STOPPED_DUPLICATE<br/>Màn: Đã có tài khoản"]
-    E -- "Có phiên đang dở" --> S2["Mở lại phiên cũ (C06)"]
+    E -- "Có tài khoản active" --> S1(["Dừng · STOPPED_DUPLICATE<br/>Màn: Đã có tài khoản"])
+    E -- "Có phiên đang dở" --> S2(["Mở lại phiên cũ (C06)"])
     E -- "Bị từ chối trong 30 ngày" --> F2["Gắn cờ PRIOR_REJECTION"]
     E -- "Cùng số, khác họ tên/ngày sinh" --> F3["Gắn cờ IDENTITY_MISMATCH"]
     E -- "Chưa có" --> L
     F2 --> L["Tiếp tục Liveness"]
     F3 --> L
-    L --> M["Risk-score engine đọc cờ<br/>cờ bất kỳ ⇒ tối thiểu REFER"]
+    L --> M(["Risk-score engine đọc cờ<br/>cờ bất kỳ ⇒ tối thiểu REFER"])
 ```
 
 ## 2. RULE-EKYC-10 · Hợp lệ giấy tờ & tuổi

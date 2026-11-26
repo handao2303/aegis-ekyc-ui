@@ -7,22 +7,23 @@
 | Jira | [SCRUM-79](https://baohandao2303.atlassian.net/browse/SCRUM-79) |
 | BR / FR / RULE | BR-18 · FR-15 · RULE-13 · NFR-AUD-03, NFR-SEC-05 |
 | UI | Chi tiết hồ sơ (nút "Phê duyệt · gửi Checker", "Xem họ tên đầy đủ"), lịch sử hồ sơ, Cấu hình ngưỡng |
+| Chuẩn tham chiếu | IIBA BABOK v3 · UML 2.5 / ERD – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Quy trình ra quyết định
 
 ```mermaid
 flowchart TD
-    A["Maker mở hồ sơ đã nhận"] --> B{"Quyết định"}
+    A(["Maker mở hồ sơ đã nhận"]) --> B{"Quyết định"}
     B -- "Từ chối" --> R["Chọn lý do nội bộ (bắt buộc)<br/>→ REJECTED"]
     B -- "Phê duyệt" --> C{"Cần Checker?<br/>PEP · Sanction · risk ≥ 70"}
     C -- "Không" --> AP["APPROVED<br/>tạo CBS account (SCRUM-37)"]
     C -- "Có" --> P["PENDING_CHECKER<br/>chưa tạo tài khoản"]
     P --> D{"Checker là<br/>người khác Maker?"}
-    D -- "Không" --> X["Hệ thống chặn"]
+    D -- "Không" --> X(["Hệ thống chặn"])
     D -- "Có" --> E{"Checker quyết định"}
     E -- "Đồng ý" --> AP2["APPROVED<br/>ghi maker_id + checker_id"]
-    E -- "Trả lại" --> RF["Về REFER kèm lý do"]
-    R --> N["Thông báo khách (C08)"]
+    E -- "Trả lại" --> RF(["Về REFER kèm lý do"])
+    R --> N(["Thông báo khách (C08)"])
     AP --> N
     AP2 --> N
 ```

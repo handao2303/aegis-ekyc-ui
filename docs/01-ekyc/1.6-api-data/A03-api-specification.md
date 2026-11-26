@@ -15,6 +15,8 @@ Tài liệu mô tả **hợp đồng giao tiếp** giữa app khách, Aegis Comp
 
 ## 1. Quy ước chung
 
+Mã API đánh theo khối: **API-01 → 19** phía khách hàng (§2, hiện dùng 01 → 13), **API-20 → 39** phía Compliance (§3, hiện dùng 20 → 33). Số còn trống để thêm API mới mà không đổi mã cũ.
+
 | Mục | Quy ước |
 |---|---|
 | Base URL | Dev: `http://localhost:8787`. Production: sau API Gateway, chưa chốt |

@@ -9,6 +9,7 @@
 | Ngày bắt đầu | 15/11/2026 – bắt đầu dự án và lập kế hoạch kiểm thử |
 | Phiên bản | 1.3 · 26/11/2026 · Han Dao (BA) |
 | Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Plan), thuật ngữ ISTQB – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Trạng thái | ✅ Đang áp dụng (vòng nội bộ 1, 2 đã chạy) · chờ QA Lead, PO duyệt |
 
 ## 1. Mục tiêu
 

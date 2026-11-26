@@ -4,6 +4,7 @@
 |---|---|
 | Jira | [SCRUM-72](https://baohandao2303.atlassian.net/browse/SCRUM-72) |
 | Bổ sung cho | BAS-BRD-v1.2 · BAS-FSD-v1.2 · BAS-SRS-v1.2 |
+| Phiên bản | v1.3-draft3 · 24/11/2026 · Han Dao (BA) |
 | Trạng thái | **Bản nháp v1.3-draft3 – chờ PO & Compliance duyệt** |
 | Đầu vào | [C02 Compliance Mapping](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) |
 | Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (đặc tả và truy vết yêu cầu), IIBA BABOK v3 – đánh giá ở [Q01](Q01-standards-conformance.md) |
@@ -136,3 +137,12 @@ Bộ UAT chi tiết: [C17 UAT Pack](../01-ekyc/1.4-testing/C17-uat-pack.md).
 | v1.3-draft | 21/11/2026 | Han Dao | Thêm BR-12→21, FR-09→18, RULE-09→16, NFR mới, RTM | Chờ duyệt |
 | v1.3-draft2 | 23/11/2026 | Han Dao | Thêm BR-22, FR-19, RULE-17 (hộ chiếu); BR-12, FR-09 không còn chỉ nói CCCD; thêm cột kiểm chứng và test case T02 vào FR, NFR, RTM (theo ISO 29148 – Q01) | Chờ duyệt |
 | v1.3-draft3 | 24/11/2026 | Han Dao | Viết lại toàn bộ FR theo dạng "Hệ thống phải…"; tách FR-11 thành FR-11a → d, FR-14 thành FR-14a → d; liên kết A03 (API) và D01 (dữ liệu) (Q01 việc #1) | Chờ duyệt |
+
+## 8. Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 24/11/2026 | Trình duyệt v1.3-draft3 |
+| Product Owner | | | |
+| Compliance | | | |
+| Tech Lead | | | |

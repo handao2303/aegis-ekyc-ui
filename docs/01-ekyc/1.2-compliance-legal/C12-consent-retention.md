@@ -6,17 +6,18 @@
 | Trạng thái | ✅ Đặc tả + màn Quyền riêng tư + backend · chờ Compliance chốt thời hạn lưu (C02 câu 3) |
 | Jira | [SCRUM-81](https://baohandao2303.atlassian.net/browse/SCRUM-81) · bị chặn bởi [SCRUM-71](https://baohandao2303.atlassian.net/browse/SCRUM-71) |
 | BR / FR / RULE | BR-20 · FR-17 · RULE-15 · NFR-RET-01 · đáp ứng CR-07, CR-08, CR-12 |
+| Chuẩn tham chiếu | ISO/IEC 29100 (đồng ý, giới hạn lưu trữ) · Luật 91/2025/QH15 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Vòng đời dữ liệu cá nhân trong eKYC
 
 ```mermaid
 flowchart LR
-    A["Thu thập<br/>ảnh giấy tờ, chip, selfie"] --> B{"Kết quả hồ sơ"}
-    B -- "Bỏ dở / hết hạn" --> X1["Xoá sau 7 ngày<br/>giữ metadata ẩn danh"]
-    B -- "Rút lại đồng ý khi đang làm" --> X2["Xoá trong 24 giờ"]
+    A(["Thu thập<br/>ảnh giấy tờ, chip, selfie"]) --> B{"Kết quả hồ sơ"}
+    B -- "Bỏ dở / hết hạn" --> X1(["Xoá sau 7 ngày<br/>giữ metadata ẩn danh"])
+    B -- "Rút lại đồng ý khi đang làm" --> X2(["Xoá trong 24 giờ"])
     B -- "REJECTED" --> H1["Lưu theo thời hạn PCRT<br/>rồi xoá"]
     B -- "APPROVED" --> H2["Lưu suốt quan hệ khách hàng<br/>+ thời hạn PCRT sau khi đóng TK"]
-    H1 --> X3["Job retention xoá<br/>ghi log xoá"]
+    H1 --> X3(["Job retention xoá<br/>ghi log xoá"])
     H2 --> X3
 ```
 

@@ -6,6 +6,7 @@
 | Trạng thái | 📝 Bản nháp – chờ Compliance xác nhận |
 | Jira | [SCRUM-71](https://baohandao2303.atlassian.net/browse/SCRUM-71) · Spike |
 | Đầu ra cho | C03 (BRD v1.3), C05, C11, C12 |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (truy vết yêu cầu tới nguồn pháp lý) · ISO/IEC 29100 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 > ⚠️ Số hiệu và nội dung văn bản dưới đây là **điểm khởi đầu để rà soát**, viết dựa trên hiểu biết chung về quy định Việt Nam. Trước khi đưa vào BRD, phải đối chiếu bản gốc và tình trạng hiệu lực trên cổng văn bản chính thức (vbpl.vn, sbv.gov.vn). Cột "Cần xác minh" đánh dấu những chỗ chưa chắc chắn.
 

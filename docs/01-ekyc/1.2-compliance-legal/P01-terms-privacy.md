@@ -2,12 +2,14 @@
 
 | | |
 |---|---|
+| Phiên bản | 0.4 · 25/11/2026 · Han Dao (BA) |
 | Trạng thái | **Bản nháp v0.4 – chờ Pháp chế và Compliance duyệt** (25/11: rà soát lại theo Luật 91/2025/QH15 và NĐ 356/2025, xem mục 0) |
 | Phiên bản điều khoản | Đang hiển thị trên app: `2026.11` (bản cũ, chưa duyệt). Bản đề xuất trong tài liệu này: **`2026.12`**, hiệu lực từ ngày Pháp chế duyệt |
 | Dùng ở | Màn eKYC-01 / 01R (hộp thoại điều khoản), eKYC-14 (quyền riêng tư), thông báo SMS/Push (C08) |
 | Nguồn trong code | `src/ekyc/terms.ts` (nội dung hiển thị) · `server/src/config.ts` → `terms_version` |
 | Liên quan | [C02 Compliance Mapping](C02-compliance-mapping.md) · [C12 Rút lại đồng ý & lưu trữ](C12-consent-retention.md) · [C07–C09 Thông báo](../1.1-business/C07-C09-refer-handling.md) |
 | Jira | SCRUM-17, 46, 71, 81 |
+| Chuẩn tham chiếu | ISO/IEC 29100 · Luật 91/2025/QH15 · NĐ 356/2025/NĐ-CP (*cần Pháp chế xác minh*) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 > ⚠️ Nội dung điều khoản là bản BA soạn để làm giao diện và kiểm thử. Số hiệu và điều khoản văn bản ở mục 4 **phải được Pháp chế đối chiếu bản gốc, tình trạng hiệu lực** trước khi phát hành. Mục 0 dựa trên tóm tắt của các trang pháp luật và công ty luật, chưa đối chiếu toàn văn.
 

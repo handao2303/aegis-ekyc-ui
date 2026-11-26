@@ -10,6 +10,7 @@
 | Bộ tài liệu | L01 luồng · [L02](L02-requirements-gap-rtm.md) yêu cầu, điểm lệch, RTM · [L03](L03-ui-spec.md) giao diện · [L04](L04-test-plan-cases.md) kiểm thử UI · [L05](L05-api-data-dictionary.md) API, dữ liệu · [L06](L06-nfr-kpi.md) NFR, KPI · [L07](L07-sit-perf-uat.md) SIT, hiệu năng, UAT · [L08](L08-compliance-terms.md) tuân thủ, điều khoản |
 | Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 🔧 Luồng mục tiêu. Có 9 điểm lệch với baseline chờ quyết định ở [L02 §3](L02-requirements-gap-rtm.md) |
+| Chuẩn tham chiếu | BPMN 2.0 · UML 2.5 (state, sequence) · ISO 8583 · IIBA BABOK v3 – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
 
 ## 1. Xử lý một giao dịch thẻ (ISO 8583)
 
@@ -55,22 +56,23 @@ Huỷ giao dịch (MTI **0420** – reversal, hoặc 0120 – advice; BR-LIM-08,
 
 ```mermaid
 flowchart TD
-    A["Nhận 0100"] --> B{"Thẻ đang khoá?"}
-    B -- "Có" --> D1["DECLINED · 05"]
+    A(["Nhận 0100"]) --> B{"Thẻ đang khoá?"}
+    B -- "Có" --> D1(["DECLINED · 05"])
     B -- "Không" --> C{"Số tiền ≤ khả dụng<br/>(hạn mức + Boost − đã dùng − tạm giữ)?"}
-    C -- "Có" --> OK["APPROVED · 00"]
+    C -- "Có" --> OK(["APPROVED · 00"])
     C -- "Không" --> F{"Smart Fallback bật<br/>và CASA đủ tiền?"}
     F -- "Có" --> FB["APPROVED · 00·CASA<br/>FallbackTransaction = HOLD"]
-    F -- "Không" --> D2["DECLINED · 51"]
+    F -- "Không" --> D2(["DECLINED · 51"])
     FB --> S{"Quyết toán"}
-    S -- "Settle" --> ST["SETTLED"]
-    S -- "Huỷ / hết hạn giữ" --> RL["RELEASED"]
+    S -- "Settle" --> ST(["SETTLED"])
+    S -- "Huỷ / hết hạn giữ" --> RL(["RELEASED"])
 ```
 
 ## 3. Ngắt mạch kết nối Core Banking (circuit breaker)
 
 ```mermaid
 stateDiagram-v2
+    %% Máy trạng thái chạy liên tục suốt vòng đời service nên không có trạng thái kết thúc (UML 2.5 cho phép)
     [*] --> CLOSED
     CLOSED --> OPEN: Lỗi / timeout vượt ngưỡng
     OPEN --> HALF_OPEN: Hết thời gian chờ

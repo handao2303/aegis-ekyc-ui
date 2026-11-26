@@ -7,6 +7,7 @@
 | Jira | [SCRUM-76](https://baohandao2303.atlassian.net/browse/SCRUM-76) (C07) · [SCRUM-77](https://baohandao2303.atlassian.net/browse/SCRUM-77) (C08) · [SCRUM-78](https://baohandao2303.atlassian.net/browse/SCRUM-78) (C09) |
 | BR / FR / RULE | BR-15/16/17 · FR-12/13/14 · RULE-12 |
 | UI | App: `Refer`, `RequestInfo` · Compliance: hàng đợi, badge SLA, modal "Yêu cầu bổ sung", chuông thông báo |
+| Chuẩn tham chiếu | IIBA BABOK v3 · BPMN 2.0 (swimlane) · UML 2.5 (sequence, state) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 Ba ticket gộp một tài liệu vì chúng là **một quy trình liền mạch**: hồ sơ vào hàng đợi → nhân viên xử lý trong SLA → có thể yêu cầu khách bổ sung → khách được thông báo ở mỗi bước.
 

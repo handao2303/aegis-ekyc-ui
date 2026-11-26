@@ -7,6 +7,7 @@
 | Jira | [SCRUM-82](https://baohandao2303.atlassian.net/browse/SCRUM-82) (C13 – Story) · [SCRUM-83](https://baohandao2303.atlassian.net/browse/SCRUM-83) (C14 – Spike) |
 | BR / FR / RULE | BR-21 · FR-18 · RULE-16 |
 | UI | Thẻ "Thiết bị" và lý do `DEVICE_MULTI_IDENTITY` trong Compliance; ngưỡng phiên/thiết bị trong Cấu hình ngưỡng |
+| Chuẩn tham chiếu | IIBA BABOK v3 · ISO/IEC 30107-3 (spike C14) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 Hai lớp phòng thủ bổ sung cho nhau: **C13** chặn người mở **nhiều hồ sơ**, **C14** chặn **một hồ sơ dùng khuôn mặt giả**.
 

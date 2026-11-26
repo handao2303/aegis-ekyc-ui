@@ -8,6 +8,7 @@
 | Dữ liệu | Hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), nhân viên `u-anh`, `u-yen` (Officer), `u-huy` (Trưởng nhóm), `u-trang` (CS) |
 | Môi trường | `npm run dev:all`; app `/app/`, Compliance `/compliance/`; đặt lại dữ liệu `POST /api/dev/reset` |
 | Tổng | 42 app khách · 32 Compliance · 12 API · 6 job nền · 16 phi chức năng = **108 test case** (25/11: thêm TC-APP-42, TC-CO-32 cho tuổi tối thiểu 16) |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Case Specification), ISO/IEC/IEEE 29119-4 (kỹ thuật thiết kế) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 **Ưu tiên:** C = Cao (chặn phát hành) · TB = Trung bình · T = Thấp.
 **Cách chạy:** **Tự động** = có test trong `server/test` (tên test ghi trong cột) · **E2E** = chạy tay trên app/trình duyệt · **Cả hai**.
