@@ -5,7 +5,7 @@
 | Mã tài liệu | AEG-EKYC-P01 |
 | Phiên bản | 0.5 |
 | Ngày phát hành | 26/11/2026 |
-| Trạng thái | **Bản nháp v0.4 – chờ Pháp chế và Compliance duyệt** (25/11: rà soát lại theo Luật 91/2025/QH15 và NĐ 356/2025, xem mục 0) |
+| Trạng thái | **Bản nháp – chờ Pháp chế và Compliance duyệt** (25/11: rà soát lại theo Luật 91/2025/QH15 và NĐ 356/2025, xem mục 0) |
 | Phân loại | Nội bộ – phần điều khoản công bố cho khách sau khi Pháp chế duyệt |
 | Tác giả | Han Dao (BA) |
 | Người duyệt | Product Owner – chưa duyệt |

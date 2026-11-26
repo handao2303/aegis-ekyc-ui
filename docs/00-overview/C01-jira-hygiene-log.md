@@ -5,7 +5,7 @@
 | Mã tài liệu | AEG-GEN-C01 |
 | Phiên bản | 1.2 |
 | Ngày phát hành | 26/11/2026 |
-| Trạng thái | ✅ Hoàn tất 6/6 hạng mục · chờ PO, Tech Lead duyệt v1.1 |
+| Trạng thái | ✅ Hoàn tất 6/6 hạng mục · chờ PO, Tech Lead duyệt |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
 | Người duyệt | Product Owner · Tech Lead – chưa duyệt |

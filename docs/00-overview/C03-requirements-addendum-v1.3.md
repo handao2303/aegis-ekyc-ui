@@ -5,7 +5,7 @@
 | Mã tài liệu | AEG-GEN-C03 |
 | Phiên bản | v1.3-draft4 |
 | Ngày phát hành | 26/11/2026 |
-| Trạng thái | **Bản nháp v1.3-draft3 – chờ PO & Compliance duyệt** |
+| Trạng thái | **Bản nháp – chờ PO & Compliance duyệt** |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
 | Người duyệt | Product Owner · Compliance · Tech Lead – chưa duyệt |

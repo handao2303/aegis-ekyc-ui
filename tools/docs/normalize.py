@@ -103,6 +103,15 @@ def bump(v):
     return f"{m.group(1)}{int(m.group(2)) + 1}" if m else v + ".1"
 
 
+def clean_status(status, versions):
+    """Bỏ số phiên bản của chính tài liệu khỏi Trạng thái – phiên bản đã có trường riêng, ghi ở đây sẽ cũ đi sau mỗi lần sửa.
+    Chỉ bỏ các số có trong lịch sử của tài liệu (giữ 'reconciliation-service v1.0' vì đó là phiên bản phần mềm)."""
+    for v in sorted({v.lstrip("v") for v in versions}, key=len, reverse=True):
+        status = re.sub(r"\s*\bv" + re.escape(v) + r"\b(?![.\w-])", "", status)
+    status = re.sub(r"(✅|🔧|📝|⛔|🟡)\s*·\s*", r"\1 ", status)
+    return re.sub(r"\s{2,}", " ", status).strip()
+
+
 def doc_index():
     idx = {}
     for d, _, fs in os.walk(ROOT):
@@ -179,7 +188,7 @@ def normalize(path, idx):
         ("Mã tài liệu", f"AEG-{mod}-{code}"),
         ("Phiên bản", ver),
         ("Ngày phát hành", date),
-        ("Trạng thái", fmap.get("Trạng thái", "—")),
+        ("Trạng thái", clean_status(fmap.get("Trạng thái", "—"), [h[0] for h in history])),
         ("Phân loại", CLASSIFICATION.get(code, "Nội bộ")),
         ("Tác giả", "Han Dao (BA)"),
         ("Người duyệt", (" · ".join(names) or "—") + ("" if approved else " – chưa duyệt")),

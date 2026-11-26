@@ -5,7 +5,7 @@
 | Mã tài liệu | AEG-GEN-Q01 |
 | Phiên bản | 1.2 |
 | Ngày phát hành | 26/11/2026 |
-| Trạng thái | ✅ Tự đánh giá v1.1 · chờ QA Lead, PO xem xét |
+| Trạng thái | ✅ Tự đánh giá · chờ QA Lead, PO xem xét |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
 | Người duyệt | QA Lead · Product Owner – chưa duyệt |

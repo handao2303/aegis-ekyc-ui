@@ -5,7 +5,7 @@
 | Mã tài liệu | AEG-GEN-A01 |
 | Phiên bản | 1.3 |
 | Ngày phát hành | 26/11/2026 |
-| Trạng thái | ✅ v1.2 · chờ Solution Owner / Kiến trúc sư duyệt |
+| Trạng thái | ✅ chờ Solution Owner / Kiến trúc sư duyệt |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
 | Người duyệt | Solution Owner / Kiến trúc sư – chưa duyệt |
