@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
-| Trạng thái | 📝 Bản đề xuất (to-be) – chưa có `reconciliation-service`. Chờ Tech Lead và Kế toán trưởng xác nhận |
+| Phiên bản | 0.3 · 26/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Đã hiện thực bản tham chiếu `reconciliation-service` v1.0 ([services/reconciliation](../../services/reconciliation/README.md)), 56/56 test đạt (R04 §4). Thiết kế vẫn chờ Tech Lead và Kế toán trưởng xác nhận các chỗ **[D-REC-xx]** |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · story SCRUM-22 → 26 (backend), [SCRUM-50](https://baohandao2303.atlassian.net/browse/SCRUM-50) (truy vết), [SCRUM-53](https://baohandao2303.atlassian.net/browse/SCRUM-53) (EOD) |
 | Nguồn | BAS-BRD-v1.2 §3.4 (mô hình dữ liệu) qua [R02 §5](R02-requirements-gap-rtm.md) · ERD [R01 §5](R01-reconciliation-flow.md) · 20 yêu cầu [R02 §4](R02-requirements-gap-rtm.md) · kiểu dữ liệu UI mẫu `src/ops/Reconciliation.tsx` |
 | Chuẩn tham chiếu | OpenAPI 3.1 (cấu trúc API), RFC 9110 (mã HTTP), BABOK v3 §10.15 (Data Dictionary), ISO 20022 camt.053/054 (sao kê), ISO 4217 (mã tiền tệ) |
@@ -562,6 +562,7 @@ Dùng khi thay dữ liệu mẫu (`SOURCES`, `RULES0`, `EX0`, `GL0` trong `src/o
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
+| 0.3 | 26/11/2026 | Han Dao | — | Có bản hiện thực tham chiếu: 16 bảng (thêm `staff`, `config_changes`, `idempotency`, `limit_ledger`, `gl_approvals`, cột `channel` cho giao dịch nội bộ và `auth_id` cho bút toán từ Hạn mức), 40 endpoint gồm API-01 → 62 và cấu hình Maker-Checker |
 | 0.2 | 26/11/2026 | Han Dao | — | Payload `limit.authorization.processed` thêm `card_id`, giá trị `result` khớp L05 (X01 F-11); bảng nhật ký đổi tên `audit_event` (F-06) |
 | 0.1 | 25/11/2026 | Han Dao | `6c7b79b` | Bản đầu: mô hình dữ liệu 11 bảng, từ điển dữ liệu, 32 API, 13 mã lỗi riêng, sự kiện vào/ra, ánh xạ UI mẫu và test backend |
 

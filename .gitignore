@@ -6,3 +6,4 @@ out/
 tools/diagrams/out/
 server/data/
 .next-build/
+services/*/data/

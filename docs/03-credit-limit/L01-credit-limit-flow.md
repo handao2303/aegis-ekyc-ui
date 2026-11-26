@@ -173,7 +173,7 @@ flowchart LR
 | UAT-LIM-07 | W4 có trạng thái gửi SMS/App và gửi lại; M3 cho khách xác nhận |
 | UAT-LIM-10 | PAN luôn che ở mọi màn |
 
-Ca kiểm thử chi tiết và kết quả chạy trên UI mẫu (31/33 đạt): [L04](L04-test-plan-cases.md). Kịch bản UAT đầy đủ: [L07 §3](L07-sit-perf-uat.md).
+Ca kiểm thử chi tiết và kết quả chạy trên UI mẫu (vòng 2: 34/36 đạt): [L04](L04-test-plan-cases.md). Kịch bản UAT đầy đủ: [L07 §3](L07-sit-perf-uat.md).
 
 ## 8. Kiểm soát tài liệu
 
@@ -184,7 +184,7 @@ Ca kiểm thử chi tiết và kết quả chạy trên UI mẫu (31/33 đạt):
 | 0.1 | 21/11/2026 | Han Dao | `b8931f8` | Bản đầu cùng UI mẫu web và mobile: ISO 8583, cây quyết định, circuit breaker, Boost, gian lận |
 | 1.0 | 23/11/2026 | Han Dao | `792bbfa` | Chuyển vào `docs/03-credit-limit`, thêm bản đồ màn hình và truy vết UAT |
 | 1.1 | 25/11/2026 | Han Dao | `273d6b3` | Đối chiếu BAS-BRD-v1.2: reversal MTI 0420/0120, cách kiểm soát đồng thời của UC-LIM-02, trạng thái và thời hạn Boost theo baseline; liên kết bộ L02 → L07; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
-| 1.2 | 26/11/2026 | Han Dao | — | Thêm L08 vào bộ tài liệu |
+| 1.2 | 26/11/2026 | Han Dao | — | Thêm L08 vào bộ tài liệu; cập nhật kết quả L04 vòng 2 (34/36) |
 
 ### Phê duyệt
 

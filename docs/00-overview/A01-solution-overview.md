@@ -224,11 +224,11 @@ flowchart LR
 | Aegis Hạn mức (LIM-W1 → W4) | `/credit-limit/` |
 | App iPhone native – quét CCCD/hộ chiếu | `ios/AegisScan` (cài qua Xcode) |
 
-**eKYC đã nối backend** `ekyc-service` ([server/](../../server/README.md)) khi chạy `npm run dev:all`; bản GitHub Pages vẫn là demo không backend. Đối soát và Hạn mức còn dùng dữ liệu mẫu. Hướng đi tiếp theo:
+**eKYC đã nối backend** `ekyc-service` ([server/](../../server/README.md)) khi chạy `npm run dev:all`; bản GitHub Pages vẫn là demo không backend. **Đối soát đã nối backend** `reconciliation-service` ([services/reconciliation](../../services/reconciliation/README.md), cổng 8788) khi chạy local. Hạn mức còn dùng dữ liệu mẫu. Hướng đi tiếp theo:
 
 | Phần | Hướng đi |
 |---|---|
-| Web vận hành | Compliance đã gọi API; Đối soát, Hạn mức thay dữ liệu mẫu bằng API qua API Gateway |
+| Web vận hành | Compliance và Đối soát đã gọi API; Hạn mức thay dữ liệu mẫu bằng API `limit-service` |
 | App khách hàng | `mobile-app` (React Native / Expo bare) dùng lại token Aurora và cấu trúc màn hình của bản web |
 | Đọc chip CCCD / hộ chiếu | Logic MRZ + NFC của Aegis Scan (A02) đưa vào app thật dưới dạng native module, hoặc thay bằng SDK eKYC của đối tác |
 
@@ -240,7 +240,7 @@ flowchart LR
 |---|---|---|---|---|
 | 1.0 | 21/11/2026 → 23/11/2026 | Han Dao | `982969c`, `8a99253`, `361be3e` | Bản đầu: Context, Container, luồng end-to-end eKYC, cây quyết định, bản đồ màn hình, triển khai UI |
 | 1.1 | 26/11/2026 | Han Dao | — | Mở rộng Context và Container cho cả 3 module: tổ chức thẻ, CASA / sổ cái, topic `limit.*`, `rec.*`, CSDL của `limit-service` và `reconciliation-service` (X01 F-04, F-05) |
-| 1.2 | 26/11/2026 | Han Dao | — | Ghi ngày bắt đầu dự án 15/11/2026 |
+| 1.2 | 26/11/2026 | Han Dao | — | Ghi ngày bắt đầu dự án 15/11/2026; Đối soát đã có backend |
 
 ### Phê duyệt
 

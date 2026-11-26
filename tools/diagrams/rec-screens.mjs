@@ -35,7 +35,7 @@ const click = async (label, { exact = false, within } = {}) => {
   return ok;
 };
 const shot = (name, fullPage = false) => page.screenshot({ path: join(OUT, `${name}.png`), fullPage });
-const fresh = async () => { await page.goto(`${BASE}/reconciliation/?v=${Date.now()}`, { waitUntil: "networkidle0" }); await sleep(1200); };
+const fresh = async () => { await page.goto(`${BASE}/reconciliation/?api=off&v=${Date.now()}`, { waitUntil: "networkidle0" }); await sleep(1200); };
 
 // ---------- REC-01 ----------
 await fresh();

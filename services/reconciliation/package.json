@@ -1,0 +1,14 @@
+{
+  "name": "aegis-reconciliation-service",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "reconciliation-service cho Aegis: nạp file nguồn, engine khớp EXACT/FUZZY/N1, ngoại lệ, bút toán Maker-Checker, truy vết, EOD với Hạn mức. Không phụ thuộc thư viện ngoài (Node ≥ 23.6).",
+  "engines": { "node": ">=23.6" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/main.ts",
+    "dev": "node --disable-warning=ExperimentalWarning --watch src/main.ts",
+    "test": "node --disable-warning=ExperimentalWarning --test --test-reporter=spec 'test/**/*.test.ts'",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

@@ -69,3 +69,9 @@ test("RULE-EKYC-12: trạng thái SLA, trừ thời gian tạm dừng", () => {
 });
 
 test("Che họ tên", () => assert.equal(maskName("LÊ VĂN PHÚC"), "L* V** P***"));
+
+test("CONFIG_BOUNDS có giới hạn cho mọi tham số số (chống comment nuốt mất dòng)", async () => {
+  const { DEFAULT_CONFIG, CONFIG_BOUNDS } = await import("../src/config.ts");
+  const missing = Object.entries(DEFAULT_CONFIG).filter(([k, v]) => typeof v === "number" && !(k in CONFIG_BOUNDS)).map(([k]) => k);
+  assert.deepEqual(missing, []);
+});

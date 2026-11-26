@@ -9,6 +9,7 @@ import { LangProvider, useLang } from "../i18n";
 import {
   GhostButton, GradientButton, HBars, LineChart, Meter, OpsShell, Panel, Pill, type PillTone, RuleTag, SearchBox, Segmented, Select, StatCard, Table, pct, vnd,
 } from "./kit";
+import { RecApiError, useRecBackend, useRecData, STAFF_ID, type RecClient } from "./recApi";
 
 const NAM = "Lê Hoàng Nam";
 /* Người dùng UAT – đổi vai trò để kiểm Maker-Checker và RULE-REC-05 (R04 §2) */
@@ -36,7 +37,8 @@ const SOURCES: { id: string; name: string; kind: string; records: number; matche
 
 type RuleType = "EXACT" | "FUZZY" | "N1";
 type RuleStatus = "ACTIVE" | "PENDING" | "DRAFT";
-type Rule = { id: string; name: string; type: RuleType; keys: string[]; tolerance: string; version: number; status: RuleStatus; maker: string; checker?: string; hit: number };
+type Rule = { id: string; name: string; type: RuleType; keys: string[]; tolerance: string; version: number; status: RuleStatus; maker: string; checker?: string; hit: number;
+  /** Chỉ dùng khi gửi lên reconciliation-service */ tol?: { amount: number; days: number } };
 const RULES0: Rule[] = [
   { id: "MR-001", name: "CBS ↔ NAPAS · khớp tuyệt đối", type: "EXACT", keys: ["ref", "amount", "date"], tolerance: "0 ₫ · 0 ngày", version: 7, status: "ACTIVE", maker: "Phạm Thu Trang", checker: "Lê Hoàng Nam", hit: 71.2 },
   { id: "MR-002", name: "CBS ↔ Visa · lệch tỷ giá", type: "FUZZY", keys: ["amount", "date", "account"], tolerance: "±0,5% · ±1 ngày", version: 4, status: "ACTIVE", maker: "Đỗ Minh Quân", checker: "Phạm Thu Trang", hit: 14.6 },
@@ -53,6 +55,7 @@ type Ex = {
   owner?: string; status: ExStatus; causes: { vi: string; en: string; p: number }[];
   resolution?: { type: Resolution; cause: string; override: boolean; note?: string; ref?: string };
   waitingDocs?: string;
+  /** Mã nguyên nhân của top-3 gợi ý (chế độ có backend) */ causeCodes?: string[];
   internal: { ref: string; date: string; acct: string; amount: number }; external: { ref: string; date: string; acct: string; amount: number } | null;
 };
 const EX0: Ex[] = [
@@ -73,8 +76,9 @@ const EX0: Ex[] = [
     internal: { ref: "FT2611051209", date: "18/11 10:20", acct: "1903 2211 8899", amount: 9_870_000 }, external: { ref: "VS-881044", date: "19/11 06:08", acct: "4111 •••• 9981", amount: 9_820_650 } },
 ];
 
-type GLStatus = "POSTED" | "PENDING" | "RETURNED" | "REJECTED";
-type GL = { id: string; date: string; debit: string; credit: string; amount: number; source: string; mode: "ZERO_TOUCH" | "MAKER_CHECKER"; maker: string; checker?: string; status: GLStatus; memo: { vi: string; en: string }; rejectReason?: string; returnNote?: string; submits?: number };
+type GLStatus = "POSTED" | "PENDING" | "RETURNED" | "REJECTED" | "ESCALATED";
+type GL = { id: string; date: string; debit: string; credit: string; amount: number; source: string; mode: "ZERO_TOUCH" | "MAKER_CHECKER"; maker: string; checker?: string; status: GLStatus; memo: { vi: string; en: string }; rejectReason?: string; returnNote?: string; submits?: number;
+  /** Quy tắc sinh giao dịch và người tạo – server trả sẵn (R05 API-30) */ ruleId?: string; ruleMaker?: string };
 const GL0: GL[] = [
   { id: "GL-90311", date: "21/11 09:42", debit: "1131.02", credit: "4211.01", amount: 12_382_000, source: "MR-003 · BATCH-MC-1120", mode: "ZERO_TOUCH", maker: "system", status: "POSTED", memo: { vi: "Tất toán lô Mastercard", en: "Mastercard batch settlement" } },
   { id: "GL-90312", date: "21/11 09:44", debit: "6311.01", credit: "1131.03", amount: 241_250, source: "EXC-1124", mode: "ZERO_TOUCH", maker: NAM, status: "POSTED", memo: { vi: "Điều chỉnh chênh lệch tỷ giá", en: "FX difference adjustment" } },
@@ -93,7 +97,7 @@ const CHART: Record<string, { labels: string[]; auto: number[]; zero: number[] }
 
 const ruleTone: Record<RuleStatus, PillTone> = { ACTIVE: "success", PENDING: "pending", DRAFT: "neutral" };
 const exTone: Record<ExStatus, PillTone> = { OPEN: "pending", IN_PROGRESS: "brand", ESCALATED: "error", PENDING_POSTING: "warning", RESOLVED: "success" };
-const glTone: Record<GLStatus, PillTone> = { POSTED: "success", PENDING: "warning", RETURNED: "pending", REJECTED: "error" };
+const glTone: Record<GLStatus, PillTone> = { POSTED: "success", PENDING: "warning", RETURNED: "pending", REJECTED: "error", ESCALATED: "error" };
 const caseOf = (g: GL) => g.source.match(/EXC-\d+/)?.[0];
 /* Danh mục nguyên nhân chuẩn (REQ-REC-01) – chờ Kế toán + Data chốt (R02 §7 câu 3) */
 const CAUSES: { vi: string; en: string }[] = [
@@ -103,6 +107,64 @@ const CAUSES: { vi: string; en: string }[] = [
 ];
 const aging = (h: number) => (h < 24 ? "0–1d" : h < 72 ? "1–3d" : h < 168 ? "3–7d" : ">7d");
 
+/* ---------- Kết nối reconciliation-service: ánh xạ DTO (R05 §7) → kiểu của UI ---------- */
+
+type Source = (typeof SOURCES)[number];
+type Remote = { sources: Source[]; rules: Rule[]; exs: Ex[]; gls: GL[]; kpi: any; causes: { code: string; vi: string; en: string; count: number }[] };
+const SRC_META: Record<string, { id: string; name: string; kind: string }> = {
+  CBS: { id: "cbs", name: "Core Banking (CBS)", kind: "SFTP · CSV" }, NAPAS: { id: "napas", name: "NAPAS 247", kind: "API · ISO 20022" },
+  VISA: { id: "visa", name: "Visa settlement", kind: "SFTP · TC33" }, MASTERCARD: { id: "mc", name: "Mastercard settlement", kind: "SFTP · IPM" },
+  WALLET: { id: "wallet", name: "Cổng ví điện tử", kind: "API · JSON" },
+};
+const PAIR: Record<string, string> = { "CBS↔NAPAS": "CBS ↔ NAPAS", "CBS↔VISA": "CBS ↔ Visa", "CBS↔MASTERCARD": "Mastercard N:1", "CBS↔WALLET": "CBS ↔ Ví" };
+const money = (m: number) => Math.round(m / 100);
+const hhmm = (ms: number | null) => (ms ? new Date(ms).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", hour12: false }) : "—");
+const dmhm = (ms: number) => { const d = new Date(ms); return `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")} ${hhmm(ms)}`; };
+const side = (t: any) => (t ? { ref: t.reference_no, date: dmhm(t.txn_at), acct: t.account ?? "—", amount: money(t.amount_minor) } : null);
+
+async function loadRemote(c: RecClient): Promise<Remote> {
+  const [src, rules, exs, gls, kpi, causes] = await Promise.all([
+    c.get<any[]>("/sources"), c.get<any[]>("/rules"), c.get<any[]>("/exceptions?status=all"), c.get<any[]>("/gl-entries"), c.get("/reports/kpi"), c.get<any[]>("/reports/causes"),
+  ]);
+  return {
+    kpi, causes,
+    sources: src.map((s) => ({
+      ...SRC_META[s.source], records: s.records, matched: s.match_rate, last: hhmm(s.last_updated_at),
+      status: s.status === "QUARANTINED" ? "quarantine" : s.status === "DELAYED" ? "delayed" : "ok",
+      note: s.status === "QUARANTINED" ? { vi: `Đã cách ly: ${s.quarantine_reason}`, en: `Quarantined: ${s.quarantine_reason}` }
+        : s.status === "DELAYED" ? { vi: `Trễ ${Math.round(s.delay_minutes / 60)}h so với lịch`, en: `${Math.round(s.delay_minutes / 60)}h behind schedule` } : undefined,
+    })),
+    rules: rules.filter((r) => r.status !== "RETIRED").map((r): Rule => ({
+      id: r.rule_id, name: r.name, type: r.type, keys: r.match_keys.filter((k: string) => k !== "CURRENCY" || r.type !== "EXACT").map((k: string) => k.toLowerCase()),
+      tolerance: r.type === "N1" ? `≤ ${r.n1_max_items ?? 20} giao dịch/lô` : r.type === "EXACT" ? "0 ₫" : `±${String(r.amount_tolerance_pct ?? 0.5).replace(".", ",")}% · ±${r.date_tolerance_days ?? 1} ngày`,
+      version: r.version, status: r.status, maker: r.created_by_name, checker: r.approved_by_name ?? r.checker_name ?? undefined, hit: r.hit_rate,
+    })),
+    exs: exs.map((e): Ex => ({
+      id: e.case_id, pair: PAIR[e.source_pair] ?? e.source_pair, rule: e.rule_id ?? "—", kind: e.kind, amount: money(e.amount_minor), diff: money(e.diff_minor),
+      ageH: e.age_hours, dueH: e.due_hours, owner: e.owner_name ?? undefined, status: e.status,
+      causes: e.ai_causes.map((x: any) => ({ vi: x.vi, en: x.en, p: x.probability })), causeCodes: e.ai_causes.map((x: any) => x.code),
+      resolution: e.resolution ? { type: e.resolution.type, cause: [CAUSES[CAUSE_CODES.indexOf(e.resolution.root_cause_code)]?.vi ?? e.resolution.root_cause_code, e.resolution.note].filter(Boolean).join(": "), override: e.resolution.override, note: e.resolution.note ?? undefined, ref: e.resolution.manual_match_ref ?? undefined } : undefined,
+      waitingDocs: e.waiting_docs ?? undefined, internal: side(e.internal)!, external: side(e.external),
+    })),
+    gls: gls.map((g): GL => ({
+      id: g.entry_id, date: dmhm(g.created_at), debit: g.lines.find((l: any) => l.side === "DEBIT")?.account_code ?? "—", credit: g.lines.find((l: any) => l.side === "CREDIT")?.account_code ?? "—",
+      amount: money(g.amount_minor), source: g.case_id ?? (g.reversal_of ? `Đảo ${g.reversal_of}` : g.auth_id ? `Hạn mức · ${g.auth_id}` : `${g.source_rule_id} · ${g.match_id}`),
+      mode: g.mode, maker: g.maker_id === "system" ? "system" : g.maker_name, checker: g.checker_name ?? undefined, status: g.status, memo: { vi: g.memo, en: g.memo },
+      rejectReason: g.reject_reason ?? undefined, returnNote: g.return_note ?? undefined, submits: g.submit_count, ruleId: g.source_rule_id ?? undefined, ruleMaker: g.rule_created_by_name ?? undefined,
+    })),
+  };
+}
+
+/** Có backend: client + tải lại; không có: null → các màn dùng logic demo như trước */
+const ApiCtx = createContext<{ client: RecClient; reload: () => Promise<void> } | null>(null);
+const useApi = () => useContext(ApiCtx);
+/** Chạy lệnh API rồi tải lại; trả lỗi nghiệp vụ dạng chữ để hiện cho người dùng */
+async function act(api: { reload: () => Promise<void> }, fn: () => Promise<unknown>): Promise<string | null> {
+  try { await fn(); await api.reload(); return null; }
+  catch (e) { await api.reload(); return e instanceof RecApiError ? `${e.message}${e.code.startsWith("SOD") || e.code === "RULE_SELF_APPROVAL" ? " – phân tách nhiệm vụ" : ""}` : (e as Error).message; }
+}
+const CAUSE_CODES = ["FX_DIFF", "UNBOOKED_FEE", "LATE_PARTNER_DATA", "WRONG_REFERENCE", "DUPLICATE_TXN", "REVERSED_TXN", "OTHER"];
+
 /* ---------- App ---------- */
 
 function RecApp() {
@@ -110,16 +172,37 @@ function RecApp() {
   const [me, setMe] = useState(() => {
     if (typeof window === "undefined") return NAM;
     const as = new URLSearchParams(window.location.search).get("as");
-    return USERS.find((u) => u.name.split(" ").at(-1)?.toLowerCase() === as?.toLowerCase())?.name ?? NAM;
+    // So sánh không dấu: ?as=quan khớp "Quân" (trước đây so có dấu nên ?as=quan luôn rơi về Nam)
+    const plain = (x: string) => x.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase();
+    return USERS.find((u) => as && plain(u.name.split(" ").at(-1)!) === plain(as))?.name ?? NAM;
   });
   const meUser = USERS.find((u) => u.name === me)!;
   const [view, setView] = useState<View>("dashboard");
   const [period, setPeriod] = useState("7d");
-  const [rules, setRules] = useState(RULES0);
-  const [exs, setExs] = useState(EX0);
-  const [gls, setGls] = useState(GL0);
+  let [rules, setRules] = useState(RULES0);
+  let [exs, setExs] = useState(EX0);
+  let [gls, setGls] = useState(GL0);
   const [openEx, setOpenEx] = useState<string | null>(null);
   const [ruleForm, setRuleForm] = useState(false);
+  const [formErr, setFormErr] = useState<string | null>(null);
+
+  // Có reconciliation-service thì dữ liệu và mọi thao tác đi qua API; không có thì dùng dữ liệu mẫu
+  const backend = useRecBackend(me);
+  const remote = useRecData(backend.client, loadRemote);
+  const api = useMemo(() => (backend.client ? { client: backend.client, reload: remote.reload } : null), [backend.client?.staff, remote.reload]);
+  const live = !!api && !!remote.data;
+  if (live) { rules = remote.data!.rules; exs = remote.data!.exs; gls = remote.data!.gls; }
+  const sources = live ? remote.data!.sources : SOURCES;
+  const saveRule = async (r: Rule) => {
+    if (!api) { setRules((xs) => [r, ...xs]); setRuleForm(false); return; }
+    const err = await act(api, async () => {
+      const created = await api.client.post("/rules", { name: r.name, type: r.type, source_pair: "CBS↔NAPAS", match_keys: r.keys.map((k) => k.toUpperCase()),
+        ...(r.type === "FUZZY" && r.tol ? { amount_tolerance_pct: r.tol.amount, date_tolerance_days: r.tol.days } : {}) });
+      await api.client.post(`/rules/${created.rule_id}/submit`, { version: 1, checker_id: STAFF_ID[r.checker ?? ""] });
+    });
+    setFormErr(err);
+    if (!err) setRuleForm(false);
+  };
 
   const openCount = exs.filter((e) => e.status !== "RESOLVED").length;
   const pendingGL = gls.filter((g) => g.status === "PENDING").length;
@@ -135,6 +218,7 @@ function RecApp() {
 
   return (
     <MeCtx.Provider value={me}>
+    <ApiCtx.Provider value={api}>
     <OpsShell
       module="reconciliation" nav={nav} view={view} onView={go} user={me} role={pick(meUser)}
       greeting={tr(`Chào buổi sáng, ${me.split(" ").at(-1)}`, `Good morning, ${me.split(" ").at(-1)}`)}
@@ -150,8 +234,14 @@ function RecApp() {
         <span className="font-semibold">{tr("Đăng nhập UAT với vai trò", "UAT sign-in as")}</span>
         <Select value={me} onChange={setMe} label={tr("Người dùng UAT", "UAT user")} options={USERS.map((u) => ({ value: u.name, label: `${u.name} · ${pick(u)}` }))} />
         <span className="text-caption text-fg-tertiary">{tr("Chỉ có trên môi trường UAT, để kiểm Maker-Checker.", "UAT only, for testing maker-checker.")} <RuleTag>RULE-REC-05</RuleTag></span>
+        <span className="ml-auto inline-flex items-center gap-1.5 text-caption" data-testid="rec-backend">
+          {live ? <Pill tone="success">{tr("Đã nối reconciliation-service", "Connected to reconciliation-service")}</Pill>
+            : backend.checking ? <Pill tone="neutral">{tr("Đang dò backend…", "Checking backend…")}</Pill>
+            : <Pill tone="neutral">{tr("Chế độ demo · dữ liệu mẫu", "Demo mode · sample data")}</Pill>}
+        </span>
       </div>
-      {view === "dashboard" && <Dashboard period={period} exs={exs} gls={gls} onOpenEx={(id) => { setView("exceptions"); setOpenEx(id); }} go={go} />}
+      {remote.error && <div role="alert" className="mb-4 rounded-[14px] bg-[#fdf0ee] px-4 py-3 text-body-sm text-[#7a1a12]">{remote.error}</div>}
+      {view === "dashboard" && <Dashboard period={period} exs={exs} gls={gls} sources={sources} kpi={live ? remote.data!.kpi : null} causes={live ? remote.data!.causes : null} onOpenEx={(id) => { setView("exceptions"); setOpenEx(id); }} go={go} />}
       {view === "rules" && <Rules rules={rules} setRules={setRules} onNew={() => setRuleForm(true)} />}
       {view === "exceptions" && !ex && <Exceptions exs={exs} onOpen={setOpenEx} />}
       {view === "exceptions" && ex && (
@@ -161,31 +251,39 @@ function RecApp() {
       )}
       {view === "gl" && <GLView gls={gls} setGls={setGls} rules={rules} exs={exs}
         onCase={(id, outcome) => setExs((xs) => xs.map((x) => (x.id !== id || x.status === "RESOLVED" ? x : outcome === "posted" ? { ...x, status: "RESOLVED" } : x.status === "PENDING_POSTING" ? { ...x, status: "IN_PROGRESS" } : x)))} />}
-      <RuleForm open={ruleForm} onClose={() => setRuleForm(false)} onSave={(r) => { setRules((xs) => [r, ...xs]); setRuleForm(false); }} nextId={`MR-${String(rules.length + 1).padStart(3, "0")}`} />
+      <RuleForm open={ruleForm} error={formErr} onClose={() => { setRuleForm(false); setFormErr(null); }} onSave={saveRule} nextId={`MR-${String(rules.length + 1).padStart(3, "0")}`} />
     </OpsShell>
+    </ApiCtx.Provider>
     </MeCtx.Provider>
   );
 }
 
 /* ---------- REC-01 Tổng quan ---------- */
 
-function Dashboard({ period, exs, gls, onOpenEx, go }: { period: string; exs: Ex[]; gls: GL[]; onOpenEx: (id: string) => void; go: (v: View) => void }) {
+function Dashboard({ period, exs, gls, sources, kpi, causes, onOpenEx, go }: { period: string; exs: Ex[]; gls: GL[]; sources: Source[]; kpi: any; causes: Remote["causes"] | null; onOpenEx: (id: string) => void; go: (v: View) => void }) {
   const { tr, pick } = useLang();
   const c = CHART[period];
+  // Có backend: số liệu thật từ API-50/52 (R01 §7); biểu đồ xu hướng vẫn là dữ liệu mẫu tới khi có lịch sử theo ngày
+  const autoRate = kpi?.auto_match_rate ?? c.auto.at(-1)!;
+  const zeroRate = kpi?.zero_touch_rate ?? c.zero.at(-1)!;
+  const mttr = kpi ? (kpi.mttr_hours === null ? "—" : `${String(kpi.mttr_hours).replace(".", ",")} h`) : "3,2 h";
+  const causeRows = causes ? causes.slice(0, 4).map((x) => ({ label: pick(x), value: x.count })) : [
+    { label: tr("Chênh lệch tỷ giá", "FX difference"), value: 42 }, { label: tr("Dữ liệu đối tác về trễ", "Late partner data"), value: 27 },
+    { label: tr("Sai mã tham chiếu", "Wrong reference"), value: 16 }, { label: tr("Giao dịch trùng", "Duplicates"), value: 9 }];
   const outstanding = exs.filter((e) => e.status !== "RESOLVED").reduce((s, e) => s + e.diff, 0);
   const [metric, setMetric] = useState<"rate" | "volume">("rate");
   return (
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard featured icon={CheckCircle2} value={pct(c.auto.at(-1)!)} caption={tr("Mục tiêu ≥ 95%", "Target ≥ 95%")} label={tr("Tỷ lệ khớp tự động", "Auto-match rate")} delta={{ text: "+0,5", good: true }} />
-        <StatCard icon={Timer} value="3,2 h" caption={tr("Trung bình xử lý ngoại lệ", "Mean time to resolve")} label="MTTR" delta={{ text: "−0,4h", good: true }} onClick={() => go("exceptions")} />
+        <StatCard featured icon={CheckCircle2} value={pct(autoRate)} caption={tr("Mục tiêu ≥ 95%", "Target ≥ 95%")} label={tr("Tỷ lệ khớp tự động", "Auto-match rate")} delta={kpi ? undefined : { text: "+0,5", good: true }} />
+        <StatCard icon={Timer} value={mttr} caption={tr("Trung bình xử lý ngoại lệ", "Mean time to resolve")} label="MTTR" delta={kpi ? undefined : { text: "−0,4h", good: true }} onClick={() => go("exceptions")} />
         <StatCard icon={Wallet} value={vnd(outstanding)} caption={tr(`${exs.filter((e) => e.status !== "RESOLVED").length} ngoại lệ đang mở`, `${exs.filter((e) => e.status !== "RESOLVED").length} open exceptions`)} label={tr("Giá trị chưa khớp", "Outstanding value")} onClick={() => go("exceptions")} />
-        <StatCard icon={Zap} value={pct(c.zero.at(-1)!)} caption={tr(`${gls.filter((g) => g.mode === "ZERO_TOUCH").length} bút toán tự động`, `${gls.filter((g) => g.mode === "ZERO_TOUCH").length} automatic entries`)} label="Zero-touch" delta={{ text: "+1,1", good: true }} onClick={() => go("gl")} />
+        <StatCard icon={Zap} value={pct(zeroRate)} caption={tr(`${gls.filter((g) => g.mode === "ZERO_TOUCH").length} bút toán tự động`, `${gls.filter((g) => g.mode === "ZERO_TOUCH").length} automatic entries`)} label="Zero-touch" delta={kpi ? undefined : { text: "+1,1", good: true }} onClick={() => go("gl")} />
       </div>
 
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
         <Panel title={tr("Hiệu quả đối soát", "Matching performance")} action={<Segmented value={metric} onChange={setMetric} label={tr("Chỉ số", "Metric")} options={[{ value: "rate", label: tr("Tỷ lệ", "Rate") }, { value: "volume", label: tr("Ngoại lệ", "Exceptions") }]} />}>
-          <p className="mb-2 flex items-baseline gap-2"><span className="text-[30px] font-semibold tabular">{metric === "rate" ? pct(c.auto.at(-1)!) : String(exs.length * 37)}</span><Pill tone="success">↑ 0,5</Pill></p>
+          <p className="mb-2 flex items-baseline gap-2"><span className="text-[30px] font-semibold tabular">{metric === "rate" ? pct(c.auto.at(-1)!) : String(exs.length * 37)}</span>{kpi ? <Pill tone="neutral">{tr("Xu hướng mẫu – chờ dữ liệu lịch sử", "Sample trend – awaiting history")}</Pill> : <Pill tone="success">↑ 0,5</Pill>}</p>
           {metric === "rate" ? (
             <LineChart labels={c.labels} format={(n) => `${n.toFixed(0)}%`} min={70} max={100} series={[
               { name: tr("Khớp tự động", "Auto-match"), color: "#b46cf6", values: c.auto },
@@ -201,19 +299,14 @@ function Dashboard({ period, exs, gls, onOpenEx, go }: { period: string; exs: Ex
         </Panel>
 
         <Panel title={tr("Nguyên nhân hàng đầu (AI gợi ý)", "Top root causes (AI)")}>
-          <HBars format={(n) => `${n}`} rows={[
-            { label: tr("Chênh lệch tỷ giá", "FX difference"), value: 42 },
-            { label: tr("Dữ liệu đối tác về trễ", "Late partner data"), value: 27 },
-            { label: tr("Sai mã tham chiếu", "Wrong reference"), value: 16 },
-            { label: tr("Giao dịch trùng", "Duplicates"), value: 9 },
-          ]} />
+          <HBars format={(n) => `${n}`} rows={causeRows} />
           <p className="mt-4 text-caption text-fg-tertiary">{tr("Số ngoại lệ trong kỳ theo nguyên nhân được AI xếp hạng cao nhất.", "Exceptions this period by the AI's top-ranked cause.")}</p>
         </Panel>
       </div>
 
       <Panel title={tr("Trạng thái nạp dữ liệu nguồn", "Source ingestion status")} action={<span className="text-caption text-fg-tertiary">{tr("Cập nhật lúc 10:05 · 21/11/2026", "Updated 10:05 · 21 Nov 2026")} <RuleTag>UAT-REC-09</RuleTag></span>}>
         <Table head={[tr("Nguồn", "Source"), tr("Kênh", "Channel"), tr("Bản ghi", "Records"), tr("Tỷ lệ khớp", "Match rate"), tr("Nạp lúc", "Last load"), tr("Trạng thái", "Status")]}>
-          {SOURCES.map((s) => (
+          {sources.map((s) => (
             <tr key={s.id}>
               <td><span className="flex items-center gap-2 font-medium"><Database className="size-4 text-fg-tertiary" aria-hidden />{s.name}</span>{s.note && <span className="mt-0.5 block text-caption text-fg-tertiary">{pick(s.note)}</span>}</td>
               <td className="text-fg-secondary">{s.kind}</td>
@@ -253,7 +346,13 @@ function Rules({ rules, setRules, onNew }: { rules: Rule[]; setRules: (f: (r: Ru
   const [msg, setMsg] = useState<string | null>(null);
   const list = rules.filter((r) => (r.name + r.id).toLowerCase().includes(q.toLowerCase()));
   const typeLabel = (t: RuleType) => (t === "EXACT" ? "Exact" : t === "FUZZY" ? "Fuzzy" : "N:1");
-  const approve = (r: Rule) => {
+  const api = useApi();
+  const approve = async (r: Rule) => {
+    if (api) {
+      const err = await act(api, () => api.client.post(`/rules/${r.id}/approve`));
+      setMsg(err ?? tr(`Đã duyệt ${r.id}, áp dụng từ lần chạy tiếp theo.`, `${r.id} approved; applies from the next run.`));
+      return;
+    }
     if (r.maker === ME) { setMsg(tr(`Không thể duyệt ${r.id}: bạn là người tạo quy tắc (RULE-REC-05 – phân tách nhiệm vụ).`, `Can't approve ${r.id}: you created this rule (RULE-REC-05 – segregation of duties).`)); return; }
     setRules((xs) => xs.map((x) => (x.id === r.id ? { ...x, status: "ACTIVE", checker: ME } : x)));
     setMsg(tr(`Đã duyệt ${r.id}, áp dụng từ lần chạy tiếp theo.`, `${r.id} approved; applies from the next run.`));
@@ -290,7 +389,7 @@ function Rules({ rules, setRules, onNew }: { rules: Rule[]; setRules: (f: (r: Ru
 
 /* ---------- REC-03 Tạo quy tắc (SoD) ---------- */
 
-function RuleForm({ open, onClose, onSave, nextId }: { open: boolean; onClose: () => void; onSave: (r: Rule) => void; nextId: string }) {
+function RuleForm({ open, onClose, onSave, nextId, error }: { open: boolean; onClose: () => void; onSave: (r: Rule) => void; nextId: string; error?: string | null }) {
   const { tr } = useLang();
   const ME = useMe();
   const [name, setName] = useState("");
@@ -305,7 +404,7 @@ function RuleForm({ open, onClose, onSave, nextId }: { open: boolean; onClose: (
   const allKeys = [{ id: "ref", l: tr("Mã tham chiếu", "Reference") }, { id: "amount", l: tr("Số tiền", "Amount") }, { id: "date", l: tr("Ngày giao dịch", "Date") }, { id: "account", l: tr("Tài khoản", "Account") }, { id: "batch", l: tr("Mã lô", "Batch") }];
   return (
     <Modal open={open} onClose={onClose} title={tr("Tạo quy tắc đối soát", "New matching rule")} width={620}
-      footer={<><GhostButton onClick={onClose}>{tr("Huỷ", "Cancel")}</GhostButton><GradientButton disabled={!valid} onClick={() => onSave({ id: nextId, name: name.trim(), type, keys, tolerance: type === "N1" ? tr("≤ 20 giao dịch/lô", "≤ 20 txns/batch") : `±${amountTol}% · ±${dayTol} ${tr("ngày", "day")}`, version: 1, status: "PENDING", maker: ME, hit: 0 })}>{tr("Gửi duyệt", "Submit for approval")}</GradientButton></>}>
+      footer={<><GhostButton onClick={onClose}>{tr("Huỷ", "Cancel")}</GhostButton><GradientButton disabled={!valid} onClick={() => onSave({ id: nextId, name: name.trim(), type, keys, tolerance: type === "N1" ? tr("≤ 20 giao dịch/lô", "≤ 20 txns/batch") : `±${amountTol}% · ±${dayTol} ${tr("ngày", "day")}`, version: 1, status: "PENDING", maker: ME, checker, hit: 0, tol: { amount: Number(amountTol.replace(",", ".")), days: Number(dayTol) } })}>{tr("Gửi duyệt", "Submit for approval")}</GradientButton></>}>
       <div className="flex flex-col gap-4">
         <label className="flex flex-col gap-1.5"><span className="text-body-sm font-semibold">{tr("Tên quy tắc", "Rule name")}</span>
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder={tr("vd. CBS ↔ NAPAS · hoàn tiền", "e.g. CBS ↔ NAPAS · refunds")} className="h-11 rounded-[12px] border border-line-subtle px-3 outline-none focus:border-[#b46cf6]" /></label>
@@ -330,6 +429,7 @@ function RuleForm({ open, onClose, onSave, nextId }: { open: boolean; onClose: (
             <div><p className="font-semibold">{tr("Vi phạm phân tách nhiệm vụ", "Segregation of duties violation")}</p><p>{tr("Người tạo quy tắc không được tự duyệt. Chọn người duyệt khác để gửi.", "The rule creator can't approve it. Pick another approver to submit.")} <RuleTag>RULE-REC-05</RuleTag></p></div>
           </div>
         )}
+        {error && <p role="alert" className="rounded-[12px] bg-[#fdf0ee] px-3 py-2 text-body-sm text-[#7a1a12]">{error}</p>}
         <p className="text-caption text-fg-tertiary">{tr("Quy tắc mới vào trạng thái Chờ duyệt, version 1. Lịch sử thay đổi được lưu vào audit log.", "New rules start as Pending, version 1. Every change is written to the audit log.")}</p>
       </div>
     </Modal>
@@ -389,6 +489,8 @@ function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]
   const [how, setHow] = useState<Resolution>(ex.kind === "DUPLICATE" || !ex.external ? "MANUAL_MATCH" : "ADJUSTMENT");
   const [matchRef, setMatchRef] = useState("");
   const [docsNote, setDocsNote] = useState("");
+  const [apiErr, setApiErr] = useState<string | null>(null);
+  const api = useApi();
   const done = ex.status === "RESOLVED";
   const overdue = ex.ageH > ex.dueH && !done;
   const linked = gls.filter((g) => g.source.includes(ex.id));
@@ -404,8 +506,31 @@ function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]
   const howOk = how === "ADJUSTMENT" ? !openGL : how === "MANUAL_MATCH" ? matchRef.trim().length >= 4 : docsNote.trim().length >= MIN_NOTE;
   const canSubmit = !done && causeOk && howOk;
 
+  /** Có backend: gửi API-24 với mã nguyên nhân chuẩn; server tự quyết zero-touch hay Maker-Checker theo ngưỡng */
+  const submitApi = async () => {
+    const code = cause === "other" ? CAUSE_CODES[otherCat] : ex.causeCodes?.[cause] ?? "OTHER";
+    const body = {
+      root_cause: { code, override: cause === "other", note: cause === "other" ? otherNote.trim() : null }, type: how,
+      ...(how === "ADJUSTMENT" ? { adjustment: { memo: `Điều chỉnh: ${causeVi}`, lines: [
+        { side: "DEBIT", account_code: "6311.01", amount: `${ex.diff}.00` }, { side: "CREDIT", account_code: "1131.03", amount: `${ex.diff}.00` }] } } : {}),
+      ...(how === "MANUAL_MATCH" ? { manual_match_txn_id: matchRef.trim() } : {}),
+      ...(how === "REQUEST_DOCS" ? { docs_request_note: docsNote.trim() } : {}),
+    };
+    const err = await act(api!, () => api!.client.post(`/exceptions/${ex.id}/resolution`, body));
+    setApiErr(err);
+    if (!err && how === "REQUEST_DOCS") setDocsNote("");
+  };
+  const claim = async () => {
+    if (!api) return update({ owner: ME, status: ex.status === "OPEN" ? "IN_PROGRESS" : ex.status });
+    setApiErr(await act(api, () => api.client.post(`/exceptions/${ex.id}/claim`)));
+  };
+  const escalate = async () => {
+    if (!api) return update({ status: "ESCALATED" });
+    setApiErr(await act(api, () => api.client.post(`/exceptions/${ex.id}/escalate`, { reason: `Cần trưởng nhóm xử lý – ${ME} leo thang từ REC-05` })));
+  };
   const submit = () => {
     if (!canSubmit) return;
+    if (api) { void submitApi(); return; }
     const owner = ex.owner ?? ME;
     const resolution = { type: how, cause: causeText, override: cause === "other", note: cause === "other" ? otherNote.trim() : undefined };
     if (how === "ADJUSTMENT") {
@@ -435,11 +560,12 @@ function ExceptionDetail({ ex, gls, onBack, update, addGL }: { ex: Ex; gls: GL[]
         <Pill tone={exTone[ex.status]}>{ex.status}</Pill>
         <span className="text-body-sm text-fg-tertiary">{ex.pair} · {ex.kind} · aging {aging(ex.ageH)}</span>
         <div className="ml-auto flex flex-wrap gap-2">
-          {!done && !ex.owner && <GhostButton onClick={() => update({ owner: ME, status: ex.status === "OPEN" ? "IN_PROGRESS" : ex.status })}>{tr("Nhận xử lý", "Claim")}</GhostButton>}
-          {!done && ex.status !== "ESCALATED" && ex.status !== "PENDING_POSTING" && <GhostButton tone="danger" icon={AlertTriangle} onClick={() => update({ status: "ESCALATED" })}>{tr("Leo thang", "Escalate")}</GhostButton>}
+          {!done && !ex.owner && <GhostButton onClick={claim}>{tr("Nhận xử lý", "Claim")}</GhostButton>}
+          {!done && ex.status !== "ESCALATED" && ex.status !== "PENDING_POSTING" && <GhostButton tone="danger" icon={AlertTriangle} onClick={escalate}>{tr("Leo thang", "Escalate")}</GhostButton>}
         </div>
       </div>
 
+      {apiErr && <div role="alert" className="flex gap-3 rounded-[16px] border border-[#f3c6c0] bg-[#fdf0ee] p-4 text-body-sm text-[#7a1a12]"><ShieldAlert className="mt-0.5 size-5 shrink-0" /><p>{apiErr}</p><button className="ml-auto font-semibold" onClick={() => setApiErr(null)}>{tr("Đóng", "Dismiss")}</button></div>}
       {overdue && (
         <div role="alert" className="flex gap-3 rounded-[16px] border border-[#f3c6c0] bg-[#fdf0ee] p-4 text-body-sm text-[#7a1a12]">
           <Clock className="mt-0.5 size-5 shrink-0" />
@@ -562,7 +688,14 @@ function GLView({ gls, setGls, onCase, rules, exs }: { gls: GL[]; setGls: (f: (g
   const { tr, pick } = useLang();
   const ME = useMe();
   // Quy tắc đã sinh ra giao dịch của bút toán: lấy trực tiếp từ nguồn, hoặc qua ngoại lệ liên quan
-  const ruleOf = (g: GL) => rules.find((r) => r.id === (g.source.match(/MR-\d+/)?.[0] ?? exs.find((e) => e.id === caseOf(g))?.rule));
+  const api = useApi();
+  const ruleOf = (g: GL) => (g.ruleId ? { id: g.ruleId, maker: g.ruleMaker ?? "—" } : rules.find((r) => r.id === (g.source.match(/MR-\d+/)?.[0] ?? exs.find((e) => e.id === caseOf(g))?.rule)));
+  /** Có backend: SoD-1/SoD-2 kiểm ở server; UI chỉ hiện kết quả */
+  const viaApi = async (path: string, body: unknown, ok: string) => {
+    const err = await act(api!, () => api!.client.post(path, body));
+    setMsg(err ? { tone: "block", text: err } : { tone: "ok", text: ok });
+    return !err;
+  };
   const [tab, setTab] = useState<"all" | "pending" | "zero">("all");
   const [msg, setMsg] = useState<{ tone: "ok" | "block"; text: string } | null>(null);
   const [dialog, setDialog] = useState<{ g: GL; kind: "reject" | "return" } | null>(null);
@@ -575,6 +708,7 @@ function GLView({ gls, setGls, onCase, rules, exs }: { gls: GL[]; setGls: (f: (g
     return true;
   };
   const approve = (g: GL) => {
+    if (api) { void viaApi(`/gl-entries/${g.id}/approve`, {}, tr(`Đã duyệt và hạch toán ${g.id}.`, `${g.id} approved and posted.`)); return; }
     if (blockMaker(g)) return;
     // RULE-REC-05 (BR-REC-08, REQ-REC-07): người tạo quy tắc không duyệt điều chỉnh lớn sinh từ quy tắc đó
     const r = ruleOf(g);
@@ -586,20 +720,27 @@ function GLView({ gls, setGls, onCase, rules, exs }: { gls: GL[]; setGls: (f: (g
     const c = caseOf(g); if (c) onCase(c, "posted");
     setMsg({ tone: "ok", text: tr(`Đã duyệt và hạch toán ${g.id}.`, `${g.id} approved and posted.`) });
   };
-  const open = (g: GL, kind: "reject" | "return") => { if (blockMaker(g)) return; setNote(""); setDialog({ g, kind }); };
+  const open = (g: GL, kind: "reject" | "return") => { if (!api && blockMaker(g)) return; setNote(""); setDialog({ g, kind }); };
   const confirm = () => {
     if (!dialog || note.trim().length < MIN_NOTE) return;
     const { g, kind } = dialog;
+    if (api) {
+      void viaApi(`/gl-entries/${g.id}/${kind}`, kind === "reject" ? { reason: note.trim() } : { note: note.trim() },
+        kind === "reject" ? tr(`Đã từ chối ${g.id}. Ngoại lệ liên quan mở lại để xử lý.`, `${g.id} rejected. The related exception is reopened.`) : tr(`Đã trả ${g.id} về Maker.`, `${g.id} returned to the maker.`));
+      setDialog(null);
+      return;
+    }
     patch(g.id, kind === "reject" ? { status: "REJECTED", checker: ME, rejectReason: note.trim() } : { status: "RETURNED", checker: ME, returnNote: note.trim() });
     const c = caseOf(g); if (c) onCase(c, "reopened");
     setMsg({ tone: "ok", text: kind === "reject" ? tr(`Đã từ chối ${g.id}. Ngoại lệ liên quan mở lại để xử lý.`, `${g.id} rejected. The related exception is reopened.`) : tr(`Đã trả ${g.id} về Maker.`, `${g.id} returned to the maker.`) });
     setDialog(null);
   };
   const resubmit = (g: GL) => {
+    if (api) { void viaApi(`/gl-entries/${g.id}/resubmit`, {}, tr(`Đã trình lại ${g.id} (lần ${(g.submits ?? 1) + 1}).`, `${g.id} resubmitted (round ${(g.submits ?? 1) + 1}).`)); return; }
     patch(g.id, { status: "PENDING", submits: (g.submits ?? 1) + 1 });
     setMsg({ tone: "ok", text: tr(`Đã trình lại ${g.id} (lần ${(g.submits ?? 1) + 1}).`, `${g.id} resubmitted (round ${(g.submits ?? 1) + 1}).`) });
   };
-  const statusLabel = (s: GLStatus) => (s === "POSTED" ? tr("Đã hạch toán", "Posted") : s === "PENDING" ? tr("Chờ Checker", "Awaiting checker") : s === "RETURNED" ? tr("Trả về Maker", "Returned to maker") : tr("Từ chối", "Rejected"));
+  const statusLabel = (s: GLStatus) => (s === "POSTED" ? tr("Đã hạch toán", "Posted") : s === "PENDING" ? tr("Chờ Checker", "Awaiting checker") : s === "RETURNED" ? tr("Trả về Maker", "Returned to maker") : s === "ESCALATED" ? tr("Chuyển cấp duyệt", "Escalated") : tr("Từ chối", "Rejected"));
   const small = "interactive rounded-full border border-line-subtle px-3 py-1.5 text-caption font-semibold";
   return (
     <div className="flex flex-col gap-5">

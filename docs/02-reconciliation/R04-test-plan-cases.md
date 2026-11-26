@@ -4,23 +4,23 @@
 |---|---|
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · story SCRUM-22 → 26, 49, 50, 53 |
 | Khung tài liệu | ISO/IEC/IEEE 29119-3:2021 – gộp Test Plan, Test Case Specification và Test Completion Report cho một module nhỏ |
-| Đối tượng kiểm thử | UI mẫu [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) bản trên GitHub Pages ngày 24/11/2026 |
+| Đối tượng kiểm thử | UI mẫu [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) (chế độ demo) · `reconciliation-service` v1.0 ([services/reconciliation](../../services/reconciliation/README.md)) và UI nối service trên máy local, 26/11/2026 |
 | Yêu cầu nguồn | BAS-BRD-v1.2 §2.2, §4.2, §5.2 · [R01](R01-reconciliation-flow.md) · [R02](R02-requirements-gap-rtm.md) |
 | Người thực hiện | Han Dao (BA) |
-| Phiên bản | 1.4 · 26/11/2026 (vòng 2 sau khi sửa lỗi, thêm vai trò Checker; hồi quy 26/11) |
-| Trạng thái | ✅ Vòng UI 25/25 đạt · ⛔ 9 ca backend chờ `reconciliation-service` |
+| Phiên bản | 1.5 · 26/11/2026 (vòng 3: có `reconciliation-service`, chạy TC-REC-B01 → B09 và luồng end-to-end qua UI) |
+| Trạng thái | ✅ UI 25/25 đạt · ✅ backend 56/56 ca tự động đạt (gồm TC-REC-B01 → B09) · ✅ 4 luồng end-to-end UI ↔ service đạt · ⛔ còn chờ sandbox đối tác thật (SIT, R07) |
 
 ## 1. Tóm tắt kết quả
 
-| | Vòng 1 | Vòng 2 |
-|---|---|---|
-| Ca giao diện đã chạy | 20 | 25 (thêm TC-REC-21, 22 cho DEF-REC-06; TC-REC-23 → 25 cho nhiều vai trò) |
-| Đạt | 15 | **25** |
-| Không đạt | 5 | **0** |
-| Ca backend chưa chạy được (chưa có `reconciliation-service`) | 9 | 9 |
-| Lỗi mở | 6 (2 High · 4 Medium) | **0** – cả 6 lỗi đã sửa |
+| | Vòng 1 | Vòng 2 | Vòng 3 (26/11) |
+|---|---|---|---|
+| Ca giao diện (chế độ demo) | 20 | 25 | 25 – hồi quy sau khi nối API |
+| Đạt | 15 | **25** | **25** |
+| Ca backend tự động (`npm run test:rec`) | 0 – chưa có service | 0 | **56 / 56 đạt** (13 ca cho TC-REC-B01 → B09 + 43 ca bổ sung, §4) |
+| Luồng end-to-end UI ↔ service | — | — | **4 / 4 đạt** (§4.3) |
+| Lỗi mở | 6 (2 High · 4 Medium) | **0** | **0** – 3 lỗi mới phát hiện ở vòng 3 đã sửa (§5) |
 
-**Kết luận:** UI mẫu thể hiện đúng các kiểm soát chính của baseline (chặn Maker tự duyệt, ngưỡng 50 triệu, cách ly file lỗi, truy vết 4 bước, nhãn thời điểm dữ liệu) và các luồng của UC-REC-04, UC-REC-05 mà vòng 1 còn thiếu. UI đủ để làm mẫu cho đội backend. Module 2 **chưa đủ điều kiện vào SIT/UAT** vì chưa có backend.
+**Kết luận:** UI mẫu thể hiện đúng các kiểm soát chính của baseline (chặn Maker tự duyệt, ngưỡng 50 triệu, cách ly file lỗi, truy vết 4 bước, nhãn thời điểm dữ liệu) và các luồng của UC-REC-04, UC-REC-05 mà vòng 1 còn thiếu. UI đủ để làm mẫu cho đội backend. **Vòng 3:** đã có `reconciliation-service` chạy theo thiết kế R05; mọi kiểm soát SoD chạy ở server và được chứng minh bằng test tự động. Module 2 **đủ điều kiện vào SIT** khi có sandbox NAPAS / Visa / Mastercard thật (R07 §2); nguồn dữ liệu hiện là file mẫu hư cấu.
 
 **Hồi quy 26/11/2026:** chạy lại cùng script `tools/diagrams/rec-screens.mjs` trên bản local (`WEB=http://localhost:5179`) khi rà soát toàn bộ tài liệu: **25/25 đạt**, không lỗi mới. Ảnh R03 chụp lại cùng lượt.
 
@@ -83,21 +83,45 @@ Cột "Vòng 1" giữ kết quả lần chạy đầu để truy vết lỗi.
 | TC-REC-24 | REC-06 | Trang trả GL-90314 về kèm ghi chú → đăng nhập Nam → Trình lại | Nút Trình lại chỉ hiện cho Maker; bút toán giữ mã, về Chờ Checker, lần trình = 2 | "Đã trình lại GL-90314 (lần 2)" | — | ✅ | REQ-REC-06 |
 | TC-REC-25 | REC-06 | Đăng nhập Trang → Duyệt GL-90314 đã trình lại | Checker khác Maker và khác người tạo quy tắc duyệt được | "Đã duyệt và hạch toán GL-90314" | — | ✅ | BR-REC-07, BR-REC-08 |
 
-## 4. Test case backend – chưa chạy
+## 4. Test case backend – vòng 3
 
-Viết sẵn để đội backend dùng khi có `reconciliation-service`. Kết quả: ⏸ chưa chạy.
+Chạy bằng `npm run test:rec` (Node test runner, DB SQLite trong bộ nhớ, đồng hồ cố định). Mỗi ca dưới đây ứng với một hoặc nhiều test trong `services/reconciliation/test/`.
 
-| Mã | Kịch bản | Kết quả mong đợi | Truy vết |
+### 4.1 Ca đã viết sẵn từ vòng 1
+
+| Mã | Kịch bản | Kết quả mong đợi | Truy vết | Kết quả 26/11 | Test |
+|---|---|---|---|---|---|
+| TC-REC-B01 | Nạp file camt.053 hợp lệ | SourceTransaction đủ trường chuẩn hoá, `dq_status = VALID` | US-REC-01, UAT-REC-01 | ✅ Đạt – camt.053 2 bút, chuẩn hoá mã tham chiếu, `value_date` | `ingest-rules` |
+| TC-REC-B02 | Nạp cùng file 2 lần; nạp file sai định dạng | Lần 2 không tạo bản ghi mới, log ghi số bản ghi trùng; file sai → `QUARANTINED`, cảnh báo vận hành | REQ-REC-13, 14, UAT-REC-02 | ✅ Đạt – lần 2 `DUPLICATE_FILE`, `duplicate_count = 1`; file JSON lỗi `amount` dòng 2 → `QUARANTINED`, phát `rec.file.quarantined` | `ingest-rules` |
+| TC-REC-B03 | 2 giao dịch trùng `reference_no + amount + currency` | `MATCHED` ngay, không gọi Fuzzy | RULE-REC-02 | ✅ Đạt – `MATCHED` bởi quy tắc EXACT, Fuzzy không chạy | `engine` |
+| TC-REC-B04 | Fuzzy: điểm 0.951 / 0.949; 2 ứng viên 0.961 và 0.955 | 0.951 `MATCHED`; 0.949 → ngoại lệ; 2 ứng viên gần nhau → `PARTIAL` | RULE-REC-01, REQ-REC-16 | ✅ Đạt – 0.951 `MATCHED`, 0.949 `PARTIAL`, 0.961/0.955 `PARTIAL` | `engine` |
+| TC-REC-B05 | Lô N:1 200 giao dịch, giới hạn tìm 2 giây | Dừng ≤ 2 giây, tạo ngoại lệ | RULE-REC-03, REQ-REC-15 | ✅ Đạt – dừng ở 2,0 giây, `PARTIAL` gợi ý `N1_TIMEOUT` | `engine` |
+| TC-REC-B06 | Gọi API tạo GLEntry Nợ ≠ Có; UPDATE bút toán đã post | Cả hai bị từ chối | RULE-REC-08, REQ-REC-11 | ✅ Đạt – `UNBALANCED_ENTRY`; trigger chặn UPDATE/DELETE bút toán POSTED | `cases-gl` |
+| TC-REC-B07 | Người tạo MR-003 duyệt điều chỉnh 80 triệu sinh từ MR-003 | Bị chặn theo RULE-REC-05 | REQ-REC-07, DEC-01 (bút toán 80 triệu) | ✅ Đạt – Quân (tạo MR-002) bị `SOD_RULE_CREATOR` với GL 86,4 triệu; Trang duyệt được. Dữ liệu mẫu dùng MR-002 thay MR-003 cùng tình huống | `cases-gl` |
+| TC-REC-B08 | API truy vết với `entry_id`, `case_id`, `txn_id`; dữ liệu có bản ghi mồ côi | Trả đủ chuỗi; bản ghi thiếu khoá bị báo lỗi | REQ-REC-19, UAT-REC-10 | ✅ Đạt – đủ 4 bước theo 3 khoá; xoá `match_items` → `integrity.ok = false` | `lineage-eod-http` |
+| TC-REC-B09 | Gửi lại `limit.authorization.processed` cùng `messageId`; chạy EOD | 0 GLEntry trùng; báo cáo sai lệch = 0 hoặc có người phụ trách, độ trễ < 10 giây | REQ-REC-20, UAT-LIM-08 | ✅ Đạt – gửi lại `messageId` → `DUPLICATE`, 0 GL trùng; EOD 0 lệch khi khớp; 3 loại lệch đều có người phụ trách. Độ trễ xử lý sự kiện < 50 ms trên máy local | `lineage-eod-http` |
+
+### 4.2 Ca bổ sung khi xây service (43 ca)
+
+| Nhóm | Số ca | Kiểm tra chính | Yêu cầu |
 |---|---|---|---|
-| TC-REC-B01 | Nạp file camt.053 hợp lệ | SourceTransaction đủ trường chuẩn hoá, `dq_status = VALID` | US-REC-01, UAT-REC-01 |
-| TC-REC-B02 | Nạp cùng file 2 lần; nạp file sai định dạng | Lần 2 không tạo bản ghi mới, log ghi số bản ghi trùng; file sai → `QUARANTINED`, cảnh báo vận hành | REQ-REC-13, 14, UAT-REC-02 |
-| TC-REC-B03 | 2 giao dịch trùng `reference_no + amount + currency` | `MATCHED` ngay, không gọi Fuzzy | RULE-REC-02 |
-| TC-REC-B04 | Fuzzy: điểm 0.951 / 0.949; 2 ứng viên 0.961 và 0.955 | 0.951 `MATCHED`; 0.949 → ngoại lệ; 2 ứng viên gần nhau → `PARTIAL` | RULE-REC-01, REQ-REC-16 |
-| TC-REC-B05 | Lô N:1 200 giao dịch, giới hạn tìm 2 giây | Dừng ≤ 2 giây, tạo ngoại lệ | RULE-REC-03, REQ-REC-15 |
-| TC-REC-B06 | Gọi API tạo GLEntry Nợ ≠ Có; UPDATE bút toán đã post | Cả hai bị từ chối | RULE-REC-08, REQ-REC-11 |
-| TC-REC-B07 | Người tạo MR-003 duyệt điều chỉnh 80 triệu sinh từ MR-003 | Bị chặn theo RULE-REC-05 | REQ-REC-07, DEC-01 (bút toán 80 triệu) |
-| TC-REC-B08 | API truy vết với `entry_id`, `case_id`, `txn_id`; dữ liệu có bản ghi mồ côi | Trả đủ chuỗi; bản ghi thiếu khoá bị báo lỗi | REQ-REC-19, UAT-REC-10 |
-| TC-REC-B09 | Gửi lại `limit.authorization.processed` cùng `messageId`; chạy EOD | 0 GLEntry trùng; báo cáo sai lệch = 0 hoặc có người phụ trách, độ trễ < 10 giây | REQ-REC-20, UAT-LIM-08 |
+| Engine | 9 | EXACT tự thêm CURRENCY; 2 ứng viên tuyệt đối → không tự chọn; điểm Fuzzy; lệch tỷ giá → `PARTIAL`; giao dịch chỉ khớp trong kênh của nó; N:1 đủ/thiếu; subset-sum; vượt `n1_max_items`; `DUPLICATE` | RULE-REC-01 → 03 |
+| Nạp file | 4 | Trùng khoá nghiệp vụ trong file khác checksum; nạp lại lô cách ly (chỉ `REC_LEAD`); che số thẻ (PCI DSS); nguồn trễ → `DELAYED` | REQ-REC-13, 14, UAT-REC-09 |
+| Quy tắc | 6 | Kiểm tên, khoá, dung sai, giới hạn; SoD-3 (không tự chọn / tự duyệt); version mới chạy song song tới khi duyệt; trả lại cần lý do; ngừng dùng qua duyệt; sao chép | REQ-REC-09, 12 |
+| Ngoại lệ | 9 | Che / mở số tài khoản có audit; nhận xử lý một người; nguyên nhân override; khớp thủ công; zero-touch ≤ 50 triệu; một bút toán chờ / ngoại lệ (cả ở DB); leo thang tự động và bằng tay | REQ-REC-01 → 03, 08, RULE-REC-04, 06 |
+| Bút toán | 7 | SoD-1 độc lập vai trò; SoD-2 cả người sửa gần nhất; trả về / trình lại giữ mã; hạ số khi trình lại vẫn qua Checker; từ chối rồi tạo bút toán mới; chuyển cấp; đảo bút toán | REQ-REC-05, 06, 07, 10, 11 |
+| Báo cáo, cấu hình | 2 | KPI lọc theo nguồn, loại quy tắc, CSV cùng số; đổi ngưỡng qua Maker-Checker | REQ-REC-17, NFR-SEC-05 |
+| HTTP | 5 | 401 / 404 / dạng lỗi; `Idempotency-Key`; luồng đầy đủ qua API; endpoint dev chỉ bật ở dev; production chỉ tin danh tính qua API Gateway và CORS theo danh sách cho phép | R05 §1, §6, NFR bảo mật |
+| Dữ liệu mẫu | 1 | Seed đi qua luồng thật cho ra đúng 6 ngoại lệ, đúng loại và quy tắc | — |
+
+### 4.3 Luồng end-to-end qua UI nối service (chạy tay trên trình duyệt, 26/11)
+
+| # | Luồng | Kết quả |
+|---|---|---|
+| E2E-1 | Nam mở `/reconciliation/` → UI báo "Đã nối reconciliation-service"; số liệu REC-01 lấy từ API-50 | ✅ Tỷ lệ khớp 62,5 %, MTTR, zero-touch đúng truy vấn |
+| E2E-2 | Nam nhận EXC-1124 → Tạo bút toán điều chỉnh 18.000 ₫ | ✅ GL zero-touch POSTED, ngoại lệ RESOLVED, truy vết đủ 4 bước |
+| E2E-3 | Quân duyệt GL 86,4 triệu sinh từ MR-002 (Quân tạo) | ✅ Server chặn, UI hiện "…bạn là người tạo quy tắc MR-002… (RULE-REC-05)" |
+| E2E-4 | Trang duyệt cùng bút toán | ✅ POSTED, lịch sử CREATED → APPROVED, ngoại lệ EXC-1123 RESOLVED |
 
 ## 5. Lỗi ghi nhận
 
@@ -110,6 +134,10 @@ Viết sẵn để đội backend dùng khi có `reconciliation-service`. Kết 
 | DEF-REC-04 | Medium | Không chọn được nguyên nhân ngoài 3 gợi ý của AI | TC-REC-12 | Thêm lựa chọn "Nguyên nhân khác" với danh mục 7 nhóm và ghi chú ≥ 10 ký tự, lưu cờ override | ✅ Đã sửa, kiểm lại ở vòng 2 |
 | DEF-REC-05 | Medium | Mọi ngoại lệ chỉ xử lý được bằng hạch toán điều chỉnh, kể cả `DUPLICATE` và `UNMATCHED` chờ dữ liệu T+1 | TC-REC-15 | Chọn 1 trong 3: Hạch toán điều chỉnh · Khớp thủ công (nhập mã đối ứng) · Yêu cầu chứng từ (ghi chú, ngoại lệ hiện banner chờ chứng từ) | ✅ Đã sửa, kiểm lại ở vòng 2 |
 
+| DEF-REC-07 | Medium | (Backend, phát hiện bằng test) File CSV để trống cột `currency` bị cách ly cả lô thay vì mặc định VND | Test "PCI DSS: số thẻ đầy đủ…" không thấy bản ghi | Đọc `currency` qua bộ chuẩn hoá ô trống trước khi mặc định | ✅ Đã sửa, test đạt |
+| DEF-REC-08 | Medium | (UI, có từ vòng 1) Link `?as=quan` không chọn được Đỗ Minh Quân vì so "quan" với "Quân" có dấu → luôn đăng nhập là Nam | Mở `/reconciliation/?as=quan` → ô người dùng vẫn là Nam | So sánh sau khi bỏ dấu | ✅ Đã sửa, kiểm lại E2E-3 |
+| DEF-REC-09 | Low | (UI) Sau khi mở một lần với `?api=off`, trình duyệt nhớ "off" và không có cách bật lại backend ngoài xoá dữ liệu trang | Mở `?api=off` rồi mở lại không tham số → vẫn chế độ demo | Thêm `?api=on` để bật lại tự dò (dùng chung eKYC và Đối soát) | ✅ Đã sửa |
+
 DEF-REC-06 phát hiện khi đọc mã nguồn ở vòng 1. Vòng 2 thêm TC-REC-21 và TC-REC-22 để kiểm tra riêng.
 
 Giới hạn của vòng 2 ban đầu (chỉ có một người dùng nên chưa chạy được luồng trình lại và RULE-REC-05) đã gỡ bằng ô đổi vai trò UAT: TC-REC-23 → 25.
@@ -120,7 +148,7 @@ Giới hạn của vòng 2 ban đầu (chỉ có một người dùng nên chưa
 |---|---|---|---|---|
 | BR-REC-01 | 2 | 2 | 2 | Chỉ kiểm tra hiển thị trạng thái nạp |
 | BR-REC-02 | 3 | 3 | — | |
-| BR-REC-03, 04 | 0 | — | 3 | Cần engine khớp |
+| BR-REC-03, 04 | 0 | — | 3 + 9 | Engine đã có – kiểm bằng test tự động |
 | BR-REC-05 | 5 | 5 | — | |
 | BR-REC-06 | 3 | 3 | 1 | TC-REC-20, 21, 22 |
 | BR-REC-07 | 8 | 8 | — | TC-REC-24, 25 |
@@ -130,8 +158,10 @@ Giới hạn của vòng 2 ban đầu (chỉ có một người dùng nên chưa
 
 ## 7. Việc tiếp theo
 
-1. Kế toán trưởng chốt D-REC-01 → 06 (R02 §3) để sửa trạng thái và aging trên UI cho khớp.
-2. Khi có `reconciliation-service`: chạy TC-REC-B01 → B09, lập báo cáo vòng 2.
+1. Kế toán trưởng chốt D-REC-01 → 09 (R02 §3); service đánh dấu các chỗ phụ thuộc bằng `[D-REC-xx]`.
+2. SIT với sandbox NAPAS / Visa / Mastercard và CBS thật (R07 §2) – dữ liệu hiện là file mẫu hư cấu.
+3. Thay bộ gợi ý nguyên nhân theo luật bằng mô hình AI thật (giữ nguyên dạng top-3 của API-21).
+4. Đo hiệu năng engine với khối lượng thật (R06, NFR-REC-01) – test hiện chỉ chứng minh giới hạn thời gian N:1.
 
 ## Lịch sử phiên bản
 
@@ -142,6 +172,7 @@ Giới hạn của vòng 2 ban đầu (chỉ có một người dùng nên chưa
 | 1.2 | 24/11/2026 | Han Dao | Thêm vai trò Checker và trưởng nhóm vào UI mẫu; TC-REC-23 → 25 (RULE-REC-05, trình lại): 25/25 đạt |
 | 1.3 | 25/11/2026 | Han Dao | Thêm mục phê duyệt (ISO/IEC/IEEE 29119-3) |
 | 1.4 | 26/11/2026 | Han Dao | Hồi quy 26/11: 25/25 đạt |
+| 1.5 | 26/11/2026 | Han Dao | Vòng 3: có `reconciliation-service`; TC-REC-B01 → B09 (13 ca) và 43 ca bổ sung đạt (56/56); 4 luồng E2E qua UI; DEF-REC-07 → 09 đã sửa; hồi quy UI 25/25 |
 
 ## Phê duyệt
 

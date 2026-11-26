@@ -1,6 +1,6 @@
 /* Kết nối ekyc-service.
    - Chạy local (localhost, IP mạng nội bộ): tự dùng http://<cùng máy>:8787
-   - ?api=<url> để chỉ định, ?api=off để tắt; lựa chọn được nhớ trong trình duyệt
+   - ?api=<url> để chỉ định, ?api=off để tắt, ?api=on để bật lại; lựa chọn được nhớ trong trình duyệt
    - Không có backend (vd. GitHub Pages): app chạy chế độ demo như trước */
 
 const KEY = "aegis.api";
@@ -11,7 +11,8 @@ export function apiBase(): string | null {
   const q = new URLSearchParams(window.location.search).get("api");
   try {
     if (q === "off") { localStorage.setItem(KEY, "off"); return null; }
-    if (q) { localStorage.setItem(KEY, q); return q.replace(/\/$/, ""); }
+    if (q === "on") localStorage.removeItem(KEY); // bật lại tự dò backend sau khi đã tắt
+    else if (q) { localStorage.setItem(KEY, q); return q.replace(/\/$/, ""); }
     const saved = localStorage.getItem(KEY);
     if (saved === "off") return null;
     if (saved) return saved;

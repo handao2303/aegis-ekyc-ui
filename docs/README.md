@@ -9,7 +9,7 @@ Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 58 d
 
 ## Cấu trúc thư mục
 
-Tài liệu chia theo **module**. Mã tài liệu giữ nguyên để không vỡ liên kết Jira: **A** kiến trúc · **C** hạng mục eKYC Completion · **P** pháp lý · **U** giao diện · **T** kiểm thử · **Q** chất lượng tài liệu · **R** đối soát · **L** hạn mức. Chuẩn áp dụng cho từng loại tài liệu: [Q01](00-overview/Q01-standards-conformance.md) (ISO/IEC/IEEE 29148, 29119-3, BABOK v3, C4, BPMN 2.0, UML 2.5, WCAG 2.2, ISO/IEC 29100).
+Tài liệu chia theo **module**. Mã tài liệu giữ nguyên để không vỡ liên kết Jira: **A** kiến trúc · **C** hạng mục eKYC Completion · **P** pháp lý · **U** giao diện · **T** kiểm thử · **Q** chất lượng tài liệu · **R** đối soát · **L** hạn mức · **G** rà soát theo vai. Chuẩn áp dụng cho từng loại tài liệu: [Q01](00-overview/Q01-standards-conformance.md) (ISO/IEC/IEEE 29148, 29119-3, BABOK v3, C4, BPMN 2.0, UML 2.5, WCAG 2.2, ISO/IEC 29100).
 
 ```
 docs/
@@ -21,7 +21,7 @@ docs/
 │   ├── 1.4-testing/             Kiểm thử
 │   ├── 1.5-analytics/           Đo lường
 │   └── 1.6-api-data/            API & dữ liệu
-├── 02-reconciliation/           Module 2 · Đối soát
+├── 02-reconciliation/           Module 2 · Đối soát (backend: services/reconciliation)
 └── 03-credit-limit/             Module 3 · Hạn mức
 ```
 
@@ -96,6 +96,7 @@ flowchart LR
 | [C03 Requirements Addendum v1.3 & RTM](00-overview/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 draft3 · chờ PO & Compliance duyệt |
 | [Q01 Đối chiếu chuẩn quốc tế](00-overview/Q01-standards-conformance.md) | SCRUM-69 | — | ✅ v1.1 · M1: 4 đạt · 9 một phần · M2, M3: 5 đạt · 4 một phần · 0 thiếu |
 | [X01 Kiểm tra luồng end-to-end 3 module](00-overview/X01-end-to-end-flow-check.md) | SCRUM-7, 8, 69 | Sequence | 🔧 v1.2 · 14 chặng · 14 điểm lệch (6 đã sửa, 8 chờ quyết định) · đã chạy thử trên app 26/11 |
+| [G01 Rà soát theo từng vai trò](00-overview/G01-role-reviews.md) | SCRUM-69 | — | ✅ v1.0 · 7 vai · 27 phát hiện mở · bảng phê duyệt để trống có chủ đích |
 
 ### Module 1 · eKYC
 

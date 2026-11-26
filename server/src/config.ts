@@ -47,7 +47,9 @@ export type ConfigKey = keyof Config;
 
 /** Giới hạn hợp lệ cho từng tham số số – chặn giá trị vô lý khi đổi cấu hình */
 export const CONFIG_BOUNDS: Partial<Record<ConfigKey, [number, number]>> = {
-  min_age_payment: [16, 25], // không cho hạ dưới 16 tới khi có luồng người đại diện theo pháp luật min_age_credit: [18, 25], expiry_warning_days: [0, 180], prior_rejection_days: [0, 365],
+  // Không cho hạ dưới 16 tới khi có luồng người đại diện theo pháp luật (P01 PR-02)
+  min_age_payment: [16, 25],
+  min_age_credit: [18, 25], expiry_warning_days: [0, 180], prior_rejection_days: [0, 365],
   abandon_after_minutes: [5, 240], expire_after_days: [1, 30], max_info_requests: [1, 5], info_deadline_days: [1, 30],
   sla_hours: [1, 168], sla_warning_hours: [1, 168], sla_escalation_hours: [1, 168], claim_release_hours: [1, 24],
   checker_risk_score: [0, 100], risk_refer_score: [0, 100], risk_reject_score: [0, 100],

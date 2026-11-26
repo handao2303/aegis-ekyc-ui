@@ -6,8 +6,8 @@
 | Story | SCRUM-22 → 26 (backend), [SCRUM-49](https://baohandao2303.atlassian.net/browse/SCRUM-49) (FE REC-01 → 06), [SCRUM-50](https://baohandao2303.atlassian.net/browse/SCRUM-50) (truy vết) |
 | UI mẫu | [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) · mã nguồn `src/ops/Reconciliation.tsx` |
 | Quy tắc chính | RULE-REC-04 (ngưỡng GL), RULE-REC-05 (phân tách nhiệm vụ), RULE-REC-06 (leo thang), FR-REC-11 (truy vết) |
-| Phiên bản | 1.1 · 25/11/2026 · Han Dao (BA) |
-| Trạng thái | 🔧 Đặc tả + UI mẫu xong, chờ `reconciliation-service`; 9 điểm lệch baseline chờ Kế toán trưởng (R02 §3) |
+| Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Đặc tả + UI mẫu + `reconciliation-service` (56/56 test, R04 §4); 9 điểm lệch baseline chờ Kế toán trưởng (R02 §3) |
 | Tài liệu đi kèm | [R02](R02-requirements-gap-rtm.md) yêu cầu bổ sung & RTM · [R03](R03-ui-spec.md) đặc tả giao diện · [R04](R04-test-plan-cases.md) kiểm thử · [R05](R05-api-data-dictionary.md) API & từ điển dữ liệu |
 | Chuẩn tham chiếu | BPMN 2.0 · UML 2.5 (state, sequence) · IIBA BABOK v3 – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
 
@@ -214,7 +214,7 @@ flowchart LR
 | UAT-REC-09 | Bảng nguồn có thời điểm cập nhật |
 | UAT-REC-10 | Chuỗi truy vết 4 bước ở REC-05 |
 
-Ca kiểm thử chi tiết và kết quả (25/25 đạt): [R04 §3](R04-test-plan-cases.md).
+Ca kiểm thử chi tiết và kết quả: UI 25/25, backend 56/56, end-to-end 4/4 – [R04](R04-test-plan-cases.md).
 
 ## 9. Kiểm soát tài liệu
 
@@ -224,7 +224,8 @@ Ca kiểm thử chi tiết và kết quả (25/25 đạt): [R04 §3](R04-test-pl
 |---|---|---|---|---|
 | 0.1 | 22/11/2026 | Han Dao | `8a99253` | Bản đầu: luồng tổng thể, trạng thái quy tắc và ngoại lệ, Maker-Checker GL, truy vết |
 | 1.0 | 24/11/2026 | Han Dao | `7afda2b` | Cảnh báo điểm lệch baseline, liên kết R02–R04 |
-| 1.1 | 25/11/2026 | Han Dao | — | §2–§4 khớp UI mẫu sau R04 vòng 2: 3 cách xử lý ngoại lệ, `PENDING_POSTING`, `RETURNED` và trình lại, RULE-REC-05 theo nghĩa baseline; liên kết R05; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
+| 1.1 | 25/11/2026 | Han Dao | `64ac045` | §2–§4 khớp UI mẫu sau R04 vòng 2: 3 cách xử lý ngoại lệ, `PENDING_POSTING`, `RETURNED` và trình lại, RULE-REC-05 theo nghĩa baseline; liên kết R05; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
+| 1.2 | 26/11/2026 | Han Dao | — | Có `reconciliation-service`; cập nhật trạng thái và kết quả kiểm thử |
 
 ### Phê duyệt
 

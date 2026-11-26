@@ -12,7 +12,9 @@
     "deploy": "npm run build:pages && gh-pages -d out -t -m \"Deploy site\"",
     "server": "npm --prefix server start",
     "test:server": "npm --prefix server test",
-    "dev:all": "npm run server & npm run dev"
+    "dev:all": "npm run server & npm run rec & npm run dev",
+    "rec": "npm --prefix services/reconciliation start",
+    "test:rec": "npm --prefix services/reconciliation test"
   },
   "dependencies": {
     "lucide-react": "0.460.0",
