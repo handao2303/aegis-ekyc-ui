@@ -84,7 +84,7 @@ Cột "Kết quả thực tế" ghi theo vòng 2. Ca đổi kết quả hoặc t
 | TC-LIM-25 | M1 | Quét chữ | Không có PAN đầy đủ | 4111 •••• •••• 1234 | ✅ | UAT-LIM-10 |
 | TC-LIM-26 | M1 | Bấm công tắc Smart Fallback | Đổi trạng thái, có nhãn cho trình đọc màn hình | `aria-checked` true → false · nhãn "Smart Fallback" | ✅ | BR-LIM-04, WCAG 4.1.2 |
 | TC-LIM-27 | M2 | Bấm thẻ lời mời Boost | Có hạn mức mới, hiệu lực, tự trở về, phí; nút Nhận khoá khi chưa tick | Đủ 4 dòng; nút khoá | ✅ | REQ-LIM-11 |
-| TC-LIM-28 | M2 | Đọc thời hạn | Hết hạn theo chu kỳ sao kê kế tiếp | "tăng hạn mức trong 72 giờ" · "Ngay bây giờ → 15:43, 29/11/2026" (= lúc chạy + 72 giờ) | ❌ | BR-LIM-06, RULE-LIM-06 · DEF-LIM-02, 03 |
+| TC-LIM-28 | M2 | Đọc thời hạn | Hết hạn theo chu kỳ sao kê kế tiếp | "tăng hạn mức trong 72 giờ" · "Ngay bây giờ → 15:43, 29/11/2026" (= lúc chạy + 72 giờ) | ❌ | BR-LIM-06, RULE-LIM-06 · DEF-LIM-02 |
 | TC-LIM-29 | M2 | Tick điều kiện, Nhận ưu đãi | Hạn mức mới 90 triệu | "Hạn mức mới 90.000.000 ₫, dùng được ngay đến 15:43, 29/11/2026." | ✅ | UC-LIM-04 |
 | TC-LIM-30 | M1 | Về thẻ của tôi | Boost đang hiệu lực, đếm ngược, khả dụng +10 triệu | "Còn 2 ngày 23:59:56" · 41.450.000 ₫ | ✅ | UAT-LIM-06 |
 | TC-LIM-31 | M3 | Mở thông báo khoá Boost | Có lý do, nói hạn mức gốc vẫn dùng, 2 lựa chọn | Đủ; có lưu ý không hỏi OTP | ✅ | UC-LIM-06 bước 4 |

@@ -196,7 +196,7 @@ Sau khi đổi cỡ nút dùng chung (nút cỡ vừa 40 → 44 px), chạy lạ
 
 ## 6. Đề xuất
 
-1. Còn 5 ca cần thiết bị: TC-NFR-11 (Safari iPhone), TC-NFR-07 (VoiceOver), TC-NFR-12 (Android), TC-NFR-13 (Edge, Safari) – chạy trước UAT; TC-NFR-04 chờ Postgres.
+1. Còn 5 ca chưa đạt trọn: 4 ca cần thiết bị – TC-NFR-11 (Safari iPhone), TC-NFR-07 (VoiceOver), TC-NFR-12 (Android), TC-NFR-13 (Edge, Safari) – chạy trước UAT; TC-NFR-04 chờ Postgres.
 2. Đưa dữ liệu lên Postgres trên cloud và mã hoá cột PII, để đóng TC-NFR-04.
 3. Lên lịch SIT (C16) ngay khi có sandbox, rồi mới UAT (C17).
 
