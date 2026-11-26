@@ -61,8 +61,8 @@ Cột "Kết quả thực tế" ghi theo vòng 2. Ca đổi kết quả hoặc t
 | TC-LIM-02 | W1 | Đọc thẻ p99 | p99 < 2 s, nhãn Đạt | p99 = 1,33 s · Đạt | ✅ | RULE-LIM-01, KPI-07 |
 | TC-LIM-03 | W1 | Bấm thẻ circuit breaker 3 lần | CLOSED → HALF_OPEN → OPEN → CLOSED | Đúng thứ tự | ✅ | BR-LIM-09 |
 | TC-LIM-04 | W1 | Quét toàn bộ chữ trên trang | Không có PAN đủ 16 số | Mọi PAN dạng 4111 •••• •••• 1234 | ✅ | NFR-SEC-04, UAT-LIM-10 |
-| TC-LIM-05 | W1 | Bấm Tạm dừng, chờ 3 giây | Không có dòng mới | STAN đầu bảng giữ nguyên 820472 | ✅ | WCAG 2.2.2 |
-| TC-LIM-06 | W1 | Bấm Tiếp tục, chờ 2,8 giây | Có dòng mới, STAN tăng | 820472 → 820473 | ✅ | BR-LIM-01 |
+| TC-LIM-05 | W1 | Bấm Tạm dừng, chờ 3 giây | Không có dòng mới | STAN đầu bảng giữ nguyên 820513 | ✅ | WCAG 2.2.2 |
+| TC-LIM-06 | W1 | Bấm Tiếp tục, chờ 2,8 giây | Có dòng mới, STAN tăng | 820513 → 820515 | ✅ | BR-LIM-01 |
 | TC-LIM-07 | W1 | Xem cột MTI của log | Có bản tin reversal MTI 0420 | 12 dòng chỉ có 0100. Mã sinh dữ liệu dùng 0400 cho ~2% dòng và gắn quyết định DECLINED | ❌ | BR-LIM-08, UAT-LIM-05 · DEF-LIM-01 |
 | TC-LIM-08 | W1 | Đối chiếu quyết định và mã F39 từng dòng | 00 duyệt, 05/51 từ chối, 00·CASA fallback | 12 dòng, 0 dòng lệch | ✅ | UC-LIM-01 bước 3 |
 | TC-LIM-09 | Danh sách thẻ | Mở Hồ sơ hạn mức thẻ | Có thẻ tạm khoá và cột version | C-0004 · Tạm khoá · v22 | ✅ | G-07 |

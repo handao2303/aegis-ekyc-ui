@@ -6,7 +6,7 @@
 | Jira | [SCRUM-52](https://baohandao2303.atlassian.net/browse/SCRUM-52) (FE web W1 → W4, danh sách thẻ G-07) · [SCRUM-51](https://baohandao2303.atlassian.net/browse/SCRUM-51) (FE mobile M1 → M3) |
 | Bản chạy | Web [/credit-limit/](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) · Mobile [/app/?screen=cardHome](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome) – dữ liệu hư cấu, chưa nối backend |
 | Mã nguồn | `src/ops/CreditLimit.tsx` (khung chung `src/ops/kit.tsx`) · `src/mobile/cardScreens.tsx` |
-| Ảnh | Web 1280 × 860, mobile 390 × 844 @2x, tiếng Việt, chụp tự động bằng `tools/diagrams/lim-screens.mjs` ngày 25/11/2026 |
+| Ảnh | Web 1280 × 860, mobile 390 × 844 @2x, tiếng Việt, chụp tự động bằng `tools/diagrams/lim-screens.mjs` (chụp lại 26/11/2026) |
 | Chuẩn | WCAG 2.2 mức AA · PCI DSS 3.4 (che PAN) |
 | Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 📝 Mô tả UI mẫu như đang có, kèm điểm phải sửa (cột **Ghi chú**). Chờ quyết định ở [L02 §3](L02-requirements-gap-rtm.md) |
@@ -101,12 +101,9 @@ Luồng nghiệp vụ: [L01](L01-credit-limit-flow.md). Kết quả chạy thử
 | Bảng | Case, thời gian, thẻ, tín hiệu, điểm (≥ 75 đỏ), hành động (Khoá Boost / Gắn cờ), SMS, App, trạng thái | UC-LIM-06 | Ngưỡng 75 là tạm (D-LIM-07). Case mở lên trên, điểm cao trước |
 | Gửi lại | Hiện cạnh SMS `FAILED`; FAILED → PENDING → DELIVERED | REQ-LIM-14 | |
 | Đóng case | Hộp thoại: chọn 1 trong 3 kết luận (`CONFIRMED_FRAUD` Xác nhận gian lận · `FALSE_POSITIVE` Cảnh báo nhầm · `CUSTOMER_CONFIRMED` Khách xác nhận là mình) + ghi chú ≥ 10 ký tự; nút Đóng case khoá tới khi đủ. Sau khi đóng, cột Trạng thái hiện kết luận | REQ-LIM-17 | DEF-LIM-06 đã sửa 26/11. Bản thật ghi `closed_by`, `close_note` (L05 §3.5) |
-
-<img src="../../public/ui/lim-fraud-close.png" width="560" alt="Hộp thoại đóng case gian lận">
-
 | Xem mẫu thông báo | Hộp thoại nội dung SMS + cảnh báo "Nội dung giữ chỗ – chờ Risk/Legal/CSKH duyệt … (DEP-07)" | ISS-03 | |
 
-<img src="../../public/ui/lim-notification.png" width="560" alt="Mẫu thông báo khoá Boost">
+<img src="../../public/ui/lim-fraud-close.png" width="560" alt="Hộp thoại đóng case gian lận"> <img src="../../public/ui/lim-notification.png" width="560" alt="Mẫu thông báo khoá Boost">
 
 ## 6. App khách hàng
 

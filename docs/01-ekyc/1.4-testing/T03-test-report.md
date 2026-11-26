@@ -29,6 +29,8 @@
 
 > **Hồi quy 25/11/2026** (mục 3.5): bộ test case tăng lên **108** (thêm TC-APP-42, TC-CO-32 cho tuổi tối thiểu 16), test tự động backend **57 / 57 đạt**. Hai case mới đạt, không phát sinh lỗi. Kết luận vòng 1 không đổi.
 
+> **Hồi quy 26/11/2026** (mục 3.6): 57 / 57 test tự động đạt; chạy lại luồng TD-01 và Compliance trên backend thật đạt. Tìm và sửa thêm 2 lỗi dữ liệu mẫu (DEF-10, DEF-11) → tổng **11 lỗi, đã sửa cả 11**. Kết luận vòng 1 không đổi.
+
 ## 2. Kết quả theo nhóm
 
 | Nhóm | Tổng | Đạt | Một phần | Chưa chạy | Không đạt |

@@ -156,8 +156,8 @@ Một người có thể giữ nhiều vai trò, nhưng không được giữ c�
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 1.1 | 26/11/2026 | Han Dao | — | Thêm §3.1 chạy thử hành trình trên app; cập nhật số liệu L04 vòng 2 |
 | 1.0 | 26/11/2026 | Han Dao | f5d9316 | Bản đầu: ma trận độ đầy đủ 3 module, hành trình end-to-end 14 chặng, 14 điểm lệch, phong bì sự kiện, ma trận vai trò |
+| 1.1 | 26/11/2026 | Han Dao | — | Thêm §3.1 chạy thử hành trình trên app; cập nhật số liệu L04 vòng 2 |
 
 ### Phê duyệt
 
