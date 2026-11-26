@@ -1,16 +1,23 @@
-# T03 · Báo cáo kết quả kiểm thử – Module 1 eKYC (vòng nội bộ 1)
+# T03 · Báo cáo kết quả kiểm thử – Module 1 eKYC (vòng nội bộ 1–2)
 
 | | |
 |---|---|
-| Phiên bản | 1.3 · 26/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-T03 |
+| Phiên bản | 1.4 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | ✅ Đạt vòng nội bộ 1 (91 đạt · 0 lỗi mở), hồi quy 25/11 và 26/11 đạt · vòng 2 (26/11): 103 đạt, 4 một phần, 1 chưa chạy · chưa đủ điều kiện UAT · chờ QA Lead, PO duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | QA Lead · PO – chưa duyệt |
+| Mục đích và phạm vi | Báo cáo kết quả các vòng kiểm thử nội bộ Module 1, lỗi phát hiện và điều kiện vào UAT |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Completion Report) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Vòng | Kiểm thử hệ thống nội bộ, trước SIT |
 | Thời gian | 22 – 23/11/2026 · hồi quy 25/11/2026 và 26/11/2026 |
 | Mã nguồn | `main` @ commit `a97e848` + bản sửa trong báo cáo này |
 | Người thực hiện | Han Dao (BA) |
 | Môi trường | macOS, Node 23.11, `ekyc-service` SQLite, Next.js dev; Chrome (trình duyệt tích hợp), iOS Simulator iPhone 16 Pro qua link HTTPS tạm |
 | Kế hoạch / test case | [T01](T01-test-plan.md) · [T02](T02-test-cases.md) |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Completion Report) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Tóm tắt
 
@@ -219,15 +226,17 @@ Sau khi đổi cỡ nút dùng chung (nút cỡ vừa 40 → 44 px), chạy lạ
 
 Bộ hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), 54 test tự động (57 từ 25/11), API đặt lại dữ liệu và tua giờ (`/api/dev/*`), script chụp màn hình (`tools/diagrams/screens.mjs`).
 
-## 10. Phê duyệt
+## 10. Kiểm soát tài liệu
 
-| Vai trò | Người | Ngày | Kết luận |
-|---|---|---|---|
-| BA (thực hiện) | Han Dao | 23/11/2026 | Đạt vòng nội bộ 1, chưa đủ điều kiện UAT |
-| QA Lead | | | |
-| PO | | | |
+### Tài liệu tham chiếu
 
-## 11. Kiểm soát tài liệu
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+| T01 | [T01 · Kế hoạch kiểm thử tổng thể – Module 1 eKYC](T01-test-plan.md) |
+| T02 | [T02 · Bộ test case chi tiết – Module 1 eKYC](T02-test-cases.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 
 ### Lịch sử phiên bản
 
@@ -238,3 +247,12 @@ Bộ hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), 54 test tự đ�
 | 1.1 | 25/11/2026 | Han Dao | — | Thêm mục 3.5 hồi quy 25/11: 57/57 test tự động, 2 case mới đạt; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
 | 1.2 | 26/11/2026 | Han Dao | — | Thêm mục 3.6: hồi quy 57/57, chạy luồng TD-01 và Compliance trên backend thật; DEF-10, DEF-11 đã sửa |
 | 1.3 | 26/11/2026 | Han Dao | — | Thêm mục 3.7 vòng 2: 12 ca, 10 đạt, 2 một phần; DEF-12, DEF-13 đã sửa; tổng 103 đạt / 108 |
+| 1.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (thực hiện) | Han Dao | 23/11/2026 | Đạt vòng nội bộ 1, chưa đủ điều kiện UAT |
+| QA Lead |  |  |  |
+| PO |  |  |  |

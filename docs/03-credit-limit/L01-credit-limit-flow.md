@@ -2,15 +2,22 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-LIM-L01 |
+| Phiên bản | 1.3 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | 🔧 Luồng mục tiêu. Có 9 điểm lệch với baseline chờ quyết định ở [L02 §3](L02-requirements-gap-rtm.md) |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Risk tín dụng · Vận hành thẻ · Tech Lead – chưa duyệt |
+| Mục đích và phạm vi | Mô tả luồng cấp phép thẻ ISO 8583, kiểm soát hạn mức đồng thời, Boost và phát hiện gian lận |
+| Chuẩn tham chiếu | BPMN 2.0 · UML 2.5 (state, sequence) · ISO 8583 · IIBA BABOK v3 – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · Real-time Credit Limit |
 | Story | SCRUM-27 → 30, 38 (backend), [SCRUM-51](https://baohandao2303.atlassian.net/browse/SCRUM-51) (FE mobile LIM-M1 → M3), [SCRUM-52](https://baohandao2303.atlassian.net/browse/SCRUM-52) (FE web LIM-W1 → W4), SCRUM-53 (đối chiếu EOD), SCRUM-54 (Notification) |
 | UI mẫu | Web: [/credit-limit/](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) · Mobile: [/app/?screen=cardHome](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome) |
 | Quy tắc chính | BR-LIM-02 (kiểm soát đồng thời), BR-LIM-07 (khoá Boost), SLA p99 < 2s, NFR-SEC-04 (che PAN) |
 | Baseline | BAS-BRD-v1.2 §2.3 (BR-LIM-01 → 10), §3.5 (5 entity), §4.3 (UC-LIM-01 → 06), §5.3 (RULE-LIM-01 → 08), §6.3 (US-LIM-01 → 06) · BAS-RAID-v1.2 |
 | Bộ tài liệu | L01 luồng · [L02](L02-requirements-gap-rtm.md) yêu cầu, điểm lệch, RTM · [L03](L03-ui-spec.md) giao diện · [L04](L04-test-plan-cases.md) kiểm thử UI · [L05](L05-api-data-dictionary.md) API, dữ liệu · [L06](L06-nfr-kpi.md) NFR, KPI · [L07](L07-sit-perf-uat.md) SIT, hiệu năng, UAT · [L08](L08-compliance-terms.md) tuân thủ, điều khoản |
-| Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
-| Trạng thái | 🔧 Luồng mục tiêu. Có 9 điểm lệch với baseline chờ quyết định ở [L02 §3](L02-requirements-gap-rtm.md) |
-| Chuẩn tham chiếu | BPMN 2.0 · UML 2.5 (state, sequence) · ISO 8583 · IIBA BABOK v3 – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
 
 ## 1. Xử lý một giao dịch thẻ (ISO 8583)
 
@@ -177,6 +184,21 @@ Ca kiểm thử chi tiết và kết quả chạy trên UI mẫu (vòng 2: 34/36
 
 ## 8. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| L02 | [L02 · Hạn mức – yêu cầu bổ sung, điểm lệch baseline & RTM](L02-requirements-gap-rtm.md) |
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../00-overview/Q01-standards-conformance.md) |
+| L03 | [L03 · Đặc tả giao diện – Aegis Hạn mức (LIM-W1 → W4, LIM-M1 → M3)](L03-ui-spec.md) |
+| L04 | [L04 · Hạn mức – kế hoạch kiểm thử, test case và kết quả](L04-test-plan-cases.md) |
+| L05 | [L05 · Hạn mức – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](L05-api-data-dictionary.md) |
+| L06 | [L06 · Hạn mức – yêu cầu phi chức năng và từ điển chỉ số KPI](L06-nfr-kpi.md) |
+| L07 | [L07 · Hạn mức – kế hoạch SIT, kiểm thử hiệu năng, bộ UAT và biên bản nghiệm thu](L07-sit-perf-uat.md) |
+| L08 | [L08 · Hạn mức – đối chiếu tuân thủ, điều khoản cho khách và dữ liệu cá nhân](L08-compliance-terms.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -185,13 +207,14 @@ Ca kiểm thử chi tiết và kết quả chạy trên UI mẫu (vòng 2: 34/36
 | 1.0 | 23/11/2026 | Han Dao | `792bbfa` | Chuyển vào `docs/03-credit-limit`, thêm bản đồ màn hình và truy vết UAT |
 | 1.1 | 25/11/2026 | Han Dao | `273d6b3` | Đối chiếu BAS-BRD-v1.2: reversal MTI 0420/0120, cách kiểm soát đồng thời của UC-LIM-02, trạng thái và thời hạn Boost theo baseline; liên kết bộ L02 → L07; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
 | 1.2 | 26/11/2026 | Han Dao | — | Thêm L08 vào bộ tài liệu; cập nhật kết quả L04 vòng 2 (34/36) |
+| 1.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Risk tín dụng | | | |
-| Vận hành thẻ | | | |
-| Tech Lead | | | |
+| Product Owner |  |  |  |
+| Risk tín dụng |  |  |  |
+| Vận hành thẻ |  |  |  |
+| Tech Lead |  |  |  |

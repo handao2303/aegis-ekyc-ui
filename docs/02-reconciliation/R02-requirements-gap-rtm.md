@@ -2,12 +2,19 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-REC-R02 |
+| Phiên bản | 0.7 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | 📝 Chờ Kế toán trưởng, PO và Compliance quyết định 9 điểm ở §3 |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Kế toán trưởng · Product Owner · Compliance / InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Đối chiếu baseline BAS-BRD-v1.2 với UI và thiết kế Đối soát: yêu cầu bổ sung, điểm lệch, RTM |
+| Chuẩn tham chiếu | — |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · Reconciliation Capability |
 | Baseline | BAS-BRD-v1.2 (Phần 2.2, 3.4, 4.2, 5.2, 6.2) · BAS-RAID-v1.2 (RSK-05/06/07/12/15, DEC-01, ASM-07) |
 | Đối chiếu với | [R01](R01-reconciliation-flow.md) (luồng & trạng thái) · UI mẫu `/reconciliation/` · kết quả chạy [R04](R04-test-plan-cases.md) |
-| Phiên bản | 0.6 – bản nháp |
-| Trạng thái | 📝 Chờ Kế toán trưởng, PO và Compliance quyết định 9 điểm ở §3 |
-| Người soạn | Han Dao (BA) · 24/11/2026 |
 
 Cách viết yêu cầu theo ISO/IEC/IEEE 29148:2018: mỗi yêu cầu một câu "Hệ thống phải…", có nguồn, có tiêu chí kiểm được và mã truy vết. Mã mới dùng tiền tố **REQ-REC** để không trùng mã FR-REC trong BAS-FSD-v1.2 (bản FSD chưa có trên Confluence; các mã FR-REC-01, 02, 09, 10, 11 dưới đây lấy từ BAS-RAID-v1.2).
 
@@ -162,22 +169,39 @@ Khác biệt chính với R01: ngoại lệ **chỉ đóng khi bút toán đã p
 | 5 | Đặc tả file Napas Settlement mới (ISS-01) – cần file mẫu để viết test nạp TC-REC-B01 | Solution Owner |
 | 6 | Che số tài khoản trên màn đối soát (D-REC-09) | InfoSec |
 
-## 8. Phê duyệt
+## 8. Kiểm soát tài liệu
+
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| R01 | [R01 · Đối soát giao dịch – luồng, trạng thái và kiểm soát](R01-reconciliation-flow.md) |
+| R04 | [R04 · Đối soát – kế hoạch kiểm thử, test case và kết quả](R04-test-plan-cases.md) |
+| R03 | [R03 · Đặc tả giao diện – Aegis Đối soát (REC-01 → REC-06)](R03-ui-spec.md) |
+| R05 | [R05 · Đối soát – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](R05-api-data-dictionary.md) |
+| R06 | [R06 · Đối soát – yêu cầu phi chức năng và từ điển chỉ số KPI](R06-nfr-kpi.md) |
+| R07 | [R07 · Đối soát – kế hoạch SIT, kiểm thử hiệu năng, bộ UAT và biên bản nghiệm thu](R07-sit-perf-uat.md) |
+| R08 | [R08 · Đối soát – đối chiếu tuân thủ, cơ sở pháp lý và dữ liệu cá nhân](R08-compliance-mapping.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.1 | 24/11/2026 | Han Dao | — | Bản đầu: 9 điểm lệch baseline, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM |
+| 0.2 | 24/11/2026 | Han Dao | — | UI mẫu đã đáp ứng REQ-REC-01, 02, 05, 06, 08 và trạng thái `PENDING_POSTING` (R04 vòng 2) |
+| 0.3 | 24/11/2026 | Han Dao | — | UI mẫu có 3 vai trò UAT, đáp ứng REQ-REC-07 (RULE-REC-05 đúng nghĩa baseline) |
+| 0.4 | 25/11/2026 | Han Dao | — | Thêm R05 (API và từ điển dữ liệu) vào bản đồ tài liệu §2 |
+| 0.5 | 25/11/2026 | Han Dao | — | Thêm R06 (NFR, KPI) và R07 (SIT, hiệu năng, UAT) vào bản đồ tài liệu §2 |
+| 0.6 | 26/11/2026 | Han Dao | — | Thêm R08 (tuân thủ) vào bản đồ tài liệu; REQ-REC-21 → 24 ở R08 §4 chờ duyệt |
+| 0.7 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+
+### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA | Han Dao | 24/11/2026 | Soạn bản nháp |
-| Kế toán trưởng | | | |
-| Product Owner | | | |
-| Compliance / InfoSec | | | |
-
-## Lịch sử phiên bản
-
-| Phiên bản | Ngày | Người | Thay đổi |
-|---|---|---|---|
-| 0.1 | 24/11/2026 | Han Dao | Bản đầu: 9 điểm lệch baseline, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM |
-| 0.2 | 24/11/2026 | Han Dao | UI mẫu đã đáp ứng REQ-REC-01, 02, 05, 06, 08 và trạng thái `PENDING_POSTING` (R04 vòng 2) |
-| 0.3 | 24/11/2026 | Han Dao | UI mẫu có 3 vai trò UAT, đáp ứng REQ-REC-07 (RULE-REC-05 đúng nghĩa baseline) |
-| 0.4 | 25/11/2026 | Han Dao | Thêm R05 (API và từ điển dữ liệu) vào bản đồ tài liệu §2 |
-| 0.5 | 25/11/2026 | Han Dao | Thêm R06 (NFR, KPI) và R07 (SIT, hiệu năng, UAT) vào bản đồ tài liệu §2 |
-| 0.6 | 26/11/2026 | Han Dao | Thêm R08 (tuân thủ) vào bản đồ tài liệu; REQ-REC-21 → 24 ở R08 §4 chờ duyệt |
+| Kế toán trưởng |  |  |  |
+| Product Owner |  |  |  |
+| Compliance / InfoSec |  |  |  |

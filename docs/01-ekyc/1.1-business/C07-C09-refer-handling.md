@@ -2,12 +2,19 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-C07-C09 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | ✅ Hoàn tất đặc tả + UI + backend, có test UAT · chờ PO, Compliance duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Compliance – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả quy trình hồ sơ REFER: yêu cầu bổ sung giấy tờ, ma trận thông báo và SLA hàng đợi Compliance |
+| Chuẩn tham chiếu | IIBA BABOK v3 · BPMN 2.0 (swimlane) · UML 2.5 (sequence, state) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Jira | [SCRUM-76](https://baohandao2303.atlassian.net/browse/SCRUM-76) (C07) · [SCRUM-77](https://baohandao2303.atlassian.net/browse/SCRUM-77) (C08) · [SCRUM-78](https://baohandao2303.atlassian.net/browse/SCRUM-78) (C09) |
 | BR / FR / RULE | BR-15/16/17 · FR-12/13/14 · RULE-12 |
 | UI | App: `Refer`, `RequestInfo` · Compliance: hàng đợi, badge SLA, modal "Yêu cầu bổ sung", chuông thông báo |
-| Chuẩn tham chiếu | IIBA BABOK v3 · BPMN 2.0 (swimlane) · UML 2.5 (sequence, state) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 Ba ticket gộp một tài liệu vì chúng là **một quy trình liền mạch**: hồ sơ vào hàng đợi → nhân viên xử lý trong SLA → có thể yêu cầu khách bổ sung → khách được thông báo ở mỗi bước.
 
@@ -125,17 +132,26 @@ stateDiagram-v2
 
 ## 5. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
 | 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 0.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Compliance | | | |
+| Product Owner |  |  |  |
+| Compliance |  |  |  |

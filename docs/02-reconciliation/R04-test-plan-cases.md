@@ -2,13 +2,20 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-REC-R04 |
+| Phiên bản | 1.6 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ UI 25/25 đạt · ✅ backend 56/56 ca tự động đạt (gồm TC-REC-B01 → B09) · ✅ 4 luồng end-to-end UI ↔ service đạt · ⛔ còn chờ sandbox đối tác thật (SIT, R07) |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | QA Lead · Product Owner · Kế toán trưởng – chưa duyệt |
+| Mục đích và phạm vi | Kế hoạch kiểm thử, test case và kết quả các vòng của Module 2 (UI, backend, end-to-end) |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 – gộp Test Plan, Test Case Specification và Test Completion Report cho một module nhỏ |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · story SCRUM-22 → 26, 49, 50, 53 |
-| Khung tài liệu | ISO/IEC/IEEE 29119-3:2021 – gộp Test Plan, Test Case Specification và Test Completion Report cho một module nhỏ |
 | Đối tượng kiểm thử | UI mẫu [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) (chế độ demo) · `reconciliation-service` v1.0 ([services/reconciliation](../../services/reconciliation/README.md)) và UI nối service trên máy local, 26/11/2026 |
 | Yêu cầu nguồn | BAS-BRD-v1.2 §2.2, §4.2, §5.2 · [R01](R01-reconciliation-flow.md) · [R02](R02-requirements-gap-rtm.md) |
 | Người thực hiện | Han Dao (BA) |
-| Phiên bản | 1.5 · 26/11/2026 (vòng 3: có `reconciliation-service`, chạy TC-REC-B01 → B09 và luồng end-to-end qua UI) |
-| Trạng thái | ✅ UI 25/25 đạt · ✅ backend 56/56 ca tự động đạt (gồm TC-REC-B01 → B09) · ✅ 4 luồng end-to-end UI ↔ service đạt · ⛔ còn chờ sandbox đối tác thật (SIT, R07) |
 
 ## 1. Tóm tắt kết quả
 
@@ -163,22 +170,34 @@ Giới hạn của vòng 2 ban đầu (chỉ có một người dùng nên chưa
 3. Thay bộ gợi ý nguyên nhân theo luật bằng mô hình AI thật (giữ nguyên dạng top-3 của API-21).
 4. Đo hiệu năng engine với khối lượng thật (R06, NFR-REC-01) – test hiện chỉ chứng minh giới hạn thời gian N:1.
 
-## Lịch sử phiên bản
+## Kiểm soát tài liệu
 
-| Phiên bản | Ngày | Người | Thay đổi |
-|---|---|---|---|
-| 1.0 | 24/11/2026 | Han Dao | Kế hoạch, 20 ca UI đã chạy (15 đạt), 9 ca backend viết sẵn, 6 lỗi |
-| 1.1 | 24/11/2026 | Han Dao | Vòng 2 sau khi sửa 6 lỗi: 22 ca UI, 22 đạt, 0 lỗi mở |
-| 1.2 | 24/11/2026 | Han Dao | Thêm vai trò Checker và trưởng nhóm vào UI mẫu; TC-REC-23 → 25 (RULE-REC-05, trình lại): 25/25 đạt |
-| 1.3 | 25/11/2026 | Han Dao | Thêm mục phê duyệt (ISO/IEC/IEEE 29119-3) |
-| 1.4 | 26/11/2026 | Han Dao | Hồi quy 26/11: 25/25 đạt |
-| 1.5 | 26/11/2026 | Han Dao | Vòng 3: có `reconciliation-service`; TC-REC-B01 → B09 (13 ca) và 43 ca bổ sung đạt (56/56); 4 luồng E2E qua UI; DEF-REC-07 → 09 đã sửa; hồi quy UI 25/25 |
+### Tài liệu tham chiếu
 
-## Phê duyệt
+| Mã | Tài liệu |
+|---|---|
+| R01 | [R01 · Đối soát giao dịch – luồng, trạng thái và kiểm soát](R01-reconciliation-flow.md) |
+| R02 | [R02 · Đối soát – yêu cầu bổ sung, điểm lệch baseline & RTM](R02-requirements-gap-rtm.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 1.0 | 24/11/2026 | Han Dao | — | Kế hoạch, 20 ca UI đã chạy (15 đạt), 9 ca backend viết sẵn, 6 lỗi |
+| 1.1 | 24/11/2026 | Han Dao | — | Vòng 2 sau khi sửa 6 lỗi: 22 ca UI, 22 đạt, 0 lỗi mở |
+| 1.2 | 24/11/2026 | Han Dao | — | Thêm vai trò Checker và trưởng nhóm vào UI mẫu; TC-REC-23 → 25 (RULE-REC-05, trình lại): 25/25 đạt |
+| 1.3 | 25/11/2026 | Han Dao | — | Thêm mục phê duyệt (ISO/IEC/IEEE 29119-3) |
+| 1.4 | 26/11/2026 | Han Dao | — | Hồi quy 26/11: 25/25 đạt |
+| 1.5 | 26/11/2026 | Han Dao | — | Vòng 3: có `reconciliation-service`; TC-REC-B01 → B09 (13 ca) và 43 ca bổ sung đạt (56/56); 4 luồng E2E qua UI; DEF-REC-07 → 09 đã sửa; hồi quy UI 25/25 |
+| 1.6 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+
+### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| QA Lead | | | |
-| Product Owner | | | |
-| Kế toán trưởng | | | |
+| QA Lead |  |  |  |
+| Product Owner |  |  |  |
+| Kế toán trưởng |  |  |  |

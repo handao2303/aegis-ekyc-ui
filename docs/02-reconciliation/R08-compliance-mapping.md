@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-REC-R08 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 📝 Bản nháp – chờ Kế toán trưởng, Compliance, Pháp chế và InfoSec xác nhận |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Kế toán trưởng · Compliance · Pháp chế / DPO · InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Đối chiếu yêu cầu tuân thủ, cơ sở pháp lý và dữ liệu cá nhân cho Đối soát |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (yêu cầu từ ràng buộc pháp lý) · ISO/IEC 29100 (quyền riêng tư) · PCI DSS v4.0 · BABOK v3 *Business Rules Analysis* |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) |
 | Tương đương Module 1 | [C02](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) (compliance mapping) và [P01](../01-ekyc/1.2-compliance-legal/P01-terms-privacy.md) (cơ sở pháp lý, dữ liệu cá nhân) |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (yêu cầu từ ràng buộc pháp lý) · ISO/IEC 29100 (quyền riêng tư) · PCI DSS v4.0 · BABOK v3 *Business Rules Analysis* |
 | Đầu vào | BAS-BRD-v1.2 §2.2, §5.2 · BAS-RAID-v1.2 (RSK-05 → 07, 15) · [R02](R02-requirements-gap-rtm.md) · [R05](R05-api-data-dictionary.md) · [R06](R06-nfr-kpi.md) |
 
 > ⚠️ Số hiệu, điều khoản và thời hạn dưới đây là **điểm khởi đầu để rà soát**, viết theo hiểu biết chung về quy định Việt Nam và chuẩn ngành, chưa đối chiếu bản gốc. Mọi dòng có cột **Cần xác minh** phải được Pháp chế / Compliance kiểm trên cổng văn bản chính thức (vbpl.vn, sbv.gov.vn) trước khi đưa vào BRD hoặc hợp đồng. Không dùng tài liệu này làm ý kiến pháp lý.
@@ -97,19 +104,32 @@ Bổ sung vào [R02 §4](R02-requirements-gap-rtm.md) khi được duyệt.
 
 ## 6. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| C02 | [C02 · Compliance Mapping – eKYC](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) |
+| P01 | [P01 · Điều khoản, quyền riêng tư và cơ sở pháp lý – Module 1 eKYC](../01-ekyc/1.2-compliance-legal/P01-terms-privacy.md) |
+| R02 | [R02 · Đối soát – yêu cầu bổ sung, điểm lệch baseline & RTM](R02-requirements-gap-rtm.md) |
+| R05 | [R05 · Đối soát – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](R05-api-data-dictionary.md) |
+| R06 | [R06 · Đối soát – yêu cầu phi chức năng và từ điển chỉ số KPI](R06-nfr-kpi.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 0.1 | 26/11/2026 | Han Dao | — | Bản đầu: 9 nhóm văn bản, 12 yêu cầu tuân thủ (6 ✅ · 5 🟡 · 1 ❌), bảng dữ liệu cá nhân, 4 yêu cầu mới REQ-REC-21 → 24, câu hỏi mở |
 | 0.2 | 26/11/2026 | Han Dao | — | Thêm cột Tiêu chí nghiệm thu cho REQ-REC-21 → 24 |
+| 0.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 26/11/2026 | Trình duyệt |
-| Kế toán trưởng | | | |
-| Compliance | | | |
-| Pháp chế / DPO | | | |
-| InfoSec | | | |
+| Kế toán trưởng |  |  |  |
+| Compliance |  |  |  |
+| Pháp chế / DPO |  |  |  |
+| InfoSec |  |  |  |

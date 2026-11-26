@@ -2,12 +2,19 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.3 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-C06 |
+| Phiên bản | 0.4 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | ✅ Hoàn tất đặc tả + UI + backend, có test UAT · chờ PO, Compliance duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Compliance – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả vòng đời phiên eKYC: trạng thái, bỏ dở, hết hạn, tiếp tục phiên và job dọn dữ liệu |
+| Chuẩn tham chiếu | IIBA BABOK v3 · UML 2.5 (state, sequence) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Jira | [SCRUM-75](https://baohandao2303.atlassian.net/browse/SCRUM-75) |
 | BR / FR / RULE | BR-14 · FR-11a → d · RULE-11 |
 | UI | `Resume`, `Consent` (chế độ re-consent) |
-| Chuẩn tham chiếu | IIBA BABOK v3 · UML 2.5 (state, sequence) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Sơ đồ trạng thái phiên
 
@@ -93,6 +100,15 @@ sequenceDiagram
 
 ## 6. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+| C03 | [C03 · Requirements Addendum v1.3 & RTM – eKYC](../../00-overview/C03-requirements-addendum-v1.3.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -100,11 +116,12 @@ sequenceDiagram
 | 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
 | 0.2 | 24/11/2026 | Han Dao | `0e9f330` | Đồng bộ với A03, D01 và FR viết lại trong C03 |
 | 0.3 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 0.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Compliance | | | |
+| Product Owner |  |  |  |
+| Compliance |  |  |  |

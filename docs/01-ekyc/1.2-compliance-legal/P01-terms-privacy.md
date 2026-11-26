@@ -2,14 +2,21 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.4 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-P01 |
+| Phiên bản | 0.5 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | **Bản nháp v0.4 – chờ Pháp chế và Compliance duyệt** (25/11: rà soát lại theo Luật 91/2025/QH15 và NĐ 356/2025, xem mục 0) |
+| Phân loại | Nội bộ – phần điều khoản công bố cho khách sau khi Pháp chế duyệt |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner – chưa duyệt |
+| Mục đích và phạm vi | Soạn điều khoản, thông báo quyền riêng tư và cơ sở pháp lý xử lý dữ liệu cá nhân cho luồng eKYC |
+| Chuẩn tham chiếu | ISO/IEC 29100 · Luật 91/2025/QH15 · NĐ 356/2025/NĐ-CP (*cần Pháp chế xác minh*) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Phiên bản điều khoản | Đang hiển thị trên app: `2026.11` (bản cũ, chưa duyệt). Bản đề xuất trong tài liệu này: **`2026.12`**, hiệu lực từ ngày Pháp chế duyệt |
 | Dùng ở | Màn eKYC-01 / 01R (hộp thoại điều khoản), eKYC-14 (quyền riêng tư), thông báo SMS/Push (C08) |
 | Nguồn trong code | `src/ekyc/terms.ts` (nội dung hiển thị) · `server/src/config.ts` → `terms_version` |
 | Liên quan | [C02 Compliance Mapping](C02-compliance-mapping.md) · [C12 Rút lại đồng ý & lưu trữ](C12-consent-retention.md) · [C07–C09 Thông báo](../1.1-business/C07-C09-refer-handling.md) |
 | Jira | SCRUM-17, 46, 71, 81 |
-| Chuẩn tham chiếu | ISO/IEC 29100 · Luật 91/2025/QH15 · NĐ 356/2025/NĐ-CP (*cần Pháp chế xác minh*) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 > ⚠️ Nội dung điều khoản là bản BA soạn để làm giao diện và kiểm thử. Số hiệu và điều khoản văn bản ở mục 4 **phải được Pháp chế đối chiếu bản gốc, tình trạng hiệu lực** trước khi phát hành. Mục 0 dựa trên tóm tắt của các trang pháp luật và công ty luật, chưa đối chiếu toàn văn.
 
@@ -200,17 +207,30 @@ Quy tắc: không nhắc AML, PEP, CIC, "gian lận"; không chứa số giấy 
 | 11 | Có được giữ mã thiết bị và mã băm số giấy tờ của hồ sơ bỏ dở / đã rút đồng ý để chống gian lận không? Thời hạn tối đa? | §2 mục 6, D01 (PR-04) |
 | 12 | Số tài khoản và kết quả CIC có thuộc danh mục dữ liệu nhạy cảm theo NĐ 356/2025 không? Nếu có, SMS `EKYC_APPROVED` có được chứa số tài khoản không? | Mục 5, D01 (PR-11) |
 
-## 7. Phê duyệt
+## 7. Kiểm soát tài liệu
 
-| Vai trò | Họ tên | Ngày | Kết luận |
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+| C02 | [C02 · Compliance Mapping – eKYC](C02-compliance-mapping.md) |
+| C12 | [C12 · Rút lại đồng ý & lưu trữ dữ liệu](C12-consent-retention.md) |
+| C07-C09 | [C07–C09 · Xử lý hồ sơ REFER: bổ sung giấy tờ, thông báo, SLA](../1.1-business/C07-C09-refer-handling.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 0.3 | 24/11/2026 | Han Dao | — | Thêm mục 4.1 bên nhận dữ liệu, chuyển dữ liệu ra nước ngoài; tách Push / SMS |
+| 0.4 | 25/11/2026 | Han Dao | — | Rà soát theo Luật 91/2025/QH15 và NĐ 356/2025 (thay NĐ 13): 13 phát hiện (mục 0); bản điều khoản đề xuất 2026.12; căn cứ xử lý; trẻ em; dữ liệu giữ lại để chống gian lận; câu hỏi 9–12. Cùng ngày: backend đổi tuổi tối thiểu kênh trực tuyến thành 16 |
+| 0.5 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
-| Pháp chế | | | |
-| Compliance | | | |
-| Product Owner | | | |
-
-## Lịch sử phiên bản
-
-| Phiên bản | Ngày | Người | Thay đổi |
-|---|---|---|---|
-| 0.3 | 24/11/2026 | Han Dao | Thêm mục 4.1 bên nhận dữ liệu, chuyển dữ liệu ra nước ngoài; tách Push / SMS |
-| 0.4 | 25/11/2026 | Han Dao | Rà soát theo Luật 91/2025/QH15 và NĐ 356/2025 (thay NĐ 13): 13 phát hiện (mục 0); bản điều khoản đề xuất 2026.12; căn cứ xử lý; trẻ em; dữ liệu giữ lại để chống gian lận; câu hỏi 9–12. Cùng ngày: backend đổi tuổi tối thiểu kênh trực tuyến thành 16 |
+| BA (soạn) | Han Dao | 26/11/2026 | Trình duyệt |
+| Product Owner |  |  |  |

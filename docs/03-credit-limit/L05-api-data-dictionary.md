@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-LIM-L05 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 📝 Bản đề xuất (to-be). Chưa thấy mã `limit-service` trong repo (L02 §1). Chờ Tech Lead, Vận hành thẻ và Risk tín dụng xác nhận |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Tech Lead · Vận hành thẻ · Risk tín dụng · InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả API và từ điển dữ liệu limit-service (thiết kế đề xuất) |
+| Chuẩn tham chiếu | ISO 8583:1987 (bản tin thẻ) · OpenAPI 3.1 · RFC 9110 (mã HTTP) · PCI DSS v4.0 yêu cầu 3 (bảo vệ dữ liệu thẻ) · ISO 4217 · BABOK v3 §10.15 (Data Dictionary) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · SCRUM-27 (ISO 8583), 28 (idempotency, cập nhật nguyên tử), 29 (Smart Fallback), 30 (Boost, khoá gian lận), 38 (repository, subscriber), 53 (EOD), 54 (Notification) |
 | Nguồn | BAS-BRD-v1.2 §3.5 (5 entity) + phần bổ sung ở [L02 §5](L02-requirements-gap-rtm.md) · luồng [L01](L01-credit-limit-flow.md) · kiểu dữ liệu UI mẫu `src/ops/CreditLimit.tsx`, `src/mobile/cardScreens.tsx` |
-| Chuẩn tham chiếu | ISO 8583:1987 (bản tin thẻ) · OpenAPI 3.1 · RFC 9110 (mã HTTP) · PCI DSS v4.0 yêu cầu 3 (bảo vệ dữ liệu thẻ) · ISO 4217 · BABOK v3 §10.15 (Data Dictionary) |
 | Liên quan | Module 2 [R05](../02-reconciliation/R05-api-data-dictionary.md) (sự kiện nhận và EOD) · Module 1 [A03](../01-ekyc/1.6-api-data/A03-api-specification.md) (quy ước chung) |
 
 > ⚠️ Đây là **thiết kế đề xuất để đội backend bắt đầu**, không mô tả hệ thống đang chạy. Chỗ phụ thuộc quyết định ở [L02 §3](L02-requirements-gap-rtm.md) đánh dấu **[D-LIM-xx]**. Mã F39 cho fail-safe và cách ghép khoá chống trùng **cần Vận hành thẻ xác minh** với tổ chức thẻ.
@@ -310,19 +317,32 @@ Mã chung như A03: `BAD_JSON` 400 · `UNAUTHENTICATED` 401 · `FORBIDDEN` 403 �
 
 ## 10. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| L02 | [L02 · Hạn mức – yêu cầu bổ sung, điểm lệch baseline & RTM](L02-requirements-gap-rtm.md) |
+| L01 | [L01 · Hạn mức tín dụng thời gian thực – authorization, Boost và gian lận](L01-credit-limit-flow.md) |
+| R05 | [R05 · Đối soát – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](../02-reconciliation/R05-api-data-dictionary.md) |
+| A03 | [A03 · Đặc tả API & mã lỗi – Module 1 eKYC](../01-ekyc/1.6-api-data/A03-api-specification.md) |
+| L04 | [L04 · Hạn mức – kế hoạch kiểm thử, test case và kết quả](L04-test-plan-cases.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.2 | 26/11/2026 | Han Dao | — | Bảng nhật ký đổi tên `audit_event` cho khớp D01 (X01 F-06) |
 | 0.1 | 25/11/2026 | Han Dao | `273d6b3` | Bản đầu: ERD, 12 bảng (5 BRD + 7 đề xuất), ISO 8583 MTI/trường/F39, 29 mã API (web, app, nội bộ), 3 nhóm sự kiện, 12 mã lỗi, ánh xạ UI → API |
+| 0.2 | 26/11/2026 | Han Dao | — | Bảng nhật ký đổi tên `audit_event` cho khớp D01 (X01 F-06) |
+| 0.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Tech Lead | | | |
-| Vận hành thẻ | | | |
-| Risk tín dụng | | | |
-| InfoSec | | | |
+| Tech Lead |  |  |  |
+| Vận hành thẻ |  |  |  |
+| Risk tín dụng |  |  |  |
+| InfoSec |  |  |  |

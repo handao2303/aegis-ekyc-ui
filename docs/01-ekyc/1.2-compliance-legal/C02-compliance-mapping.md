@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.6 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-C02 |
+| Phiên bản | 0.7 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 📝 Bản nháp – chờ Compliance xác nhận |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Compliance – chưa duyệt |
+| Mục đích và phạm vi | Đối chiếu yêu cầu pháp lý (NHNN, Luật 91/2025, PCRT) với hiện trạng eKYC, chỉ ra khoảng trống chặn go-live |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (truy vết yêu cầu tới nguồn pháp lý) · ISO/IEC 29100 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Jira | [SCRUM-71](https://baohandao2303.atlassian.net/browse/SCRUM-71) · Spike |
 | Đầu ra cho | C03 (BRD v1.3), C05, C11, C12 |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (truy vết yêu cầu tới nguồn pháp lý) · ISO/IEC 29100 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 > ⚠️ Số hiệu và nội dung văn bản dưới đây là **điểm khởi đầu để rà soát**, viết dựa trên hiểu biết chung về quy định Việt Nam. Trước khi đưa vào BRD, phải đối chiếu bản gốc và tình trạng hiệu lực trên cổng văn bản chính thức (vbpl.vn, sbv.gov.vn). Cột "Cần xác minh" đánh dấu những chỗ chưa chắc chắn.
 
@@ -103,14 +110,16 @@ Sau cập nhật: **11 ✅ · 4 🟡 · 0 ❌** (25/11: CR-14 về 🟡). Còn c
 3. Thời hạn lưu hồ sơ KYC sau khi đóng tài khoản, và với hồ sơ bị từ chối?
 4. Thay đổi ngưỡng rủi ro có cần phê duyệt hai người không? (Đề xuất: có – xem C10.)
 
-## 5. Phê duyệt
+## 5. Kiểm soát tài liệu
 
-| Vai trò | Người | Ngày | Kết luận |
-|---|---|---|---|
-| BA | Han Dao | 21/11/2026 | Soạn bản nháp |
-| Compliance | | | |
+### Tài liệu tham chiếu
 
-## 6. Kiểm soát tài liệu
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+| T03 | [T03 · Báo cáo kết quả kiểm thử – Module 1 eKYC (vòng nội bộ 1–2)](../1.4-testing/T03-test-report.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 
 ### Lịch sử phiên bản
 
@@ -122,3 +131,11 @@ Sau cập nhật: **11 ✅ · 4 🟡 · 0 ❌** (25/11: CR-14 về 🟡). Còn c
 | 0.4 | 25/11/2026 | Han Dao | `b4ad5b4` | CR-14 về 🟡 chờ quyết định tuổi tối thiểu (P01 PR-02) |
 | 0.5 | 25/11/2026 | Han Dao | `d93f67e` | Tuổi tối thiểu tài khoản thanh toán trực tuyến 15 → 16, giới hạn 16–25 (P01 PR-02) |
 | 0.6 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 0.7 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA | Han Dao | 21/11/2026 | Soạn bản nháp |
+| Compliance |  |  |  |

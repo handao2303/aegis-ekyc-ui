@@ -2,13 +2,20 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.1 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-T02 |
+| Phiên bản | 1.2 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | ✅ Bộ 108 case · chờ QA Lead duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | QA Lead · Product Owner – chưa duyệt |
+| Mục đích và phạm vi | Liệt kê test case chi tiết Module 1 kèm dữ liệu, bước và kết quả mong đợi |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Case Specification), ISO/IEC/IEEE 29119-4 (kỹ thuật thiết kế) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Kế hoạch | [T01](T01-test-plan.md) · kết quả chạy: [T03](T03-test-report.md) |
 | Dữ liệu | Hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), nhân viên `u-anh`, `u-yen` (Officer), `u-huy` (Trưởng nhóm), `u-trang` (CS) |
 | Môi trường | `npm run dev:all`; app `/app/`, Compliance `/compliance/`; đặt lại dữ liệu `POST /api/dev/reset` |
 | Tổng | 42 app khách · 32 Compliance · 12 API · 6 job nền · 16 phi chức năng = **108 test case** (25/11: thêm TC-APP-42, TC-CO-32 cho tuổi tối thiểu 16) |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Case Specification), ISO/IEC/IEEE 29119-4 (kỹ thuật thiết kế) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 **Ưu tiên:** C = Cao (chặn phát hành) · TB = Trung bình · T = Thấp.
 **Cách chạy:** **Tự động** = có test trong `server/test` (tên test ghi trong cột) · **E2E** = chạy tay trên app/trình duyệt · **Cả hai**.
@@ -192,17 +199,28 @@
 
 ## 6. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+| T01 | [T01 · Kế hoạch kiểm thử tổng thể – Module 1 eKYC](T01-test-plan.md) |
+| T03 | [T03 · Báo cáo kết quả kiểm thử – Module 1 eKYC (vòng nội bộ 1–2)](T03-test-report.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 1.0 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
 | 1.1 | 25/11/2026 | Han Dao | — | Thêm TC-APP-42, TC-CO-32 (tuổi tối thiểu 16); tổng 108 case; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 1.2 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| QA Lead | | | |
-| Product Owner | | | |
+| QA Lead |  |  |  |
+| Product Owner |  |  |  |

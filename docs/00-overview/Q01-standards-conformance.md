@@ -2,12 +2,19 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-GEN-Q01 |
+| Phiên bản | 1.2 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ Tự đánh giá v1.1 · chờ QA Lead, PO xem xét |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | QA Lead · Product Owner – chưa duyệt |
+| Mục đích và phạm vi | Đối chiếu từng loại tài liệu của 3 module với chuẩn quốc tế áp dụng và ghi mức đạt, việc còn thiếu |
+| Chuẩn tham chiếu | — |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](G02-glossary.md) |
 | Phạm vi | 22 tài liệu Module 1 (`00-overview/`, `01-ekyc/`) – §2; 16 tài liệu Module 2, 3 (`02-reconciliation/`, `03-credit-limit/`) và X01 – §2.2 (thêm 26/11/2026) |
 | Người rà soát | Han Dao (BA) |
-| Ngày | 23/11/2026 · cập nhật 26/11/2026 |
-| Phiên bản | 1.1 |
 | Cách làm | Đối chiếu từng tài liệu với danh mục nội dung của chuẩn tương ứng. Kết quả là **tự đánh giá**, không phải chứng nhận |
-| Trạng thái | ✅ Tự đánh giá v1.1 · chờ QA Lead, PO xem xét |
 
 > Các chuẩn ISO là tài liệu có bản quyền. Danh mục dưới đây tóm tắt các mục chính của chuẩn theo hiểu biết chung, chưa đối chiếu với bản gốc. Khi cần chứng nhận hoặc audit, phải dùng bản chuẩn chính thức.
 
@@ -92,17 +99,24 @@ Mỗi tài liệu mới hoặc sửa lớn phải có dòng **Chuẩn tham chi�
 
 ## 5. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+Không tham chiếu tài liệu khác trong bộ.
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 1.0 | 23/11/2026 | Han Dao | — | Đánh giá 22 tài liệu Module 1 |
 | 1.1 | 26/11/2026 | Han Dao | — | Thêm §2.2 đánh giá Module 2, 3 và X01; thêm chuẩn 25010, PCI DSS, OpenAPI, ISO 8583 vào §1; việc 11 → 13 |
+| 1.2 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (tự đánh giá) | Han Dao | 26/11/2026 | Trình xem xét |
-| QA Lead | | | |
-| Product Owner | | | |
+| QA Lead |  |  |  |
+| Product Owner |  |  |  |

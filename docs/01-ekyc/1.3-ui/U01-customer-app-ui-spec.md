@@ -2,14 +2,21 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-EKYC-U01 |
+| Phiên bản | 1.2 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ Mô tả UI đang chạy, có ảnh từng màn · chờ PO, UX duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Tech Lead – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả 23 màn hình app khách hàng mở tài khoản (eKYC) và Hạn mức thẻ, kèm trạng thái và quy tắc hiển thị |
+| Chuẩn tham chiếu | WCAG 2.2 mức AA, ISO 9241-110 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Phạm vi | 20 màn eKYC (eKYC-00 → eKYC-14) và hộp thoại Điều khoản. Màn Hạn mức thẻ (LIM-M) xem [L01](../../03-credit-limit/L01-credit-limit-flow.md) |
 | Jira | SCRUM-47 (UX), SCRUM-17 → 19, 39 → 41, 46; SCRUM-73 → 81 |
 | Bản chạy | [Bản demo](https://handao2303.github.io/aegis-ekyc-ui/app/) · bản nối backend: `npm run dev:all` rồi mở `/app/` |
 | Mã nguồn | `src/mobile/screens.tsx`, `src/ekyc/EkycContext.tsx` (gọi API), `src/ekyc/terms.ts` (điều khoản) |
 | Ảnh | Chụp tự động bằng `tools/diagrams/screens.mjs`, khung iPhone 390 × 844 |
-| Phiên bản | 1.1 · 25/11/2026 · Han Dao |
-| Chuẩn tham chiếu | WCAG 2.2 mức AA, ISO 9241-110 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
-| Trạng thái | ✅ Mô tả UI đang chạy, có ảnh từng màn · chờ PO, UX duyệt |
 
 ## 1. Quy ước chung
 
@@ -317,6 +324,19 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 
 ## 5. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+| L01 | [L01 · Hạn mức tín dụng thời gian thực – authorization, Boost và gian lận](../../03-credit-limit/L01-credit-limit-flow.md) |
+| P01 | [P01 · Điều khoản, quyền riêng tư và cơ sở pháp lý – Module 1 eKYC](../1.2-compliance-legal/P01-terms-privacy.md) |
+| A02 | [A02 · App iPhone Aegis Scan – quét MRZ và đọc chip CCCD / hộ chiếu](A02-ios-document-scan.md) |
+| C17 | [C17 · Bộ UAT eKYC & biên bản nghiệm thu](../1.4-testing/C17-uat-pack.md) |
+| T02 | [T02 · Bộ test case chi tiết – Module 1 eKYC](../1.4-testing/T02-test-cases.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -325,11 +345,12 @@ Cột **API** ghi lời gọi tới `ekyc-service` khi app có backend ([server/
 | 0.9 | 23/11/2026 | Han Dao | `4813f91` | Đồng bộ với Confluence: hồ sơ mẫu TD-16, cảnh báo giấy tờ sắp hết hạn |
 | 1.0 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
 | 1.1 | 25/11/2026 | Han Dao | — | Truy vết thêm UAT-EKYC-27, TC-APP-42 (tuổi tối thiểu 16); thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 1.2 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Tech Lead | | | |
+| Product Owner |  |  |  |
+| Tech Lead |  |  |  |

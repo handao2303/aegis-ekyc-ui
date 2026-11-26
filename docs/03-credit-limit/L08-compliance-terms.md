@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-LIM-L08 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 📝 Bản nháp – chờ Compliance, Pháp chế, Risk tín dụng, InfoSec và CSKH xác nhận |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Pháp chế / DPO · Compliance · Risk tín dụng · CSKH · InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Đối chiếu tuân thủ, điều khoản cho khách và dữ liệu cá nhân cho Hạn mức |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 · ISO/IEC 29100 · PCI DSS v4.0 · BABOK v3 *Business Rules Analysis* · WCAG 2.2 (ngôn ngữ dễ hiểu cho khách) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · liên quan [SCRUM-54](https://baohandao2303.atlassian.net/browse/SCRUM-54) (thông báo) |
 | Tương đương Module 1 | [C02](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) (compliance mapping) và [P01](../01-ekyc/1.2-compliance-legal/P01-terms-privacy.md) (điều khoản, quyền riêng tư) |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 · ISO/IEC 29100 · PCI DSS v4.0 · BABOK v3 *Business Rules Analysis* · WCAG 2.2 (ngôn ngữ dễ hiểu cho khách) |
 | Đầu vào | BAS-BRD-v1.2 §2.3, §4.3 · CR-003 · BAS-RAID-v1.2 (RSK-03, 11, 14, 16, DEP-07, 10, ISS-03) · [L02](L02-requirements-gap-rtm.md) · [L03](L03-ui-spec.md) · [L05](L05-api-data-dictionary.md) |
 
 > ⚠️ Số hiệu, điều khoản và nội dung pháp lý dưới đây là **điểm khởi đầu để rà soát**, chưa đối chiếu bản gốc. Dòng nào ghi **cần xác minh** phải được Pháp chế kiểm trên cổng văn bản chính thức trước khi dùng. Điều khoản ở §4 là **dự thảo của BA** để Pháp chế và CSKH sửa, không phải văn bản phát hành.
@@ -137,20 +144,35 @@ Bổ sung vào [L02 §4](L02-requirements-gap-rtm.md) khi được duyệt.
 
 ## 7. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| C02 | [C02 · Compliance Mapping – eKYC](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) |
+| P01 | [P01 · Điều khoản, quyền riêng tư và cơ sở pháp lý – Module 1 eKYC](../01-ekyc/1.2-compliance-legal/P01-terms-privacy.md) |
+| L02 | [L02 · Hạn mức – yêu cầu bổ sung, điểm lệch baseline & RTM](L02-requirements-gap-rtm.md) |
+| L03 | [L03 · Đặc tả giao diện – Aegis Hạn mức (LIM-W1 → W4, LIM-M1 → M3)](L03-ui-spec.md) |
+| L05 | [L05 · Hạn mức – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](L05-api-data-dictionary.md) |
+| D01 | [D01 · Từ điển dữ liệu – Module 1 eKYC](../01-ekyc/1.6-api-data/D01-data-dictionary.md) |
+| X01 | [X01 · Kiểm tra luồng end-to-end và độ đầy đủ tài liệu 3 module](../00-overview/X01-end-to-end-flow-check.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 0.1 | 26/11/2026 | Han Dao | — | Bản đầu: 9 nhóm văn bản, 12 yêu cầu tuân thủ (1 ✅ · 7 🟡 · 4 ❌), 5 phạm vi đồng ý, dự thảo điều khoản Smart Fallback và Boost, 5 mẫu thông báo, 6 yêu cầu mới REQ-LIM-21 → 26 |
 | 0.2 | 26/11/2026 | Han Dao | — | Thêm cột Tiêu chí nghiệm thu cho REQ-LIM-21 → 26 |
+| 0.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 26/11/2026 | Trình duyệt |
-| Pháp chế / DPO | | | |
-| Compliance | | | |
-| Risk tín dụng | | | |
-| CSKH | | | |
-| InfoSec | | | |
+| Pháp chế / DPO |  |  |  |
+| Compliance |  |  |  |
+| Risk tín dụng |  |  |  |
+| CSKH |  |  |  |
+| InfoSec |  |  |  |

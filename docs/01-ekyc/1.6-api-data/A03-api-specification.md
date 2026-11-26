@@ -2,13 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.2 |
+| Mã tài liệu | AEG-EKYC-A03 |
+| Phiên bản | 1.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 📝 Bản nháp, chờ Tech Lead xác nhận |
-| Người soạn | Han Dao (BA) |
-| Ngày | 25/11/2026 |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Tech Lead · QA Lead – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả API REST và mã lỗi của ekyc-service cho đội app, web và tích hợp |
+| Chuẩn tham chiếu | Cấu trúc theo OpenAPI 3.1 (đường dẫn, tham số, thân, phản hồi); ngữ nghĩa mã HTTP theo RFC 9110 |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Jira | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69), [SCRUM-85](https://baohandao2303.atlassian.net/browse/SCRUM-85) (SIT) |
 | Nguồn | Code `server/src/http.ts`, `service.ts`, `config.ts` (ekyc-service), đối chiếu ngày 24/11/2026 |
-| Chuẩn tham chiếu | Cấu trúc theo OpenAPI 3.1 (đường dẫn, tham số, thân, phản hồi); ngữ nghĩa mã HTTP theo RFC 9110 |
 | Liên quan | [A01](../../00-overview/A01-solution-overview.md) (kiến trúc), [C03](../../00-overview/C03-requirements-addendum-v1.3.md) (FR), [D01](D01-data-dictionary.md) (dữ liệu), [C16](../1.4-testing/C16-sit-plan.md) (SIT) |
 
 Tài liệu mô tả **hợp đồng giao tiếp** giữa app khách, Aegis Compliance và `ekyc-service`. Dev dùng để tích hợp, QA dùng để viết case SIT và API test (TC-API trong T02).
@@ -289,18 +294,32 @@ Thông báo `EKYC_APPROVED` gửi thành 2 bản: Push **không** có số tài 
 | 7 | Giới hạn tần suất (rate limit) ở Gateway ngoài velocity nghiệp vụ | Chống dò API |
 | 8 | Bỏ `/api/dev/*` khỏi bản build production | Chỉ dùng cho test |
 
-## 8. Nhật ký thay đổi
+## 8. Kiểm soát tài liệu
 
-| Phiên bản | Ngày | Người | Nội dung |
-|---|---|---|---|
-| 1.0 | 24/11/2026 | Han Dao | Bản đầu, lập từ code ekyc-service |
-| 1.1 | 24/11/2026 | Han Dao | Sửa thông điệp `STOPPED_DUPLICATE` cho hộ chiếu; tách Push / SMS của `EKYC_APPROVED` |
-| 1.2 | 25/11/2026 | Han Dao | Ghi giới hạn `min_age_payment` 16–25 ở mã lỗi `OUT_OF_RANGE`; thêm mục phê duyệt |
+### Tài liệu tham chiếu
 
-## 9. Phê duyệt
+| Mã | Tài liệu |
+|---|---|
+| A01 | [A01 · Tổng quan giải pháp Aegis – kiến trúc, luồng và điều hướng UI](../../00-overview/A01-solution-overview.md) |
+| C03 | [C03 · Requirements Addendum v1.3 & RTM – eKYC](../../00-overview/C03-requirements-addendum-v1.3.md) |
+| D01 | [D01 · Từ điển dữ liệu – Module 1 eKYC](D01-data-dictionary.md) |
+| C16 | [C16 · Kế hoạch kiểm thử tích hợp (SIT) với sandbox thật](../1.4-testing/C16-sit-plan.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 1.0 | 24/11/2026 | Han Dao | — | Bản đầu, lập từ code ekyc-service |
+| 1.1 | 24/11/2026 | Han Dao | — | Sửa thông điệp `STOPPED_DUPLICATE` cho hộ chiếu; tách Push / SMS của `EKYC_APPROVED` |
+| 1.2 | 25/11/2026 | Han Dao | — | Ghi giới hạn `min_age_payment` 16–25 ở mã lỗi `OUT_OF_RANGE`; thêm mục phê duyệt |
+| 1.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+
+### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Tech Lead | | | |
-| QA Lead | | | |
+| Tech Lead |  |  |  |
+| QA Lead |  |  |  |

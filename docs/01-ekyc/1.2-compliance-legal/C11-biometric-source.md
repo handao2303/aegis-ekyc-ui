@@ -2,12 +2,19 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-C11 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 🔧 Đặc tả xong · chờ C02 và nhà cung cấp so khớp khuôn mặt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Compliance · Pháp chế – chưa duyệt |
+| Mục đích và phạm vi | Quyết định nguồn ảnh đối chiếu sinh trắc (chip DG2, CSDL dân cư, ảnh in) và giới hạn kết quả theo nguồn |
+| Chuẩn tham chiếu | ISO/IEC 30107-3 (phát hiện giả mạo sinh trắc) · ISO/IEC 29100 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Jira | [SCRUM-80](https://baohandao2303.atlassian.net/browse/SCRUM-80) · bị chặn bởi [SCRUM-71](https://baohandao2303.atlassian.net/browse/SCRUM-71) |
 | BR / FR / RULE | BR-19 · FR-16 · RULE-14 · đáp ứng CR-02, CR-03, CR-04 |
 | UI | Màn Quét chip (cảnh báo khi bỏ qua NFC), thẻ "Khuôn mặt" trong chi tiết hồ sơ |
-| Chuẩn tham chiếu | ISO/IEC 30107-3 (phát hiện giả mạo sinh trắc) · ISO/IEC 29100 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Vấn đề
 
@@ -64,17 +71,26 @@ flowchart TD
 
 ## 7. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
 | 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 0.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Compliance | | | |
-| Pháp chế | | | |
+| Compliance |  |  |  |
+| Pháp chế |  |  |  |

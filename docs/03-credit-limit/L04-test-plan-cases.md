@@ -2,13 +2,20 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-LIM-L04 |
+| Phiên bản | 1.4 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ Vòng UI đã chạy · ⛔ ca backend chờ `limit-service` |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | QA Lead · Product Owner · Risk tín dụng · Vận hành thẻ – chưa duyệt |
+| Mục đích và phạm vi | Kế hoạch kiểm thử, test case và kết quả các vòng của Module 3 |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 – gộp Test Plan, Test Case Specification và Test Completion Report cho một module nhỏ |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · story SCRUM-27 → 30, 38, 51 → 54 |
-| Khung tài liệu | ISO/IEC/IEEE 29119-3:2021 – gộp Test Plan, Test Case Specification và Test Completion Report cho một module nhỏ |
 | Đối tượng kiểm thử | UI mẫu [/credit-limit/](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) và [/app/?screen=cardHome](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome) · vòng 1: bản GitHub Pages 25/11/2026 · vòng 2: bản local 26/11/2026 (`WEB=http://localhost:5179`), cùng script `tools/diagrams/lim-screens.mjs` |
 | Yêu cầu nguồn | BAS-BRD-v1.2 §2.3, §4.3, §5.3 · [L01](L01-credit-limit-flow.md) · [L02](L02-requirements-gap-rtm.md) · [L03](L03-ui-spec.md) |
 | Người thực hiện | Han Dao (BA) |
-| Phiên bản | 1.3 · 26/11/2026 (vòng 1, kiểm tra luồng end-to-end, vòng 2 sau khi sửa 4 lỗi) |
-| Trạng thái | ✅ Vòng UI đã chạy · ⛔ ca backend chờ `limit-service` |
 
 ## 1. Tóm tắt kết quả
 
@@ -149,6 +156,19 @@ Viết sẵn theo thiết kế ở [L05](L05-api-data-dictionary.md). Chạy khi
 
 ## 8. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| L01 | [L01 · Hạn mức tín dụng thời gian thực – authorization, Boost và gian lận](L01-credit-limit-flow.md) |
+| L02 | [L02 · Hạn mức – yêu cầu bổ sung, điểm lệch baseline & RTM](L02-requirements-gap-rtm.md) |
+| L03 | [L03 · Đặc tả giao diện – Aegis Hạn mức (LIM-W1 → W4, LIM-M1 → M3)](L03-ui-spec.md) |
+| X01 | [X01 · Kiểm tra luồng end-to-end và độ đầy đủ tài liệu 3 module](../00-overview/X01-end-to-end-flow-check.md) |
+| L07 | [L07 · Hạn mức – kế hoạch SIT, kiểm thử hiệu năng, bộ UAT và biên bản nghiệm thu](L07-sit-perf-uat.md) |
+| L05 | [L05 · Hạn mức – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](L05-api-data-dictionary.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -157,13 +177,14 @@ Viết sẵn theo thiết kế ở [L05](L05-api-data-dictionary.md). Chạy khi
 | 1.1 | 26/11/2026 | Han Dao | f5d9316 | Thêm DEF-LIM-08 (màn sau eKYC luôn hiện thẻ tín dụng) từ X01 F-02 |
 | 1.2 | 26/11/2026 | Han Dao | — | Vòng 2: sửa DEF-LIM-04, 06, 07; thêm TC-LIM-34, 35, viết lại TC-LIM-23; 35 ca, 33 đạt. Thêm DEF-LIM-09, 10 từ chạy luồng thật eKYC → M1 |
 | 1.3 | 26/11/2026 | Han Dao | — | Sửa DEF-LIM-03 (một mốc hết hạn Boost); thêm TC-LIM-36; 36 ca, 34 đạt, 6 lỗi mở |
+| 1.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| QA Lead | | | |
-| Product Owner | | | |
-| Risk tín dụng | | | |
-| Vận hành thẻ | | | |
+| QA Lead |  |  |  |
+| Product Owner |  |  |  |
+| Risk tín dụng |  |  |  |
+| Vận hành thẻ |  |  |  |

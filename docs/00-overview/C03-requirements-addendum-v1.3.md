@@ -2,12 +2,19 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-GEN-C03 |
+| Phiên bản | v1.3-draft4 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | **Bản nháp v1.3-draft3 – chờ PO & Compliance duyệt** |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Compliance · Tech Lead – chưa duyệt |
+| Mục đích và phạm vi | Bổ sung yêu cầu BR, FR, RULE, NFR cho BRD/FSD/SRS v1.2 của eKYC và lập ma trận truy vết (RTM) tới thiết kế, test |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (đặc tả và truy vết yêu cầu), IIBA BABOK v3 – đánh giá ở [Q01](Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](G02-glossary.md) |
 | Jira | [SCRUM-72](https://baohandao2303.atlassian.net/browse/SCRUM-72) |
 | Bổ sung cho | BAS-BRD-v1.2 · BAS-FSD-v1.2 · BAS-SRS-v1.2 |
-| Phiên bản | v1.3-draft3 · 24/11/2026 · Han Dao (BA) |
-| Trạng thái | **Bản nháp v1.3-draft3 – chờ PO & Compliance duyệt** |
 | Đầu vào | [C02 Compliance Mapping](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (đặc tả và truy vết yêu cầu), IIBA BABOK v3 – đánh giá ở [Q01](Q01-standards-conformance.md) |
 
 Tài liệu này chỉ chứa **phần thay đổi** so với baseline v1.2. Khi được duyệt, nội dung được gộp vào BRD/FSD/SRS v1.3.
 
@@ -129,20 +136,44 @@ Mỗi FR viết theo dạng "Hệ thống phải…", một yêu cầu kiểm ch
 
 Bộ UAT chi tiết: [C17 UAT Pack](../01-ekyc/1.4-testing/C17-uat-pack.md).
 
-## 7. Nhật ký thay đổi
+## 7. Kiểm soát tài liệu
 
-| Phiên bản | Ngày | Người | Nội dung | Trạng thái |
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](Q01-standards-conformance.md) |
+| C02 | [C02 · Compliance Mapping – eKYC](../01-ekyc/1.2-compliance-legal/C02-compliance-mapping.md) |
+| D01 | [D01 · Từ điển dữ liệu – Module 1 eKYC](../01-ekyc/1.6-api-data/D01-data-dictionary.md) |
+| A03 | [A03 · Đặc tả API & mã lỗi – Module 1 eKYC](../01-ekyc/1.6-api-data/A03-api-specification.md) |
+| C04-C05 | [C04–C05 · Kiểm tra trùng khách hàng & hợp lệ giấy tờ](../01-ekyc/1.1-business/C04-C05-identity-validation.md) |
+| C06 | [C06 · Vòng đời phiên eKYC](../01-ekyc/1.1-business/C06-session-lifecycle.md) |
+| C07-C09 | [C07–C09 · Xử lý hồ sơ REFER: bổ sung giấy tờ, thông báo, SLA](../01-ekyc/1.1-business/C07-C09-refer-handling.md) |
+| C10 | [C10 · Maker-Checker & Audit trail](../01-ekyc/1.1-business/C10-maker-checker-audit.md) |
+| C11 | [C11 · Nguồn ảnh đối chiếu sinh trắc học](../01-ekyc/1.2-compliance-legal/C11-biometric-source.md) |
+| C12 | [C12 · Rút lại đồng ý & lưu trữ dữ liệu](../01-ekyc/1.2-compliance-legal/C12-consent-retention.md) |
+| C13-C14 | [C13–C14 · Chống gian lận: thiết bị, velocity & giả mạo khuôn mặt](../01-ekyc/1.2-compliance-legal/C13-C14-fraud-controls.md) |
+| U01 | [U01 · Đặc tả giao diện – App khách hàng mở tài khoản (eKYC)](../01-ekyc/1.3-ui/U01-customer-app-ui-spec.md) |
+| C15 | [C15 · Kế hoạch kiểm thử hiệu năng end-to-end](../01-ekyc/1.4-testing/C15-performance-test-plan.md) |
+| C17 | [C17 · Bộ UAT eKYC & biên bản nghiệm thu](../01-ekyc/1.4-testing/C17-uat-pack.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| v1.2 | 08/2026 | BA | Baseline (SCRUM-15) | Approved |
-| v1.3-draft | 21/11/2026 | Han Dao | Thêm BR-12→21, FR-09→18, RULE-09→16, NFR mới, RTM | Chờ duyệt |
-| v1.3-draft2 | 23/11/2026 | Han Dao | Thêm BR-22, FR-19, RULE-17 (hộ chiếu); BR-12, FR-09 không còn chỉ nói CCCD; thêm cột kiểm chứng và test case T02 vào FR, NFR, RTM (theo ISO 29148 – Q01) | Chờ duyệt |
-| v1.3-draft3 | 24/11/2026 | Han Dao | Viết lại toàn bộ FR theo dạng "Hệ thống phải…"; tách FR-11 thành FR-11a → d, FR-14 thành FR-14a → d; liên kết A03 (API) và D01 (dữ liệu) (Q01 việc #1) | Chờ duyệt |
+| v1.2 | 08/2026 | BA | — | Baseline (SCRUM-15) (trạng thái: Approved) |
+| v1.3-draft | 21/11/2026 | Han Dao | — | Thêm BR-12→21, FR-09→18, RULE-09→16, NFR mới, RTM (trạng thái: Chờ duyệt) |
+| v1.3-draft2 | 23/11/2026 | Han Dao | — | Thêm BR-22, FR-19, RULE-17 (hộ chiếu); BR-12, FR-09 không còn chỉ nói CCCD; thêm cột kiểm chứng và test case T02 vào FR, NFR, RTM (theo ISO 29148 – Q01) (trạng thái: Chờ duyệt) |
+| v1.3-draft3 | 24/11/2026 | Han Dao | — | Viết lại toàn bộ FR theo dạng "Hệ thống phải…"; tách FR-11 thành FR-11a → d, FR-14 thành FR-14a → d; liên kết A03 (API) và D01 (dữ liệu) (Q01 việc #1) (trạng thái: Chờ duyệt) |
+| v1.3-draft4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
-## 8. Phê duyệt
+### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 24/11/2026 | Trình duyệt v1.3-draft3 |
-| Product Owner | | | |
-| Compliance | | | |
-| Tech Lead | | | |
+| Product Owner |  |  |  |
+| Compliance |  |  |  |
+| Tech Lead |  |  |  |

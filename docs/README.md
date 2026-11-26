@@ -9,7 +9,7 @@ Các diagram viết bằng Mermaid, GitHub tự hiển thị. Tổng cộng 58 d
 
 ## Cấu trúc thư mục
 
-Tài liệu chia theo **module**. Mã tài liệu giữ nguyên để không vỡ liên kết Jira: **A** kiến trúc · **C** hạng mục eKYC Completion · **P** pháp lý · **U** giao diện · **T** kiểm thử · **Q** chất lượng tài liệu · **R** đối soát · **L** hạn mức · **G** rà soát theo vai. Chuẩn áp dụng cho từng loại tài liệu: [Q01](00-overview/Q01-standards-conformance.md) (ISO/IEC/IEEE 29148, 29119-3, BABOK v3, C4, BPMN 2.0, UML 2.5, WCAG 2.2, ISO/IEC 29100).
+Tài liệu chia theo **module**. Mã tài liệu giữ nguyên để không vỡ liên kết Jira: **A** kiến trúc · **C** hạng mục eKYC Completion · **P** pháp lý · **U** giao diện · **T** kiểm thử · **Q** chất lượng tài liệu · **R** đối soát · **L** hạn mức · **G** quản trị tài liệu (rà soát theo vai, thuật ngữ). Mọi tài liệu theo cùng một mẫu (ISO/IEC/IEEE 15289:2019 §7): khối thuộc tính đầu trang (mã tài liệu `AEG-<module>-<mã>`, phiên bản, ngày phát hành, trạng thái, phân loại, tác giả, người duyệt, mục đích và phạm vi, chuẩn tham chiếu, thuật ngữ) và mục cuối **Kiểm soát tài liệu** (tài liệu tham chiếu, lịch sử phiên bản, phê duyệt). Thuật ngữ dùng chung ở [G02](00-overview/G02-glossary.md). Mẫu áp bằng `python3 tools/docs/normalize.py` – chạy lại sau khi thêm hoặc sửa tài liệu. Chuẩn áp dụng cho từng loại tài liệu: [Q01](00-overview/Q01-standards-conformance.md) (ISO/IEC/IEEE 29148, 29119-3, BABOK v3, C4, BPMN 2.0, UML 2.5, WCAG 2.2, ISO/IEC 29100).
 
 ```
 docs/
@@ -91,12 +91,13 @@ flowchart LR
 
 | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|
-| [A01 Tổng quan giải pháp](00-overview/A01-solution-overview.md) | SCRUM-69 | Context, Container, Sequence, Flowchart ×4 | ✅ v1.2 · mở rộng cho cả 3 module · dự án bắt đầu 15/11/2026 |
-| [C01 Nhật ký đồng bộ Jira](00-overview/C01-jira-hygiene-log.md) | SCRUM-70 | — | ✅ v1.1 · thêm quy ước cho Module 2, 3 (X01 F-14) |
-| [C03 Requirements Addendum v1.3 & RTM](00-overview/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 draft3 · chờ PO & Compliance duyệt |
-| [Q01 Đối chiếu chuẩn quốc tế](00-overview/Q01-standards-conformance.md) | SCRUM-69 | — | ✅ v1.1 · M1: 4 đạt · 9 một phần · M2, M3: 5 đạt · 4 một phần · 0 thiếu |
-| [X01 Kiểm tra luồng end-to-end 3 module](00-overview/X01-end-to-end-flow-check.md) | SCRUM-7, 8, 69 | Sequence | 🔧 v1.2 · 14 chặng · 14 điểm lệch (6 đã sửa, 8 chờ quyết định) · đã chạy thử trên app 26/11 |
-| [G01 Rà soát theo từng vai trò](00-overview/G01-role-reviews.md) | SCRUM-69 | — | ✅ v1.1 · 7 vai · 26 phát hiện mở · G-SE-01 đã sửa · bảng phê duyệt để trống có chủ đích |
+| [A01 Tổng quan giải pháp](00-overview/A01-solution-overview.md) | SCRUM-69 | Context, Container, Sequence, Flowchart ×4 | ✅ v1.3 · mở rộng cho cả 3 module · dự án bắt đầu 15/11/2026 |
+| [C01 Nhật ký đồng bộ Jira](00-overview/C01-jira-hygiene-log.md) | SCRUM-70 | — | ✅ v1.2 · thêm quy ước cho Module 2, 3 (X01 F-14) |
+| [C03 Requirements Addendum v1.3-draft4 & RTM](00-overview/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 draft3 · chờ PO & Compliance duyệt |
+| [Q01 Đối chiếu chuẩn quốc tế](00-overview/Q01-standards-conformance.md) | SCRUM-69 | — | ✅ v1.2 · M1: 4 đạt · 9 một phần · M2, M3: 5 đạt · 4 một phần · 0 thiếu |
+| [X01 Kiểm tra luồng end-to-end 3 module](00-overview/X01-end-to-end-flow-check.md) | SCRUM-7, 8, 69 | Sequence | 🔧 v1.3 · 14 chặng · 14 điểm lệch (6 đã sửa, 8 chờ quyết định) · đã chạy thử trên app 26/11 |
+| [G01 Rà soát theo từng vai trò](00-overview/G01-role-reviews.md) | SCRUM-69 | — | ✅ v1.2 · 7 vai · 26 phát hiện mở · G-SE-01 đã sửa · bảng phê duyệt để trống có chủ đích |
+| [G02 Thuật ngữ và chữ viết tắt](00-overview/G02-glossary.md) | SCRUM-69 | — | ✅ v1.0 · nghiệp vụ, kỹ thuật, mã yêu cầu, ký hiệu trạng thái – dùng chung cho mọi tài liệu |
 
 ### Module 1 · eKYC
 
@@ -128,27 +129,27 @@ flowchart LR
 
 | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|
-| [R01 Luồng, trạng thái & kiểm soát](02-reconciliation/R01-reconciliation-flow.md) | SCRUM-7, 49, 50 | Flowchart ×2, State ×2, Sequence, ERD | ✅ v1.2 · Đặc tả + UI mẫu + `reconciliation-service` |
-| [R02 Yêu cầu bổ sung, điểm lệch baseline & RTM](02-reconciliation/R02-requirements-gap-rtm.md) | SCRUM-7, 23, 26, 50, 53 | State | 📝 v0.6 · 9 điểm chờ Kế toán trưởng quyết định · 20 yêu cầu |
-| [R03 Đặc tả giao diện REC-01 → 06](02-reconciliation/R03-ui-spec.md) | SCRUM-49 | — | ✅ v1.3, có ảnh từng màn |
-| [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–3](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ v1.5 · UI 25/25 · backend 56/56 (gồm TC-REC-B01 → B09) · E2E 4/4 · 9 lỗi đã sửa, 0 mở |
-| [R05 Đặc tả API & từ điển dữ liệu](02-reconciliation/R05-api-data-dictionary.md) | SCRUM-7, 22–26, 50, 53 | ERD | ✅ v0.3 · đã hiện thực ở `services/reconciliation` · chờ Tech Lead & Kế toán trưởng chốt các chỗ [D-REC-xx] |
-| [R06 Yêu cầu phi chức năng & từ điển KPI](02-reconciliation/R06-nfr-kpi.md) | SCRUM-7, 53 | — | 📝 v0.2 · 23 NFR theo ISO/IEC 25010 · 5 KPI đã đối chiếu BRD §1.9, chờ Tech Lead & Ops chốt ngưỡng |
-| [R07 SIT, hiệu năng, UAT & biên bản nghiệm thu](02-reconciliation/R07-sit-perf-uat.md) | SCRUM-7, 22–26, 50, 53 | Flowchart ×2 | ⛔ v0.1 · 13 SIT · 6 hiệu năng · 18 UAT, chờ backend và sandbox đối tác |
-| [R08 Tuân thủ, cơ sở pháp lý & dữ liệu cá nhân](02-reconciliation/R08-compliance-mapping.md) | SCRUM-7 | Flowchart | 📝 v0.2 · 12 yêu cầu tuân thủ (6 ✅ · 5 🟡 · 1 ❌) · REQ-REC-21 → 24 có tiêu chí nghiệm thu · chờ Pháp chế, Kế toán trưởng |
+| [R01 Luồng, trạng thái & kiểm soát](02-reconciliation/R01-reconciliation-flow.md) | SCRUM-7, 49, 50 | Flowchart ×2, State ×2, Sequence, ERD | ✅ v1.3 · Đặc tả + UI mẫu + `reconciliation-service` |
+| [R02 Yêu cầu bổ sung, điểm lệch baseline & RTM](02-reconciliation/R02-requirements-gap-rtm.md) | SCRUM-7, 23, 26, 50, 53 | State | 📝 v0.7 · 9 điểm chờ Kế toán trưởng quyết định · 20 yêu cầu |
+| [R03 Đặc tả giao diện REC-01 → 06](02-reconciliation/R03-ui-spec.md) | SCRUM-49 | — | ✅ v1.4, có ảnh từng màn |
+| [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–3](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ v1.6 · UI 25/25 · backend 56/56 (gồm TC-REC-B01 → B09) · E2E 4/4 · 9 lỗi đã sửa, 0 mở |
+| [R05 Đặc tả API & từ điển dữ liệu](02-reconciliation/R05-api-data-dictionary.md) | SCRUM-7, 22–26, 50, 53 | ERD | ✅ v0.4 · đã hiện thực ở `services/reconciliation` · chờ Tech Lead & Kế toán trưởng chốt các chỗ [D-REC-xx] |
+| [R06 Yêu cầu phi chức năng & từ điển KPI](02-reconciliation/R06-nfr-kpi.md) | SCRUM-7, 53 | — | 📝 v0.3 · 23 NFR theo ISO/IEC 25010 · 5 KPI đã đối chiếu BRD §1.9, chờ Tech Lead & Ops chốt ngưỡng |
+| [R07 SIT, hiệu năng, UAT & biên bản nghiệm thu](02-reconciliation/R07-sit-perf-uat.md) | SCRUM-7, 22–26, 50, 53 | Flowchart ×2 | ⛔ v0.2 · 13 SIT · 6 hiệu năng · 18 UAT, chờ backend và sandbox đối tác |
+| [R08 Tuân thủ, cơ sở pháp lý & dữ liệu cá nhân](02-reconciliation/R08-compliance-mapping.md) | SCRUM-7 | Flowchart | 📝 v0.3 · 12 yêu cầu tuân thủ (6 ✅ · 5 🟡 · 1 ❌) · REQ-REC-21 → 24 có tiêu chí nghiệm thu · chờ Pháp chế, Kế toán trưởng |
 
 ### Module 3 · Hạn mức
 
 | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|
-| [L01 Authorization, Boost & gian lận](03-credit-limit/L01-credit-limit-flow.md) | SCRUM-8, 51, 52, 54 | Sequence ×2, Flowchart ×2, State ×2 | 🔧 v1.2 · Đã đối chiếu BRD (MTI 0420, trạng thái Boost), chờ Notification thật |
-| [L02 Yêu cầu bổ sung, điểm lệch baseline & RTM](03-credit-limit/L02-requirements-gap-rtm.md) | SCRUM-8, 27–30, 53, 54 | — | 📝 v0.3 · 9 điểm chờ PO, Risk, Vận hành thẻ quyết định · 20 yêu cầu có tiêu chí nghiệm thu |
-| [L03 Đặc tả giao diện LIM-W1 → W4, M1 → M3](03-credit-limit/L03-ui-spec.md) | SCRUM-51, 52 | — | 📝 v0.3 · 16 ảnh chụp tự động (chụp lại 26/11) |
-| [L04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–2](03-credit-limit/L04-test-plan-cases.md) | SCRUM-8, 51, 52 | — | ✅ v1.3 · vòng 2: 36 ca UI, đạt 34 · 4 lỗi đã sửa · 6 lỗi mở (chờ quyết định) · 10 ca backend chờ service |
-| [L05 Đặc tả API & từ điển dữ liệu (đề xuất)](03-credit-limit/L05-api-data-dictionary.md) | SCRUM-27–30, 38, 53, 54 | ERD | 📝 v0.2 · 12 bảng · ISO 8583 · 29 API · 12 mã lỗi riêng |
-| [L06 Yêu cầu phi chức năng & KPI-07 → 09](03-credit-limit/L06-nfr-kpi.md) | SCRUM-8 | — | 📝 v0.2 · 22 NFR theo ISO/IEC 25010 · 3 KPI + 8 chỉ số vận hành |
-| [L07 SIT, hiệu năng, UAT & biên bản nghiệm thu](03-credit-limit/L07-sit-perf-uat.md) | SCRUM-8, 27–30, 51–54 | Flowchart ×2 | ⛔ v0.1 · 12 SIT · 6 hiệu năng · 21 UAT, chờ `limit-service` và simulator ISO 8583 |
-| [L08 Tuân thủ, điều khoản cho khách & dữ liệu cá nhân](03-credit-limit/L08-compliance-terms.md) | SCRUM-8, 54 | Flowchart | 📝 v0.2 · 12 yêu cầu tuân thủ (1 ✅ · 7 🟡 · 4 ❌) · dự thảo điều khoản Boost, Smart Fallback, 5 mẫu thông báo |
+| [L01 Authorization, Boost & gian lận](03-credit-limit/L01-credit-limit-flow.md) | SCRUM-8, 51, 52, 54 | Sequence ×2, Flowchart ×2, State ×2 | 🔧 v1.3 · Đã đối chiếu BRD (MTI 0420, trạng thái Boost), chờ Notification thật |
+| [L02 Yêu cầu bổ sung, điểm lệch baseline & RTM](03-credit-limit/L02-requirements-gap-rtm.md) | SCRUM-8, 27–30, 53, 54 | — | 📝 v0.4 · 9 điểm chờ PO, Risk, Vận hành thẻ quyết định · 20 yêu cầu có tiêu chí nghiệm thu |
+| [L03 Đặc tả giao diện LIM-W1 → W4, M1 → M3](03-credit-limit/L03-ui-spec.md) | SCRUM-51, 52 | — | 📝 v0.4 · 16 ảnh chụp tự động (chụp lại 26/11) |
+| [L04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–2](03-credit-limit/L04-test-plan-cases.md) | SCRUM-8, 51, 52 | — | ✅ v1.4 · vòng 2: 36 ca UI, đạt 34 · 4 lỗi đã sửa · 6 lỗi mở (chờ quyết định) · 10 ca backend chờ service |
+| [L05 Đặc tả API & từ điển dữ liệu (đề xuất)](03-credit-limit/L05-api-data-dictionary.md) | SCRUM-27–30, 38, 53, 54 | ERD | 📝 v0.3 · 12 bảng · ISO 8583 · 29 API · 12 mã lỗi riêng |
+| [L06 Yêu cầu phi chức năng & KPI-07 → 09](03-credit-limit/L06-nfr-kpi.md) | SCRUM-8 | — | 📝 v0.3 · 22 NFR theo ISO/IEC 25010 · 3 KPI + 8 chỉ số vận hành |
+| [L07 SIT, hiệu năng, UAT & biên bản nghiệm thu](03-credit-limit/L07-sit-perf-uat.md) | SCRUM-8, 27–30, 51–54 | Flowchart ×2 | ⛔ v0.2 · 12 SIT · 6 hiệu năng · 21 UAT, chờ `limit-service` và simulator ISO 8583 |
+| [L08 Tuân thủ, điều khoản cho khách & dữ liệu cá nhân](03-credit-limit/L08-compliance-terms.md) | SCRUM-8, 54 | Flowchart | 📝 v0.3 · 12 yêu cầu tuân thủ (1 ✅ · 7 🟡 · 4 ❌) · dự thảo điều khoản Boost, Smart Fallback, 5 mẫu thông báo |
 
 ## Việc còn lại ngoài tài liệu
 

@@ -2,14 +2,21 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-REC-R03 |
+| Phiên bản | 1.4 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ Mô tả UI mẫu đang chạy, có ảnh từng màn · chờ Kế toán trưởng, PO duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Kế toán trưởng / Quản lý vận hành · Tech Lead – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả giao diện Aegis Đối soát REC-01 → REC-06 |
+| Chuẩn tham chiếu | WCAG 2.2 mức AA · PCI DSS (che số thẻ, số tài khoản) – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Người dùng | Chuyên viên đối soát (Maker), Kiểm soát viên (Checker), Trưởng nhóm đối soát, Kế toán trưởng / Quản lý vận hành (xem dashboard) |
 | Jira | [SCRUM-49](https://baohandao2303.atlassian.net/browse/SCRUM-49) (FE REC-01 → 06), [SCRUM-50](https://baohandao2303.atlassian.net/browse/SCRUM-50) (truy vết) |
 | Bản chạy | [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) – dữ liệu hư cấu, chưa nối backend |
 | Mã nguồn | `src/ops/Reconciliation.tsx`, khung dùng chung `src/ops/kit.tsx` |
 | Ảnh | 1280 × 860, tiếng Việt, chụp tự động bằng `tools/diagrams/rec-screens.mjs` |
-| Phiên bản | 1.3 · 25/11/2026 · Han Dao |
-| Chuẩn tham chiếu | WCAG 2.2 mức AA · PCI DSS (che số thẻ, số tài khoản) – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
-| Trạng thái | ✅ Mô tả UI mẫu đang chạy, có ảnh từng màn · chờ Kế toán trưởng, PO duyệt |
 
 Quy tắc nghiệp vụ và điểm lệch baseline: [R02](R02-requirements-gap-rtm.md). Kết quả chạy thử trên giao diện: [R04](R04-test-plan-cases.md).
 
@@ -151,20 +158,33 @@ Aging trên UI chia 4 nhóm, BRD chia 3 nhóm – chờ quyết định D-REC-02
 
 Trạng thái luôn có chữ đi kèm màu, không chỉ dùng màu (WCAG 2.2 tiêu chí 1.4.1). Banner chặn dùng `role="alert"`, thông báo kết quả dùng `role="status"`.
 
-## Lịch sử phiên bản
+## Kiểm soát tài liệu
 
-| Phiên bản | Ngày | Người | Thay đổi |
-|---|---|---|---|
-| 1.0 | 24/11/2026 | Han Dao | Bản đầu, có ảnh 6 màn, ghi phần còn thiếu so với baseline |
-| 1.1 | 24/11/2026 | Han Dao | Cập nhật REC-05, REC-06 sau khi sửa 6 lỗi của R04: 3 cách xử lý, nguyên nhân khác, khoá bút toán trùng, Chờ hạch toán, lý do từ chối, trả về Maker |
-| 1.2 | 24/11/2026 | Han Dao | Ô đăng nhập UAT với 3 vai trò; kiểm RULE-REC-05 đúng nghĩa baseline khi duyệt bút toán |
-| 1.3 | 25/11/2026 | Han Dao | Thêm mục phê duyệt (ISO/IEC/IEEE 29148) |
+### Tài liệu tham chiếu
 
-## Phê duyệt
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../00-overview/Q01-standards-conformance.md) |
+| R02 | [R02 · Đối soát – yêu cầu bổ sung, điểm lệch baseline & RTM](R02-requirements-gap-rtm.md) |
+| R04 | [R04 · Đối soát – kế hoạch kiểm thử, test case và kết quả](R04-test-plan-cases.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 1.0 | 24/11/2026 | Han Dao | — | Bản đầu, có ảnh 6 màn, ghi phần còn thiếu so với baseline |
+| 1.1 | 24/11/2026 | Han Dao | — | Cập nhật REC-05, REC-06 sau khi sửa 6 lỗi của R04: 3 cách xử lý, nguyên nhân khác, khoá bút toán trùng, Chờ hạch toán, lý do từ chối, trả về Maker |
+| 1.2 | 24/11/2026 | Han Dao | — | Ô đăng nhập UAT với 3 vai trò; kiểm RULE-REC-05 đúng nghĩa baseline khi duyệt bút toán |
+| 1.3 | 25/11/2026 | Han Dao | — | Thêm mục phê duyệt (ISO/IEC/IEEE 29148) |
+| 1.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+
+### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Kế toán trưởng / Quản lý vận hành | | | |
-| Tech Lead | | | |
+| Product Owner |  |  |  |
+| Kế toán trưởng / Quản lý vận hành |  |  |  |
+| Tech Lead |  |  |  |

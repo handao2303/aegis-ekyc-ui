@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-A02 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | Bản mẫu chạy được trên iPhone. Chưa có xác thực CSCA, liveness và so khớp khuôn mặt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Tech Lead – chưa duyệt |
+| Mục đích và phạm vi | Mô tả app iPhone Aegis Scan: quét MRZ, đọc chip NFC CCCD / hộ chiếu và giới hạn hiện tại |
+| Chuẩn tham chiếu | ICAO 9303: MRZ TD1/TD3, BAC, PACE, Passive Authentication (SOD), Chip Authentication |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Liên quan | SCRUM-18 (OCR/NFC), [SCRUM-80](https://baohandao2303.atlassian.net/browse/SCRUM-80) (C11 nguồn sinh trắc học), C15 (hiệu năng) |
 | Mã nguồn | [`ios/AegisScan`](../../../ios/AegisScan/README.md) – SwiftUI, iOS 16+, NFCPassportReader 3.0.1 (MIT) |
-| Chuẩn | ICAO 9303: MRZ TD1/TD3, BAC, PACE, Passive Authentication (SOD), Chip Authentication |
-| Trạng thái | Bản mẫu chạy được trên iPhone. Chưa có xác thực CSCA, liveness và so khớp khuôn mặt |
 
 ## 1. Vì sao cần app native
 
@@ -143,17 +150,24 @@ Toàn bộ xử lý nằm trên máy, không lưu và không gửi ảnh hay d�
 
 ## 9. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+Không tham chiếu tài liệu khác trong bộ.
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 0.1 | 22/11/2026 | Han Dao | `8a99253` | Bản đầu |
 | 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 0.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Tech Lead | | | |
+| Product Owner |  |  |  |
+| Tech Lead |  |  |  |

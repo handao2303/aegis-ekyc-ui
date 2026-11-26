@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-REC-R06 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 📝 Bản nháp – chờ Tech Lead, Ops và Kế toán trưởng chốt các ngưỡng đánh dấu *đề xuất* |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Tech Lead · Ops / Quản lý vận hành · Kế toán trưởng · InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Định nghĩa yêu cầu phi chức năng và từ điển chỉ số KPI cho Đối soát |
+| Chuẩn tham chiếu | ISO/IEC 25010:2023 (mô hình chất lượng sản phẩm) · ISO/IEC/IEEE 29148:2018 (cách viết yêu cầu) · BABOK v3 kỹ thuật *Metrics and KPIs* · WCAG 2.2 mức AA |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · liên quan [SCRUM-53](https://baohandao2303.atlassian.net/browse/SCRUM-53) (EOD) |
 | Nguồn | BAS-BRD-v1.2 (BR-REC, RULE-REC, KPI) qua [R02](R02-requirements-gap-rtm.md) · chỉ số trên REC-01 ở [R01 §7](R01-reconciliation-flow.md) · bảng dữ liệu ở [R05](R05-api-data-dictionary.md) |
-| Chuẩn tham chiếu | ISO/IEC 25010:2023 (mô hình chất lượng sản phẩm) · ISO/IEC/IEEE 29148:2018 (cách viết yêu cầu) · BABOK v3 kỹ thuật *Metrics and KPIs* · WCAG 2.2 mức AA |
 | Liên quan | Module 1: [C18](../01-ekyc/1.5-analytics/C18-kpi-metric-dictionary.md) (KPI), NFR trong [C03](../00-overview/C03-requirements-addendum-v1.3.md) · cách kiểm từng yêu cầu: [R07](R07-sit-perf-uat.md) |
 
 > ⚠️ Module 2 chưa có yêu cầu phi chức năng nào trong các tài liệu hiện có. Cột **Nguồn** ghi rõ ngưỡng nào lấy từ baseline (BRD, RULE, KPI) và ngưỡng nào là **đề xuất của BA** dựa trên khối lượng dữ liệu của UI mẫu. Ngưỡng đề xuất phải được Tech Lead và Ops chốt trước khi đưa vào hợp đồng nghiệm thu.
@@ -157,19 +164,33 @@ WHERE status <> 'RESOLVED' AND opened_at < :end_of_day_ms;
 
 ## 6. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| R02 | [R02 · Đối soát – yêu cầu bổ sung, điểm lệch baseline & RTM](R02-requirements-gap-rtm.md) |
+| R01 | [R01 · Đối soát giao dịch – luồng, trạng thái và kiểm soát](R01-reconciliation-flow.md) |
+| R05 | [R05 · Đối soát – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](R05-api-data-dictionary.md) |
+| C18 | [C18 · Dashboard KPI eKYC & từ điển chỉ số](../01-ekyc/1.5-analytics/C18-kpi-metric-dictionary.md) |
+| C03 | [C03 · Requirements Addendum v1.3 & RTM – eKYC](../00-overview/C03-requirements-addendum-v1.3.md) |
+| R07 | [R07 · Đối soát – kế hoạch SIT, kiểm thử hiệu năng, bộ UAT và biên bản nghiệm thu](R07-sit-perf-uat.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.2 | 25/11/2026 | Han Dao | — | Đối chiếu bảng KPI gốc BRD §1.9: KPI-06 là giá trị tồn đọng cuối ngày, mục tiêu giảm dần; KPI-09 lấy mục tiêu baseline "bằng 0 hoặc giải trình 100%", độ trễ sự kiện chuyển thành chỉ số phụ; bỏ ghi chú "cần đối chiếu" |
 | 0.1 | 25/11/2026 | Han Dao | e5293ba | Bản đầu: 23 yêu cầu phi chức năng theo ISO/IEC 25010, từ điển 5 KPI và 5 chỉ số vận hành, truy vấn kiểm chứng |
+| 0.2 | 25/11/2026 | Han Dao | — | Đối chiếu bảng KPI gốc BRD §1.9: KPI-06 là giá trị tồn đọng cuối ngày, mục tiêu giảm dần; KPI-09 lấy mục tiêu baseline "bằng 0 hoặc giải trình 100%", độ trễ sự kiện chuyển thành chỉ số phụ; bỏ ghi chú "cần đối chiếu" |
+| 0.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Tech Lead | | | |
-| Ops / Quản lý vận hành | | | |
-| Kế toán trưởng | | | |
-| InfoSec | | | |
+| Tech Lead |  |  |  |
+| Ops / Quản lý vận hành |  |  |  |
+| Kế toán trưởng |  |  |  |
+| InfoSec |  |  |  |

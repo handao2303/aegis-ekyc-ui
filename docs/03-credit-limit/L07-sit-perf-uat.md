@@ -2,10 +2,17 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.1 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-LIM-L07 |
+| Phiên bản | 0.2 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | ⛔ Kế hoạch xong · chưa chạy được: chưa xác minh được `limit-service`, chưa có simulator ISO 8583 (DEP-05), mock CASA (DEP-06), Notification Service (DEP-07) |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | QA Lead · Product Owner · Risk tín dụng · Vận hành thẻ · InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Kế hoạch SIT, kiểm thử hiệu năng, bộ UAT và biên bản nghiệm thu cho Hạn mức |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 – Test Plan (SIT, hiệu năng, UAT) và mẫu Test Completion Report cho UAT |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · SCRUM-27 → 30, 38, 51 → 54 |
-| Khung tài liệu | ISO/IEC/IEEE 29119-3:2021 – Test Plan (SIT, hiệu năng, UAT) và mẫu Test Completion Report cho UAT |
 | Cơ sở | [L02](L02-requirements-gap-rtm.md) yêu cầu & RTM · [L05](L05-api-data-dictionary.md) API & dữ liệu · [L06](L06-nfr-kpi.md) NFR & KPI · ca backend [L04 §4](L04-test-plan-cases.md) · BAS-RAID-v1.2 (DEP-05 → 07, 10, ISS-03, 04, DEC-02, 04) |
 | Liên quan | Module 2 [R07](../02-reconciliation/R07-sit-perf-uat.md) (IF-REC-06 = IF-LIM-09) · Module 1 [C16](../01-ekyc/1.4-testing/C16-sit-plan.md), [C17](../01-ekyc/1.4-testing/C17-uat-pack.md) |
 
@@ -225,19 +232,34 @@ flowchart LR
 
 ## 7. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| L02 | [L02 · Hạn mức – yêu cầu bổ sung, điểm lệch baseline & RTM](L02-requirements-gap-rtm.md) |
+| L05 | [L05 · Hạn mức – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](L05-api-data-dictionary.md) |
+| L06 | [L06 · Hạn mức – yêu cầu phi chức năng và từ điển chỉ số KPI](L06-nfr-kpi.md) |
+| L04 | [L04 · Hạn mức – kế hoạch kiểm thử, test case và kết quả](L04-test-plan-cases.md) |
+| R07 | [R07 · Đối soát – kế hoạch SIT, kiểm thử hiệu năng, bộ UAT và biên bản nghiệm thu](../02-reconciliation/R07-sit-perf-uat.md) |
+| C16 | [C16 · Kế hoạch kiểm thử tích hợp (SIT) với sandbox thật](../01-ekyc/1.4-testing/C16-sit-plan.md) |
+| C17 | [C17 · Bộ UAT eKYC & biên bản nghiệm thu](../01-ekyc/1.4-testing/C17-uat-pack.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 0.1 | 25/11/2026 | Han Dao | — | Bản đầu: 11 giao diện, 12 kịch bản SIT, 6 kịch bản hiệu năng, 21 kịch bản UAT (10 mã baseline + UAT-NFR-01 + 10 bổ sung), 8 bộ dữ liệu, biên bản nghiệm thu |
+| 0.2 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| QA Lead | | | |
-| Product Owner | | | |
-| Risk tín dụng | | | |
-| Vận hành thẻ | | | |
-| InfoSec | | | |
+| QA Lead |  |  |  |
+| Product Owner |  |  |  |
+| Risk tín dụng |  |  |  |
+| Vận hành thẻ |  |  |  |
+| InfoSec |  |  |  |

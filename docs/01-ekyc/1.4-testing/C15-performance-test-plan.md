@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-C15 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 🔧 Kế hoạch xong · chờ thiết bị NFC thứ hai và môi trường |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | QA Lead · Product Owner – chưa duyệt |
+| Mục đích và phạm vi | Lập kế hoạch đo hiệu năng end-to-end eKYC theo NFR-PERF-02, 03 |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 · ISO/IEC 25010 (hiệu năng) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Jira | [SCRUM-84](https://baohandao2303.atlassian.net/browse/SCRUM-84) · liên quan [SCRUM-57](https://baohandao2303.atlassian.net/browse/SCRUM-57) |
 | Yêu cầu | NFR-PERF-02 (mỗi bước < 3s P95) · NFR-PERF-03 (toàn luồng ≤ 3 phút P90) |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 · ISO/IEC 25010 (hiệu năng) – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Điểm đo trên luồng
 
@@ -51,17 +58,26 @@ flowchart TB
 
 ## 5. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
 | 0.2 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 0.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| QA Lead | | | |
-| Product Owner | | | |
+| QA Lead |  |  |  |
+| Product Owner |  |  |  |

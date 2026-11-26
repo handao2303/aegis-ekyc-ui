@@ -2,12 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.3 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-C17 |
+| Phiên bản | 0.4 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | ⛔ Bộ kịch bản xong · chờ C03 duyệt và SIT (C16) |
-| Jira | [SCRUM-86](https://baohandao2303.atlassian.net/browse/SCRUM-86) · bị chặn bởi [SCRUM-72](https://baohandao2303.atlassian.net/browse/SCRUM-72), [SCRUM-85](https://baohandao2303.atlassian.net/browse/SCRUM-85) |
-| Người soạn | BA · Người nghiệm thu: PO + Compliance |
-| Dữ liệu | Hồ sơ mẫu có nhãn kỳ vọng; **không dùng dữ liệu thật của khách** |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | QA Lead · Product Owner – chưa duyệt |
+| Mục đích và phạm vi | Cung cấp bộ kịch bản UAT, dữ liệu mẫu và biên bản nghiệm thu cho eKYC |
 | Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
+| Jira | [SCRUM-86](https://baohandao2303.atlassian.net/browse/SCRUM-86) · bị chặn bởi [SCRUM-72](https://baohandao2303.atlassian.net/browse/SCRUM-72), [SCRUM-85](https://baohandao2303.atlassian.net/browse/SCRUM-85) |
+| Dữ liệu | Hồ sơ mẫu có nhãn kỳ vọng; **không dùng dữ liệu thật của khách** |
 
 ## 1. Quy trình UAT
 
@@ -115,6 +121,14 @@ Ký hiệu nguồn: hồ sơ mẫu `TD-xx` chuẩn bị theo bảng ở mục 4.
 
 ## 7. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -122,11 +136,12 @@ Ký hiệu nguồn: hồ sơ mẫu `TD-xx` chuẩn bị theo bảng ở mục 4.
 | 0.1 | 21/11/2026 | Han Dao | `51eaebb` | Bản đầu kèm diagram (Epic SCRUM-69) |
 | 0.2 | 23/11/2026 | Han Dao | `c70e906` | Bổ sung luồng hộ chiếu gắn chip (Việt Nam và nước ngoài) |
 | 0.3 | 25/11/2026 | Han Dao | — | Thêm UAT-EKYC-27 (dưới 16 tuổi, tài khoản thanh toán); làm rõ TD-10; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 0.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| QA Lead | | | |
-| Product Owner | | | |
+| QA Lead |  |  |  |
+| Product Owner |  |  |  |

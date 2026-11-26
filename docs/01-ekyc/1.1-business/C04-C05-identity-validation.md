@@ -2,12 +2,19 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.5 · 25/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-EKYC-C04-C05 |
+| Phiên bản | 0.6 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | ✅ Hoàn tất đặc tả + UI + backend, có test UAT · chờ PO, Compliance duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Compliance – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả quy tắc kiểm tra trùng khách hàng và hợp lệ giấy tờ, tuổi (RULE-EKYC-09, 10) chạy trước Liveness |
+| Chuẩn tham chiếu | IIBA BABOK v3 (bảng quyết định, quy tắc nghiệp vụ) · ISO/IEC/IEEE 29148:2018 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Jira | [SCRUM-73](https://baohandao2303.atlassian.net/browse/SCRUM-73) (C04) · [SCRUM-74](https://baohandao2303.atlassian.net/browse/SCRUM-74) (C05) |
 | BR / FR / RULE | BR-12, BR-13 · FR-09, FR-10 · RULE-09, RULE-10 |
 | UI | `Duplicate`, `ExpiredDoc`, `OcrReview` trong [screens.tsx](../../../src/mobile/screens.tsx) |
-| Chuẩn tham chiếu | IIBA BABOK v3 (bảng quyết định, quy tắc nghiệp vụ) · ISO/IEC/IEEE 29148:2018 – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 Hai kiểm tra này chạy **ngay sau OCR/NFC và trước Liveness**. Mục đích là dừng sớm hồ sơ không hợp lệ, không tốn chi phí gọi Liveness và CIC.
 
@@ -89,6 +96,17 @@ Xem ticket để có đầy đủ. UAT: UAT-EKYC-12, 13, 14, 25, 26 trong [C17](
 
 ## 7. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+| C02 | [C02 · Compliance Mapping – eKYC](../1.2-compliance-legal/C02-compliance-mapping.md) |
+| P01 | [P01 · Điều khoản, quyền riêng tư và cơ sở pháp lý – Module 1 eKYC](../1.2-compliance-legal/P01-terms-privacy.md) |
+| C17 | [C17 · Bộ UAT eKYC & biên bản nghiệm thu](../1.4-testing/C17-uat-pack.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -98,11 +116,12 @@ Xem ticket để có đầy đủ. UAT: UAT-EKYC-12, 13, 14, 25, 26 trong [C17](
 | 0.3 | 23/11/2026 | Han Dao | `ffb0ba3` | Sắp xếp lại bảng; thêm kịch bản hộ chiếu |
 | 0.4 | 25/11/2026 | Han Dao | `d93f67e` | Tuổi tối thiểu tài khoản thanh toán trực tuyến 15 → 16, giới hạn 16–25 (P01 PR-02) |
 | 0.5 | 25/11/2026 | Han Dao | — | Thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 0.6 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Compliance | | | |
+| Product Owner |  |  |  |
+| Compliance |  |  |  |

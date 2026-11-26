@@ -2,13 +2,20 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-GEN-C01 |
+| Phiên bản | 1.2 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ Hoàn tất 6/6 hạng mục · chờ PO, Tech Lead duyệt v1.1 |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Tech Lead – chưa duyệt |
+| Mục đích và phạm vi | Ghi lại các lần chỉnh Jira Epic eKYC (SCRUM-6) và quy ước đặt tên, liên kết ticket cho cả 3 module |
+| Chuẩn tham chiếu | Không có chuẩn bắt buộc (nhật ký); kiểm soát tài liệu theo ISO/IEC/IEEE 29148 – [Q01](Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](G02-glossary.md) |
 | Jira | [SCRUM-70](https://baohandao2303.atlassian.net/browse/SCRUM-70) |
 | Ngày thực hiện | 21/11/2026 |
 | Người thực hiện | Han Dao (BA/PO) |
 | Kết quả | **Hoàn tất 6/6 hạng mục** |
-| Phiên bản | 1.1 · 26/11/2026 · Han Dao (BA) |
-| Trạng thái | ✅ Hoàn tất 6/6 hạng mục · chờ PO, Tech Lead duyệt v1.1 |
-| Chuẩn tham chiếu | Không có chuẩn bắt buộc (nhật ký); kiểm soát tài liệu theo ISO/IEC/IEEE 29148 – [Q01](Q01-standards-conformance.md) |
 
 ## Thay đổi đã thực hiện
 
@@ -43,17 +50,28 @@ Quy ước trên áp dụng cho cả Epic Đối soát (SCRUM-7) và Hạn mức
 
 ## Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](Q01-standards-conformance.md) |
+| X01 | [X01 · Kiểm tra luồng end-to-end và độ đầy đủ tài liệu 3 module](X01-end-to-end-flow-check.md) |
+| L02 | [L02 · Hạn mức – yêu cầu bổ sung, điểm lệch baseline & RTM](../03-credit-limit/L02-requirements-gap-rtm.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 1.0 | 21/11/2026 | Han Dao | — | Nhật ký đồng bộ 6 hạng mục Jira Epic eKYC, quy ước trạng thái |
 | 1.1 | 26/11/2026 | Han Dao | — | Thêm phần áp dụng cho Module 2, 3 (X01 F-14); thêm kiểm soát tài liệu theo ISO/IEC/IEEE 29148 |
+| 1.2 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 26/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Tech Lead | | | |
+| Product Owner |  |  |  |
+| Tech Lead |  |  |  |

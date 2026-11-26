@@ -2,13 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.2 |
+| Mã tài liệu | AEG-EKYC-D01 |
+| Phiên bản | 1.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 📝 Bản nháp, chờ Tech Lead và DPO (đầu mối bảo vệ dữ liệu) xác nhận |
-| Người soạn | Han Dao (BA) |
-| Ngày | 24/11/2026 |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Tech Lead · DPO (đầu mối bảo vệ dữ liệu) – chưa duyệt |
+| Mục đích và phạm vi | Từ điển dữ liệu ekyc-service: bảng, trường, phân loại dữ liệu và kiểm soát bảo vệ |
+| Chuẩn tham chiếu | BABOK v3 §10.15 Data Dictionary; phân loại dữ liệu theo Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 và Nghị định 356/2025/NĐ-CP (thay Nghị định 13/2023 từ 01/01/2026) – dữ liệu cá nhân cơ bản / nhạy cảm – và ISO/IEC 29100 |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Jira | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69), [SCRUM-81](https://baohandao2303.atlassian.net/browse/SCRUM-81) (lưu trữ) |
 | Nguồn | Lược đồ `server/src/db.ts`, tham số `server/src/config.ts`, đối chiếu ngày 24/11/2026 |
-| Chuẩn tham chiếu | BABOK v3 §10.15 Data Dictionary; phân loại dữ liệu theo Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 và Nghị định 356/2025/NĐ-CP (thay Nghị định 13/2023 từ 01/01/2026) – dữ liệu cá nhân cơ bản / nhạy cảm – và ISO/IEC 29100 |
 | Liên quan | [A03](A03-api-specification.md) (API), [C10](../1.1-business/C10-maker-checker-audit.md) (audit), [C12](../1.2-compliance-legal/C12-consent-retention.md) (lưu trữ), [P01](../1.2-compliance-legal/P01-terms-privacy.md) (quyền riêng tư) |
 
 Tài liệu định nghĩa **mỗi trường dữ liệu**: ý nghĩa, kiểu, nguồn, mức nhạy cảm và thời hạn lưu. Dùng cho Dev (lược đồ), QA (dữ liệu test), Compliance và Pháp chế (hồ sơ xử lý dữ liệu cá nhân theo Luật 91/2025 và NĐ 356/2025).
@@ -219,18 +224,32 @@ erDiagram
 | 3 | Điểm liveness và face match có tính là dữ liệu sinh trắc theo Luật 91/2025 và NĐ 356/2025 không, hay chỉ ảnh gốc mới tính? | Phân loại 🔴 S |
 | 4 | NĐ 356/2025 mở rộng danh mục dữ liệu nhạy cảm (theo các bản tóm tắt: tài khoản, lịch sử giao dịch tài chính). `account_no` có phải nâng từ 🟠 P lên 🔴 S không? Nếu có, SMS `EKYC_APPROVED` có được chứa số tài khoản không? (P01 PR-11) | Phân loại `account_no`, mẫu SMS |
 
-## 8. Nhật ký thay đổi
+## 8. Kiểm soát tài liệu
 
-| Phiên bản | Ngày | Người | Nội dung |
-|---|---|---|---|
-| 1.0 | 24/11/2026 | Han Dao | Bản đầu, lập từ lược đồ ekyc-service |
-| 1.1 | 24/11/2026 | Han Dao | Job xoá dữ liệu xoá thêm số điện thoại, điểm sinh trắc, CIC, người nhận thông báo; xoá velocity quá 30 ngày |
-| 1.2 | 25/11/2026 | Han Dao | Căn cứ phân loại đổi từ NĐ 13/2023 (hết hiệu lực 01/01/2026) sang Luật 91/2025/QH15 + NĐ 356/2025; thêm câu hỏi DPO về số tài khoản; `min_age_payment` 15 → 16 |
+### Tài liệu tham chiếu
 
-## 9. Phê duyệt
+| Mã | Tài liệu |
+|---|---|
+| A03 | [A03 · Đặc tả API & mã lỗi – Module 1 eKYC](A03-api-specification.md) |
+| C10 | [C10 · Maker-Checker & Audit trail](../1.1-business/C10-maker-checker-audit.md) |
+| C12 | [C12 · Rút lại đồng ý & lưu trữ dữ liệu](../1.2-compliance-legal/C12-consent-retention.md) |
+| P01 | [P01 · Điều khoản, quyền riêng tư và cơ sở pháp lý – Module 1 eKYC](../1.2-compliance-legal/P01-terms-privacy.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 1.0 | 24/11/2026 | Han Dao | — | Bản đầu, lập từ lược đồ ekyc-service |
+| 1.1 | 24/11/2026 | Han Dao | — | Job xoá dữ liệu xoá thêm số điện thoại, điểm sinh trắc, CIC, người nhận thông báo; xoá velocity quá 30 ngày |
+| 1.2 | 25/11/2026 | Han Dao | — | Căn cứ phân loại đổi từ NĐ 13/2023 (hết hiệu lực 01/01/2026) sang Luật 91/2025/QH15 + NĐ 356/2025; thêm câu hỏi DPO về số tài khoản; `min_age_payment` 15 → 16 |
+| 1.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+
+### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Tech Lead | | | |
-| DPO (đầu mối bảo vệ dữ liệu) | | | |
+| Tech Lead |  |  |  |
+| DPO (đầu mối bảo vệ dữ liệu) |  |  |  |

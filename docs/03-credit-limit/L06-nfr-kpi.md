@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-LIM-L06 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 📝 Bản nháp – chờ Tech Lead, Ops, Vận hành thẻ và InfoSec chốt các ngưỡng *đề xuất* |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Tech Lead · Ops · Vận hành thẻ · InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Định nghĩa yêu cầu phi chức năng và từ điển chỉ số KPI cho Hạn mức |
+| Chuẩn tham chiếu | ISO/IEC 25010:2023 · ISO/IEC/IEEE 29148:2018 · BABOK v3 *Metrics and KPIs* · PCI DSS v4.0 · WCAG 2.2 AA · Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 và Nghị định 356/2025/NĐ-CP (thay NĐ 13/2023 từ 01/01/2026) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) |
 | Nguồn | BAS-BRD-v1.2: BR-LIM, RULE-LIM, ghi chú NFR trong UC-LIM-01 → 06, §1.9 KPI-07 → 09 · BAS-RAID-v1.2: NFR-PERF-01, NFR-SEC-02, NFR-SEC-04, NFR-AUD-01/02, RSK-08, 09, 14, 16, DEP-10, ISS-04 · bảng dữ liệu [L05](L05-api-data-dictionary.md) |
-| Chuẩn tham chiếu | ISO/IEC 25010:2023 · ISO/IEC/IEEE 29148:2018 · BABOK v3 *Metrics and KPIs* · PCI DSS v4.0 · WCAG 2.2 AA · Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 và Nghị định 356/2025/NĐ-CP (thay NĐ 13/2023 từ 01/01/2026) |
 | Liên quan | Module 2 [R06](../02-reconciliation/R06-nfr-kpi.md) (KPI-09 dùng chung) · cách kiểm từng yêu cầu: [L07](L07-sit-perf-uat.md) |
 
 > ⚠️ Baseline chỉ cho số cứng ở SLA authorization (p99 < 2 giây), 0 sự cố vượt hạn mức và sai lệch EOD bằng 0. Cột **Nguồn** ghi rõ ngưỡng nào từ baseline và ngưỡng nào là **đề xuất của BA**. Ngưỡng đề xuất phải được chốt trước khi đưa vào tiêu chí nghiệm thu (RSK-13, DEP-12).
@@ -139,19 +146,32 @@ GROUP BY 1;
 
 ## 6. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| L05 | [L05 · Hạn mức – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](L05-api-data-dictionary.md) |
+| R06 | [R06 · Đối soát – yêu cầu phi chức năng và từ điển chỉ số KPI](../02-reconciliation/R06-nfr-kpi.md) |
+| L07 | [L07 · Hạn mức – kế hoạch SIT, kiểm thử hiệu năng, bộ UAT và biên bản nghiệm thu](L07-sit-perf-uat.md) |
+| L08 | [L08 · Hạn mức – đối chiếu tuân thủ, điều khoản cho khách và dữ liệu cá nhân](L08-compliance-terms.md) |
+| L03 | [L03 · Đặc tả giao diện – Aegis Hạn mức (LIM-W1 → W4, LIM-M1 → M3)](L03-ui-spec.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.2 | 26/11/2026 | Han Dao | — | Căn cứ dữ liệu cá nhân đổi sang Luật 91/2025 + NĐ 356/2025 cho khớp C02, P01 (X01 F-10) |
 | 0.1 | 25/11/2026 | Han Dao | 273d6b3 | Bản đầu: 22 yêu cầu phi chức năng theo ISO/IEC 25010, KPI-07 → 09 và 8 chỉ số vận hành, truy vấn kiểm chứng |
+| 0.2 | 26/11/2026 | Han Dao | — | Căn cứ dữ liệu cá nhân đổi sang Luật 91/2025 + NĐ 356/2025 cho khớp C02, P01 (X01 F-10) |
+| 0.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Tech Lead | | | |
-| Ops | | | |
-| Vận hành thẻ | | | |
-| InfoSec | | | |
+| Tech Lead |  |  |  |
+| Ops |  |  |  |
+| Vận hành thẻ |  |  |  |
+| InfoSec |  |  |  |

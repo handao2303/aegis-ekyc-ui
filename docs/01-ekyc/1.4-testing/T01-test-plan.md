@@ -2,14 +2,21 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-EKYC-T01 |
+| Phiên bản | 1.4 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ Đang áp dụng (vòng nội bộ 1, 2 đã chạy) · chờ QA Lead, PO duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | QA Lead · PO – chưa duyệt |
+| Mục đích và phạm vi | Kế hoạch kiểm thử tổng thể Module 1: phạm vi, cách tiếp cận, môi trường, lịch, tiêu chí vào/ra |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Plan), thuật ngữ ISTQB – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Module | eKYC – mở tài khoản trực tuyến (app khách, Aegis Compliance, `ekyc-service`) |
 | Epic | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69) |
 | Tài liệu đi kèm | [T02 Bộ test case](T02-test-cases.md) · [T03 Báo cáo kết quả](T03-test-report.md) · [C15 Hiệu năng](C15-performance-test-plan.md) · [C16 SIT](C16-sit-plan.md) · [C17 UAT](C17-uat-pack.md) |
 | Cơ sở | BRD/FSD/SRS v1.2 + addendum v1.3 ([C03](../../00-overview/C03-requirements-addendum-v1.3.md)), đặc tả C04–C13, giao diện [U01](../1.3-ui/U01-customer-app-ui-spec.md), [U02](../1.3-ui/U02-compliance-ui-spec.md), điều khoản [P01](../1.2-compliance-legal/P01-terms-privacy.md) |
 | Ngày bắt đầu | 15/11/2026 – bắt đầu dự án và lập kế hoạch kiểm thử |
-| Phiên bản | 1.3 · 26/11/2026 · Han Dao (BA) |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Plan), thuật ngữ ISTQB – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
-| Trạng thái | ✅ Đang áp dụng (vòng nội bộ 1, 2 đã chạy) · chờ QA Lead, PO duyệt |
 
 ## 1. Mục tiêu
 
@@ -157,15 +164,24 @@ Số case đã chạy / đạt / không đạt / chặn theo nhóm và mức ưu
 | Lỗi | Jira, loại Bug, liên kết test case |
 | Biên bản SIT, UAT | C16, C17 |
 
-## 16. Phê duyệt
+## 16. Kiểm soát tài liệu
 
-| Vai trò | Người | Ngày | Kết luận |
-|---|---|---|---|
-| BA (soạn) | Han Dao | 23/11/2026 | Soạn bản 1.1 |
-| QA Lead | | | |
-| PO | | | |
+### Tài liệu tham chiếu
 
-## 17. Kiểm soát tài liệu
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+| T02 | [T02 · Bộ test case chi tiết – Module 1 eKYC](T02-test-cases.md) |
+| T03 | [T03 · Báo cáo kết quả kiểm thử – Module 1 eKYC (vòng nội bộ 1–2)](T03-test-report.md) |
+| C15 | [C15 · Kế hoạch kiểm thử hiệu năng end-to-end](C15-performance-test-plan.md) |
+| C16 | [C16 · Kế hoạch kiểm thử tích hợp (SIT) với sandbox thật](C16-sit-plan.md) |
+| C17 | [C17 · Bộ UAT eKYC & biên bản nghiệm thu](C17-uat-pack.md) |
+| C03 | [C03 · Requirements Addendum v1.3 & RTM – eKYC](../../00-overview/C03-requirements-addendum-v1.3.md) |
+| U01 | [U01 · Đặc tả giao diện – App khách hàng mở tài khoản (eKYC)](../1.3-ui/U01-customer-app-ui-spec.md) |
+| U02 | [U02 · Đặc tả giao diện – Aegis Compliance (xét duyệt eKYC)](../1.3-ui/U02-compliance-ui-spec.md) |
+| P01 | [P01 · Điều khoản, quyền riêng tư và cơ sở pháp lý – Module 1 eKYC](../1.2-compliance-legal/P01-terms-privacy.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 
 ### Lịch sử phiên bản
 
@@ -176,3 +192,12 @@ Số case đã chạy / đạt / không đạt / chặn theo nhóm và mức ưu
 | 1.1 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
 | 1.2 | 25/11/2026 | Han Dao | — | Giá trị biên tuổi 15/16 cho tài khoản thanh toán (P01 PR-02); thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
 | 1.3 | 26/11/2026 | Han Dao | — | Ghi ngày bắt đầu dự án / kế hoạch 15/11/2026; cập nhật mốc vòng nội bộ 2 |
+| 1.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 23/11/2026 | Soạn bản 1.1 |
+| QA Lead |  |  |  |
+| PO |  |  |  |

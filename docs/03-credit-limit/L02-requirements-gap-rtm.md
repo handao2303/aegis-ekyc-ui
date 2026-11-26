@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-LIM-L02 |
+| Phiên bản | 0.4 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | 📝 Chờ PO, Risk tín dụng, Vận hành thẻ và Tech Lead quyết định 9 điểm ở §3 |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Risk tín dụng · Vận hành thẻ · Tech Lead · InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Đối chiếu baseline với UI và thiết kế Hạn mức: yêu cầu bổ sung, điểm lệch, RTM |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (cách viết và thuộc tính yêu cầu) · BABOK v3 *Trace Requirements*, *Assess Requirements Changes* · ISO 8583 · PCI DSS v4.0 (che PAN) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · Real-time Credit Limit |
 | Baseline | BAS-BRD-v1.2 §2.3 BR-LIM-01 → 10 · §3.5 entity · §4.3 UC-LIM-01 → 06 · §5.3 RULE-LIM-01 → 08 · §6.3 US-LIM-01 → 06 · §1.9 KPI-07 → 09 · BAS-RAID-v1.2 (RSK-08 → 11, 14, 16 · DEP-05 → 07, 10 · ISS-03, 04) · CR-003 (đã duyệt 20/09/2026) |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (cách viết và thuộc tính yêu cầu) · BABOK v3 *Trace Requirements*, *Assess Requirements Changes* · ISO 8583 · PCI DSS v4.0 (che PAN) |
-| Phiên bản | 0.3 · 26/11/2026 · Han Dao (BA) – bản nháp |
-| Trạng thái | 📝 Chờ PO, Risk tín dụng, Vận hành thẻ và Tech Lead quyết định 9 điểm ở §3 |
 
 ## 1. Phạm vi baseline và mức độ đáp ứng hiện tại
 
@@ -150,21 +157,37 @@ Mã ca backend (TC-LIM-Bxx) ở [L04 §4](L04-test-plan-cases.md); SIT, PERF và
 
 ## 8. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| L01 | [L01 · Hạn mức tín dụng thời gian thực – authorization, Boost và gian lận](L01-credit-limit-flow.md) |
+| L04 | [L04 · Hạn mức – kế hoạch kiểm thử, test case và kết quả](L04-test-plan-cases.md) |
+| R02 | [R02 · Đối soát – yêu cầu bổ sung, điểm lệch baseline & RTM](../02-reconciliation/R02-requirements-gap-rtm.md) |
+| L03 | [L03 · Đặc tả giao diện – Aegis Hạn mức (LIM-W1 → W4, LIM-M1 → M3)](L03-ui-spec.md) |
+| L05 | [L05 · Hạn mức – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](L05-api-data-dictionary.md) |
+| L06 | [L06 · Hạn mức – yêu cầu phi chức năng và từ điển chỉ số KPI](L06-nfr-kpi.md) |
+| L07 | [L07 · Hạn mức – kế hoạch SIT, kiểm thử hiệu năng, bộ UAT và biên bản nghiệm thu](L07-sit-perf-uat.md) |
+| L08 | [L08 · Hạn mức – đối chiếu tuân thủ, điều khoản cho khách và dữ liệu cá nhân](L08-compliance-terms.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.3 | 26/11/2026 | Han Dao | — | Thêm cột Tiêu chí nghiệm thu cho REQ-LIM-01 → 20 (ISO/IEC/IEEE 29148: yêu cầu kiểm chứng được), dẫn ca test L04, L07; cập nhật §1, §3, RTM theo app sau L04 vòng 2 (RRN, hạn Boost) |
-| 0.2 | 26/11/2026 | Han Dao | — | Thêm L08 vào bản đồ tài liệu; yêu cầu tuân thủ REQ-LIM-21 → 26 ở L08 §5 chờ duyệt để chuyển vào §4 |
 | 0.1 | 25/11/2026 | Han Dao | `273d6b3` | Bản đầu: đánh giá 10 BR, 9 điểm lệch, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM, câu hỏi mở |
+| 0.2 | 26/11/2026 | Han Dao | — | Thêm L08 vào bản đồ tài liệu; yêu cầu tuân thủ REQ-LIM-21 → 26 ở L08 §5 chờ duyệt để chuyển vào §4 |
+| 0.3 | 26/11/2026 | Han Dao | — | Thêm cột Tiêu chí nghiệm thu cho REQ-LIM-01 → 20 (ISO/IEC/IEEE 29148: yêu cầu kiểm chứng được), dẫn ca test L04, L07; cập nhật §1, §3, RTM theo app sau L04 vòng 2 (RRN, hạn Boost) |
+| 0.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Risk tín dụng | | | |
-| Vận hành thẻ | | | |
-| Tech Lead | | | |
-| InfoSec | | | |
+| Product Owner |  |  |  |
+| Risk tín dụng |  |  |  |
+| Vận hành thẻ |  |  |  |
+| Tech Lead |  |  |  |
+| InfoSec |  |  |  |

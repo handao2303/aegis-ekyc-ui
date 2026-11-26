@@ -2,14 +2,21 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-REC-R01 |
+| Phiên bản | 1.3 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ Đặc tả + UI mẫu + `reconciliation-service` (56/56 test, R04 §4); 9 điểm lệch baseline chờ Kế toán trưởng (R02 §3) |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Kế toán trưởng · Product Owner · Compliance / InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Mô tả luồng đối soát, trạng thái quy tắc / ngoại lệ / bút toán và các kiểm soát Maker-Checker, truy vết |
+| Chuẩn tham chiếu | BPMN 2.0 · UML 2.5 (state, sequence) · IIBA BABOK v3 – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · Reconciliation Capability |
 | Story | SCRUM-22 → 26 (backend), [SCRUM-49](https://baohandao2303.atlassian.net/browse/SCRUM-49) (FE REC-01 → 06), [SCRUM-50](https://baohandao2303.atlassian.net/browse/SCRUM-50) (truy vết) |
 | UI mẫu | [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) · mã nguồn `src/ops/Reconciliation.tsx` |
 | Quy tắc chính | RULE-REC-04 (ngưỡng GL), RULE-REC-05 (phân tách nhiệm vụ), RULE-REC-06 (leo thang), FR-REC-11 (truy vết) |
-| Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
-| Trạng thái | ✅ Đặc tả + UI mẫu + `reconciliation-service` (56/56 test, R04 §4); 9 điểm lệch baseline chờ Kế toán trưởng (R02 §3) |
 | Tài liệu đi kèm | [R02](R02-requirements-gap-rtm.md) yêu cầu bổ sung & RTM · [R03](R03-ui-spec.md) đặc tả giao diện · [R04](R04-test-plan-cases.md) kiểm thử · [R05](R05-api-data-dictionary.md) API & từ điển dữ liệu |
-| Chuẩn tham chiếu | BPMN 2.0 · UML 2.5 (state, sequence) · IIBA BABOK v3 – đánh giá ở [Q01](../00-overview/Q01-standards-conformance.md) §2.2 |
 
 > ⚠️ Một số trạng thái và quy tắc trong tài liệu này khác BAS-BRD-v1.2 (trạng thái ngoại lệ, aging, điều kiện leo thang, ý nghĩa RULE-REC-05, trạng thái quy tắc, loại `DUPLICATE`). Danh sách và đề xuất xử lý: [R02 §3](R02-requirements-gap-rtm.md). Các điểm lệch đó giữ nguyên tới khi Kế toán trưởng quyết định. Bản 1.1 (25/11) chỉ cập nhật §2–§4 cho khớp UI mẫu sau R04 vòng 2: 3 cách xử lý ngoại lệ, trạng thái `PENDING_POSTING`, trả về / trình lại bút toán, kiểm RULE-REC-05 theo nghĩa baseline.
 
@@ -218,6 +225,18 @@ Ca kiểm thử chi tiết và kết quả: UI 25/25, backend 56/56, end-to-end 
 
 ## 9. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../00-overview/Q01-standards-conformance.md) |
+| R02 | [R02 · Đối soát – yêu cầu bổ sung, điểm lệch baseline & RTM](R02-requirements-gap-rtm.md) |
+| R03 | [R03 · Đặc tả giao diện – Aegis Đối soát (REC-01 → REC-06)](R03-ui-spec.md) |
+| R04 | [R04 · Đối soát – kế hoạch kiểm thử, test case và kết quả](R04-test-plan-cases.md) |
+| R05 | [R05 · Đối soát – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](R05-api-data-dictionary.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -226,12 +245,13 @@ Ca kiểm thử chi tiết và kết quả: UI 25/25, backend 56/56, end-to-end 
 | 1.0 | 24/11/2026 | Han Dao | `7afda2b` | Cảnh báo điểm lệch baseline, liên kết R02–R04 |
 | 1.1 | 25/11/2026 | Han Dao | `64ac045` | §2–§4 khớp UI mẫu sau R04 vòng 2: 3 cách xử lý ngoại lệ, `PENDING_POSTING`, `RETURNED` và trình lại, RULE-REC-05 theo nghĩa baseline; liên kết R05; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
 | 1.2 | 26/11/2026 | Han Dao | — | Có `reconciliation-service`; cập nhật trạng thái và kết quả kiểm thử |
+| 1.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Kế toán trưởng | | | |
-| Product Owner | | | |
-| Compliance / InfoSec | | | |
+| Kế toán trưởng |  |  |  |
+| Product Owner |  |  |  |
+| Compliance / InfoSec |  |  |  |

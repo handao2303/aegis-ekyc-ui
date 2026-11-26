@@ -2,14 +2,21 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-LIM-L03 |
+| Phiên bản | 0.4 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | 📝 Mô tả UI mẫu như đang có, kèm điểm phải sửa (cột **Ghi chú**). Chờ quyết định ở [L02 §3](L02-requirements-gap-rtm.md) |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · UX / FE Lead · Risk tín dụng · Vận hành thẻ – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả giao diện Aegis Hạn mức: web vận hành LIM-W1 → W4 và app LIM-M1 → M3 |
+| Chuẩn tham chiếu | WCAG 2.2 mức AA · PCI DSS 3.4 (che PAN) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Người dùng | Web: Vận hành thẻ, Risk tín dụng / Fraud analyst · Mobile: chủ thẻ |
 | Jira | [SCRUM-52](https://baohandao2303.atlassian.net/browse/SCRUM-52) (FE web W1 → W4, danh sách thẻ G-07) · [SCRUM-51](https://baohandao2303.atlassian.net/browse/SCRUM-51) (FE mobile M1 → M3) |
 | Bản chạy | Web [/credit-limit/](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) · Mobile [/app/?screen=cardHome](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome) – dữ liệu hư cấu, chưa nối backend |
 | Mã nguồn | `src/ops/CreditLimit.tsx` (khung chung `src/ops/kit.tsx`) · `src/mobile/cardScreens.tsx` |
 | Ảnh | Web 1280 × 860, mobile 390 × 844 @2x, tiếng Việt, chụp tự động bằng `tools/diagrams/lim-screens.mjs` (chụp lại 26/11/2026) |
-| Chuẩn | WCAG 2.2 mức AA · PCI DSS 3.4 (che PAN) |
-| Phiên bản | 0.3 · 26/11/2026 · Han Dao (BA) |
-| Trạng thái | 📝 Mô tả UI mẫu như đang có, kèm điểm phải sửa (cột **Ghi chú**). Chờ quyết định ở [L02 §3](L02-requirements-gap-rtm.md) |
 
 Luồng nghiệp vụ: [L01](L01-credit-limit-flow.md). Kết quả chạy thử trên giao diện: [L04](L04-test-plan-cases.md). API sau mỗi thao tác: [L05 §7](L05-api-data-dictionary.md).
 
@@ -159,6 +166,18 @@ Luồng nghiệp vụ: [L01](L01-credit-limit-flow.md). Kết quả chạy thử
 
 ## 8. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| L02 | [L02 · Hạn mức – yêu cầu bổ sung, điểm lệch baseline & RTM](L02-requirements-gap-rtm.md) |
+| L01 | [L01 · Hạn mức tín dụng thời gian thực – authorization, Boost và gian lận](L01-credit-limit-flow.md) |
+| L04 | [L04 · Hạn mức – kế hoạch kiểm thử, test case và kết quả](L04-test-plan-cases.md) |
+| L05 | [L05 · Hạn mức – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](L05-api-data-dictionary.md) |
+| L06 | [L06 · Hạn mức – yêu cầu phi chức năng và từ điển chỉ số KPI](L06-nfr-kpi.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -166,13 +185,14 @@ Luồng nghiệp vụ: [L01](L01-credit-limit-flow.md). Kết quả chạy thử
 | 0.1 | 25/11/2026 | Han Dao | 273d6b3 | Bản đầu: khung web, 4 màn web + danh sách thẻ, 3 màn mobile, 15 ảnh chụp tự động, phân quyền đề xuất, WCAG |
 | 0.2 | 26/11/2026 | Han Dao | — | W1 thêm cột RRN; W2 bảng Smart Fallback hiện đủ cột; W4 hộp thoại kết luận khi đóng case (ảnh mới); M1 ghi rõ DEF-LIM-09, 10. Ảnh chụp lại 26/11 |
 | 0.3 | 26/11/2026 | Han Dao | — | M2: hạn Boost tính từ một mốc (DEF-LIM-03); vùng chạm 44 px ở thanh đầu app (DEF-13 – T03) |
+| 0.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| UX / FE Lead | | | |
-| Risk tín dụng | | | |
-| Vận hành thẻ | | | |
+| Product Owner |  |  |  |
+| UX / FE Lead |  |  |  |
+| Risk tín dụng |  |  |  |
+| Vận hành thẻ |  |  |  |

@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-GEN-X01 |
+| Phiên bản | 1.3 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | 🔧 Đã sửa 6 điểm ngay trong tài liệu; 8 điểm chờ quyết định |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Solution Owner / Tech Lead · Kế toán trưởng · InfoSec / DPO – chưa duyệt |
+| Mục đích và phạm vi | Kiểm tra hành trình end-to-end qua 3 module, phát hiện điểm lệch giữa tài liệu, UI và thiết kế |
+| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 §5.2.5 (tính nhất quán, đầy đủ của bộ yêu cầu) · BABOK v3 *Trace Requirements*, *Verify Requirements* · ISO/IEC/IEEE 42010 (góc nhìn kiến trúc) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](G02-glossary.md) |
 | Phạm vi | Module 1 eKYC (`01-ekyc/`), Module 2 Đối soát (`02-reconciliation/`), Module 3 Hạn mức (`03-credit-limit/`), tổng quan [A01](A01-solution-overview.md) |
 | Cách làm | Đi theo hành trình một khách từ mở tài khoản tới đối soát cuối ngày; ở mỗi điểm nối giữa hai module, so tài liệu hai bên và mã nguồn đang có (`server/src`, `src/`) |
-| Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 §5.2.5 (tính nhất quán, đầy đủ của bộ yêu cầu) · BABOK v3 *Trace Requirements*, *Verify Requirements* · ISO/IEC/IEEE 42010 (góc nhìn kiến trúc) |
 
 ## 1. Bộ tài liệu đã đủ như Module 1 chưa
 
@@ -152,6 +159,14 @@ Một người có thể giữ nhiều vai trò, nhưng không được giữ c�
 
 ## 7. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| A01 | [A01 · Tổng quan giải pháp Aegis – kiến trúc, luồng và điều hướng UI](A01-solution-overview.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -159,13 +174,14 @@ Một người có thể giữ nhiều vai trò, nhưng không được giữ c�
 | 1.0 | 26/11/2026 | Han Dao | f5d9316 | Bản đầu: ma trận độ đầy đủ 3 module, hành trình end-to-end 14 chặng, 14 điểm lệch, phong bì sự kiện, ma trận vai trò |
 | 1.1 | 26/11/2026 | Han Dao | — | Thêm §3.1 chạy thử hành trình trên app; cập nhật số liệu L04 vòng 2 |
 | 1.2 | 26/11/2026 | Han Dao | — | Cập nhật số liệu L04 (34/36) sau khi sửa DEF-LIM-03 |
+| 1.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 26/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Solution Owner / Tech Lead | | | |
-| Kế toán trưởng | | | |
-| InfoSec / DPO | | | |
+| Product Owner |  |  |  |
+| Solution Owner / Tech Lead |  |  |  |
+| Kế toán trưởng |  |  |  |
+| InfoSec / DPO |  |  |  |

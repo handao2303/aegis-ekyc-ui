@@ -2,10 +2,17 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.1 · 26/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-GEN-G01 |
+| Phiên bản | 1.2 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | ✅ Rà soát nội bộ xong · không thay thế phê duyệt |
-| Phạm vi | Cả 3 module (eKYC, Đối soát, Hạn mức), tài liệu `docs/`, mã `src/`, `server/`, `services/reconciliation/` tại ngày 26/11/2026 |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner – chưa duyệt |
+| Mục đích và phạm vi | Ghi lượt rà soát từ góc nhìn từng vai trò (PO, Compliance, QA, Tech Lead, InfoSec, Kế toán, Risk) để người duyệt thật có sẵn phát hiện |
 | Chuẩn tham chiếu | IIBA BABOK v3 §5.5 (Approve Requirements), §7.2 (Verify Requirements) · ISO/IEC/IEEE 29148:2018 §5.2.5 (đặc tính bộ yêu cầu) · ISO/IEC 20246:2017 (review sản phẩm phần mềm) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](G02-glossary.md) |
+| Phạm vi | Cả 3 module (eKYC, Đối soát, Hạn mức), tài liệu `docs/`, mã `src/`, `server/`, `services/reconciliation/` tại ngày 26/11/2026 |
 
 ## 1. Vì sao có tài liệu này
 
@@ -101,12 +108,19 @@ Quy ước kết luận: ✅ chấp nhận · 🟡 chấp nhận có điều ki�
 
 ## 11. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+Không tham chiếu tài liệu khác trong bộ.
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 1.0 | 26/11/2026 | Han Dao | `263a89f` | Bản đầu: rà soát 7 vai, 29 phát hiện (27 mở, 1 chấp nhận có điều kiện, 1 đạt), tổng hợp chặn go-live |
 | 1.1 | 26/11/2026 | Han Dao | — | G-SE-01 đã sửa ở ekyc-service; còn 26 phát hiện mở |
+| 1.2 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
@@ -115,4 +129,4 @@ Quy ước kết luận: ✅ chấp nhận · 🟡 chấp nhận có điều ki�
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 26/11/2026 | Trình duyệt |
-| Product Owner | | | |
+| Product Owner |  |  |  |

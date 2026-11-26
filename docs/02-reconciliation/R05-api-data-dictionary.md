@@ -2,11 +2,18 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.3 · 26/11/2026 · Han Dao (BA) |
+| Mã tài liệu | AEG-REC-R05 |
+| Phiên bản | 0.4 |
+| Ngày phát hành | 26/11/2026 |
 | Trạng thái | ✅ Đã hiện thực bản tham chiếu `reconciliation-service` v1.0 ([services/reconciliation](../../services/reconciliation/README.md)), 56/56 test đạt (R04 §4). Thiết kế vẫn chờ Tech Lead và Kế toán trưởng xác nhận các chỗ **[D-REC-xx]** |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Tech Lead · Kế toán trưởng · QA Lead · InfoSec – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả API và từ điển dữ liệu reconciliation-service |
+| Chuẩn tham chiếu | OpenAPI 3.1 (cấu trúc API), RFC 9110 (mã HTTP), BABOK v3 §10.15 (Data Dictionary), ISO 20022 camt.053/054 (sao kê), ISO 4217 (mã tiền tệ) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../00-overview/G02-glossary.md) |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · story SCRUM-22 → 26 (backend), [SCRUM-50](https://baohandao2303.atlassian.net/browse/SCRUM-50) (truy vết), [SCRUM-53](https://baohandao2303.atlassian.net/browse/SCRUM-53) (EOD) |
 | Nguồn | BAS-BRD-v1.2 §3.4 (mô hình dữ liệu) qua [R02 §5](R02-requirements-gap-rtm.md) · ERD [R01 §5](R01-reconciliation-flow.md) · 20 yêu cầu [R02 §4](R02-requirements-gap-rtm.md) · kiểu dữ liệu UI mẫu `src/ops/Reconciliation.tsx` |
-| Chuẩn tham chiếu | OpenAPI 3.1 (cấu trúc API), RFC 9110 (mã HTTP), BABOK v3 §10.15 (Data Dictionary), ISO 20022 camt.053/054 (sao kê), ISO 4217 (mã tiền tệ) |
 | Liên quan | [R01](R01-reconciliation-flow.md) luồng & trạng thái · [R03](R03-ui-spec.md) giao diện · [R04](R04-test-plan-cases.md) test case backend TC-REC-B01 → B09 · Module 1: [A03](../01-ekyc/1.6-api-data/A03-api-specification.md), [D01](../01-ekyc/1.6-api-data/D01-data-dictionary.md) (cùng quy ước) |
 
 > ⚠️ Tài liệu này là **thiết kế đề xuất để đội backend bắt đầu**, không mô tả hệ thống đang chạy. Tên trạng thái theo UI mẫu và R01 v1.1; các chỗ phụ thuộc quyết định của Kế toán trưởng (D-REC-01 → 09, [R02 §3](R02-requirements-gap-rtm.md)) được đánh dấu **[D-REC-xx]** và phải sửa theo kết quả quyết định. Thời hạn lưu trữ ở §4.3 cần Kế toán trưởng và Pháp chế xác nhận.
@@ -558,20 +565,36 @@ Dùng khi thay dữ liệu mẫu (`SOURCES`, `RULES0`, `EX0`, `GL0` trong `src/o
 
 ## 10. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| R02 | [R02 · Đối soát – yêu cầu bổ sung, điểm lệch baseline & RTM](R02-requirements-gap-rtm.md) |
+| R01 | [R01 · Đối soát giao dịch – luồng, trạng thái và kiểm soát](R01-reconciliation-flow.md) |
+| R03 | [R03 · Đặc tả giao diện – Aegis Đối soát (REC-01 → REC-06)](R03-ui-spec.md) |
+| R04 | [R04 · Đối soát – kế hoạch kiểm thử, test case và kết quả](R04-test-plan-cases.md) |
+| A03 | [A03 · Đặc tả API & mã lỗi – Module 1 eKYC](../01-ekyc/1.6-api-data/A03-api-specification.md) |
+| D01 | [D01 · Từ điển dữ liệu – Module 1 eKYC](../01-ekyc/1.6-api-data/D01-data-dictionary.md) |
+| L05 | [L05 · Hạn mức – đặc tả API và từ điển dữ liệu (thiết kế đề xuất)](../03-credit-limit/L05-api-data-dictionary.md) |
+| X01 | [X01 · Kiểm tra luồng end-to-end và độ đầy đủ tài liệu 3 module](../00-overview/X01-end-to-end-flow-check.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.3 | 26/11/2026 | Han Dao | — | Có bản hiện thực tham chiếu: 16 bảng (thêm `staff`, `config_changes`, `idempotency`, `limit_ledger`, `gl_approvals`, cột `channel` cho giao dịch nội bộ và `auth_id` cho bút toán từ Hạn mức), 40 endpoint gồm API-01 → 62 và cấu hình Maker-Checker |
-| 0.2 | 26/11/2026 | Han Dao | — | Payload `limit.authorization.processed` thêm `card_id`, giá trị `result` khớp L05 (X01 F-11); bảng nhật ký đổi tên `audit_event` (F-06) |
 | 0.1 | 25/11/2026 | Han Dao | `6c7b79b` | Bản đầu: mô hình dữ liệu 11 bảng, từ điển dữ liệu, 32 API, 13 mã lỗi riêng, sự kiện vào/ra, ánh xạ UI mẫu và test backend |
+| 0.2 | 26/11/2026 | Han Dao | — | Payload `limit.authorization.processed` thêm `card_id`, giá trị `result` khớp L05 (X01 F-11); bảng nhật ký đổi tên `audit_event` (F-06) |
+| 0.3 | 26/11/2026 | Han Dao | — | Có bản hiện thực tham chiếu: 16 bảng (thêm `staff`, `config_changes`, `idempotency`, `limit_ledger`, `gl_approvals`, cột `channel` cho giao dịch nội bộ và `auth_id` cho bút toán từ Hạn mức), 40 endpoint gồm API-01 → 62 và cấu hình Maker-Checker |
+| 0.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Tech Lead | | | |
-| Kế toán trưởng | | | |
-| QA Lead | | | |
-| InfoSec | | | |
+| Tech Lead |  |  |  |
+| Kế toán trưởng |  |  |  |
+| QA Lead |  |  |  |
+| InfoSec |  |  |  |

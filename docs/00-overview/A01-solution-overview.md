@@ -2,14 +2,20 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-GEN-A01 |
+| Phiên bản | 1.3 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ v1.2 · chờ Solution Owner / Kiến trúc sư duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Solution Owner / Kiến trúc sư – chưa duyệt |
+| Mục đích và phạm vi | Cho người đọc mới cái nhìn toàn cảnh 3 module: bối cảnh hệ thống, thành phần, luồng end-to-end, cây quyết định và bản đồ màn hình, trước khi đọc tài liệu chi tiết |
+| Chuẩn tham chiếu | Mô hình C4 (Context, Container) · ISO/IEC/IEEE 42010 · UML 2.5 (sequence) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](G02-glossary.md) |
 | Epic | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69) · nền tảng cho C04–C18 |
 | UI | [Bản chạy thật](https://handao2303.github.io/aegis-ekyc-ui/) · mã nguồn `src/` |
-| Mục đích | Một chỗ nhìn toàn cảnh 3 module (eKYC, Đối soát, Hạn mức) trước khi đọc từng tài liệu C-xx, R-xx, L-xx, A02 |
 | Kiểm tra luồng | Hành trình end-to-end qua 3 module và các điểm lệch: [X01](X01-end-to-end-flow-check.md) |
 | Ngày bắt đầu | 15/11/2026 – bắt đầu dự án |
-| Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
-| Chuẩn tham chiếu | Mô hình C4 (Context, Container) · ISO/IEC/IEEE 42010 · UML 2.5 (sequence) |
-| Trạng thái | ✅ v1.2 · chờ Solution Owner / Kiến trúc sư duyệt |
 
 ## 1. Bối cảnh hệ thống (System Context)
 
@@ -234,6 +240,21 @@ flowchart LR
 
 ## Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| X01 | [X01 · Kiểm tra luồng end-to-end và độ đầy đủ tài liệu 3 module](X01-end-to-end-flow-check.md) |
+| C06 | [C06 · Vòng đời phiên eKYC](../01-ekyc/1.1-business/C06-session-lifecycle.md) |
+| C10 | [C10 · Maker-Checker & Audit trail](../01-ekyc/1.1-business/C10-maker-checker-audit.md) |
+| C18 | [C18 · Dashboard KPI eKYC & từ điển chỉ số](../01-ekyc/1.5-analytics/C18-kpi-metric-dictionary.md) |
+| R01 | [R01 · Đối soát giao dịch – luồng, trạng thái và kiểm soát](../02-reconciliation/R01-reconciliation-flow.md) |
+| L01 | [L01 · Hạn mức tín dụng thời gian thực – authorization, Boost và gian lận](../03-credit-limit/L01-credit-limit-flow.md) |
+| A02 | [A02 · App iPhone Aegis Scan – quét MRZ và đọc chip CCCD / hộ chiếu](../01-ekyc/1.3-ui/A02-ios-document-scan.md) |
+| C07-C09 | [C07–C09 · Xử lý hồ sơ REFER: bổ sung giấy tờ, thông báo, SLA](../01-ekyc/1.1-business/C07-C09-refer-handling.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
@@ -241,10 +262,11 @@ flowchart LR
 | 1.0 | 21/11/2026 → 23/11/2026 | Han Dao | `982969c`, `8a99253`, `361be3e` | Bản đầu: Context, Container, luồng end-to-end eKYC, cây quyết định, bản đồ màn hình, triển khai UI |
 | 1.1 | 26/11/2026 | Han Dao | — | Mở rộng Context và Container cho cả 3 module: tổ chức thẻ, CASA / sổ cái, topic `limit.*`, `rec.*`, CSDL của `limit-service` và `reconciliation-service` (X01 F-04, F-05) |
 | 1.2 | 26/11/2026 | Han Dao | — | Ghi ngày bắt đầu dự án 15/11/2026; Đối soát đã có backend |
+| 1.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 26/11/2026 | Trình duyệt |
-| Solution Owner / Kiến trúc sư | | | |
+| Solution Owner / Kiến trúc sư |  |  |  |

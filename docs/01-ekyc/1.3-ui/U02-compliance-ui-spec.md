@@ -2,14 +2,21 @@
 
 | | |
 |---|---|
+| Mã tài liệu | AEG-EKYC-U02 |
+| Phiên bản | 1.2 |
+| Ngày phát hành | 26/11/2026 |
+| Trạng thái | ✅ Mô tả UI đang chạy, có ảnh từng màn · chờ PO, Compliance duyệt |
+| Phân loại | Nội bộ |
+| Tác giả | Han Dao (BA) |
+| Người duyệt | Product Owner · Tech Lead – chưa duyệt |
+| Mục đích và phạm vi | Đặc tả giao diện Aegis Compliance: hàng đợi, chi tiết hồ sơ, Maker-Checker, cấu hình và báo cáo |
+| Chuẩn tham chiếu | WCAG 2.2 mức AA – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
+| Thuật ngữ | [G02 Thuật ngữ và chữ viết tắt](../../00-overview/G02-glossary.md) |
 | Người dùng | Compliance Officer (Maker/Checker), Trưởng nhóm Compliance, CS/Vận hành (chỉ xem) |
 | Jira | SCRUM-48 (FE Compliance), SCRUM-76 → 79, SCRUM-87 |
 | Bản chạy | [Bản demo](https://handao2303.github.io/aegis-ekyc-ui/compliance/) · bản nối backend: `/compliance/` khi chạy `npm run dev:all` |
 | Mã nguồn | `src/web/CompliancePage.tsx`, `src/web/pages.tsx`, `src/web/store.tsx` (gọi API) |
 | Ảnh | Màn hình 1280 × 860, chế độ demo; riêng Cấu hình ngưỡng chụp toàn trang khi nối backend (25/11) |
-| Phiên bản | 1.1 · 25/11/2026 · Han Dao |
-| Trạng thái | ✅ Mô tả UI đang chạy, có ảnh từng màn · chờ PO, Compliance duyệt |
-| Chuẩn tham chiếu | WCAG 2.2 mức AA – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Khung ứng dụng
 
@@ -159,17 +166,28 @@ Hàng đợi lọc sẵn hồ sơ `PENDING_CHECKER`; cột Người xử lý hi�
 
 ## 9. Kiểm soát tài liệu
 
+### Tài liệu tham chiếu
+
+| Mã | Tài liệu |
+|---|---|
+| Q01 | [Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế](../../00-overview/Q01-standards-conformance.md) |
+| C18 | [C18 · Dashboard KPI eKYC & từ điển chỉ số](../1.5-analytics/C18-kpi-metric-dictionary.md) |
+| T02 | [T02 · Bộ test case chi tiết – Module 1 eKYC](../1.4-testing/T02-test-cases.md) |
+
+Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
+
 ### Lịch sử phiên bản
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 1.0 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
 | 1.1 | 25/11/2026 | Han Dao | — | Màn Cấu hình ngưỡng: thêm tham số tuổi tối thiểu thanh toán (16–25), TC-CO-32; ảnh chụp lại; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 1.2 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 
 ### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|
 | BA (soạn) | Han Dao | 25/11/2026 | Trình duyệt |
-| Product Owner | | | |
-| Tech Lead | | | |
+| Product Owner |  |  |  |
+| Tech Lead |  |  |  |
