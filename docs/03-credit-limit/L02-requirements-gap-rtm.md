@@ -16,7 +16,7 @@
 |---|---|---|---|---|---|
 | BR-LIM-01 | Xử lý MTI 0100/0110, SLA < 2 giây | Must | ✅ §1 | ✅ W1 p99, độ trễ từng dòng | Đủ về luồng; số đo thật cần backend |
 | BR-LIM-02 | Không vượt hạn mức khi giao dịch đồng thời (khoá hoặc CAS) | Must | ⚠️ chỉ vẽ optimistic | ✅ W2 xung đột version | Lệch cách làm – D-LIM-02 |
-| BR-LIM-03 | Chống trùng bằng STAN + RRN | Must | ✅ §1 | ⚠️ log chỉ có STAN, không có RRN | Thiếu RRN trên UI – REQ-LIM-01 |
+| BR-LIM-03 | Chống trùng bằng STAN + RRN | Must | ✅ §1 | ✅ log có STAN và RRN (từ 26/11) | Chống trùng thật cần backend – REQ-LIM-01 |
 | BR-LIM-04 | Smart Fallback CASA, debit hold + bút toán đối ứng | Should | ✅ §2 | ✅ M1 công tắc, W2 bảng HOLD/SETTLED/RELEASED | Chưa có fallback từng phần, bút toán – REQ-LIM-05, 06 |
 | BR-LIM-05 | Behavioral Score → Boost Eligibility | Should | ✅ §4 | ✅ W3 cột Score | Chưa có ngưỡng – D-LIM-07 |
 | BR-LIM-06 | Boost time-boxed theo chu kỳ sao kê, trần % | Should | ⚠️ 72 giờ | ❌ 72 giờ, không có % | Lệch – D-LIM-01, REQ-LIM-08 |
@@ -34,7 +34,7 @@
 | [L01](L01-credit-limit-flow.md) | Luồng authorization, quyết định, circuit breaker, Boost, gian lận, bản đồ màn | BPMN/UML (sequence, state) |
 | **L02** (tài liệu này) | Phạm vi baseline, điểm lệch, yêu cầu bổ sung, RTM | ISO/IEC/IEEE 29148, BABOK |
 | [L03](L03-ui-spec.md) | Đặc tả giao diện LIM-W1 → W4, M1 → M3 | WCAG 2.2 AA |
-| [L04](L04-test-plan-cases.md) | Kế hoạch kiểm thử, 33 ca UI đã chạy, ca backend viết sẵn, lỗi | ISO/IEC/IEEE 29119-3 |
+| [L04](L04-test-plan-cases.md) | Kế hoạch kiểm thử, 36 ca UI đã chạy (vòng 2), ca backend viết sẵn, lỗi | ISO/IEC/IEEE 29119-3 |
 | [L05](L05-api-data-dictionary.md) | Thiết kế `limit-service`: dữ liệu, API, ISO 8583, sự kiện, mã lỗi | OpenAPI 3.1, ISO 8583 |
 | [L06](L06-nfr-kpi.md) | Yêu cầu phi chức năng, KPI-07 → 09 | ISO/IEC 25010 |
 | [L07](L07-sit-perf-uat.md) | SIT, hiệu năng, UAT, biên bản nghiệm thu | ISO/IEC/IEEE 29119-3 |
@@ -44,7 +44,7 @@
 
 | Mã | Điểm lệch | Baseline nói | L01 / UI mẫu đang làm | Đề xuất của BA | Người quyết |
 |---|---|---|---|---|---|
-| D-LIM-01 | Thời hạn Boost | Hết hiệu lực sau chu kỳ sao kê kế tiếp (BR-LIM-06, RULE-LIM-06, US-LIM-04) | Cố định 72 giờ; M2 ghi hạn 24/11 nhưng M1 đếm ngược 62 giờ | Theo baseline: `expires_at` = ngày chốt sao kê kế tiếp 23:59. M2 hiện ngày cụ thể, M1 đếm ngược tới mốc đó | Risk tín dụng, PO |
+| D-LIM-01 | Thời hạn Boost | Hết hiệu lực sau chu kỳ sao kê kế tiếp (BR-LIM-06, RULE-LIM-06, US-LIM-04) | Cố định 72 giờ, M1 và M2 cùng một mốc (DEF-LIM-03 đã sửa 26/11) | Theo baseline: `expires_at` = ngày chốt sao kê kế tiếp 23:59. M2 hiện ngày cụ thể, M1 đếm ngược tới mốc đó | Risk tín dụng, PO |
 | D-LIM-02 | Cách chống vượt hạn mức khi đồng thời | Khoá dòng / khoá phân tán + trừ nguyên tử là luồng chính; optimistic là luồng phụ (UC-LIM-02) | Đọc version rồi ghi có điều kiện, xung đột thì đọc lại | Một lệnh `UPDATE … SET available = available − :amt WHERE card_id = :id AND available ≥ :amt` (CAS mức dòng, không giữ khoá lâu); `version` giữ cho thao tác vận hành ở W2. Đáp ứng cả RULE-LIM-02 và SLA | Tech Lead |
 | D-LIM-03 | Mã bản tin reversal | MTI 0420 (và 0120 advice) | 0400, quyết định DECLINED | Theo baseline. Log tách loại bản tin (`AUTH`, `REVERSAL`, `ADVICE`) khỏi quyết định | Vận hành thẻ |
 | D-LIM-04 | Trạng thái lời mời Boost | Entity Boost chỉ có `ACTIVE`, `EXPIRED`, `LOCKED_SUSPECTED_FRAUD` | Có thêm `OFFERED`, `DECLINED` | Thêm entity `BoostOffer` (`OFFERED`, `ACCEPTED`, `DECLINED`, `EXPIRED`); bổ sung vào BRD §3.5 qua CR | PO |
@@ -123,10 +123,10 @@ Chi tiết từng trường ở [L05 §3](L05-api-data-dictionary.md).
 |---|---|---|---|---|---|---|---|---|---|
 | BR-LIM-01 | UC-LIM-01 | RULE-LIM-01 | US-LIM-01 | REQ-LIM-02 | W1 | TC-LIM-01, 02, 08 | TC-LIM-B01, SIT-LIM-01, PERF-LIM-01 | UAT-LIM-P01 | SCRUM-27 |
 | BR-LIM-02 | UC-LIM-02 | RULE-LIM-02 | US-LIM-02 | — (D-LIM-02) | W2 | TC-LIM-14, 15 | TC-LIM-B03, PERF-LIM-02 | UAT-LIM-01 | SCRUM-28 |
-| BR-LIM-03 | UC-LIM-01 | RULE-LIM-03 | US-LIM-01 | REQ-LIM-01 | W1 | — (UI chưa có RRN) | TC-LIM-B02, SIT-LIM-02 | UAT-LIM-02* | SCRUM-28 |
+| BR-LIM-03 | UC-LIM-01 | RULE-LIM-03 | US-LIM-01 | REQ-LIM-01 | W1 | TC-LIM-34 | TC-LIM-B02, SIT-LIM-02 | UAT-LIM-02* | SCRUM-28 |
 | BR-LIM-04 | UC-LIM-03 | RULE-LIM-04 | US-LIM-03 | REQ-LIM-05, 06, 07 | M1, W2 | TC-LIM-11, 12, 24, 26 | TC-LIM-B04, SIT-LIM-04, 05 | UAT-LIM-03, 04 | SCRUM-29 |
 | BR-LIM-05 | UC-LIM-04 | RULE-LIM-05 | US-LIM-04 | REQ-LIM-10 | W3 | TC-LIM-16 | TC-LIM-B06 | UAT-LIM-P05 | SCRUM-30 |
-| BR-LIM-06 | UC-LIM-04 | RULE-LIM-05, 06 | US-LIM-04 | REQ-LIM-08, 09, 11 | M1, M2, W3 | TC-LIM-27 → 30 | TC-LIM-B07 | UAT-LIM-06 | SCRUM-30 |
+| BR-LIM-06 | UC-LIM-04 | RULE-LIM-05, 06 | US-LIM-04 | REQ-LIM-08, 09, 11 | M1, M2, W3 | TC-LIM-27 → 30, 36 | TC-LIM-B07 | UAT-LIM-06 | SCRUM-30 |
 | BR-LIM-07 | UC-LIM-06 | — | US-LIM-06 | REQ-LIM-13 → 18 | W3, W4, M3 | TC-LIM-17 → 23, 31 → 33 | TC-LIM-B08, SIT-LIM-07, 08 | UAT-LIM-07 | SCRUM-30, 54 |
 | BR-LIM-08 | UC-LIM-05 | — | US-LIM-05 | REQ-LIM-03, 04 | W1 | TC-LIM-07 | TC-LIM-B05, SIT-LIM-03 | UAT-LIM-05 | SCRUM-27 |
 | BR-LIM-09 | UC-LIM-01 | RULE-LIM-07 | — | — (D-LIM-06) | W1 | TC-LIM-03 | TC-LIM-B09, PERF-LIM-04 | UAT-LIM-09* | SCRUM-27 |
@@ -154,7 +154,7 @@ Mã ca backend (TC-LIM-Bxx) ở [L04 §4](L04-test-plan-cases.md); SIT, PERF và
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.3 | 26/11/2026 | Han Dao | — | Thêm cột Tiêu chí nghiệm thu cho REQ-LIM-01 → 20 (ISO/IEC/IEEE 29148: yêu cầu kiểm chứng được), dẫn ca test L04, L07 |
+| 0.3 | 26/11/2026 | Han Dao | — | Thêm cột Tiêu chí nghiệm thu cho REQ-LIM-01 → 20 (ISO/IEC/IEEE 29148: yêu cầu kiểm chứng được), dẫn ca test L04, L07; cập nhật §1, §3, RTM theo app sau L04 vòng 2 (RRN, hạn Boost) |
 | 0.2 | 26/11/2026 | Han Dao | — | Thêm L08 vào bản đồ tài liệu; yêu cầu tuân thủ REQ-LIM-21 → 26 ở L08 §5 chờ duyệt để chuyển vào §4 |
 | 0.1 | 25/11/2026 | Han Dao | `273d6b3` | Bản đầu: đánh giá 10 BR, 9 điểm lệch, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM, câu hỏi mở |
 
