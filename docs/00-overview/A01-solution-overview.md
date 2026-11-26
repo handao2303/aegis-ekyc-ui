@@ -6,7 +6,8 @@
 | UI | [Bản chạy thật](https://handao2303.github.io/aegis-ekyc-ui/) · mã nguồn `src/` |
 | Mục đích | Một chỗ nhìn toàn cảnh 3 module (eKYC, Đối soát, Hạn mức) trước khi đọc từng tài liệu C-xx, R-xx, L-xx, A02 |
 | Kiểm tra luồng | Hành trình end-to-end qua 3 module và các điểm lệch: [X01](X01-end-to-end-flow-check.md) |
-| Phiên bản | 1.1 · 26/11/2026 · Han Dao (BA) |
+| Ngày bắt đầu | 15/11/2026 – bắt đầu dự án |
+| Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
 | Chuẩn tham chiếu | Mô hình C4 (Context, Container) · ISO/IEC/IEEE 42010 · UML 2.5 (sequence) |
 
 ## 1. Bối cảnh hệ thống (System Context)
@@ -238,6 +239,7 @@ flowchart LR
 |---|---|---|---|---|
 | 1.0 | 21/11/2026 → 23/11/2026 | Han Dao | `982969c`, `8a99253`, `361be3e` | Bản đầu: Context, Container, luồng end-to-end eKYC, cây quyết định, bản đồ màn hình, triển khai UI |
 | 1.1 | 26/11/2026 | Han Dao | — | Mở rộng Context và Container cho cả 3 module: tổ chức thẻ, CASA / sổ cái, topic `limit.*`, `rec.*`, CSDL của `limit-service` và `reconciliation-service` (X01 F-04, F-05) |
+| 1.2 | 26/11/2026 | Han Dao | — | Ghi ngày bắt đầu dự án 15/11/2026 |
 
 ### Phê duyệt
 

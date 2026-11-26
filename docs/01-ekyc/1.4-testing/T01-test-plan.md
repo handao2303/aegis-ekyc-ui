@@ -6,7 +6,8 @@
 | Epic | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69) |
 | Tài liệu đi kèm | [T02 Bộ test case](T02-test-cases.md) · [T03 Báo cáo kết quả](T03-test-report.md) · [C15 Hiệu năng](C15-performance-test-plan.md) · [C16 SIT](C16-sit-plan.md) · [C17 UAT](C17-uat-pack.md) |
 | Cơ sở | BRD/FSD/SRS v1.2 + addendum v1.3 ([C03](../../00-overview/C03-requirements-addendum-v1.3.md)), đặc tả C04–C13, giao diện [U01](../1.3-ui/U01-customer-app-ui-spec.md), [U02](../1.3-ui/U02-compliance-ui-spec.md), điều khoản [P01](../1.2-compliance-legal/P01-terms-privacy.md) |
-| Phiên bản | 1.2 · 25/11/2026 · Han Dao (BA) |
+| Ngày bắt đầu | 15/11/2026 – bắt đầu dự án và lập kế hoạch kiểm thử |
+| Phiên bản | 1.3 · 26/11/2026 · Han Dao (BA) |
 | Chuẩn tham chiếu | ISO/IEC/IEEE 29119-3:2021 (Test Plan), thuật ngữ ISTQB – đánh giá ở [Q01](../../00-overview/Q01-standards-conformance.md) |
 
 ## 1. Mục tiêu
@@ -111,8 +112,9 @@ Vòng đời lỗi: Mới → Đã xác nhận → Đang sửa → Chờ kiểm 
 
 | Mốc | Ngày dự kiến |
 |---|---|
+| Bắt đầu dự án, lập kế hoạch kiểm thử | 15/11/2026 |
 | Vòng nội bộ 1 | 22 – 23/11/2026 (đã xong, T03) |
-| Vòng nội bộ 2 | Trong 1 tuần sau khi có iPhone thật và công cụ đo trợ năng |
+| Vòng nội bộ 2 | 26/11/2026 – 12 ca chạy được trên máy tính (T03 §3.7); 4 ca cần iPhone, Android, Edge/Safari chạy trong 1 tuần sau khi có thiết bị |
 | SIT | Sau khi có sandbox (SCRUM-56) – chưa có ngày |
 | UAT | Sau SIT, khi C03 được duyệt |
 
@@ -172,3 +174,4 @@ Số case đã chạy / đạt / không đạt / chặn theo nhóm và mức ưu
 | 1.0 | 23/11/2026 | Han Dao | `4813f91` | Đồng bộ với Confluence: hồ sơ mẫu TD-16, cảnh báo giấy tờ sắp hết hạn |
 | 1.1 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
 | 1.2 | 25/11/2026 | Han Dao | — | Giá trị biên tuổi 15/16 cho tài khoản thanh toán (P01 PR-02); thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 1.3 | 26/11/2026 | Han Dao | — | Ghi ngày bắt đầu dự án / kế hoạch 15/11/2026; cập nhật mốc vòng nội bộ 2 |
