@@ -133,10 +133,10 @@ Chạy bằng `npm run test:rec` (Node test runner, DB SQLite trong bộ nhớ, 
 | DEF-REC-03 | Medium | Checker không trả bút toán về Maker được | TC-REC-19 | Nút "Trả về" + ghi chú; trạng thái `RETURNED`; Maker có nút "Trình lại", tăng số lần trình | ✅ Đã sửa, kiểm lại ở vòng 2 |
 | DEF-REC-04 | Medium | Không chọn được nguyên nhân ngoài 3 gợi ý của AI | TC-REC-12 | Thêm lựa chọn "Nguyên nhân khác" với danh mục 7 nhóm và ghi chú ≥ 10 ký tự, lưu cờ override | ✅ Đã sửa, kiểm lại ở vòng 2 |
 | DEF-REC-05 | Medium | Mọi ngoại lệ chỉ xử lý được bằng hạch toán điều chỉnh, kể cả `DUPLICATE` và `UNMATCHED` chờ dữ liệu T+1 | TC-REC-15 | Chọn 1 trong 3: Hạch toán điều chỉnh · Khớp thủ công (nhập mã đối ứng) · Yêu cầu chứng từ (ghi chú, ngoại lệ hiện banner chờ chứng từ) | ✅ Đã sửa, kiểm lại ở vòng 2 |
-
 | DEF-REC-07 | Medium | (Backend, phát hiện bằng test) File CSV để trống cột `currency` bị cách ly cả lô thay vì mặc định VND | Test "PCI DSS: số thẻ đầy đủ…" không thấy bản ghi | Đọc `currency` qua bộ chuẩn hoá ô trống trước khi mặc định | ✅ Đã sửa, test đạt |
 | DEF-REC-08 | Medium | (UI, có từ vòng 1) Link `?as=quan` không chọn được Đỗ Minh Quân vì so "quan" với "Quân" có dấu → luôn đăng nhập là Nam | Mở `/reconciliation/?as=quan` → ô người dùng vẫn là Nam | So sánh sau khi bỏ dấu | ✅ Đã sửa, kiểm lại E2E-3 |
 | DEF-REC-09 | Low | (UI) Sau khi mở một lần với `?api=off`, trình duyệt nhớ "off" và không có cách bật lại backend ngoài xoá dữ liệu trang | Mở `?api=off` rồi mở lại không tham số → vẫn chế độ demo | Thêm `?api=on` để bật lại tự dò (dùng chung eKYC và Đối soát) | ✅ Đã sửa |
+
 
 DEF-REC-06 phát hiện khi đọc mã nguồn ở vòng 1. Vòng 2 thêm TC-REC-21 và TC-REC-22 để kiểm tra riêng.
 
