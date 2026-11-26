@@ -26,6 +26,15 @@ npm run dev    # tự khởi động lại khi sửa code
 
 Khách gửi `x-session-token` (nhận khi tạo phiên). Nhân viên gửi `x-staff-id`, thay cho SSO ở API Gateway trên production.
 
+**Production (`NODE_ENV=production`)** – G-SE-01:
+
+| Biến môi trường | Bắt buộc | Tác dụng |
+|---|---|---|
+| `GATEWAY_SHARED_SECRET` | ✅ | Thiếu thì service không khởi động. `x-staff-id` chỉ được tin khi yêu cầu có header `x-gateway-auth` đúng bí mật này (API Gateway gắn sau khi xác thực SSO); không có thì mọi API nhân viên trả 401 |
+| `ALLOWED_ORIGINS` | | Danh sách origin cách nhau bởi dấu phẩy cho CORS, vd. `https://compliance.aegis.example`. Origin khác không nhận header CORS |
+
+Endpoint `/api/dev/*` chỉ có ở dev.
+
 | Phương thức | Đường dẫn | Việc |
 |---|---|---|
 | POST | `/api/sessions` | Tạo phiên (kiểm velocity C13) |

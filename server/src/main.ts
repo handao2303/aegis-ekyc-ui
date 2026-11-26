@@ -21,7 +21,8 @@ const resetDb = () => {
   return new Db(DB_PATH);
 };
 
-const app = createApp(svc, { dev: DEV, resetDb });
+const security = { gatewaySecret: process.env.GATEWAY_SHARED_SECRET, allowedOrigins: (process.env.ALLOWED_ORIGINS ?? "").split(",").filter(Boolean) };
+const app = createApp(svc, { dev: DEV, resetDb, security });
 app.server().listen(PORT, HOST, () => console.log(`ekyc-service chạy tại http://localhost:${PORT} (${DEV ? "dev" : "production"})`));
 
 // Job nền mỗi phút (production: Cloud Scheduler gọi từng job theo lịch trong C06/C09/C12)

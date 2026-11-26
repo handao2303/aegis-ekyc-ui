@@ -10,7 +10,13 @@ import { seed } from "./seed.ts";
 type Ctx = { req: IncomingMessage; params: Record<string, string>; query: URLSearchParams; body: any; token?: string; staffId?: string };
 type Handler = (c: Ctx) => unknown | Promise<unknown>;
 
-export function createApp(svc: EkycService, opts: { dev?: boolean; resetDb?: () => Db } = {}) {
+/** Production (G-SE-01): danh tính nhân viên chỉ tin khi yêu cầu đi qua API Gateway – header x-gateway-auth khớp bí mật dùng chung;
+    CORS chỉ mở cho origin trong danh sách. Phiên khách vẫn xác thực bằng x-session-token như cũ.
+    Dev: tin x-staff-id để chạy thử nhanh. */
+export type Security = { gatewaySecret?: string; allowedOrigins?: string[] };
+
+export function createApp(svc: EkycService, opts: { dev?: boolean; resetDb?: () => Db; security?: Security } = {}) {
+  if (!opts.dev && !opts.security?.gatewaySecret) throw new Error("Production cần GATEWAY_SHARED_SECRET – không chạy với danh tính nhân viên từ header tự khai");
   const routes: { method: string; re: RegExp; keys: string[]; h: Handler }[] = [];
   const route = (method: string, path: string, h: Handler) => {
     const keys: string[] = [];
@@ -71,9 +77,10 @@ export function createApp(svc: EkycService, opts: { dev?: boolean; resetDb?: () 
 
   async function handle(req: IncomingMessage, res: ServerResponse) {
     const origin = req.headers.origin;
-    res.setHeader("Access-Control-Allow-Origin", origin ?? "*");
+    const allowed = opts.dev ? origin ?? "*" : origin && opts.security?.allowedOrigins?.includes(origin) ? origin : null;
+    if (allowed) res.setHeader("Access-Control-Allow-Origin", allowed);
     res.setHeader("Vary", "Origin");
-    res.setHeader("Access-Control-Allow-Headers", "content-type, x-session-token, x-staff-id");
+    res.setHeader("Access-Control-Allow-Headers", "content-type, x-session-token, x-staff-id, x-gateway-auth");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     if (req.method === "OPTIONS") { res.writeHead(204); return res.end(); }
     const url = new URL(req.url ?? "/", "http://localhost");
@@ -86,7 +93,9 @@ export function createApp(svc: EkycService, opts: { dev?: boolean; resetDb?: () 
       const body = req.method === "POST" ? await readJson(req) : undefined;
       const out = await r.h({
         req, params, query: url.searchParams, body,
-        token: header(req, "x-session-token"), staffId: header(req, "x-staff-id"),
+        token: header(req, "x-session-token"),
+        // Không qua Gateway → bỏ qua x-staff-id: mọi API nhân viên trả 401, kể cả khi người gọi tự khai mã Checker
+        staffId: opts.dev || header(req, "x-gateway-auth") === opts.security!.gatewaySecret ? header(req, "x-staff-id") : undefined,
       });
       send(res, 200, out ?? { ok: true });
     } catch (e) {

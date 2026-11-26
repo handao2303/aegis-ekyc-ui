@@ -48,3 +48,29 @@ test("HTTP · CORS preflight cho app chạy khác cổng", async () => {
   assert.equal(r.status, 204);
   assert.equal(r.headers.get("access-control-allow-origin"), "http://192.168.1.5:5179");
 });
+
+test("HTTP · G-SE-01 production: không khởi động khi thiếu bí mật Gateway; giả danh x-staff-id → 401; CORS theo danh sách", async () => {
+  assert.throws(() => createApp(svc, {}), /GATEWAY_SHARED_SECRET/);
+  assert.throws(() => createApp(svc, { security: { gatewaySecret: "" } }), /GATEWAY_SHARED_SECRET/);
+  const SECRET = "test-gateway-secret";
+  const prod = createApp(svc, { security: { gatewaySecret: SECRET, allowedOrigins: ["https://compliance.aegis.example"] } }).server().listen(0);
+  const pb = `http://127.0.0.1:${(prod.address() as AddressInfo).port}`;
+  try {
+    const req = (path: string, headers: Record<string, string>, method = "GET", body?: unknown) =>
+      fetch(pb + path, { method, headers: { "content-type": "application/json", ...headers }, body: body ? JSON.stringify(body) : undefined });
+    // Kẻ gian tự khai mã Checker, không qua Gateway
+    const r1 = await req("/api/cases/EKS-2611-0036/checker", { "x-staff-id": "u-huy" }, "POST", { decision: "APPROVE" });
+    assert.equal(r1.status, 401);
+    assert.equal((await req("/api/cases", { "x-staff-id": "u-anh", "x-gateway-auth": "sai-bi-mat" })).status, 401);
+    const ok = await req("/api/cases", { "x-staff-id": "u-anh", "x-gateway-auth": SECRET, origin: "https://compliance.aegis.example" });
+    assert.equal(ok.status, 200);
+    assert.equal(ok.headers.get("access-control-allow-origin"), "https://compliance.aegis.example");
+    const evil = await req("/api/cases", { "x-staff-id": "u-anh", "x-gateway-auth": SECRET, origin: "https://evil.example" });
+    assert.equal(evil.headers.get("access-control-allow-origin"), null);
+    // Luồng khách dùng x-session-token, không phụ thuộc Gateway
+    const s = await req("/api/sessions", {}, "POST", { device_id: "prod-dev", device_model: "iPhone 15", phone: "0909000099" });
+    assert.equal(s.status, 200);
+    // Endpoint dev không có ở production
+    assert.equal((await req("/api/dev/jobs/run", {}, "POST")).status, 404);
+  } finally { prod.close(); }
+});

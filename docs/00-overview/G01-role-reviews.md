@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.0 · 26/11/2026 · Han Dao (BA) |
+| Phiên bản | 1.1 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | ✅ Rà soát nội bộ xong · không thay thế phê duyệt |
 | Phạm vi | Cả 3 module (eKYC, Đối soát, Hạn mức), tài liệu `docs/`, mã `src/`, `server/`, `services/reconciliation/` tại ngày 26/11/2026 |
 | Chuẩn tham chiếu | IIBA BABOK v3 §5.5 (Approve Requirements), §7.2 (Verify Requirements) · ISO/IEC/IEEE 29148:2018 §5.2.5 (đặc tính bộ yêu cầu) · ISO/IEC 20246:2017 (review sản phẩm phần mềm) |
@@ -23,7 +23,7 @@ Quy ước kết luận: ✅ chấp nhận · 🟡 chấp nhận có điều ki�
 | Compliance / Pháp chế | 🟡 | 4 | G-CO-01, G-CO-02 |
 | QA Lead | 🟡 | 5 | G-QA-01 (SIT với sandbox thật) |
 | Tech Lead / Kiến trúc sư | 🟡 | 4 (+1 chấp nhận có điều kiện) | G-TL-01 |
-| InfoSec / DPO | ⛔ | 4 | G-SE-01 (ekyc-service tin header tự khai) |
+| InfoSec / DPO | 🟡 | 3 | — (G-SE-01 đã sửa 26/11) |
 | Kế toán trưởng | 🟡 | 3 | G-KT-01 (danh mục tài khoản GL) |
 | Risk tín dụng / Vận hành thẻ | 🟡 | 3 | G-RK-01 (thời hạn Boost) |
 
@@ -71,7 +71,7 @@ Quy ước kết luận: ✅ chấp nhận · 🟡 chấp nhận có điều ki�
 
 | Mã | Phát hiện | Bằng chứng | Đề xuất | Trạng thái |
 |---|---|---|---|---|
-| G-SE-01 | **ekyc-service tin header `x-staff-id` và trả CORS cho mọi origin kể cả khi `NODE_ENV=production`** – ai biết mã nhân viên có thể giả danh Compliance Checker | `server/src/http.ts` dòng CORS và `staffId` | Làm như `reconciliation-service`: production bắt buộc `GATEWAY_SHARED_SECRET` + header `x-gateway-auth`, CORS theo `ALLOWED_ORIGINS` | ⛔ Mở |
+| G-SE-01 | **ekyc-service tin header `x-staff-id` và trả CORS cho mọi origin kể cả khi `NODE_ENV=production`** – ai biết mã nhân viên có thể giả danh Compliance Checker | `server/src/http.ts` dòng CORS và `staffId` | Production bắt buộc `GATEWAY_SHARED_SECRET`; `x-staff-id` chỉ được tin khi có `x-gateway-auth` đúng, không thì API nhân viên trả 401; CORS theo `ALLOWED_ORIGINS`. Phiên khách vẫn dùng `x-session-token` | ✅ Đã sửa 26/11 – test "G-SE-01 production" (59/59) |
 | — | `reconciliation-service` đã chặn: thiếu bí mật Gateway → không khởi động; thiếu header → 401; CORS theo danh sách | Test "Bảo mật production…" | — | ✅ Đã sửa 26/11 |
 | G-SE-02 | Salt băm số định danh có giá trị mặc định trong code (`aegis-dev-salt`) | `server/src/main.ts` | Production bắt buộc biến môi trường, không có giá trị mặc định | Mở |
 | G-SE-03 | Phân loại số tài khoản, lịch sử giao dịch theo NĐ 356/2025 chưa có trả lời của DPO | D01 câu hỏi 4, R05 §3 | DPO xác nhận; nếu là dữ liệu nhạy cảm thì mã hoá cột (`enc`) | Mở |
@@ -96,9 +96,8 @@ Quy ước kết luận: ✅ chấp nhận · 🟡 chấp nhận có điều ki�
 
 ## 10. Việc tiếp theo
 
-1. Sửa G-SE-01 ở ekyc-service (cùng cách đã làm cho Đối soát).
-2. Viết `limit-service` (G-PO-01), sau khi chốt D-LIM-02 (G-TL-02).
-3. Gửi tài liệu này cùng bảng câu hỏi mở cho người duyệt thật khi dự án có người đảm nhiệm các vai.
+1. Viết `limit-service` (G-PO-01), sau khi chốt D-LIM-02 (G-TL-02).
+2. Gửi tài liệu này cùng bảng câu hỏi mở cho người duyệt thật khi dự án có người đảm nhiệm các vai.
 
 ## 11. Kiểm soát tài liệu
 
@@ -106,7 +105,8 @@ Quy ước kết luận: ✅ chấp nhận · 🟡 chấp nhận có điều ki�
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 1.0 | 26/11/2026 | Han Dao | — | Bản đầu: rà soát 7 vai, 29 phát hiện (27 mở, 1 chấp nhận có điều kiện, 1 đạt), tổng hợp chặn go-live |
+| 1.0 | 26/11/2026 | Han Dao | `263a89f` | Bản đầu: rà soát 7 vai, 29 phát hiện (27 mở, 1 chấp nhận có điều kiện, 1 đạt), tổng hợp chặn go-live |
+| 1.1 | 26/11/2026 | Han Dao | — | G-SE-01 đã sửa ở ekyc-service; còn 26 phát hiện mở |
 
 ### Phê duyệt
 
