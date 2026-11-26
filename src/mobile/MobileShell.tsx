@@ -38,7 +38,7 @@ export const SAFE_BOTTOM = { paddingBottom: "max(20px, env(safe-area-inset-botto
 /** Nút tròn trên thanh trên */
 export function RoundIconButton({ label, onClick, children, onDark }: { label: string; onClick?: () => void; children: ReactNode; onDark?: boolean }) {
   return (
-    <button onClick={onClick} aria-label={label} className={cx("interactive grid size-10 shrink-0 place-items-center rounded-full", onDark ? "bg-white/10 text-white" : "text-fg-primary")}>
+    <button onClick={onClick} aria-label={label} className={cx("interactive grid size-11 shrink-0 place-items-center rounded-full", onDark ? "bg-white/10 text-white" : "text-fg-primary")}>
       {children}
     </button>
   );
@@ -100,7 +100,7 @@ export function Screen({
             <ArrowLeft className="size-6" />
           </RoundIconButton>
         ) : (
-          <span className="size-10 shrink-0" />
+          <span className="size-11 shrink-0" />
         )}
         <h1 className={cx("flex-1 truncate text-center text-[15px] font-medium", dark ? "text-white/80" : "text-fg-tertiary")}>{title}</h1>
         <LangSwitch onBrand={dark} />

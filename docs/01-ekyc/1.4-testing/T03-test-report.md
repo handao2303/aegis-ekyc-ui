@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
-| Trạng thái | ✅ Đạt vòng nội bộ 1 (91 đạt · 0 lỗi mở), hồi quy 25/11 và 26/11 đạt · chưa đủ điều kiện UAT · chờ QA Lead, PO duyệt |
+| Phiên bản | 1.3 · 26/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Đạt vòng nội bộ 1 (91 đạt · 0 lỗi mở), hồi quy 25/11 và 26/11 đạt · vòng 2 (26/11): 103 đạt, 4 một phần, 1 chưa chạy · chưa đủ điều kiện UAT · chờ QA Lead, PO duyệt |
 | Vòng | Kiểm thử hệ thống nội bộ, trước SIT |
 | Thời gian | 22 – 23/11/2026 · hồi quy 25/11/2026 và 26/11/2026 |
 | Mã nguồn | `main` @ commit `a97e848` + bản sửa trong báo cáo này |
@@ -25,11 +25,13 @@
 | Hồ sơ mẫu chạy qua backend | 15 / 15 cho kết quả đúng kỳ vọng |
 | Lỗi phát hiện | 9 – **đã sửa cả 9**, kiểm lại đạt |
 
-**Kết luận:** Module 1 đạt vòng kiểm thử nội bộ. **Chưa đủ điều kiện vào UAT** vì: (1) SIT với sandbox đối tác chưa chạy (C16); (2) 2 test case mức Cao mới đạt một phần (TC-NFR-04 mã hoá cột PII, TC-NFR-11 thử trên iPhone thật); (3) trợ năng chưa được kiểm bằng công cụ.
+**Kết luận:** Module 1 đạt vòng kiểm thử nội bộ. **Chưa đủ điều kiện vào UAT** vì: (1) SIT với sandbox đối tác chưa chạy (C16); (2) 2 test case mức Cao mới đạt một phần (TC-NFR-04 mã hoá cột PII, TC-NFR-11 thử trên iPhone thật); (3) trợ năng mới đo tự động (vòng 2 đạt vùng chạm, tương phản, bàn phím), chưa thử VoiceOver và Android thật.
 
 > **Hồi quy 25/11/2026** (mục 3.5): bộ test case tăng lên **108** (thêm TC-APP-42, TC-CO-32 cho tuổi tối thiểu 16), test tự động backend **57 / 57 đạt**. Hai case mới đạt, không phát sinh lỗi. Kết luận vòng 1 không đổi.
 
 > **Hồi quy 26/11/2026** (mục 3.6): 57 / 57 test tự động đạt; chạy lại luồng TD-01 và Compliance trên backend thật đạt. Tìm và sửa thêm 2 lỗi dữ liệu mẫu (DEF-10, DEF-11) → tổng **11 lỗi, đã sửa cả 11**. Kết luận vòng 1 không đổi.
+
+> **Vòng 2 – 26/11/2026** (mục 3.7): chạy 12 ca còn lại làm được trên máy tính (script `tools/diagrams/m1-round2.mjs`). 10 ca đạt, 2 ca đạt một phần (VoiceOver, Edge/Safari cần thiết bị). Tìm và sửa 2 lỗi trợ năng (DEF-12, DEF-13) → tổng **13 lỗi, đã sửa cả 13**. **Tổng 108 case: 103 đạt · 4 một phần · 1 chưa chạy (TC-NFR-12 Android) · 0 không đạt.**
 
 ## 2. Kết quả theo nhóm
 
@@ -100,13 +102,13 @@ TD-11 là hồ sơ có sẵn trong hàng đợi (tạo lùi thời gian) để t
 
 | Mã | Trạng thái | Lý do | Việc cần làm |
 |---|---|---|---|
-| TC-APP-11 | Một phần | Đã thử "Dùng ảnh này"; chưa thử "Chụp lại" | Chạy lại |
+| TC-APP-11 | ✅ Đạt ở vòng 2 (§3.7) | — | — |
 | TC-NFR-04 | Một phần | Khoá tra trùng đã băm; số thô vẫn nằm trong dữ liệu OCR, chưa mã hoá cột | Mã hoá cột khi chuyển Postgres |
 | TC-NFR-11 | Một phần | Chỉ thử trên iOS Simulator; chưa thử iPhone thật với camera | Chạy trên iPhone qua link HTTPS |
-| TC-NFR-13 | Một phần | Chỉ thử Chrome | Thử Edge, Safari |
-| TC-APP-35, 36 | Chưa chạy | Ưu tiên thấp/TB | Vòng 2 |
-| TC-CO-03, 24 | Chưa chạy | Ưu tiên TB | Vòng 2 |
-| TC-NFR-06 → 10, 12, 14 | Chưa chạy | Cần thiết bị Android, VoiceOver, công cụ đo tương phản | Vòng 2 trước UAT |
+| TC-NFR-13 | Một phần (vòng 2 vẫn chỉ Chrome) | Máy chạy test chưa có Edge, Safari | Thử Edge, Safari |
+| TC-APP-35, 36 · TC-CO-03, 24 · TC-NFR-06, 08, 09, 10, 14 | ✅ Đạt ở vòng 2 (§3.7) | — | — |
+| TC-NFR-07 | Một phần (vòng 2) | Đã kiểm vùng `aria-live` / `role=status` trên màn NFC, liveness, đang xác minh; chưa nghe thử bằng VoiceOver | Thử VoiceOver trên iPhone |
+| TC-NFR-12 | Chưa chạy | Cần máy Android thật | Trước UAT |
 
 ### 3.5 Hồi quy 25/11/2026
 
@@ -143,6 +145,27 @@ Chạy khi rà soát toàn bộ tài liệu 3 module. Môi trường: `ekyc-serv
 
 Tìm thêm 2 lỗi dữ liệu mẫu (DEF-10, DEF-11, §4), đã sửa và chụp lại ảnh U01, U02.
 
+### 3.7 Vòng 2 – 26/11/2026
+
+Chạy các ca còn chưa chạy / một phần ở §3.4 mà làm được trên máy tính. Lệnh: `node tools/diagrams/m1-round2.mjs <thư mục ảnh>` (cần web cổng 5179 và `ekyc-service` cổng 8787; script tự gọi `POST /api/dev/reset`). Trình duyệt: Chrome headless trên macOS, khung app 390 × 844, Compliance 1280 × 860 và 900 × 860.
+
+| Mã | Kết quả | Bằng chứng |
+|---|---|---|
+| TC-APP-11 | ✅ | Kiểm tra ảnh → Chụp lại về camera mặt trước → chụp → Dùng ảnh này sang mặt sau |
+| TC-APP-35 | ✅ | Phiên dở `EKS-2611-0051` → Làm lại từ đầu → bảng `sessions`: `CANCELLED`, `ocr_json`, `chip_json` đã xoá; bấm Tiếp tục lần nữa báo không còn hồ sơ dở |
+| TC-APP-36 | ✅ | Thiết bị mới → "Không có hồ sơ đang làm dở trên máy này." |
+| TC-CO-03 | ✅ | Của tôi 1 / Đã bổ sung 1 / Chờ Checker 1 – số trên tab khớp số dòng, không dòng nào sai điều kiện |
+| TC-CO-24 | ✅ | `EKS-2611-0031`: Tra cứu lại CIC → bỏ cờ `CIC_TIMEOUT`, hiện Nhóm CIC · hồ sơ TD-06 `EKS-2611-0052` (CIC luôn lỗi): "CIC vẫn chưa phản hồi, thử lại sau" (503) |
+| TC-NFR-06 | ✅ sau khi sửa DEF-13 | Lượt đầu 44 phần tử < 44 × 44 (nút Quay lại, Hỗ trợ 40 × 40; nút VI/EN 34 × 24; nút phụ 40 cao; nút sao chép 36 × 36). Sau sửa: 0 phần tử trên 10 màn |
+| TC-NFR-07 | 🟡 Một phần | Lượt đầu màn NFC không có vùng thông báo khi chưa bấm quét (DEF-12). Sau sửa: NFC 1, liveness 1, đang xác minh 1 vùng. Chưa nghe thử bằng VoiceOver |
+| TC-NFR-08 | ✅ | Đo theo công thức WCAG 2.2 trên 10 màn app (nền sáng) và hàng đợi Compliance (nền tối): 0 đoạn chữ dưới 4.5:1 (chữ lớn 3:1). Bỏ qua chữ nằm trên ảnh / nền gradient – cần kiểm bằng mắt |
+| TC-NFR-09 | ✅ | 12 lần Tab qua thanh trên và menu, 12/12 có viền focus; Enter trên "Từ chối" mở hộp thoại, Esc đóng |
+| TC-NFR-10 | ✅ | `?lang=en` trên 10 màn: 0 dòng chữ giao diện còn tiếng Việt (chỉ còn dữ liệu hồ sơ như quê quán); mở lại không có `?lang` vẫn giữ EN |
+| TC-NFR-13 | 🟡 Một phần | Toàn bộ ca Compliance ở trên chạy trên Chrome; chưa có Edge, Safari |
+| TC-NFR-14 | ✅ | Compliance 900 px: không còn thanh bên, menu thành thanh ngang, trang không cuộn ngang, bảng cuộn trong khung |
+
+Sau khi đổi cỡ nút dùng chung (nút cỡ vừa 40 → 44 px), chạy lại bộ UI Module 2 (25/25 đạt) và Module 3 (34/36, 2 ca không đạt như cũ) – không hồi quy. Ảnh U01, U02 chụp lại.
+
 ## 4. Lỗi phát hiện
 
 | Mã | Mô tả | Mức | Phát hiện bởi | Trạng thái |
@@ -158,6 +181,8 @@ Tìm thêm 2 lỗi dữ liệu mẫu (DEF-10, DEF-11, §4), đã sửa và chụ
 | DEF-09 | Tên trong dòng MRZ của hộ chiếu nước ngoài sai thứ tự họ/tên | Thấp | E2E | ✅ Đã sửa |
 | DEF-10 | Ảnh minh hoạ thẻ (app khách và màn chi tiết Compliance) in dòng MRZ có số CCCD và ngày sinh cố định của TD-01, nên người duyệt thấy dữ liệu không khớp hồ sơ đang xem | Thấp | E2E 26/11 | ✅ Đã sửa – MRZ minh hoạ chỉ còn ký tự giữ chỗ |
 | DEF-11 | Chế độ demo (bản GitHub Pages): mọi hồ sơ trong Compliance hiện cùng số CCCD `089•••••5678` và ngày sinh 15/03; hồ sơ bỏ qua NFC vẫn hiện dữ liệu chip | Thấp | E2E 26/11 | ✅ Đã sửa – dữ liệu demo lấy cùng số CCCD, ngày sinh với `server/src/seed.ts`; không NFC thì cột Chip để trống |
+| DEF-12 | Màn quét chip chỉ tạo vùng `aria-live` khi bắt đầu đọc và đọc từng % tiến độ; trình đọc màn hình có thể bỏ qua vùng mới chèn hoặc đọc liên tục | TB | Vòng 2 (TC-NFR-07) | ✅ Đã sửa – vùng `role=status` luôn có sẵn, chỉ đọc 2 mốc "Đang đọc chip", "Đọc chip thành công" |
+| DEF-13 | Vùng chạm nhỏ hơn 44 × 44 pt: nút Quay lại, Hỗ trợ (40), VI/EN (34 × 24), nút cỡ vừa (40 cao), nút sao chép số tài khoản (36), nút nhỏ trong cảnh báo bỏ qua NFC (32) | TB | Vòng 2 (TC-NFR-06) | ✅ Đã sửa – nút đầu trang 44, nút cỡ vừa 44 cao (cả web), VI/EN rộng 44 và vùng chạm cao 44, nút trên app không dùng cỡ nhỏ |
 
 ## 5. Rủi ro còn lại
 
@@ -171,7 +196,7 @@ Tìm thêm 2 lỗi dữ liệu mẫu (DEF-10, DEF-11, §4), đã sửa và chụ
 
 ## 6. Đề xuất
 
-1. Chạy vòng 2: 11 case chưa chạy và 4 case một phần, ưu tiên TC-NFR-11 trên iPhone thật.
+1. Còn 5 ca cần thiết bị: TC-NFR-11 (Safari iPhone), TC-NFR-07 (VoiceOver), TC-NFR-12 (Android), TC-NFR-13 (Edge, Safari) – chạy trước UAT; TC-NFR-04 chờ Postgres.
 2. Đưa dữ liệu lên Postgres trên cloud và mã hoá cột PII, để đóng TC-NFR-04.
 3. Lên lịch SIT (C16) ngay khi có sandbox, rồi mới UAT (C17).
 
@@ -181,7 +206,7 @@ Tìm thêm 2 lỗi dữ liệu mẫu (DEF-10, DEF-11, §4), đã sửa và chụ
 |---|---|---|
 | Chạy E2E trên iPhone thật | Chỉ chạy trên iOS Simulator | Camera iPhone cần HTTPS; link HTTPS tạm có sau khi đã chạy vòng |
 | Thử Chrome, Edge, Safari | Chỉ Chrome | Chưa sắp xếp máy |
-| Kiểm trợ năng bằng công cụ | Chưa chạy | Chưa có công cụ đo tương phản, VoiceOver |
+| Kiểm trợ năng bằng công cụ | Vòng 2 đo tự động vùng chạm, tương phản, bàn phím; VoiceOver chưa chạy | Đo bằng script; chưa có iPhone thật cho VoiceOver |
 | Phạm vi ban đầu chỉ CCCD | Thêm luồng hộ chiếu giữa vòng (TD-14, TD-15, 5 test tự động) | Yêu cầu bổ sung của PO |
 
 ## 8. Bài học kinh nghiệm
@@ -212,3 +237,4 @@ Bộ hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), 54 test tự đ�
 | 1.0 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
 | 1.1 | 25/11/2026 | Han Dao | — | Thêm mục 3.5 hồi quy 25/11: 57/57 test tự động, 2 case mới đạt; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
 | 1.2 | 26/11/2026 | Han Dao | — | Thêm mục 3.6: hồi quy 57/57, chạy luồng TD-01 và Compliance trên backend thật; DEF-10, DEF-11 đã sửa |
+| 1.3 | 26/11/2026 | Han Dao | — | Thêm mục 3.7 vòng 2: 12 ca, 10 đạt, 2 một phần; DEF-12, DEF-13 đã sửa; tổng 103 đạt / 108 |

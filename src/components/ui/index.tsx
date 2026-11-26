@@ -37,7 +37,7 @@ export function Button({
   };
   const sizes: Record<ButtonSize, string> = {
     sm: "h-8 px-3 text-body-sm gap-1.5 rounded-md",
-    md: "h-10 px-4 text-body-sm gap-2 rounded-md",
+    md: "h-11 px-4 text-body-sm gap-2 rounded-md",
     lg: "h-12 px-6 text-body gap-2 rounded-md",
   };
   return (

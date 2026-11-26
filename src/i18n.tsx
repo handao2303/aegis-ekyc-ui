@@ -52,7 +52,7 @@ export function LangSwitch({ onBrand }: { onBrand?: boolean }) {
           aria-checked={lang === l}
           onClick={() => setLang(l)}
           className={cx(
-            "h-6 min-w-[34px] rounded-full px-2 uppercase transition-colors",
+            "relative h-6 min-w-[44px] rounded-full px-2 uppercase transition-colors",
             lang === l
               ? onBrand
                 ? "bg-white text-[color:var(--brand-ink)]"
@@ -63,6 +63,8 @@ export function LangSwitch({ onBrand }: { onBrand?: boolean }) {
           )}
         >
           {l}
+          {/* Vùng chạm cao 44 px, chữ vẫn gọn (TC-NFR-06, DEF-13) */}
+          <span data-hit aria-hidden className="absolute inset-x-0 -inset-y-[10px]" />
         </button>
       ))}
     </div>

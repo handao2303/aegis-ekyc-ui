@@ -280,7 +280,7 @@ Mã chung như A03: `BAD_JSON` 400 · `UNAUTHENTICATED` 401 · `FORBIDDEN` 403 �
 | W3 | `BOOST0`; nút Khoá / Mở khoá | API-L20, 21, 23, 24 |
 | W4 | `FRAUD0`; `retry()` giả 1,6 giây | API-L30 → L33 |
 | M1 | `LIMIT`, `USED`, `HOLD`, `BOOST` cứng; `store` trong bộ nhớ | API-L40, L41 |
-| M2 | Hạn 24/11/2026 cứng | API-L42, L43 – dùng `expires_at` (DEF-LIM-03) |
+| M2 | Hạn = lúc chạy + 72 giờ, một hằng số dùng chung với M1 (DEF-LIM-03 đã sửa 26/11) | API-L42, L43 – thay hằng số bằng `expires_at` |
 | M3 | 3 giao dịch cứng | API-L44, L45 |
 
 ## 8. Truy vết tới test backend ([L04 §4](L04-test-plan-cases.md))

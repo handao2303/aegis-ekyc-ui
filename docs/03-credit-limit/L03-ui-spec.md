@@ -8,7 +8,7 @@
 | Mã nguồn | `src/ops/CreditLimit.tsx` (khung chung `src/ops/kit.tsx`) · `src/mobile/cardScreens.tsx` |
 | Ảnh | Web 1280 × 860, mobile 390 × 844 @2x, tiếng Việt, chụp tự động bằng `tools/diagrams/lim-screens.mjs` (chụp lại 26/11/2026) |
 | Chuẩn | WCAG 2.2 mức AA · PCI DSS 3.4 (che PAN) |
-| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
+| Phiên bản | 0.3 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 📝 Mô tả UI mẫu như đang có, kèm điểm phải sửa (cột **Ghi chú**). Chờ quyết định ở [L02 §3](L02-requirements-gap-rtm.md) |
 
 Luồng nghiệp vụ: [L01](L01-credit-limit-flow.md). Kết quả chạy thử trên giao diện: [L04](L04-test-plan-cases.md). API sau mỗi thao tác: [L05 §7](L05-api-data-dictionary.md).
@@ -131,7 +131,7 @@ Luồng nghiệp vụ: [L01](L01-credit-limit-flow.md). Kết quả chạy thử
 | Mục | Nội dung | Quy tắc | Ghi chú |
 |---|---|---|---|
 | Số tiền | +10.000.000 ₫ | RULE-LIM-05 | |
-| 4 dòng | Hạn mức mới · Hiệu lực · Sau thời hạn tự trở về · Phí | REQ-LIM-11 | Đang ghi "trong 72 giờ" và hạn 24/11/2026 cố định – D-LIM-01, DEF-LIM-02, 03 |
+| 4 dòng | Hạn mức mới · Hiệu lực · Sau thời hạn tự trở về · Phí | REQ-LIM-11 | Hiệu lực = lúc nhận + 72 giờ, cùng một mốc với đếm ngược M1 (DEF-LIM-03 đã sửa 26/11). Còn lệch baseline "hết chu kỳ sao kê" – D-LIM-01, DEF-LIM-02 |
 | Ô xác nhận | "Tôi hiểu hạn mức tạm thời có thể bị tạm khoá…" – bắt buộc trước khi bấm Nhận | CR-003 | |
 | Nút | Nhận ưu đãi → màn "Đã nâng hạn mức" · Để sau → về M1 (lời mời `DECLINED`) | D-LIM-04 | |
 
@@ -165,6 +165,7 @@ Luồng nghiệp vụ: [L01](L01-credit-limit-flow.md). Kết quả chạy thử
 |---|---|---|---|---|
 | 0.1 | 25/11/2026 | Han Dao | 273d6b3 | Bản đầu: khung web, 4 màn web + danh sách thẻ, 3 màn mobile, 15 ảnh chụp tự động, phân quyền đề xuất, WCAG |
 | 0.2 | 26/11/2026 | Han Dao | — | W1 thêm cột RRN; W2 bảng Smart Fallback hiện đủ cột; W4 hộp thoại kết luận khi đóng case (ảnh mới); M1 ghi rõ DEF-LIM-09, 10. Ảnh chụp lại 26/11 |
+| 0.3 | 26/11/2026 | Han Dao | — | M2: hạn Boost tính từ một mốc (DEF-LIM-03); vùng chạm 44 px ở thanh đầu app (DEF-13 – T03) |
 
 ### Phê duyệt
 

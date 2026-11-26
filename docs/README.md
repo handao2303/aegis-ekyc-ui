@@ -95,7 +95,7 @@ flowchart LR
 | [C01 Nhật ký đồng bộ Jira](00-overview/C01-jira-hygiene-log.md) | SCRUM-70 | — | ✅ v1.1 · thêm quy ước cho Module 2, 3 (X01 F-14) |
 | [C03 Requirements Addendum v1.3 & RTM](00-overview/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 draft3 · chờ PO & Compliance duyệt |
 | [Q01 Đối chiếu chuẩn quốc tế](00-overview/Q01-standards-conformance.md) | SCRUM-69 | — | ✅ v1.1 · M1: 4 đạt · 9 một phần · M2, M3: 5 đạt · 4 một phần · 0 thiếu |
-| [X01 Kiểm tra luồng end-to-end 3 module](00-overview/X01-end-to-end-flow-check.md) | SCRUM-7, 8, 69 | Sequence | 🔧 v1.1 · 14 chặng · 14 điểm lệch (6 đã sửa, 8 chờ quyết định) · đã chạy thử trên app 26/11 |
+| [X01 Kiểm tra luồng end-to-end 3 module](00-overview/X01-end-to-end-flow-check.md) | SCRUM-7, 8, 69 | Sequence | 🔧 v1.2 · 14 chặng · 14 điểm lệch (6 đã sửa, 8 chờ quyết định) · đã chạy thử trên app 26/11 |
 
 ### Module 1 · eKYC
 
@@ -115,7 +115,7 @@ flowchart LR
 | | [A02 App iPhone quét giấy tờ](01-ekyc/1.3-ui/A02-ios-document-scan.md) | SCRUM-18, 80 | Flowchart ×2, Sequence, State | 🔧 Bản mẫu chạy được, chưa có CSCA & liveness |
 | 1.4 Kiểm thử | [T01 Kế hoạch kiểm thử tổng thể](01-ekyc/1.4-testing/T01-test-plan.md) | SCRUM-69 | — | ✅ v1.2 (theo ISO 29119-3) |
 | | [T02 Bộ 108 test case](01-ekyc/1.4-testing/T02-test-cases.md) | SCRUM-69, 86 | — | ✅ v1.1 |
-| | [T03 Báo cáo kết quả vòng 1](01-ekyc/1.4-testing/T03-test-report.md) | SCRUM-69 | — | ✅ v1.2 · 91 đạt · 0 lỗi mở · hồi quy 26/11: 57/57 test tự động + luồng TD-01 và Compliance trên backend thật · 2 lỗi dữ liệu mẫu đã sửa · chưa đủ điều kiện UAT |
+| | [T03 Báo cáo kết quả vòng 1](01-ekyc/1.4-testing/T03-test-report.md) | SCRUM-69 | — | ✅ v1.3 · vòng 2 (26/11): 108 ca – 103 đạt · 4 một phần · 1 chưa chạy · 0 lỗi mở (13 lỗi đã sửa) · còn 5 ca cần thiết bị thật · chưa đủ điều kiện UAT |
 | | [C15 Kế hoạch hiệu năng](01-ekyc/1.4-testing/C15-performance-test-plan.md) | SCRUM-84 | Flowchart | 🔧 Kế hoạch xong, chờ thiết bị/môi trường |
 | | [C16 Kế hoạch SIT](01-ekyc/1.4-testing/C16-sit-plan.md) | SCRUM-85 | Flowchart, Sequence | ⛔ Kế hoạch xong, bị chặn bởi SCRUM-56 |
 | | [C17 Bộ UAT & biên bản](01-ekyc/1.4-testing/C17-uat-pack.md) | SCRUM-86 | Flowchart | ⛔ Bộ case xong, chờ C03 + C16 |
@@ -142,8 +142,8 @@ flowchart LR
 |---|---|---|---|
 | [L01 Authorization, Boost & gian lận](03-credit-limit/L01-credit-limit-flow.md) | SCRUM-8, 51, 52, 54 | Sequence ×2, Flowchart ×2, State ×2 | 🔧 v1.2 · Đã đối chiếu BRD (MTI 0420, trạng thái Boost), chờ Notification thật |
 | [L02 Yêu cầu bổ sung, điểm lệch baseline & RTM](03-credit-limit/L02-requirements-gap-rtm.md) | SCRUM-8, 27–30, 53, 54 | — | 📝 v0.2 · 9 điểm chờ PO, Risk, Vận hành thẻ quyết định · 20 yêu cầu |
-| [L03 Đặc tả giao diện LIM-W1 → W4, M1 → M3](03-credit-limit/L03-ui-spec.md) | SCRUM-51, 52 | — | 📝 v0.2 · 16 ảnh chụp tự động (chụp lại 26/11) |
-| [L04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–2](03-credit-limit/L04-test-plan-cases.md) | SCRUM-8, 51, 52 | — | ✅ v1.2 · vòng 2: 35 ca UI, đạt 33 · 3 lỗi đã sửa · 7 lỗi mở (chờ quyết định) · 10 ca backend chờ service |
+| [L03 Đặc tả giao diện LIM-W1 → W4, M1 → M3](03-credit-limit/L03-ui-spec.md) | SCRUM-51, 52 | — | 📝 v0.3 · 16 ảnh chụp tự động (chụp lại 26/11) |
+| [L04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–2](03-credit-limit/L04-test-plan-cases.md) | SCRUM-8, 51, 52 | — | ✅ v1.3 · vòng 2: 36 ca UI, đạt 34 · 4 lỗi đã sửa · 6 lỗi mở (chờ quyết định) · 10 ca backend chờ service |
 | [L05 Đặc tả API & từ điển dữ liệu (đề xuất)](03-credit-limit/L05-api-data-dictionary.md) | SCRUM-27–30, 38, 53, 54 | ERD | 📝 v0.2 · 12 bảng · ISO 8583 · 29 API · 12 mã lỗi riêng |
 | [L06 Yêu cầu phi chức năng & KPI-07 → 09](03-credit-limit/L06-nfr-kpi.md) | SCRUM-8 | — | 📝 v0.2 · 22 NFR theo ISO/IEC 25010 · 3 KPI + 8 chỉ số vận hành |
 | [L07 SIT, hiệu năng, UAT & biên bản nghiệm thu](03-credit-limit/L07-sit-perf-uat.md) | SCRUM-8, 27–30, 51–54 | Flowchart ×2 | ⛔ v0.1 · 12 SIT · 6 hiệu năng · 21 UAT, chờ `limit-service` và simulator ISO 8583 |

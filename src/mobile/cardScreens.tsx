@@ -24,6 +24,14 @@ const LIMIT = 80_000_000;
 const USED = 46_250_000;
 const HOLD = 2_300_000;
 const BOOST = 10_000_000;
+/** Thời lượng Boost của bản mẫu. Baseline (BR-LIM-06) là hết chu kỳ sao kê kế tiếp – đổi ở đây khi D-LIM-01 được chốt (L02 §3, DEF-LIM-02) */
+const BOOST_HOURS = 72;
+/** Một mốc hết hạn duy nhất cho M1 (đếm ngược), M2 (Hiệu lực) và màn "Đã nâng hạn mức" – tương ứng `expires_at` ở L05 §3.4 (DEF-LIM-03) */
+const BOOST_EXPIRES_AT = Date.now() + BOOST_HOURS * 3600_000;
+const fmtExpiry = (ms: number, lang: "vi" | "en") => {
+  const d = new Date(ms), p = (n: number) => String(n).padStart(2, "0");
+  return lang === "vi" ? `${p(d.getHours())}:${p(d.getMinutes())}, ${p(d.getDate())}/${p(d.getMonth() + 1)}/${d.getFullYear()}` : `${p(d.getHours())}:${p(d.getMinutes())}, ${d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}`;
+};
 const fmt = (n: number) => `${n.toLocaleString("vi-VN")} ₫`;
 
 /* ---------- Thẻ tối ánh cam ---------- */
@@ -65,8 +73,7 @@ function Switch({ on, onChange, label }: { on: boolean; onChange: (v: boolean) =
 }
 
 /** Đếm ngược tới hạn Boost (time-boxed) */
-function useCountdown(hours: number) {
-  const [end] = useState(() => Date.now() + hours * 3600_000);
+function useCountdown(end: number) {
   const [now, setNow] = useState(Date.now());
   useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
   const s = Math.max(0, Math.floor((end - now) / 1000));
@@ -78,7 +85,7 @@ function useCountdown(hours: number) {
 export function CardHome({ go }: ScreenProps) {
   const { tr } = useLang();
   const c = useCard();
-  const cd = useCountdown(62);
+  const cd = useCountdown(BOOST_EXPIRES_AT);
   const limit = LIMIT + (c.boost === "active" ? BOOST : 0);
   const available = limit - USED - HOLD;
   const used = ((USED + HOLD) / limit) * 100;
@@ -102,7 +109,7 @@ export function CardHome({ go }: ScreenProps) {
       {c.boost === "offered" && (
         <button onClick={() => go("boostOffer")} className="interactive mt-5 flex w-full items-center gap-4 rounded-[20px] p-4 text-left" style={{ background: "var(--grad-soft)" }}>
           <span className="grid size-12 shrink-0 place-items-center rounded-[14px] text-white" style={{ background: "var(--grad-action)" }}><Rocket className="size-6" /></span>
-          <span className="min-w-0 flex-1"><span className="block text-[15px] font-semibold">{tr("Nâng hạn mức tạm thời +10 triệu", "Temporary limit +10 million")}</span><span className="block text-caption text-fg-secondary">{tr("Dành riêng cho bạn · miễn phí · tự hết hạn sau 72 giờ", "Just for you · free · ends after 72 hours")}</span></span>
+          <span className="min-w-0 flex-1"><span className="block text-[15px] font-semibold">{tr("Nâng hạn mức tạm thời +10 triệu", "Temporary limit +10 million")}</span><span className="block text-caption text-fg-secondary">{tr(`Dành riêng cho bạn · miễn phí · tự hết hạn sau ${BOOST_HOURS} giờ`, `Just for you · free · ends after ${BOOST_HOURS} hours`)}</span></span>
           <ChevronRight className="size-5 shrink-0 text-fg-tertiary" />
         </button>
       )}
@@ -162,12 +169,12 @@ export function BoostOffer({ go }: ScreenProps) {
       <Screen title="Boost" footer={<Button size="lg" block onClick={() => go("cardHome")}>{tr("Về thẻ của tôi", "Back to my card")}</Button>}>
         <div className="mx-auto mt-6 grid size-20 place-items-center rounded-full text-white" style={{ background: "var(--grad-action)" }}><Check className="size-10" /></div>
         <h2 className="mt-5 text-center text-[24px] font-semibold">{tr("Đã nâng hạn mức", "Limit raised")}</h2>
-        <p className="mt-1 text-center text-body-sm text-fg-secondary">{tr(`Hạn mức mới ${fmt(LIMIT + BOOST)}, dùng được ngay đến 23:59 ngày 24/11.`, `Your new limit is ${fmt(LIMIT + BOOST)}, usable now until 23:59 on 24 Nov.`)}</p>
+        <p className="mt-1 text-center text-body-sm text-fg-secondary">{tr(`Hạn mức mới ${fmt(LIMIT + BOOST)}, dùng được ngay đến ${fmtExpiry(BOOST_EXPIRES_AT, "vi")}.`, `Your new limit is ${fmt(LIMIT + BOOST)}, usable now until ${fmtExpiry(BOOST_EXPIRES_AT, "en")}.`)}</p>
       </Screen>
     );
   const rows: [typeof Gauge, string, string][] = [
     [Gauge, tr("Hạn mức mới", "New limit"), fmt(LIMIT + BOOST)],
-    [CalendarClock, tr("Hiệu lực", "Valid"), tr("Ngay bây giờ → 23:59, 24/11/2026", "Now → 23:59, 24 Nov 2026")],
+    [CalendarClock, tr("Hiệu lực", "Valid"), tr(`Ngay bây giờ → ${fmtExpiry(BOOST_EXPIRES_AT, "vi")}`, `Now → ${fmtExpiry(BOOST_EXPIRES_AT, "en")}`)],
     [Clock, tr("Sau thời hạn", "Afterwards"), tr(`Tự trở về ${fmt(LIMIT)}`, `Returns to ${fmt(LIMIT)} automatically`)],
     [Wallet, tr("Phí", "Fee"), tr("Miễn phí", "Free")],
   ];
@@ -181,7 +188,7 @@ export function BoostOffer({ go }: ScreenProps) {
         <span className="grid size-20 place-items-center rounded-[22px] text-white shadow-[0_14px_30px_rgba(134,64,224,0.35)]" style={{ background: "var(--grad-action)" }}><Rocket className="size-10" /></span>
         <p className="mt-4 text-[30px] font-semibold tabular text-gradient">+{fmt(BOOST)}</p>
       </div>
-      <div className="mt-6"><PageTitle title={tr("Nâng hạn mức tạm thời", "Temporary limit raise")} desc={tr("Nhờ lịch sử chi tiêu và thanh toán đúng hạn, bạn được tăng hạn mức trong 72 giờ.", "Thanks to your on-time payments, you can spend more for the next 72 hours.")} /></div>
+      <div className="mt-6"><PageTitle title={tr("Nâng hạn mức tạm thời", "Temporary limit raise")} desc={tr(`Nhờ lịch sử chi tiêu và thanh toán đúng hạn, bạn được tăng hạn mức trong ${BOOST_HOURS} giờ.`, `Thanks to your on-time payments, you can spend more for the next ${BOOST_HOURS} hours.`)} /></div>
       <dl className="divide-y divide-[var(--border-subtle)] rounded-[20px] border border-line-subtle px-4">
         {rows.map(([Icon, l, v]) => (
           <div key={l} className="flex items-center gap-3 py-3.5">

@@ -451,7 +451,7 @@ export function OcrReview({ go }: ScreenProps) {
           <Row label={tr("Có giá trị đến", "Expiry date")} value={o ? dmy(o.expiry) : "15/03/2032"} />
         </dl>
       </Section>
-      <button onClick={() => go("captureFront")} className="interactive mt-3 flex w-full items-center justify-center gap-2 rounded-md py-2.5 text-body-sm font-semibold text-action-subtle-fg">
+      <button onClick={() => go("captureFront")} className="interactive mt-3 flex w-full items-center justify-center gap-2 rounded-md min-h-11 py-2.5 text-body-sm font-semibold text-action-subtle-fg">
         <RefreshCw className="size-4" /> {tr("Thông tin chưa đúng? Chụp lại", "Details wrong? Retake photos")}
       </button>
     </Screen>
@@ -497,6 +497,8 @@ export function NfcScan({ go }: ScreenProps) {
         title={phase === "done" ? tr("Đọc chip thành công", "Chip read successfully") : ek?.docType === "PASSPORT" ? tr("Áp bìa sau hộ chiếu vào điện thoại", "Hold the passport's back cover to your phone") : tr("Áp CCCD vào mặt sau điện thoại", "Hold your ID to the back of your phone")}
         desc={phase === "done" ? tr("Chữ ký số trên chip hợp lệ.", "The chip's digital signature is valid.") : phase === "reading" ? tr("Giữ yên cho đến khi hoàn tất.", "Keep still until it finishes.") : ek?.docType === "PASSPORT" ? tr("Gập hộ chiếu, đặt bìa sau (có biểu tượng chip) sát phần trên lưng máy, giữ 3–5 giây.", "Close the passport and hold the back cover (with the chip symbol) to the top of your phone for 3–5 seconds.") : tr("Đặt thẻ gần camera sau, giữ 3–5 giây.", "Place the card near the rear camera for 3–5 seconds.")}
       />
+      {/* Luôn có sẵn để trình đọc màn hình đọc khi trạng thái đổi; chỉ đọc theo mốc, không đọc từng % (TC-NFR-07, DEF-12) */}
+      <p role="status" className="sr-only">{phase === "reading" ? tr("Đang đọc chip, giữ yên điện thoại", "Reading chip, keep your phone still") : phase === "done" ? tr("Đọc chip thành công", "Chip read successfully") : ""}</p>
       <Section className="grid place-items-center py-10">
         <div className="relative grid size-40 place-items-center" aria-hidden>
           {phase !== "done" && (
@@ -510,7 +512,7 @@ export function NfcScan({ go }: ScreenProps) {
           </div>
         </div>
         {phase === "reading" && (
-          <div className="mt-6 w-3/4" aria-live="polite">
+          <div className="mt-6 w-3/4">
             <ProgressBar value={pct} label={tr("Tiến độ đọc chip", "Chip reading progress")} />
             <p className="mt-2 text-center text-caption text-fg-tertiary tabular">{Math.min(pct, 100)}%</p>
           </div>
@@ -525,8 +527,8 @@ export function NfcScan({ go }: ScreenProps) {
         <Alert tone="warning" className="mt-4" title={tr("Hồ sơ sẽ được duyệt thủ công", "Your application will be reviewed manually")}>
           <p>{tr("Không đọc chip, nhân viên cần xem xét hồ sơ, thường trong 24 giờ.", "Without the chip, our team needs to review it, usually within 24 hours.")}</p>
           <div className="mt-3 flex gap-2">
-            <Button size="sm" variant="secondary" onClick={() => next(false)}>{tr("Vẫn bỏ qua", "Skip anyway")}</Button>
-            <Button size="sm" variant="ghost" onClick={() => setSkip(false)}>{tr("Thử quét lại", "Try again")}</Button>
+            <Button size="md" variant="secondary" onClick={() => next(false)}>{tr("Vẫn bỏ qua", "Skip anyway")}</Button>
+            <Button size="md" variant="ghost" onClick={() => setSkip(false)}>{tr("Thử quét lại", "Try again")}</Button>
           </div>
         </Alert>
       )}
@@ -721,7 +723,7 @@ export function Approved({ go }: ScreenProps) {
         </div>
         <div className="relative mt-4 flex items-center gap-3">
           <span className="text-[26px] font-bold tracking-[0.04em] tabular">{acct.replace(/(\d{4})(?=\d)/g, "$1 ")}</span>
-          <button onClick={copy} className="interactive grid size-9 place-items-center rounded-full bg-white/10" aria-label={tr("Sao chép số tài khoản", "Copy account number")}>
+          <button onClick={copy} className="interactive grid size-11 place-items-center rounded-full bg-white/10" aria-label={tr("Sao chép số tài khoản", "Copy account number")}>
             {copied ? <Check className="size-4 text-aurora-amber" /> : <Copy className="size-4" />}
           </button>
         </div>
@@ -930,7 +932,7 @@ export function Privacy({ go }: ScreenProps) {
                 <span className="block text-caption text-fg-tertiary">{r.desc}</span>
               </span>
               {r.scope !== "screening" && (
-                <Button size="sm" variant={r.scope === "identity" ? "danger" : "secondary"} onClick={() => setConfirm(r.scope as "identity" | "marketing")}>{tr("Rút lại", "Withdraw")}</Button>
+                <Button size="md" variant={r.scope === "identity" ? "danger" : "secondary"} onClick={() => setConfirm(r.scope as "identity" | "marketing")}>{tr("Rút lại", "Withdraw")}</Button>
               )}
             </li>
           ))}
