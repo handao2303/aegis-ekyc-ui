@@ -6,6 +6,7 @@
 | Ngày thực hiện | 21/11/2026 |
 | Người thực hiện | Han Dao (BA/PO) |
 | Kết quả | **Hoàn tất 6/6 hạng mục** |
+| Phiên bản | 1.1 · 26/11/2026 · Han Dao (BA) |
 
 ## Thay đổi đã thực hiện
 
@@ -33,3 +34,24 @@ Trả về đủ ticket con của SCRUM-6.
 | In Progress | Đang làm (đặc tả, UI mẫu hoặc code) |
 | Testing | Chờ kiểm thử **hoặc** chờ review/duyệt (với tài liệu) |
 | Done | Đạt toàn bộ AC, có bằng chứng trong comment |
+
+## Áp dụng cho Module 2, 3
+
+Quy ước trên áp dụng cho cả Epic Đối soát (SCRUM-7) và Hạn mức (SCRUM-8). Khi rà soát 26/11/2026, SCRUM-27 → 30 đang *Testing* và SCRUM-38 *Done* nhưng repo chưa có mã `limit-service` ([X01](X01-end-to-end-flow-check.md) F-14, [L02 §1](../03-credit-limit/L02-requirements-gap-rtm.md)). Theo quy ước, các story này cần comment bằng chứng (link mã, kết quả test) hoặc chuyển về *In Progress*. Việc chuyển trạng thái do Tech Lead xác nhận, BA không tự đổi.
+
+## Kiểm soát tài liệu
+
+### Lịch sử phiên bản
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 1.0 | 21/11/2026 | Han Dao | — | Nhật ký đồng bộ 6 hạng mục Jira Epic eKYC, quy ước trạng thái |
+| 1.1 | 26/11/2026 | Han Dao | — | Thêm phần áp dụng cho Module 2, 3 (X01 F-14); thêm kiểm soát tài liệu theo ISO/IEC/IEEE 29148 |
+
+### Phê duyệt
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 26/11/2026 | Trình duyệt |
+| Product Owner | | | |
+| Tech Lead | | | |

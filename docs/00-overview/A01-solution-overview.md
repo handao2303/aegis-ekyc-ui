@@ -232,10 +232,14 @@ flowchart LR
 
 ## Kiểm soát tài liệu
 
+### Lịch sử phiên bản
+
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 1.0 | 21/11/2026 → 23/11/2026 | Han Dao | `982969c`, `8a99253`, `361be3e` | Bản đầu: Context, Container, luồng end-to-end eKYC, cây quyết định, bản đồ màn hình, triển khai UI |
 | 1.1 | 26/11/2026 | Han Dao | — | Mở rộng Context và Container cho cả 3 module: tổ chức thẻ, CASA / sổ cái, topic `limit.*`, `rec.*`, CSDL của `limit-service` và `reconciliation-service` (X01 F-04, F-05) |
+
+### Phê duyệt
 
 | Vai trò | Người | Ngày | Kết luận |
 |---|---|---|---|

@@ -4,23 +4,25 @@
 |---|---|
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · story SCRUM-27 → 30, 38, 51 → 54 |
 | Khung tài liệu | ISO/IEC/IEEE 29119-3:2021 – gộp Test Plan, Test Case Specification và Test Completion Report cho một module nhỏ |
-| Đối tượng kiểm thử | UI mẫu [/credit-limit/](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) và [/app/?screen=cardHome](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome), bản GitHub Pages ngày 25/11/2026 |
+| Đối tượng kiểm thử | UI mẫu [/credit-limit/](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) và [/app/?screen=cardHome](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome) · vòng 1: bản GitHub Pages 25/11/2026 · vòng 2: bản local 26/11/2026 (`WEB=http://localhost:5179`), cùng script `tools/diagrams/lim-screens.mjs` |
 | Yêu cầu nguồn | BAS-BRD-v1.2 §2.3, §4.3, §5.3 · [L01](L01-credit-limit-flow.md) · [L02](L02-requirements-gap-rtm.md) · [L03](L03-ui-spec.md) |
 | Người thực hiện | Han Dao (BA) |
-| Phiên bản | 1.1 · 26/11/2026 (vòng 1 + kiểm tra luồng end-to-end) |
+| Phiên bản | 1.2 · 26/11/2026 (vòng 1, kiểm tra luồng end-to-end, vòng 2 sau khi sửa 3 lỗi) |
 | Trạng thái | ✅ Vòng UI đã chạy · ⛔ ca backend chờ `limit-service` |
 
 ## 1. Tóm tắt kết quả
 
-| | Vòng 1 |
-|---|---|
-| Ca giao diện đã chạy | 33 (web 23, mobile 10) |
-| Đạt | **31** |
-| Không đạt | **2** – TC-LIM-07 (reversal), TC-LIM-28 (thời hạn Boost) |
-| Ca backend chưa chạy được | 10 (TC-LIM-B01 → B10) |
-| Lỗi / phát hiện mở | 8 (1 High · 4 Medium · 3 Low) – §5 · DEF-LIM-08 thêm 26/11 khi kiểm tra luồng end-to-end ([X01](../00-overview/X01-end-to-end-flow-check.md) F-02) |
+| | Vòng 1 (25/11) | Vòng 2 (26/11) |
+|---|---|---|
+| Ca giao diện đã chạy | 33 (web 23, mobile 10) | 35 (thêm TC-LIM-34, 35) |
+| Đạt | **31** | **33** |
+| Không đạt | **2** – TC-LIM-07 (reversal), TC-LIM-28 (thời hạn Boost) | **2** – như vòng 1, chờ D-LIM-01, D-LIM-03 |
+| Ca backend chưa chạy được | 10 (TC-LIM-B01 → B10) | 10 |
+| Lỗi / phát hiện | 8 mở (DEF-LIM-08 thêm khi kiểm tra luồng end-to-end – [X01](../00-overview/X01-end-to-end-flow-check.md) F-02) | 3 đã sửa (DEF-LIM-04, 06, 07) · 2 mới (DEF-LIM-09, 10) · **7 mở** (1 High · 4 Medium · 2 Low) – §5 |
 
-**Kết luận:** UI mẫu thể hiện đúng các kiểm soát chính: che PAN ở mọi màn, xung đột version khi giao dịch đồng thời, ba trạng thái Smart Fallback, bắt lý do khi mở khoá Boost, gửi lại thông báo thất bại, và nút Nhận Boost khoá tới khi khách xác nhận điều kiện. Hai ca không đạt đều là **lệch baseline** (MTI reversal 0420, thời hạn Boost theo chu kỳ sao kê), cần quyết định D-LIM-01 và D-LIM-03 trước khi sửa. Module 3 **chưa đủ điều kiện vào SIT/UAT** vì chưa có bằng chứng `limit-service` chạy được (L02 §1).
+Vòng 2 chạy sau khi sửa 3 lỗi không phụ thuộc quyết định nghiệp vụ. Hai lỗi mới tìm được khi đi hết luồng thật trên app: mở tài khoản TD-01 có backend → "Vào trang chủ" → M1.
+
+**Kết luận:** UI mẫu thể hiện đúng các kiểm soát chính (vòng 2 thêm cột RRN, hộp thoại kết luận khi đóng case): che PAN ở mọi màn, xung đột version khi giao dịch đồng thời, ba trạng thái Smart Fallback, bắt lý do khi mở khoá Boost, gửi lại thông báo thất bại, và nút Nhận Boost khoá tới khi khách xác nhận điều kiện. Hai ca không đạt đều là **lệch baseline** (MTI reversal 0420, thời hạn Boost theo chu kỳ sao kê), cần quyết định D-LIM-01 và D-LIM-03 trước khi sửa. Module 3 **chưa đủ điều kiện vào SIT/UAT** vì chưa có bằng chứng `limit-service` chạy được (L02 §1).
 
 ## 2. Kế hoạch
 
@@ -49,7 +51,9 @@
 | Ra vòng UI | 100% ca giao diện đã chạy ✅ · mọi lỗi có mã và mức độ ✅ |
 | Vào SIT | Có `limit-service` chạy được, simulator ISO 8583 (DEP-05), mock CASA (DEP-06), quyết định D-LIM-01 → 03, 0 lỗi High mở ❌ |
 
-## 3. Test case giao diện và kết quả (vòng 1)
+## 3. Test case giao diện và kết quả (vòng 2, 26/11/2026)
+
+Cột "Kết quả thực tế" ghi theo vòng 2. Ca đổi kết quả hoặc thêm mới so với vòng 1: TC-LIM-12, 23, 34, 35.
 
 | Mã | Màn | Bước | Kết quả mong đợi | Kết quả thực tế | Kết quả | Truy vết |
 |---|---|---|---|---|---|---|
@@ -64,7 +68,7 @@
 | TC-LIM-09 | Danh sách thẻ | Mở Hồ sơ hạn mức thẻ | Có thẻ tạm khoá và cột version | C-0004 · Tạm khoá · v22 | ✅ | G-07 |
 | TC-LIM-10 | Danh sách thẻ | Tìm "1234" | Còn đúng 1 thẻ | 1 dòng – NGUYEN THI MINH THU | ✅ | G-07 |
 | TC-LIM-11 | W2 | Mở thẻ ••••1234 | Có version, tạm giữ, Boost, CASA liên kết | v17 · 2,3 tr · +10 tr · 1903 6688 2025 | ✅ | BRD §3.5 |
-| TC-LIM-12 | W2 | Xem bảng Smart Fallback | Có HOLD, SETTLED, RELEASED | Đủ 3 trạng thái (cột trạng thái bị cắt ở 1280 px – DEF-LIM-04) | ✅ | UAT-LIM-03/04 |
+| TC-LIM-12 | W2 | Xem bảng Smart Fallback | Có HOLD, SETTLED, RELEASED | Đủ 3 trạng thái, cột Trạng thái hiện đủ ở 1280 px (vòng 1 bị cắt – DEF-LIM-04 đã sửa) | ✅ | UAT-LIM-03/04 |
 | TC-LIM-13 | W2 | Điều chỉnh hạn mức = 20 triệu (< dư nợ) | Bị chặn | "Hạn mức mới phải lớn hơn dư nợ hiện tại." | ✅ | Giá trị biên |
 | TC-LIM-14 | W2 | Điều chỉnh = 90 triệu | Lưu, version tăng | "Đã cập nhật hạn mức, version v18." | ✅ | BR-LIM-02 |
 | TC-LIM-15 | W2 | Tick "giao dịch khác cập nhật trước", Lưu | Từ chối, báo xung đột version | "Xung đột phiên bản: hồ sơ đã được cập nhật lên v19…" | ✅ | BR-LIM-02, UAT-LIM-01 |
@@ -75,7 +79,7 @@
 | TC-LIM-20 | W4 | Đối chiếu điểm và hành động | ≥ 75 khoá Boost, thấp hơn gắn cờ | 92, 78 → Khoá Boost · 61, 55 → Gắn cờ | ✅ | UC-LIM-06 luồng phụ, D-LIM-07 |
 | TC-LIM-21 | W4 | Bấm Gửi lại ở FR-2196 (SMS FAILED) | FAILED → PENDING → DELIVERED | Đúng | ✅ | REQ-LIM-14, UAT-LIM-07 |
 | TC-LIM-22 | W4 | Xem mẫu thông báo | Ghi rõ nội dung giữ chỗ; PAN che | Có cảnh báo ISS-03 / DEP-07; "****0042" | ✅ | REQ-LIM-15 |
-| TC-LIM-23 | W4 | Đóng case FR-2201 | Case đóng | Đóng ngay, không hỏi kết luận (DEF-LIM-06) | ✅ | REQ-LIM-17 |
+| TC-LIM-23 | W4 | Đóng case FR-2201: chưa chọn kết luận; chọn "Khách xác nhận là mình" + ghi chú 4 ký tự; ghi chú đủ | Nút Đóng case khoá tới khi có kết luận và ghi chú ≥ 10 ký tự; dòng hiện kết luận | Nút khoá ở 2 bước đầu; FR-2201 → "Đã đóng · Khách xác nhận là mình" (vòng 1: đóng ngay không hỏi – DEF-LIM-06) | ✅ | REQ-LIM-17 |
 | TC-LIM-24 | M1 | Mở Thẻ của tôi | Khả dụng = hạn mức − đã dùng − tạm giữ | 80.000.000 − 46.250.000 − 2.300.000 = 31.450.000 ₫ | ✅ | BRD §3.5 |
 | TC-LIM-25 | M1 | Quét chữ | Không có PAN đầy đủ | 4111 •••• •••• 1234 | ✅ | UAT-LIM-10 |
 | TC-LIM-26 | M1 | Bấm công tắc Smart Fallback | Đổi trạng thái, có nhãn cho trình đọc màn hình | `aria-checked` true → false · nhãn "Smart Fallback" | ✅ | BR-LIM-04, WCAG 4.1.2 |
@@ -86,6 +90,8 @@
 | TC-LIM-31 | M3 | Mở thông báo khoá Boost | Có lý do, nói hạn mức gốc vẫn dùng, 2 lựa chọn | Đủ; có lưu ý không hỏi OTP | ✅ | UC-LIM-06 bước 4 |
 | TC-LIM-32 | M3 | Chọn Không phải tôi | Thẻ khoá, hẹn liên hệ | "Thẻ đã được khoá" · 24 giờ | ✅ | D-LIM-05 |
 | TC-LIM-33 | M3 | Chọn Đúng, tôi đã thực hiện | Xác nhận, hẹn xem lại | "…mở lại hạn mức tạm thời trong vòng 30 phút" | ✅ | D-LIM-05 |
+| TC-LIM-34 | W1 | Xem cột RRN của 12 dòng log | Mỗi dòng có RRN 12 số; cặp STAN + RRN không trùng | 12 dòng, RRN dạng `633012820515`, 12 cặp khác nhau | ✅ | REQ-LIM-01, BR-LIM-03 · DEF-LIM-07 |
+| TC-LIM-35 | W2 | Đo bảng Smart Fallback ở cửa sổ 1280 px | Không cuộn ngang, thấy cột Trạng thái | Bảng 532 px trong khung 532 px | ✅ | DEF-LIM-04 |
 
 ## 4. Test case backend – chưa chạy
 
@@ -112,10 +118,12 @@ Viết sẵn theo thiết kế ở [L05](L05-api-data-dictionary.md). Chạy khi
 | DEF-LIM-02 | Medium | Boost hết hạn sau 72 giờ, baseline là sau chu kỳ sao kê kế tiếp | TC-LIM-28 | Sau D-LIM-01: M2 hiện ngày chốt sao kê; M1 đếm ngược tới mốc đó | Mở – chờ D-LIM-01 |
 | DEF-LIM-03 | Medium | Thời hạn Boost không nhất quán: M2 ghi cứng hạn 24/11/2026 (đã qua so với ngày chạy 25/11/2026), lời mời ghi 72 giờ, M1 đếm ngược 62 giờ | TC-LIM-28, TC-LIM-30 | Tính ngày hết hạn từ một nguồn duy nhất (`expires_at`) cho cả M1, M2 | Mở |
 | DEF-LIM-05 | Medium | Khoá Boost thủ công ở W3 không bắt lý do và không gửi thông báo khách – trái BR-LIM-07 (khoá đi cùng thông báo) | TC-LIM-17 | Hộp thoại lý do ≥ 10 ký tự, gửi cùng mẫu thông báo, ghi audit (D-LIM-08) | Mở |
-| DEF-LIM-04 | Low | Bảng Smart Fallback ở W2 bị cắt cột Trạng thái ở cửa sổ 1280 px | Ảnh `lim-card-profile.png` | Bỏ `minWidth` của bảng hoặc thu cột Điểm bán | Mở |
-| DEF-LIM-06 | Low | Đóng case gian lận không hỏi kết luận | TC-LIM-23 | Hộp thoại chọn kết luận + ghi chú (REQ-LIM-17) | Mở |
-| DEF-LIM-07 | Low | Log authorization không có RRN, không kiểm được chống trùng trên UI | Xem bảng W1 | Thêm cột RRN (REQ-LIM-01) | Mở |
-| DEF-LIM-08 | Medium | Sau khi mở tài khoản thành công, nút "Vào trang chủ" luôn mở M1 với một thẻ tín dụng đang dùng 46 triệu, kể cả khách chỉ mở tài khoản thanh toán (`product = payment`) | App: hoàn tất eKYC TD-01 → bấm "Vào trang chủ"; xem `src/mobile/screens.tsx` | M1 có trạng thái "chưa có thẻ" (giới thiệu thẻ, không hiện hạn mức); chỉ hiện hạn mức khi đã có hồ sơ hạn mức (L08 REQ-LIM-26) | Mở |
+| DEF-LIM-04 | Low | Bảng Smart Fallback ở W2 bị cắt cột Trạng thái ở cửa sổ 1280 px | Ảnh `lim-card-profile.png` | Bỏ `minWidth` của bảng hoặc thu cột Điểm bán | ✅ Đã sửa 26/11 – bảng `minWidth` 480, cột thẻ 360 px; TC-LIM-35 |
+| DEF-LIM-06 | Low | Đóng case gian lận không hỏi kết luận | TC-LIM-23 | Hộp thoại chọn kết luận + ghi chú (REQ-LIM-17) | ✅ Đã sửa 26/11 – TC-LIM-23 vòng 2 |
+| DEF-LIM-07 | Low | Log authorization không có RRN, không kiểm được chống trùng trên UI | Xem bảng W1 | Thêm cột RRN (REQ-LIM-01) | ✅ Đã sửa 26/11 – TC-LIM-34 |
+| DEF-LIM-08 | Medium | Sau khi mở tài khoản thành công, nút "Vào trang chủ" luôn mở M1 với một thẻ tín dụng đang dùng 46 triệu, kể cả khách chỉ mở tài khoản thanh toán (`product = payment`) | App: hoàn tất eKYC TD-01 → bấm "Vào trang chủ"; xem `src/mobile/screens.tsx` | M1 có trạng thái "chưa có thẻ" (giới thiệu thẻ, không hiện hạn mức); chỉ hiện hạn mức khi đã có hồ sơ hạn mức (L08 REQ-LIM-26) | Mở – chờ X01 F-01 |
+| DEF-LIM-09 | Medium | Công tắc Smart Fallback ở M1 bật sẵn, không có điều khoản trích nợ, không lưu bằng chứng đồng ý – trái CR-LIM-04 | TC-LIM-26; mở M1 lần đầu | Mặc định tắt; bật thì hiện điều khoản L08 §4.1 và lưu đồng ý (REQ-LIM-23) | Mở – chờ Pháp chế duyệt điều khoản L08 §4.1 |
+| DEF-LIM-10 | Low | Tài khoản CASA dùng cho Smart Fallback ở M1 ghi cứng `1903 6688 2025` (12.480.000 ₫), không phải tài khoản khách vừa mở ở eKYC (`1903 6688 0001`, 0 ₫) | App có backend: mở tài khoản TD-01 → Vào trang chủ | Lấy CASA từ hồ sơ khách; tài khoản số dư 0 không đủ điều kiện fallback (REQ-LIM-07) | Mở – cùng X01 F-01 |
 
 ## 6. Độ phủ yêu cầu
 
@@ -123,11 +131,11 @@ Viết sẵn theo thiết kế ở [L05](L05-api-data-dictionary.md). Chạy khi
 |---|---|---|---|---|
 | BR-LIM-01 | 4 | 4 | 1 | Số đo thật cần PERF-LIM-01 |
 | BR-LIM-02 | 2 | 2 | 1 | Cách làm chờ D-LIM-02 |
-| BR-LIM-03 | 0 | — | 1 | UI chưa có RRN |
+| BR-LIM-03 | 1 | 1 | 1 | TC-LIM-34 (RRN trên UI) |
 | BR-LIM-04 | 4 | 4 | 1 | |
 | BR-LIM-05 | 1 | 1 | 1 | |
 | BR-LIM-06 | 4 | 3 | 1 | TC-LIM-28 không đạt |
-| BR-LIM-07 | 8 | 8 | 1 | 2 phát hiện (DEF-LIM-05, 06) dù ca đạt |
+| BR-LIM-07 | 8 | 8 | 1 | DEF-LIM-05 còn mở dù ca đạt; DEF-LIM-06 đã sửa |
 | BR-LIM-08 | 1 | 0 | 1 | TC-LIM-07 không đạt |
 | BR-LIM-09 | 1 | 1 | 1 | Chỉ mô phỏng |
 | BR-LIM-10 | 0 | — | 1 | Thuộc báo cáo EOD |
@@ -135,7 +143,7 @@ Viết sẵn theo thiết kế ở [L05](L05-api-data-dictionary.md). Chạy khi
 
 ## 7. Việc tiếp theo
 
-1. PO, Risk, Vận hành thẻ chốt D-LIM-01, 03, 08 ([L02 §3](L02-requirements-gap-rtm.md)); FE sửa DEF-LIM-01 → 08; chạy lại vòng 2 bằng cùng script.
+1. PO, Risk, Vận hành thẻ chốt D-LIM-01, 03, 08 ([L02 §3](L02-requirements-gap-rtm.md)); FE sửa DEF-LIM-01, 02, 03, 05 sau quyết định; DEF-LIM-08, 10 sau X01 F-01; DEF-LIM-09 sau khi Pháp chế duyệt L08 §4.1; chạy lại vòng 3 bằng cùng script.
 2. Tech Lead xác minh mã `limit-service` (L02 câu hỏi 1); khi có, chạy TC-LIM-B01 → B10.
 
 ## 8. Kiểm soát tài liệu
@@ -145,7 +153,8 @@ Viết sẵn theo thiết kế ở [L05](L05-api-data-dictionary.md). Chạy khi
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
 | 1.0 | 25/11/2026 | Han Dao | 273d6b3 | Kế hoạch, 33 ca UI đã chạy (31 đạt), 10 ca backend viết sẵn, 7 lỗi / phát hiện |
-| 1.1 | 26/11/2026 | Han Dao | — | Thêm DEF-LIM-08 (màn sau eKYC luôn hiện thẻ tín dụng) từ X01 F-02 |
+| 1.1 | 26/11/2026 | Han Dao | f5d9316 | Thêm DEF-LIM-08 (màn sau eKYC luôn hiện thẻ tín dụng) từ X01 F-02 |
+| 1.2 | 26/11/2026 | Han Dao | — | Vòng 2: sửa DEF-LIM-04, 06, 07; thêm TC-LIM-34, 35, viết lại TC-LIM-23; 35 ca, 33 đạt. Thêm DEF-LIM-09, 10 từ chạy luồng thật eKYC → M1 |
 
 ### Phê duyệt
 

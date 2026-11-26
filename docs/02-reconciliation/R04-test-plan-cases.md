@@ -7,7 +7,7 @@
 | Đối tượng kiểm thử | UI mẫu [/reconciliation/](https://handao2303.github.io/aegis-ekyc-ui/reconciliation/) bản trên GitHub Pages ngày 24/11/2026 |
 | Yêu cầu nguồn | BAS-BRD-v1.2 §2.2, §4.2, §5.2 · [R01](R01-reconciliation-flow.md) · [R02](R02-requirements-gap-rtm.md) |
 | Người thực hiện | Han Dao (BA) |
-| Phiên bản | 1.3 · 25/11/2026 (vòng 2 sau khi sửa lỗi, thêm vai trò Checker) |
+| Phiên bản | 1.4 · 26/11/2026 (vòng 2 sau khi sửa lỗi, thêm vai trò Checker; hồi quy 26/11) |
 
 ## 1. Tóm tắt kết quả
 
@@ -20,6 +20,8 @@
 | Lỗi mở | 6 (2 High · 4 Medium) | **0** – cả 6 lỗi đã sửa |
 
 **Kết luận:** UI mẫu thể hiện đúng các kiểm soát chính của baseline (chặn Maker tự duyệt, ngưỡng 50 triệu, cách ly file lỗi, truy vết 4 bước, nhãn thời điểm dữ liệu) và các luồng của UC-REC-04, UC-REC-05 mà vòng 1 còn thiếu. UI đủ để làm mẫu cho đội backend. Module 2 **chưa đủ điều kiện vào SIT/UAT** vì chưa có backend.
+
+**Hồi quy 26/11/2026:** chạy lại cùng script `tools/diagrams/rec-screens.mjs` trên bản local (`WEB=http://localhost:5179`) khi rà soát toàn bộ tài liệu: **25/25 đạt**, không lỗi mới. Ảnh R03 chụp lại cùng lượt.
 
 ## 2. Kế hoạch
 
@@ -138,6 +140,7 @@ Giới hạn của vòng 2 ban đầu (chỉ có một người dùng nên chưa
 | 1.1 | 24/11/2026 | Han Dao | Vòng 2 sau khi sửa 6 lỗi: 22 ca UI, 22 đạt, 0 lỗi mở |
 | 1.2 | 24/11/2026 | Han Dao | Thêm vai trò Checker và trưởng nhóm vào UI mẫu; TC-REC-23 → 25 (RULE-REC-05, trình lại): 25/25 đạt |
 | 1.3 | 25/11/2026 | Han Dao | Thêm mục phê duyệt (ISO/IEC/IEEE 29119-3) |
+| 1.4 | 26/11/2026 | Han Dao | Hồi quy 26/11: 25/25 đạt |
 
 ## Phê duyệt
 

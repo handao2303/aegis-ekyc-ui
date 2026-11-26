@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.0 · 26/11/2026 · Han Dao (BA) |
+| Phiên bản | 1.1 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 🔧 Đã sửa 6 điểm ngay trong tài liệu; 8 điểm chờ quyết định |
 | Phạm vi | Module 1 eKYC (`01-ekyc/`), Module 2 Đối soát (`02-reconciliation/`), Module 3 Hạn mức (`03-credit-limit/`), tổng quan [A01](A01-solution-overview.md) |
 | Cách làm | Đi theo hành trình một khách từ mở tài khoản tới đối soát cuối ngày; ở mỗi điểm nối giữa hai module, so tài liệu hai bên và mã nguồn đang có (`server/src`, `src/`) |
@@ -19,7 +19,7 @@
 | Tuân thủ, cơ sở pháp lý | ✅ C02, C11 → C14 | ✅ **R08 (mới)** | ✅ **L08 (mới)** |
 | Điều khoản, quyền riêng tư cho khách | ✅ P01 | ➕ R08 §3 (không có giao diện khách) | ✅ **L08 §3 → §4 (mới)** |
 | Đặc tả giao diện có ảnh | ✅ U01, U02 | ✅ R03 | ✅ L03 |
-| Kế hoạch, test case, kết quả UI | ✅ T01, T02, T03 | ✅ R04 (25/25 đạt) | ✅ L04 (31/33 đạt) |
+| Kế hoạch, test case, kết quả UI | ✅ T01, T02, T03 | ✅ R04 (25/25 đạt) | ✅ L04 (vòng 2: 33/35 đạt) |
 | SIT, hiệu năng, UAT, biên bản | ✅ C15, C16, C17 | ✅ R07 | ✅ L07 |
 | NFR, KPI | ✅ C18 (+ NFR ở C03) | ✅ R06 | ✅ L06 |
 | API, mã lỗi | ✅ A03 | ✅ R05 | ✅ L05 |
@@ -103,6 +103,20 @@ sequenceDiagram
 
 **Tổng:** 14 điểm (1 High · 8 Medium · 5 Low) · 6 đã sửa trong tài liệu · 8 chờ quyết định.
 
+### 3.1 Chạy thử hành trình trên app (26/11/2026)
+
+Đi lại các chặng có UI bằng app thật (web local + `ekyc-service`), không chỉ đọc tài liệu:
+
+| Chặng | Cách chạy | Kết quả | Ghi ở |
+|---|---|---|---|
+| 1–3 Mở tài khoản eKYC, tạo tài khoản | TD-01 qua backend thật, 5 bước | ✅ STP, tài khoản `1903 6688 0001` | T03 §3.6 |
+| 1 Compliance xét REFER | Nhận và phê duyệt `EKS-2611-0050` | ✅ Có nhật ký, che tên | T03 §3.6 |
+| 4–5 Chuyển sang Hạn mức, xem thẻ | Nút "Vào trang chủ" | ⚠️ M1 hiện thẻ tín dụng mẫu đã dùng 61%, Smart Fallback bật sẵn, CASA khác tài khoản vừa mở | F-01, F-02 · L04 DEF-LIM-08, 09, 10 |
+| 6–8 Authorization, Smart Fallback, Boost, gian lận | `lim-screens.mjs`, 35 ca | 33 đạt · 2 không đạt chờ D-LIM-01, 03 | L04 vòng 2 |
+| 10–11 Đối soát, Maker-Checker | `rec-screens.mjs`, 25 ca | 25 đạt | R04 |
+
+Chặng 9, 12 chỉ có thiết kế, chưa chạy được vì chưa có backend Module 2, 3. Kết quả khẳng định F-01, F-02 là điểm đứt thật trên sản phẩm, không chỉ trên giấy.
+
 ## 4. Đề xuất phong bì sự kiện chung (F-03, F-05)
 
 Áp dụng cho mọi sự kiện giữa các module, bus là Pub/Sub (MVP) hay Kafka (mục tiêu):
@@ -134,7 +148,7 @@ Một người có thể giữ nhiều vai trò, nhưng không được giữ c�
 2. Kế toán trưởng chốt F-09 cùng đặc tả IF-REC-07 (F-13).
 3. Tech Lead chốt phong bì sự kiện (§4), F-05, F-14.
 4. DPO, InfoSec chốt F-07, F-08.
-5. FE sửa DEF-LIM-08 (F-02) cùng đợt DEF-LIM-01 → 07.
+5. FE sửa DEF-LIM-08 (F-02) và DEF-LIM-10 sau khi có câu trả lời F-01; DEF-LIM-04, 06, 07 đã sửa 26/11 (L04 vòng 2).
 
 ## 7. Kiểm soát tài liệu
 
@@ -142,7 +156,8 @@ Một người có thể giữ nhiều vai trò, nhưng không được giữ c�
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 1.0 | 26/11/2026 | Han Dao | — | Bản đầu: ma trận độ đầy đủ 3 module, hành trình end-to-end 14 chặng, 14 điểm lệch, phong bì sự kiện, ma trận vai trò |
+| 1.1 | 26/11/2026 | Han Dao | — | Thêm §3.1 chạy thử hành trình trên app; cập nhật số liệu L04 vòng 2 |
+| 1.0 | 26/11/2026 | Han Dao | f5d9316 | Bản đầu: ma trận độ đầy đủ 3 module, hành trình end-to-end 14 chặng, 14 điểm lệch, phong bì sự kiện, ma trận vai trò |
 
 ### Phê duyệt
 

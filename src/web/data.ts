@@ -39,6 +39,9 @@ export type Case = {
   name: string;
   masked: string;
   dob: string;
+  /** Ngày sinh đầy đủ YYYY-MM-DD và số CCCD – cùng giá trị với server/src/seed.ts để chế độ demo khớp chế độ có backend */
+  dobFull?: string;
+  idNo?: string;
   hours: number;
   risk: number;
   reasons: ReasonCode[];
@@ -58,14 +61,14 @@ export type Case = {
 export const ME = "Nguyễn Minh Anh";
 
 export const CASES: Case[] = [
-  { id: "EKS-2611-0031", name: "Lê Văn Phúc", masked: "Lê V** P***", dob: "1988", hours: 22.4, risk: 41.5, reasons: ["CIC_TIMEOUT"], status: "in_progress", assignee: "Trần Hải Yến", device: "Samsung A54 · Android 14", nfc: true, liveness: 0.97, faceMatch: 0.93, matchSource: "CHIP_DG2", requestCount: 0 },
-  { id: "EKS-2611-0042", name: "Nguyễn Thị Minh Thư", masked: "Ng***n T** M*** T**", dob: "1992", hours: 17.1, risk: 58.2, reasons: ["LIVENESS_BORDERLINE", "DOC_DATA_MISMATCH"], status: "resubmitted", device: "iPhone 13 · iOS 18", nfc: true, liveness: 0.71, faceMatch: 0.82, matchSource: "CHIP_DG2", requestCount: 1 },
-  { id: "EKS-2611-0039", name: "Phạm Quốc Bảo", masked: "Ph** Q*** B**", dob: "1975", hours: 26.3, risk: 64.0, reasons: ["PEP_MATCH"], status: "new", device: "iPhone 15 · iOS 18", nfc: true, liveness: 0.99, faceMatch: 0.96, matchSource: "CHIP_DG2", requestCount: 0 },
-  { id: "EKS-2611-0045", name: "Đỗ Thanh Hương", masked: "Đ* Th*** H****", dob: "1999", hours: 9.6, risk: 47.0, reasons: ["NFC_SKIPPED"], status: "new", device: "Xiaomi Redmi 9 · Android 11", nfc: false, liveness: 0.94, faceMatch: 0.79, matchSource: "OCR_FRONT", requestCount: 0 },
-  { id: "EKS-2611-0047", name: "Vũ Hoàng Long", masked: "V* H**** L***", dob: "2001", hours: 6.2, risk: 72.8, reasons: ["DEVICE_MULTI_IDENTITY", "RISK_MEDIUM"], status: "in_progress", assignee: ME, device: "Pixel 7 · Android 15", nfc: true, liveness: 0.91, faceMatch: 0.88, matchSource: "CHIP_DG2", requestCount: 0 },
-  { id: "EKS-2611-0036", name: "Trịnh Mai Lan", masked: "Tr*** M** L**", dob: "1983", hours: 3.4, risk: 61.3, reasons: ["PEP_MATCH"], status: "pending_checker", assignee: "Trần Hải Yến", device: "iPhone 12 · iOS 17", nfc: true, liveness: 0.98, faceMatch: 0.95, matchSource: "CHIP_DG2", requestCount: 0 },
-  { id: "EKS-2611-0028", name: "Hồ Đức Thịnh", masked: "H* Đ** Th***", dob: "1990", hours: 12.0, risk: 39.9, reasons: ["PRIOR_REJECTION"], status: "pending_customer", device: "Oppo Reno 8 · Android 13", nfc: true, liveness: 0.95, faceMatch: 0.9, matchSource: "CHIP_DG2", requestCount: 2 },
-  { id: "EKS-2611-0050", name: "Bùi Ngọc Ánh", masked: "B** Ng** Á**", dob: "1996", hours: 1.3, risk: 55.6, reasons: ["LIVENESS_BORDERLINE"], status: "new", device: "iPhone 14 · iOS 18", nfc: true, liveness: 0.74, faceMatch: 0.89, matchSource: "CHIP_DG2", requestCount: 0 },
+  { id: "EKS-2611-0031", name: "Lê Văn Phúc", masked: "Lê V** P***", dob: "1988", dobFull: "1988-09-14", idNo: "048088106677", hours: 22.4, risk: 41.5, reasons: ["CIC_TIMEOUT"], status: "in_progress", assignee: "Trần Hải Yến", device: "Samsung A54 · Android 14", nfc: true, liveness: 0.97, faceMatch: 0.93, matchSource: "CHIP_DG2", requestCount: 0 },
+  { id: "EKS-2611-0042", name: "Nguyễn Thị Minh Thư", masked: "Ng***n T** M*** T**", dob: "1992", dobFull: "1992-03-15", idNo: "089192105678", hours: 17.1, risk: 58.2, reasons: ["LIVENESS_BORDERLINE", "DOC_DATA_MISMATCH"], status: "resubmitted", device: "iPhone 13 · iOS 18", nfc: true, liveness: 0.71, faceMatch: 0.82, matchSource: "CHIP_DG2", requestCount: 1 },
+  { id: "EKS-2611-0039", name: "Phạm Quốc Bảo", masked: "Ph** Q*** B**", dob: "1975", dobFull: "1975-01-30", idNo: "001075104455", hours: 26.3, risk: 64.0, reasons: ["PEP_MATCH"], status: "new", device: "iPhone 15 · iOS 18", nfc: true, liveness: 0.99, faceMatch: 0.96, matchSource: "CHIP_DG2", requestCount: 0 },
+  { id: "EKS-2611-0045", name: "Đỗ Thanh Hương", masked: "Đ* Th*** H****", dob: "1999", dobFull: "1999-04-12", idNo: "079099105522", hours: 9.6, risk: 47.0, reasons: ["NFC_SKIPPED"], status: "new", device: "Xiaomi Redmi 9 · Android 11", nfc: false, liveness: 0.94, faceMatch: 0.79, matchSource: "OCR_FRONT", requestCount: 0 },
+  { id: "EKS-2611-0047", name: "Vũ Hoàng Long", masked: "V* H**** L***", dob: "2001", dobFull: "2001-10-10", idNo: "034001101313", hours: 6.2, risk: 72.8, reasons: ["DEVICE_MULTI_IDENTITY", "RISK_MEDIUM"], status: "in_progress", assignee: ME, device: "Pixel 7 · Android 15", nfc: true, liveness: 0.91, faceMatch: 0.88, matchSource: "CHIP_DG2", requestCount: 0 },
+  { id: "EKS-2611-0036", name: "Trịnh Mai Lan", masked: "Tr*** M** L**", dob: "1983", dobFull: "1983-02-07", idNo: "001083103636", hours: 3.4, risk: 61.3, reasons: ["PEP_MATCH"], status: "pending_checker", assignee: "Trần Hải Yến", device: "iPhone 12 · iOS 17", nfc: true, liveness: 0.98, faceMatch: 0.95, matchSource: "CHIP_DG2", requestCount: 0 },
+  { id: "EKS-2611-0028", name: "Hồ Đức Thịnh", masked: "H* Đ** Th***", dob: "1990", dobFull: "1990-06-30", idNo: "040090102828", hours: 12.0, risk: 39.9, reasons: ["PRIOR_REJECTION"], status: "pending_customer", device: "Oppo Reno 8 · Android 13", nfc: true, liveness: 0.95, faceMatch: 0.9, matchSource: "CHIP_DG2", requestCount: 2 },
+  { id: "EKS-2611-0050", name: "Bùi Ngọc Ánh", masked: "B** Ng** Á**", dob: "1996", dobFull: "1996-11-21", idNo: "001196103344", hours: 1.3, risk: 55.6, reasons: ["LIVENESS_BORDERLINE"], status: "new", device: "iPhone 14 · iOS 18", nfc: true, liveness: 0.74, faceMatch: 0.89, matchSource: "CHIP_DG2", requestCount: 0 },
 ];
 
 /* SLA 24h: Trong hạn < 16h · Sắp quá hạn 16–24h · Quá hạn > 24h (RULE-EKYC-12) */

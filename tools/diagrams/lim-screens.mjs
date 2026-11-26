@@ -65,10 +65,14 @@ check("TC-LIM-05", "Tạm dừng log trực tiếp thì không có dòng mới",
 await click("Tiếp tục", { exact: true }); await sleep(2800); const s3 = await topStan();
 check("TC-LIM-06", "Tiếp tục thì log nhận dòng mới, STAN tăng dần", Number(s3) > Number(s2), `STAN đầu bảng ${s2} → ${s3}`);
 const rows = await page.evaluate(() => [...document.querySelectorAll("tbody tr")].map((r) => [...r.cells].map((c) => c.innerText.trim())));
-const mtis = [...new Set(rows.map((r) => r[2]))];
+// Cột: 0 STAN · 1 RRN · 2 Thời gian · 3 MTI · 4 PAN · 5 Điểm bán · 6 Số tiền · 7 Quyết định · 8 Độ trễ · 9 Mã
+const mtis = [...new Set(rows.map((r) => r[3]))];
 check("TC-LIM-07", "Log có bản tin reversal MTI 0420 (BR-LIM-08, UAT-LIM-05)", mtis.includes("0420"), `MTI trong 12 dòng hiện: ${mtis.join(", ")}${mtis.includes("0400") ? " · UI dùng 0400 và gắn quyết định DECLINED" : " · không thấy dòng reversal"}`);
-const badCode = rows.filter((r) => (r[6] === "APPROVED" && r[8] !== "00") || (r[6] === "DECLINED" && !["05", "51"].includes(r[8])) || (r[6] === "FALLBACK" && r[8] !== "00·CASA"));
+const badCode = rows.filter((r) => (r[7] === "APPROVED" && r[9] !== "00") || (r[7] === "DECLINED" && !["05", "51"].includes(r[9])) || (r[7] === "FALLBACK" && r[9] !== "00·CASA"));
 check("TC-LIM-08", "Mã F39 khớp quyết định: 00 duyệt, 05/51 từ chối, 00·CASA fallback", badCode.length === 0, `${rows.length} dòng, ${badCode.length} dòng lệch`);
+const rrnOk = rows.every((r) => /^\d{12}$/.test(r[1]));
+const keys = new Set(rows.map((r) => `${r[0]}+${r[1]}`));
+check("TC-LIM-34", "Log có cột RRN 12 số, cặp STAN + RRN không trùng (REQ-LIM-01, DEF-LIM-07)", rrnOk && keys.size === rows.length, `${rows.length} dòng · RRN đầu bảng ${rows[0]?.[1]} · ${keys.size} cặp STAN+RRN khác nhau`);
 
 // ---------- LIM-W2 ----------
 await nav("Hồ sơ hạn mức thẻ");
@@ -82,6 +86,8 @@ check("TC-LIM-10", "Tìm theo 4 số cuối lọc đúng 1 thẻ", rowCount === 
 await page.evaluate(() => [...document.querySelectorAll("tbody tr button")][0]?.click()); await sleep(700);
 await shot("lim-card-profile", true);
 t = await text();
+const fbCut = await page.evaluate(() => { const th = [...document.querySelectorAll("th")].find((h) => h.innerText.trim() === "Trạng thái" && h.closest("table")?.innerText.includes("FB-30211")); const box = th?.closest(".overflow-x-auto"); return box ? { sw: box.scrollWidth, cw: box.clientWidth } : null; });
+check("TC-LIM-35", "Bảng Smart Fallback ở W2 hiện đủ cột Trạng thái ở cửa sổ 1280 px, không cuộn ngang (DEF-LIM-04)", !!fbCut && fbCut.sw <= fbCut.cw + 1, fbCut ? `Bảng rộng ${fbCut.sw} px trong khung ${fbCut.cw} px` : "Không thấy bảng");
 check("TC-LIM-11", "Hồ sơ thẻ có version, tạm giữ, Boost, CASA liên kết", ["Version", "Đang tạm giữ", "Boost", "CASA liên kết"].every((k) => t.includes(k)) && t.includes("v17"), "v17 · tạm giữ 2,3 tr · Boost +10 tr · CASA 1903 6688 2025");
 check("TC-LIM-12", "Bảng Smart Fallback có đủ 3 trạng thái HOLD / SETTLED / RELEASED (UAT-LIM-03/04)", ["HOLD", "SETTLED", "RELEASED"].every((k) => t.includes(k)), "FB-30211 HOLD · FB-30188 SETTLED · FB-30140 RELEASED");
 await click("Điều chỉnh hạn mức", { exact: true });
@@ -142,13 +148,19 @@ await shot("lim-notification");
 check("TC-LIM-22", "Mẫu SMS ghi rõ là bản giữ chỗ chờ Risk/Legal/CSKH duyệt (ISS-03, DEP-07)", t.includes("Nội dung giữ chỗ") && t.includes("DEP-07") && !fullPan(t), "Có cảnh báo giữ chỗ; PAN dạng ****0042");
 await page.keyboard.press("Escape"); await sleep(300);
 await click("Đóng case", { exact: true, within: "FR-2201" });
-t = await text();
-const fr2201 = await page.evaluate(() => [...document.querySelectorAll("tbody tr")].find((r) => r.innerText.includes("FR-2201"))?.cells[8].innerText);
-check("TC-LIM-23", "Đóng case gian lận (UI mẫu không hỏi kết luận)", fr2201 === "Đã đóng", `FR-2201 → ${fr2201}`);
+await shot("lim-fraud-close");
+const offNoConclusion = await page.evaluate(() => [...document.querySelectorAll("[role=dialog] button")].at(-1)?.disabled);
+await page.evaluate(() => document.querySelector('[role=dialog] input[value="CUSTOMER_CONFIRMED"]')?.click()); await sleep(200);
+await setVal("[role=dialog] textarea", "ngắn");
+const offShortNote = await page.evaluate(() => [...document.querySelectorAll("[role=dialog] button")].at(-1)?.disabled);
+await setVal("[role=dialog] textarea", "Khách xác nhận qua tổng đài lúc 10:20");
+await page.evaluate(() => [...document.querySelectorAll("[role=dialog] button")].at(-1)?.click()); await sleep(500);
+const fr2201 = await page.evaluate(() => [...document.querySelectorAll("tbody tr")].find((r) => r.innerText.includes("FR-2201"))?.cells[8].innerText.replace(/\s+/g, " ").trim());
+check("TC-LIM-23", "Đóng case bắt buộc chọn kết luận và ghi chú ≥ 10 ký tự, kết luận hiện trên dòng (REQ-LIM-17, DEF-LIM-06)", offNoConclusion === true && offShortNote === true && /Đã đóng.*Khách xác nhận là mình/.test(fr2201 ?? ""), `Nút khoá khi chưa chọn: ${offNoConclusion} · khi ghi chú < 10 ký tự: ${offShortNote} · FR-2201 → ${fr2201}`);
 
 // ---------- Mobile M1 → M3 ----------
 await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
-const mob = async (s) => { await page.goto(`${BASE}/app/?screen=${s}&lang=vi&v=${Date.now()}`, { waitUntil: "networkidle0" }); await sleep(900); };
+const mob = async (s) => { await page.goto(`${BASE}/app/?screen=${s}&lang=vi&api=off&v=${Date.now()}`, { waitUntil: "networkidle0" }); await sleep(900); };
 await mob("cardHome");
 await shot("app-cardHome");
 t = await text();

@@ -15,7 +15,7 @@ type View = "monitor" | "cards" | "boost" | "fraud";
 /* ---------- Dữ liệu mẫu ---------- */
 
 type Decision = "APPROVED" | "DECLINED" | "FALLBACK";
-type Auth = { stan: string; time: string; mti: string; pan: string; merchant: string; amount: number; decision: Decision; ms: number; code: string };
+type Auth = { stan: string; rrn: string; time: string; mti: string; pan: string; merchant: string; amount: number; decision: Decision; ms: number; code: string };
 const MERCHANTS = ["Highlands Coffee", "Grab", "Shopee", "Circle K", "Vietjet Air", "Bách Hoá Xanh", "CGV", "Lotte Mart", "Tiki", "Petrolimex"];
 const PANS = ["4111 •••• •••• 1234", "5244 •••• •••• 9821", "4111 •••• •••• 7765", "5244 •••• •••• 0042", "4111 •••• •••• 3318"];
 let seq = 820431;
@@ -28,6 +28,8 @@ function makeAuth(seed: number, ageMs = 0): Auth {
   seq += 1;
   return {
     stan: String(seq).padStart(6, "0"),
+    // RRN (F37, 12 ký tự): YDDD + giờ + STAN – định dạng minh hoạ, đủ để kiểm chống trùng STAN + RRN (REQ-LIM-01)
+    rrn: `6${String(Math.floor((d.getTime() - Date.UTC(d.getUTCFullYear(), 0, 0)) / 86_400_000)).padStart(3, "0")}${String(d.getHours()).padStart(2, "0")}${String(seq).padStart(6, "0")}`,
     time: d.toLocaleTimeString("vi-VN", { hour12: false }),
     mti: decision === "DECLINED" && r(3) > 0.5 ? "0400" : "0100",
     pan: PANS[Math.floor(r(4) * PANS.length)],
@@ -66,7 +68,9 @@ const BOOST0: Boost[] = [
 ];
 
 type Delivery = "DELIVERED" | "PENDING" | "FAILED";
-type Fraud = { id: string; time: string; card: string; signal: { vi: string; en: string }; score: number; action: "LOCK_BOOST" | "FLAG"; sms: Delivery; app: Delivery; status: "OPEN" | "CLOSED" };
+type Fraud = { id: string; time: string; card: string; signal: { vi: string; en: string }; score: number; action: "LOCK_BOOST" | "FLAG"; sms: Delivery; app: Delivery; status: "OPEN" | "CLOSED"; conclusion?: Conclusion; note?: string };
+/** Kết luận khi đóng case (REQ-LIM-17) – dữ liệu để cải thiện mô hình */
+type Conclusion = "CONFIRMED_FRAUD" | "FALSE_POSITIVE" | "CUSTOMER_CONFIRMED";
 const FRAUD0: Fraud[] = [
   { id: "FR-2201", time: "21/11 09:58", card: "5244 •••• 0042", signal: { vi: "9 giao dịch trong 15 phút, 3 quốc gia", en: "9 txns in 15 min across 3 countries" }, score: 92, action: "LOCK_BOOST", sms: "DELIVERED", app: "DELIVERED", status: "OPEN" },
   { id: "FR-2202", time: "21/11 10:04", card: "4111 •••• 7765", signal: { vi: "Thiết bị mới + giao dịch đêm", en: "New device + late-night spend" }, score: 61, action: "FLAG", sms: "PENDING", app: "DELIVERED", status: "OPEN" },
@@ -172,10 +176,11 @@ function Monitor({ period }: { period: string }) {
         <span className="flex items-center gap-1.5 text-caption text-fg-tertiary">{live && <span className="size-2 animate-pulse rounded-full bg-[#157347]" />}{live ? tr("Đang cập nhật trực tiếp", "Live") : tr("Đã tạm dừng", "Paused")}</span>
         <GhostButton icon={live ? Pause : Play} onClick={() => setLive(!live)}>{live ? tr("Tạm dừng", "Pause") : tr("Tiếp tục", "Resume")}</GhostButton>
       </>}>
-        <Table minWidth={980} head={["STAN", tr("Thời gian", "Time"), "MTI", "PAN", tr("Điểm bán", "Merchant"), tr("Số tiền", "Amount"), tr("Quyết định", "Decision"), tr("Độ trễ", "Latency"), tr("Mã", "Code")]}>
+        <Table minWidth={1100} head={["STAN", "RRN", tr("Thời gian", "Time"), "MTI", "PAN", tr("Điểm bán", "Merchant"), tr("Số tiền", "Amount"), tr("Quyết định", "Decision"), tr("Độ trễ", "Latency"), tr("Mã", "Code")]}>
           {log.slice(0, 12).map((l) => (
             <tr key={l.stan}>
               <td className="font-semibold tabular">{l.stan}</td>
+              <td className="tabular text-fg-secondary">{l.rrn}</td>
               <td className="tabular">{l.time}</td>
               <td className="tabular text-fg-secondary">{l.mti}</td>
               <td className="whitespace-nowrap tabular">{l.pan}</td>
@@ -254,7 +259,7 @@ function CardProfile({ card, onBack, save }: { card: Card; onBack: () => void; s
     <div className="flex flex-col gap-5">
       <button onClick={onBack} className="inline-flex w-fit items-center gap-1.5 text-body-sm font-semibold text-fg-secondary"><ArrowLeft className="size-4" />{tr("Danh sách thẻ", "All cards")}</button>
       {msg && <div role="status" className={cx("rounded-[14px] px-4 py-3 text-body-sm", msg.ok ? "bg-[#e8f7ef] text-[#0f5132]" : "bg-[#fdf0ee] text-[#7a1a12]")}>{msg.text}</div>}
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[380px_minmax(0,1fr)]">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
         <Panel>
           {/* Thẻ tối có ánh cam */}
           <div className="relative aspect-[1.586] overflow-hidden rounded-[18px] p-5 text-white" style={{ background: "#14101c" }}>
@@ -279,10 +284,10 @@ function CardProfile({ card, onBack, save }: { card: Card; onBack: () => void; s
 
         <div className="flex min-w-0 flex-col gap-5">
           <Panel title={tr("Giao dịch Smart Fallback", "Smart Fallback transactions")} action={<RuleTag>UAT-LIM-03/04</RuleTag>}>
-            <Table head={[tr("Mã", "ID"), tr("Thời gian", "Time"), tr("Điểm bán", "Merchant"), tr("Số tiền", "Amount"), tr("Trạng thái", "Status")]}>
+            <Table minWidth={480} head={[tr("Mã", "ID"), tr("Thời gian", "Time"), tr("Điểm bán", "Merchant"), tr("Số tiền", "Amount"), tr("Trạng thái", "Status")]}>
               {FALLBACK.map((f) => (
                 <tr key={f.id}>
-                  <td className="font-semibold tabular">{f.id}</td><td className="tabular">{f.time}</td><td>{f.merchant}</td><td className="tabular">{vnd(f.amount, false)}</td>
+                  <td className="whitespace-nowrap font-semibold tabular">{f.id}</td><td className="tabular">{f.time}</td><td>{f.merchant}</td><td className="whitespace-nowrap tabular">{vnd(f.amount, false)}</td>
                   <td><Pill tone={f.status === "SETTLED" ? "success" : f.status === "HOLD" ? "warning" : "neutral"}>{f.status}</Pill></td>
                 </tr>
               ))}
@@ -365,6 +370,19 @@ function Boosts({ boosts, setBoosts }: { boosts: Boost[]; setBoosts: (f: (b: Boo
 function FraudView({ frauds, setFrauds }: { frauds: Fraud[]; setFrauds: (f: (x: Fraud[]) => Fraud[]) => void }) {
   const { tr, pick } = useLang();
   const [preview, setPreview] = useState(false);
+  const [closing, setClosing] = useState<Fraud | null>(null);
+  const [conclusion, setConclusion] = useState<Conclusion | null>(null);
+  const [note, setNote] = useState("");
+  const conclusionLabel: Record<Conclusion, string> = {
+    CONFIRMED_FRAUD: tr("Xác nhận gian lận", "Confirmed fraud"),
+    FALSE_POSITIVE: tr("Cảnh báo nhầm", "False positive"),
+    CUSTOMER_CONFIRMED: tr("Khách xác nhận là mình", "Customer confirmed"),
+  };
+  const closeCase = () => {
+    if (!closing || !conclusion || note.trim().length < 10) return;
+    setFrauds((xs) => xs.map((x) => (x.id === closing.id ? { ...x, status: "CLOSED", conclusion, note: note.trim() } : x)));
+    setClosing(null);
+  };
   const open = frauds.filter((f) => f.status === "OPEN");
   const retry = (id: string) => {
     setFrauds((xs) => xs.map((x) => (x.id === id ? { ...x, sms: "PENDING" } : x)));
@@ -395,13 +413,30 @@ function FraudView({ frauds, setFrauds }: { frauds: Fraud[]; setFrauds: (f: (x: 
                 <td>{f.action === "LOCK_BOOST" ? <Pill tone="error">{tr("Khoá Boost", "Lock Boost")}</Pill> : <Pill tone="warning">{tr("Gắn cờ", "Flag")}</Pill>}</td>
                 <td><span className="inline-flex items-center gap-1.5"><Pill tone={deliveryTone[f.sms]}>{f.sms}</Pill>{f.sms === "FAILED" && <button onClick={() => retry(f.id)} className="text-caption font-semibold text-[#6a2fb5] hover:underline">{tr("Gửi lại", "Retry")}</button>}</span></td>
                 <td><Pill tone={deliveryTone[f.app]}><Smartphone className="size-3" />{f.app}</Pill></td>
-                <td><Pill tone={f.status === "OPEN" ? "pending" : "neutral"}>{f.status === "OPEN" ? tr("Đang mở", "Open") : tr("Đã đóng", "Closed")}</Pill></td>
-                <td className="text-right">{f.status === "OPEN" && <button onClick={() => setFrauds((xs) => xs.map((x) => (x.id === f.id ? { ...x, status: "CLOSED" } : x)))} className="interactive whitespace-nowrap rounded-full border border-line-subtle px-3 py-1.5 text-caption font-semibold">{tr("Đóng case", "Close")}</button>}</td>
+                <td><Pill tone={f.status === "OPEN" ? "pending" : "neutral"}>{f.status === "OPEN" ? tr("Đang mở", "Open") : tr("Đã đóng", "Closed")}</Pill>{f.conclusion && <span className="mt-1 block whitespace-nowrap text-caption text-fg-tertiary">{conclusionLabel[f.conclusion]}</span>}</td>
+                <td className="text-right">{f.status === "OPEN" && <button onClick={() => { setClosing(f); setConclusion(null); setNote(""); }} className="interactive whitespace-nowrap rounded-full border border-line-subtle px-3 py-1.5 text-caption font-semibold">{tr("Đóng case", "Close")}</button>}</td>
               </tr>
             ))}
           </Table>
         </div>
       </Panel>
+      <Modal open={!!closing} onClose={() => setClosing(null)} title={tr(`Đóng case ${closing?.id ?? ""}`, `Close case ${closing?.id ?? ""}`)}
+        footer={<><GhostButton onClick={() => setClosing(null)}>{tr("Huỷ", "Cancel")}</GhostButton><GradientButton disabled={!conclusion || note.trim().length < 10} onClick={closeCase}>{tr("Đóng case", "Close case")}</GradientButton></>}>
+        <fieldset>
+          <legend className="text-body-sm font-semibold">{tr("Kết luận (bắt buộc)", "Conclusion (required)")}</legend>
+          <div role="radiogroup" className="mt-2 flex flex-col gap-2">
+            {(Object.keys(conclusionLabel) as Conclusion[]).map((c) => (
+              <label key={c} className={cx("flex cursor-pointer items-center gap-2 rounded-[12px] border p-3 text-body-sm", conclusion === c ? "border-[#b46cf6] bg-[#f6effe]" : "border-line-subtle")}>
+                <input type="radio" name="conclusion" value={c} checked={conclusion === c} onChange={() => setConclusion(c)} className="accent-[#8a45e0]" />
+                <span>{conclusionLabel[c]} <span className="text-caption text-fg-tertiary">· {c}</span></span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <label className="mt-4 flex flex-col gap-1.5"><span className="text-body-sm font-semibold">{tr("Ghi chú (bắt buộc, ghi audit)", "Note (required, audited)")}</span>
+          <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} className="rounded-[12px] border border-line-subtle p-3 text-body-sm outline-none focus:border-[#b46cf6]" placeholder={tr("vd. Khách xác nhận qua tổng đài các giao dịch ở Singapore", "e.g. Customer confirmed the Singapore transactions by phone")} /></label>
+        <p className="mt-1 text-caption text-fg-tertiary">{tr("Tối thiểu 10 ký tự. Kết luận dùng làm dữ liệu cải thiện mô hình gian lận.", "At least 10 characters. Conclusions feed fraud-model tuning.")} <RuleTag>REQ-LIM-17</RuleTag></p>
+      </Modal>
       <Modal open={preview} onClose={() => setPreview(false)} title={tr("Mẫu thông báo khoá Boost", "Boost lock notification")}>
         <div className="rounded-[18px] bg-bg-sunken p-4">
           <p className="mb-2 text-caption font-semibold text-fg-tertiary">SMS · Aegis Bank</p>

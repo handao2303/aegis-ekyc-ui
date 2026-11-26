@@ -359,9 +359,10 @@ function CaseDetail({ c, onBack, standalone }: { c: Case; onBack: () => void; st
                       [tr("Hết hạn", "Expiry"), dmy(o.expiry), dmy(ch?.expiry), true],
                     ];
                   })() : [
-                    [tr("Họ tên", "Name"), displayName.toUpperCase(), displayName.toUpperCase(), true],
-                    [tr("Số CCCD", "ID number"), "089•••••5678", "089•••••5678", true],
-                    [tr("Ngày sinh", "Date of birth"), `15/03/${c.dob}`, has("DOC_DATA_MISMATCH") ? `15/08/${c.dob}` : `15/03/${c.dob}`, !has("DOC_DATA_MISMATCH")],
+                    [tr("Họ tên", "Name"), displayName.toUpperCase(), c.nfc ? displayName.toUpperCase() : "—", true],
+                    // Chế độ demo: số CCCD và ngày sinh lấy từ dữ liệu mẫu của từng hồ sơ (trước đây mọi hồ sơ cùng 089•••••5678 – DEF-10)
+                    [tr("Số CCCD", "ID number"), c.idNo ? `${c.idNo.slice(0, 3)}•••••${c.idNo.slice(-4)}` : "—", c.nfc && c.idNo ? `${c.idNo.slice(0, 3)}•••••${c.idNo.slice(-4)}` : "—", true],
+                    [tr("Ngày sinh", "Date of birth"), c.dobFull ? c.dobFull.split("-").reverse().join("/") : c.dob, !c.nfc ? "—" : has("DOC_DATA_MISMATCH") && c.dobFull ? `15/08/${c.dobFull.slice(0, 4)}` : c.dobFull ? c.dobFull.split("-").reverse().join("/") : c.dob, !has("DOC_DATA_MISMATCH")],
                     [tr("Hết hạn", "Expiry"), "15/03/2032", c.nfc ? "15/03/2032" : "—", true],
                   ]).map(([f, a, b, ok]) => (
                     <tr key={String(f)} className={cx(!ok && "bg-warning-subtle")}>

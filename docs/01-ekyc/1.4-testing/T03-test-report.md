@@ -2,10 +2,10 @@
 
 | | |
 |---|---|
-| Phiên bản | 1.1 · 25/11/2026 · Han Dao (BA) |
-| Trạng thái | ✅ Đạt vòng nội bộ 1 (91 đạt · 0 lỗi mở), hồi quy 25/11 đạt · chưa đủ điều kiện UAT · chờ QA Lead, PO duyệt |
+| Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
+| Trạng thái | ✅ Đạt vòng nội bộ 1 (91 đạt · 0 lỗi mở), hồi quy 25/11 và 26/11 đạt · chưa đủ điều kiện UAT · chờ QA Lead, PO duyệt |
 | Vòng | Kiểm thử hệ thống nội bộ, trước SIT |
-| Thời gian | 22 – 23/11/2026 · hồi quy 25/11/2026 |
+| Thời gian | 22 – 23/11/2026 · hồi quy 25/11/2026 và 26/11/2026 |
 | Mã nguồn | `main` @ commit `a97e848` + bản sửa trong báo cáo này |
 | Người thực hiện | Han Dao (BA) |
 | Môi trường | macOS, Node 23.11, `ekyc-service` SQLite, Next.js dev; Chrome (trình duyệt tích hợp), iOS Simulator iPhone 16 Pro qua link HTTPS tạm |
@@ -126,6 +126,21 @@ Chạy lại sau hai thay đổi: bản sửa quyền riêng tư ngày 24/11 (th
 
 Tổng sau hồi quy: 108 case · 93 đạt · 4 một phần · 11 chưa chạy · 0 không đạt. Hồi quy không chạy lại E2E trên giao diện ngoài màn Cấu hình ngưỡng.
 
+### 3.6 Hồi quy và chạy luồng đầu cuối 26/11/2026
+
+Chạy khi rà soát toàn bộ tài liệu 3 module. Môi trường: `ekyc-service` local (cổng 8787) sau `POST /api/dev/reset`, web local (cổng 5179), trình duyệt không cấp quyền camera nên app dùng ảnh minh hoạ.
+
+| Hạng mục | Kết quả |
+|---|---|
+| Test tự động backend (`npm --prefix server test`) | ✅ 57/57 đạt |
+| Kiểm tra kiểu TypeScript toàn web (`tsc --noEmit`) | ✅ Không lỗi |
+| Luồng khách TD-01 qua backend thật: Bắt đầu → Đồng ý → CCCD → chụp 2 mặt → xác nhận OCR → quét chip → khuôn mặt → kết quả | ✅ STP, "Mở tài khoản thành công", hồ sơ `EKS-2611-0051`, tài khoản `1903 6688 0001` |
+| Chạy lại TD-01 khi chưa đặt lại dữ liệu | ✅ Dừng ở màn "Bạn đã có tài khoản" (C04, UAT-EKYC-12) – hành vi đúng; ghi chú: phải `POST /api/dev/reset` giữa các lượt UAT (T01 §2) |
+| Compliance: hàng đợi, nhận hồ sơ `EKS-2611-0050`, phê duyệt có ghi chú | ✅ Che tên, SLA, so sánh OCR/chip đúng dữ liệu hồ sơ, nhật ký ghi "Nhận xử lý", "Phê duyệt" |
+| Chuyển sang Module 3 bằng nút "Vào trang chủ" | ⚠️ Mở M1 với thẻ tín dụng mẫu – đã ghi ở L04 (DEF-LIM-08, 10), X01 F-01 |
+
+Tìm thêm 2 lỗi dữ liệu mẫu (DEF-10, DEF-11, §4), đã sửa và chụp lại ảnh U01, U02.
+
 ## 4. Lỗi phát hiện
 
 | Mã | Mô tả | Mức | Phát hiện bởi | Trạng thái |
@@ -139,6 +154,8 @@ Tổng sau hồi quy: 108 case · 93 đạt · 4 một phần · 11 chưa chạy
 | DEF-07 | Hồ sơ đã quyết định vẫn hiện nhãn "Mới · Trong hạn" | Thấp | E2E | ✅ Đã sửa |
 | DEF-08 | Chạy deploy làm hỏng dev server (lỗi 500 trên link test) | TB | E2E | ✅ Đã sửa – build dùng thư mục riêng |
 | DEF-09 | Tên trong dòng MRZ của hộ chiếu nước ngoài sai thứ tự họ/tên | Thấp | E2E | ✅ Đã sửa |
+| DEF-10 | Ảnh minh hoạ thẻ (app khách và màn chi tiết Compliance) in dòng MRZ có số CCCD và ngày sinh cố định của TD-01, nên người duyệt thấy dữ liệu không khớp hồ sơ đang xem | Thấp | E2E 26/11 | ✅ Đã sửa – MRZ minh hoạ chỉ còn ký tự giữ chỗ |
+| DEF-11 | Chế độ demo (bản GitHub Pages): mọi hồ sơ trong Compliance hiện cùng số CCCD `089•••••5678` và ngày sinh 15/03; hồ sơ bỏ qua NFC vẫn hiện dữ liệu chip | Thấp | E2E 26/11 | ✅ Đã sửa – dữ liệu demo lấy cùng số CCCD, ngày sinh với `server/src/seed.ts`; không NFC thì cột Chip để trống |
 
 ## 5. Rủi ro còn lại
 
@@ -192,3 +209,4 @@ Bộ hồ sơ mẫu TD-01 → TD-16 (`server/src/personas.ts`), 54 test tự đ�
 | 0.9 | 23/11/2026 | Han Dao | `95fb7b1` | Bản đầu |
 | 1.0 | 23/11/2026 | Han Dao | `a435c61` | Bổ sung theo rà soát chuẩn Q01 (ISO/IEC/IEEE 29119-3, WCAG 2.2) |
 | 1.1 | 25/11/2026 | Han Dao | — | Thêm mục 3.5 hồi quy 25/11: 57/57 test tự động, 2 case mới đạt; thêm mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) theo ISO/IEC/IEEE 29148 và 29119-3 |
+| 1.2 | 26/11/2026 | Han Dao | — | Thêm mục 3.6: hồi quy 57/57, chạy luồng TD-01 và Compliance trên backend thật; DEF-10, DEF-11 đã sửa |

@@ -239,9 +239,10 @@ export function IdCardArt({ side = "front", className }: { side?: "front" | "bac
             <div className="aspect-square w-[22%] rounded-[4px] bg-[#14243f]/15" />
           </div>
           <div className="rounded-[3px] bg-[#14243f]/10 p-[3%] font-mono text-[8px] leading-tight tracking-wider opacity-80">
-            IDVNM0890123456&lt;&lt;&lt;&lt;
+            {/* Ảnh minh hoạ: MRZ giữ chỗ, không chứa số giấy tờ hay ngày sinh để không bị nhầm với dữ liệu hồ sơ đang xem */}
+            IDVNM•••••••••••&lt;&lt;&lt;&lt;
             <br />
-            9203154F3203159VNM&lt;&lt;&lt;
+            •••••••X•••••••VNM&lt;&lt;&lt;
           </div>
         </div>
       )}
