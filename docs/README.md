@@ -128,11 +128,11 @@ flowchart LR
 
 | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|
-| [R01 Luồng, trạng thái & kiểm soát](02-reconciliation/R01-reconciliation-flow.md) | SCRUM-7, 49, 50 | Flowchart ×2, State ×2, Sequence, ERD | 🔧 v1.1 · Đặc tả + UI mẫu xong, chờ backend |
+| [R01 Luồng, trạng thái & kiểm soát](02-reconciliation/R01-reconciliation-flow.md) | SCRUM-7, 49, 50 | Flowchart ×2, State ×2, Sequence, ERD | ✅ v1.2 · Đặc tả + UI mẫu + `reconciliation-service` |
 | [R02 Yêu cầu bổ sung, điểm lệch baseline & RTM](02-reconciliation/R02-requirements-gap-rtm.md) | SCRUM-7, 23, 26, 50, 53 | State | 📝 v0.6 · 9 điểm chờ Kế toán trưởng quyết định · 20 yêu cầu |
 | [R03 Đặc tả giao diện REC-01 → 06](02-reconciliation/R03-ui-spec.md) | SCRUM-49 | — | ✅ v1.3, có ảnh từng màn |
-| [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–2](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ v1.4 · 25 ca UI đạt 25 (hồi quy 26/11) · 6 lỗi đã sửa · 9 ca backend chờ service |
-| [R05 Đặc tả API & từ điển dữ liệu (đề xuất)](02-reconciliation/R05-api-data-dictionary.md) | SCRUM-7, 22–26, 50, 53 | ERD | 📝 v0.2 · 11 bảng · 32 API · 13 mã lỗi riêng, chờ Tech Lead & Kế toán trưởng |
+| [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–3](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ v1.5 · UI 25/25 · backend 56/56 (gồm TC-REC-B01 → B09) · E2E 4/4 · 9 lỗi đã sửa, 0 mở |
+| [R05 Đặc tả API & từ điển dữ liệu](02-reconciliation/R05-api-data-dictionary.md) | SCRUM-7, 22–26, 50, 53 | ERD | ✅ v0.3 · đã hiện thực ở `services/reconciliation` · chờ Tech Lead & Kế toán trưởng chốt các chỗ [D-REC-xx] |
 | [R06 Yêu cầu phi chức năng & từ điển KPI](02-reconciliation/R06-nfr-kpi.md) | SCRUM-7, 53 | — | 📝 v0.2 · 23 NFR theo ISO/IEC 25010 · 5 KPI đã đối chiếu BRD §1.9, chờ Tech Lead & Ops chốt ngưỡng |
 | [R07 SIT, hiệu năng, UAT & biên bản nghiệm thu](02-reconciliation/R07-sit-perf-uat.md) | SCRUM-7, 22–26, 50, 53 | Flowchart ×2 | ⛔ v0.1 · 13 SIT · 6 hiệu năng · 18 UAT, chờ backend và sandbox đối tác |
 | [R08 Tuân thủ, cơ sở pháp lý & dữ liệu cá nhân](02-reconciliation/R08-compliance-mapping.md) | SCRUM-7 | Flowchart | 📝 v0.2 · 12 yêu cầu tuân thủ (6 ✅ · 5 🟡 · 1 ❌) · REQ-REC-21 → 24 có tiêu chí nghiệm thu · chờ Pháp chế, Kế toán trưởng |
