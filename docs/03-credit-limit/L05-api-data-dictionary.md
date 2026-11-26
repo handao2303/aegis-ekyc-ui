@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.1 · 25/11/2026 · Han Dao (BA) |
+| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 📝 Bản đề xuất (to-be). Chưa thấy mã `limit-service` trong repo (L02 §1). Chờ Tech Lead, Vận hành thẻ và Risk tín dụng xác nhận |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · SCRUM-27 (ISO 8583), 28 (idempotency, cập nhật nguyên tử), 29 (Smart Fallback), 30 (Boost, khoá gian lận), 38 (repository, subscriber), 53 (EOD), 54 (Notification) |
 | Nguồn | BAS-BRD-v1.2 §3.5 (5 entity) + phần bổ sung ở [L02 §5](L02-requirements-gap-rtm.md) · luồng [L01](L01-credit-limit-flow.md) · kiểu dữ liệu UI mẫu `src/ops/CreditLimit.tsx`, `src/mobile/cardScreens.tsx` |
@@ -55,7 +55,7 @@ erDiagram
     AUTHORIZATION_LOG ||--o{ OUTBOX_EVENT : "limit.authorization.processed"
 ```
 
-Bảng gốc của BRD §3.5: `card_limit_profiles`, `authorization_logs`, `fallback_transactions`, `behavioral_scores`, `temporary_limit_boosts`. Bảng **đề xuất thêm**: `boost_offers` (D-LIM-04), `fraud_cases`, `notifications`, `limit_change_requests` (D-LIM-09), `outbox_events`, `audit_events`, `config`.
+Bảng gốc của BRD §3.5: `card_limit_profiles`, `authorization_logs`, `fallback_transactions`, `behavioral_scores`, `temporary_limit_boosts`. Bảng **đề xuất thêm**: `boost_offers` (D-LIM-04), `fraud_cases`, `notifications`, `limit_change_requests` (D-LIM-09), `outbox_events`, `audit_event`, `config`.
 
 ## 3. Từ điển dữ liệu
 
@@ -144,7 +144,7 @@ Cột **Nguồn**: *BRD* = có trong BRD §3.5; *L02* = bổ sung ở L02 §5; *
 |---|---|---|
 | `limit_change_requests` | `request_id`, `card_id`, `old_limit`, `new_limit`, `reason`, `maker_id`, `checker_id`, `status` (`PENDING` · `APPROVED` · `REJECTED`), `base_version` | Chỉ cần nếu giữ chức năng W2 **[D-LIM-09]** |
 | `outbox_events` | `event_id` (= `messageId`), `type`, `payload`, `created_at`, `published_at` | Ghi cùng giao dịch DB với thay đổi hạn mức, sau đó phát lên Pub/Sub/Kafka – không mất, không phát trùng `messageId` |
-| `audit_events` | `audit_id`, `actor`, `action`, `target`, `before`, `after`, `reason`, `at` | Chỉ thêm, không sửa. Hành động: `LIMIT_CHANGE`, `BOOST_LOCK`, `BOOST_UNLOCK`, `CASE_CLOSE`, `NOTIFY_RETRY`, `FALLBACK_TOGGLE`, `CARD_BLOCK`, `SOD_BLOCKED` |
+| `audit_event` | `audit_id`, `actor`, `action`, `target`, `before`, `after`, `reason`, `at` | Chỉ thêm, không sửa. Hành động: `LIMIT_CHANGE`, `BOOST_LOCK`, `BOOST_UNLOCK`, `CASE_CLOSE`, `NOTIFY_RETRY`, `FALLBACK_TOGGLE`, `CARD_BLOCK`, `SOD_BLOCKED` |
 | `config` | Khoá → giá trị, có version và người duyệt | `boost.min_score`, `boost.max_pct`, `fraud.lock_threshold` (UI tạm 75), `auth.budget_ms` (2000), `cb.*`, `notify.retry_schedule` (1, 5, 15 phút), `reversal.window_h` (24) – đóng băng trước UAT (DEP-12) |
 
 ## 4. Trạng thái và vòng đời
@@ -160,7 +160,7 @@ Cột **Nguồn**: *BRD* = có trong BRD §3.5; *L02* = bổ sung ở L02 §5; *
 
 **Thứ tự trong một giao dịch DB khi khoá Boost** (REQ-LIM-13): đổi trạng thái Boost → giảm `boost_amount_active` và `available_limit` → tạo `fraud_cases` (nếu thủ công) → tạo 2 dòng `notifications` `PENDING` → ghi `outbox_events` → commit. Việc gửi thật do worker đọc `notifications`.
 
-**Thời hạn lưu (đề xuất, cần Pháp chế và Vận hành thẻ xác nhận):** `authorization_logs`, `fallback_transactions` theo thời hạn lưu chứng từ kế toán; `notifications` 5 năm; `audit_events` không xoá.
+**Thời hạn lưu (đề xuất, cần Pháp chế và Vận hành thẻ xác nhận):** `authorization_logs`, `fallback_transactions` theo thời hạn lưu chứng từ kế toán; `notifications` 5 năm; `audit_event` không xoá.
 
 ## 5. Giao diện
 
@@ -314,7 +314,8 @@ Mã chung như A03: `BAD_JSON` 400 · `UNAUTHENTICATED` 401 · `FORBIDDEN` 403 �
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.1 | 25/11/2026 | Han Dao | — | Bản đầu: ERD, 12 bảng (5 BRD + 7 đề xuất), ISO 8583 MTI/trường/F39, 29 mã API (web, app, nội bộ), 3 nhóm sự kiện, 12 mã lỗi, ánh xạ UI → API |
+| 0.2 | 26/11/2026 | Han Dao | — | Bảng nhật ký đổi tên `audit_event` cho khớp D01 (X01 F-06) |
+| 0.1 | 25/11/2026 | Han Dao | `273d6b3` | Bản đầu: ERD, 12 bảng (5 BRD + 7 đề xuất), ISO 8583 MTI/trường/F39, 29 mã API (web, app, nội bộ), 3 nhóm sự kiện, 12 mã lỗi, ánh xạ UI → API |
 
 ### Phê duyệt
 

@@ -20,5 +20,8 @@
  "L04-test-plan-cases": "17039484",
  "L05-api-data-dictionary": "17039506",
  "L06-nfr-kpi": "17203226",
- "L07-sit-perf-uat": "17236013"
+ "L07-sit-perf-uat": "17236013",
+ "R08-compliance-mapping": "17596417",
+ "L08-compliance-terms": "17629185",
+ "X01-end-to-end-flow-check": "17629207"
 }

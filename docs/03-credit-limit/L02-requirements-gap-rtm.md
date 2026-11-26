@@ -5,7 +5,7 @@
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) · Real-time Credit Limit |
 | Baseline | BAS-BRD-v1.2 §2.3 BR-LIM-01 → 10 · §3.5 entity · §4.3 UC-LIM-01 → 06 · §5.3 RULE-LIM-01 → 08 · §6.3 US-LIM-01 → 06 · §1.9 KPI-07 → 09 · BAS-RAID-v1.2 (RSK-08 → 11, 14, 16 · DEP-05 → 07, 10 · ISS-03, 04) · CR-003 (đã duyệt 20/09/2026) |
 | Chuẩn tham chiếu | ISO/IEC/IEEE 29148:2018 (cách viết và thuộc tính yêu cầu) · BABOK v3 *Trace Requirements*, *Assess Requirements Changes* · ISO 8583 · PCI DSS v4.0 (che PAN) |
-| Phiên bản | 0.1 – bản nháp · 25/11/2026 · Han Dao (BA) |
+| Phiên bản | 0.2 – bản nháp · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 📝 Chờ PO, Risk tín dụng, Vận hành thẻ và Tech Lead quyết định 9 điểm ở §3 |
 
 ## 1. Phạm vi baseline và mức độ đáp ứng hiện tại
@@ -38,6 +38,7 @@
 | [L05](L05-api-data-dictionary.md) | Thiết kế `limit-service`: dữ liệu, API, ISO 8583, sự kiện, mã lỗi | OpenAPI 3.1, ISO 8583 |
 | [L06](L06-nfr-kpi.md) | Yêu cầu phi chức năng, KPI-07 → 09 | ISO/IEC 25010 |
 | [L07](L07-sit-perf-uat.md) | SIT, hiệu năng, UAT, biên bản nghiệm thu | ISO/IEC/IEEE 29119-3 |
+| [L08](L08-compliance-terms.md) | Tuân thủ, phạm vi đồng ý, dự thảo điều khoản Boost / Smart Fallback, mẫu thông báo; REQ-LIM-21 → 26 | ISO/IEC 29100, Luật 91/2025 |
 
 ## 3. Điểm lệch giữa baseline và L01 / UI mẫu – cần quyết định
 
@@ -153,7 +154,8 @@ Mã ca backend (TC-LIM-Bxx) ở [L04 §4](L04-test-plan-cases.md); SIT, PERF và
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.1 | 25/11/2026 | Han Dao | — | Bản đầu: đánh giá 10 BR, 9 điểm lệch, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM, câu hỏi mở |
+| 0.2 | 26/11/2026 | Han Dao | — | Thêm L08 vào bản đồ tài liệu; yêu cầu tuân thủ REQ-LIM-21 → 26 ở L08 §5 chờ duyệt để chuyển vào §4 |
+| 0.1 | 25/11/2026 | Han Dao | `273d6b3` | Bản đầu: đánh giá 10 BR, 9 điểm lệch, 20 yêu cầu bổ sung, dữ liệu cần thêm, RTM, câu hỏi mở |
 
 ### Phê duyệt
 

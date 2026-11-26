@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.1 · 25/11/2026 · Han Dao (BA) |
+| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 📝 Bản đề xuất (to-be) – chưa có `reconciliation-service`. Chờ Tech Lead và Kế toán trưởng xác nhận |
 | Epic | [SCRUM-7](https://baohandao2303.atlassian.net/browse/SCRUM-7) · story SCRUM-22 → 26 (backend), [SCRUM-50](https://baohandao2303.atlassian.net/browse/SCRUM-50) (truy vết), [SCRUM-53](https://baohandao2303.atlassian.net/browse/SCRUM-53) (EOD) |
 | Nguồn | BAS-BRD-v1.2 §3.4 (mô hình dữ liệu) qua [R02 §5](R02-requirements-gap-rtm.md) · ERD [R01 §5](R01-reconciliation-flow.md) · 20 yêu cầu [R02 §4](R02-requirements-gap-rtm.md) · kiểu dữ liệu UI mẫu `src/ops/Reconciliation.tsx` |
@@ -290,9 +290,9 @@ Mức phân loại: cả bảng ⚪ N / 🟡 I.
 | | `diff_type` | `MISSING_GL` · `MISSING_LEDGER` · `AMOUNT_MISMATCH` | — |
 | | `owner_id`, `status`, `note` | Người phụ trách, `OPEN` / `RESOLVED`, ghi chú | REQ-REC-20 ("mọi dòng có người phụ trách") |
 
-### 3.9 `audit_events` và `config`
+### 3.9 `audit_event` và `config`
 
-`audit_events` dùng cùng cấu trúc với Module 1 ([D01 §3.5](../01-ekyc/1.6-api-data/D01-data-dictionary.md)): chỉ thêm, trigger chặn sửa xoá. Mã thao tác của Đối soát:
+`audit_event` dùng cùng cấu trúc với Module 1 ([D01 §3.5](../01-ekyc/1.6-api-data/D01-data-dictionary.md)): chỉ thêm, trigger chặn sửa xoá. Mã thao tác của Đối soát:
 
 `RULE_CREATED` · `RULE_SUBMITTED` · `RULE_APPROVED` · `RULE_REJECTED` · `RULE_RETIRED` · `FILE_QUARANTINED` · `FILE_RELOADED` · `CASE_CLAIMED` · `CASE_RELEASED` · `CASE_ESCALATED` · `CASE_RESOLVED` · `ROOT_CAUSE_OVERRIDE` · `GL_CREATED` · `GL_APPROVED` · `GL_RETURNED` · `GL_REJECTED` · `GL_RESUBMITTED` · `GL_REVERSED` · `SOD_BLOCKED` · `VIEW_ACCOUNT` · `EOD_DIFF_ASSIGNED` · `CONFIG_CHANGE_*`
 
@@ -336,7 +336,7 @@ Tham số `config` (đổi qua Maker-Checker như Module 1):
 
 | Dữ liệu | Đề xuất | Căn cứ cần đối chiếu |
 |---|---|---|
-| `gl_entries`, `gl_lines`, `audit_events` | Không xoá ở tầng ứng dụng; lưu trữ theo chế độ lưu tài liệu kế toán | Luật Kế toán 2015 và văn bản hướng dẫn về thời hạn lưu tài liệu kế toán (*cần xác minh số năm áp dụng*) |
+| `gl_entries`, `gl_lines`, `audit_event` | Không xoá ở tầng ứng dụng; lưu trữ theo chế độ lưu tài liệu kế toán | Luật Kế toán 2015 và văn bản hướng dẫn về thời hạn lưu tài liệu kế toán (*cần xác minh số năm áp dụng*) |
 | `source_transactions`, `match_*`, `exception_cases` | Cùng thời hạn với bút toán liên quan, vì là chứng từ truy vết | BR-REC-10 |
 | `source_files` nội dung gốc | Lưu trên Cloud Storage có khoá đối tượng; file bị cách ly giữ tới khi nạp lại thành công + thời hạn trên | REQ-REC-13 |
 | `inbound_events.payload` | 90 ngày sau khi `PROCESSED` (đủ cho đối chiếu và điều tra), giữ `message_id` lâu dài để chống trùng | REQ-REC-20 (*đề xuất của BA*) |
@@ -471,9 +471,9 @@ Công thức theo R01 §7. Zero-touch = bút toán `mode = ZERO_TOUCH` ÷ tổng
 
 | Sự kiện | Từ | Payload tối thiểu đề xuất | Xử lý |
 |---|---|---|---|
-| `limit.authorization.processed` | `limit-service` (L01) | `messageId`, `auth_id`, `account_ref`, `amount`, `currency`, `result`, `fallback` (`HOLD`/`SETTLED`/`RELEASED`), `processed_at` | Ghi `inbound_events` theo `message_id`; đã có → bỏ qua, trả ack (TC-REC-B09) |
+| `limit.authorization.processed` | `limit-service` (L01) | `messageId`, `auth_id`, `card_id`, `account_ref`, `amount`, `currency`, `result` (`APPROVE` / `DECLINE` / `REVERSED`), `fallback` (`HOLD`/`SETTLED`/`RELEASED`/null), `processed_at` – khớp [L05 §5.6](../03-credit-limit/L05-api-data-dictionary.md); phong bì chung ở [X01 §4](../00-overview/X01-end-to-end-flow-check.md) | Ghi `inbound_events` theo `message_id`; đã có → bỏ qua, trả ack (TC-REC-B09) |
 
-Payload trên là **đề xuất của BA**: L01 chưa định nghĩa trường, cần chốt với đội Hạn mức.
+Payload trên là **đề xuất của BA**, đã thống nhất với thiết kế phía Hạn mức ở L05 §5.6 (26/11/2026); còn chờ Tech Lead hai đội chốt.
 
 **Phát ra:**
 
@@ -562,7 +562,8 @@ Dùng khi thay dữ liệu mẫu (`SOURCES`, `RULES0`, `EX0`, `GL0` trong `src/o
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.1 | 25/11/2026 | Han Dao | — | Bản đầu: mô hình dữ liệu 11 bảng, từ điển dữ liệu, 32 API, 13 mã lỗi riêng, sự kiện vào/ra, ánh xạ UI mẫu và test backend |
+| 0.2 | 26/11/2026 | Han Dao | — | Payload `limit.authorization.processed` thêm `card_id`, giá trị `result` khớp L05 (X01 F-11); bảng nhật ký đổi tên `audit_event` (F-06) |
+| 0.1 | 25/11/2026 | Han Dao | `6c7b79b` | Bản đầu: mô hình dữ liệu 11 bảng, từ điển dữ liệu, 32 API, 13 mã lỗi riêng, sự kiện vào/ra, ánh xạ UI mẫu và test backend |
 
 ### Phê duyệt
 

@@ -1,10 +1,13 @@
-# A01 · Tổng quan giải pháp eKYC – kiến trúc, luồng và điều hướng UI
+# A01 · Tổng quan giải pháp Aegis – kiến trúc, luồng và điều hướng UI
 
 | | |
 |---|---|
 | Epic | [SCRUM-69](https://baohandao2303.atlassian.net/browse/SCRUM-69) · nền tảng cho C04–C18 |
 | UI | [Bản chạy thật](https://handao2303.github.io/aegis-ekyc-ui/) · mã nguồn `src/` |
-| Mục đích | Một chỗ nhìn toàn cảnh trước khi đọc từng tài liệu C-xx, R01, L01, A02 |
+| Mục đích | Một chỗ nhìn toàn cảnh 3 module (eKYC, Đối soát, Hạn mức) trước khi đọc từng tài liệu C-xx, R-xx, L-xx, A02 |
+| Kiểm tra luồng | Hành trình end-to-end qua 3 module và các điểm lệch: [X01](X01-end-to-end-flow-check.md) |
+| Phiên bản | 1.1 · 26/11/2026 · Han Dao (BA) |
+| Chuẩn tham chiếu | Mô hình C4 (Context, Container) · ISO/IEC/IEEE 42010 · UML 2.5 (sequence) |
 
 ## 1. Bối cảnh hệ thống (System Context)
 
@@ -13,22 +16,34 @@ Ai dùng hệ thống, hệ thống nói chuyện với bên ngoài nào.
 ```mermaid
 flowchart LR
     KH(["Khách hàng<br/>App Aegis"])
-    CO(["Nhân viên Compliance<br/>Maker / Checker"])
+    CO(["Compliance<br/>Maker / Checker"])
+    KT(["Kế toán / Đối soát<br/>Maker / Checker"])
+    RK(["Vận hành thẻ · Risk"])
     PO(["PO / Quản lý<br/>Báo cáo"])
 
-    subgraph AEGIS["Aegis eKYC"]
-        SYS["Nền tảng eKYC<br/>mở tài khoản trực tuyến"]
+    subgraph AEGIS["Aegis"]
+        M1["M1 eKYC<br/>mở tài khoản trực tuyến"]
+        M3["M3 Hạn mức<br/>authorization, Boost, gian lận"]
+        M2["M2 Đối soát<br/>khớp giao dịch, GL"]
     end
 
-    KH -- "Đồng ý, chụp giấy tờ,<br/>NFC, khuôn mặt" --> SYS
-    CO -- "Xét duyệt hồ sơ REFER" --> SYS
-    PO -- "Xem KPI, SLA" --> SYS
+    KH -- "Mở tài khoản" --> M1
+    KH -- "Dùng thẻ, nhận Boost" --> M3
+    CO -- "Xét duyệt REFER" --> M1
+    RK -- "Giám sát, khoá / mở Boost" --> M3
+    KT -- "Xử lý ngoại lệ, duyệt bút toán" --> M2
+    PO -- "KPI, SLA" --> AEGIS
 
-    SYS -- "So khớp khuôn mặt,<br/>liveness" --> FV["Nhà cung cấp<br/>sinh trắc học"]
-    SYS -- "Tra cứu tín dụng" --> CIC["CIC"]
-    SYS -- "Sàng lọc AML / PEP<br/>/ danh sách cấm" --> AML["Dịch vụ AML"]
-    SYS -- "Tạo tài khoản" --> CORE["Core Banking"]
-    SYS -- "SMS / Push / Email" --> NOTI["Notification<br/>Service"]
+    M1 -- "Sinh trắc, CIC, AML" --> EXT1["Nhà cung cấp<br/>sinh trắc · CIC · AML"]
+    M1 -- "Tạo tài khoản" --> CORE["Core Banking<br/>CASA · sổ cái GL"]
+    M1 -- "ekyc.decision.completed" --> M3
+    SCH["Tổ chức thẻ / switch<br/>Visa · Mastercard · NAPAS"] -- "ISO 8583" --> M3
+    M3 -- "Tạm giữ CASA" --> CORE
+    M3 -- "limit.authorization.processed" --> M2
+    SCH -- "File settlement" --> M2
+    CORE -- "File giao dịch" --> M2
+    M2 -- "Hạch toán điều chỉnh" --> CORE
+    M1 & M3 -- "SMS / Push" --> NOTI["Notification<br/>Service"]
 ```
 
 ## 2. Thành phần (Container)
@@ -46,8 +61,10 @@ flowchart TB
         EK["ekyc-service<br/>Cloud Run"]
         LIM["limit-service<br/>Cloud Run"]
         REC["reconciliation-service<br/>Cloud Run"]
-        PS[["Pub/Sub<br/>ekyc.session.*<br/>ekyc.decision.completed"]]
-        DB[("Cloud SQL Postgres<br/>sessions · documents<br/>kyc_decisions · audit_event")]
+        PS[["Pub/Sub (MVP; mục tiêu Kafka – X01 F-05)<br/>ekyc.* · limit.* · rec.*"]]
+        DB[("Cloud SQL Postgres – eKYC<br/>sessions · kyc_decisions · audit_event")]
+        DBL[("Cloud SQL – Hạn mức<br/>card_limit_profiles · authorization_logs")]
+        DBR[("Cloud SQL – Đối soát<br/>source_transactions · gl_entries")]
         GCS[("Cloud Storage<br/>ảnh giấy tờ, selfie<br/>mã hoá, có TTL")]
         DWH[("BigQuery DWH<br/>fact_ekyc_*")]
     end
@@ -57,7 +74,12 @@ flowchart TB
     WEB --> GW
     GW --> REC
     GW --> LIM
-    LIM -- "limit.authorization.processed" --> REC
+    LIM -- "publish limit.*" --> PS
+    PS -- "push" --> REC
+    LIM --> DBL
+    REC --> DBR
+    LIM -- "ISO 8583" --- SCH["Tổ chức thẻ"]
+    LIM & REC --> CORE["Core Banking<br/>CASA · sổ cái"]
     GW --> EK
     EK --> DB
     EK --> GCS
@@ -207,3 +229,15 @@ flowchart LR
 | Web vận hành | Compliance đã gọi API; Đối soát, Hạn mức thay dữ liệu mẫu bằng API qua API Gateway |
 | App khách hàng | `mobile-app` (React Native / Expo bare) dùng lại token Aurora và cấu trúc màn hình của bản web |
 | Đọc chip CCCD / hộ chiếu | Logic MRZ + NFC của Aegis Scan (A02) đưa vào app thật dưới dạng native module, hoặc thay bằng SDK eKYC của đối tác |
+
+## Kiểm soát tài liệu
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 1.0 | 21/11/2026 → 23/11/2026 | Han Dao | `982969c`, `8a99253`, `361be3e` | Bản đầu: Context, Container, luồng end-to-end eKYC, cây quyết định, bản đồ màn hình, triển khai UI |
+| 1.1 | 26/11/2026 | Han Dao | — | Mở rộng Context và Container cho cả 3 module: tổ chức thẻ, CASA / sổ cái, topic `limit.*`, `rec.*`, CSDL của `limit-service` và `reconciliation-service` (X01 F-04, F-05) |
+
+| Vai trò | Người | Ngày | Kết luận |
+|---|---|---|---|
+| BA (soạn) | Han Dao | 26/11/2026 | Trình duyệt |
+| Solution Owner / Kiến trúc sư | | | |

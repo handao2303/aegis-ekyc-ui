@@ -15,7 +15,7 @@ const here = fileURLToPath(new URL(".", import.meta.url));
 const walk = (d) => readdirSync(d).flatMap((f) => { const p = join(d, f); return statSync(p).isDirectory() ? walk(p) : p.endsWith(".md") ? [p] : []; });
 
 const PAGE = `<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${FONT}:wght@400;500;600&display=block&subset=vietnamese">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${FONT}:wght@400;500;600&display=swap&subset=vietnamese">
 <style>body{margin:0;background:#fff}#c{display:inline-block;padding:24px;background:#fff}</style></head>
 <body><div id="c"></div><span style="font-family:${FONT};font-weight:600;position:absolute;left:-999px">Ấ ấ ữ</span>
 <script type="module">
@@ -42,7 +42,8 @@ const page = await browser.newPage();
 await page.setViewport({ width: 3200, height: 1200, deviceScaleFactor: 2 });
 await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: "networkidle0" });
 await page.waitForFunction("window.ready === true");
-await page.evaluate(() => document.fonts.ready);
+// Nạp đủ 3 nét chữ (kể cả dải ký tự tiếng Việt) trước khi vẽ: chữ SVG của sequence dùng nét 400
+await page.evaluate(async (f) => { for (const w of [400, 500, 600]) await document.fonts.load(`${w} 16px ${f}`, "Aa Ấấữ Đđ"); await document.fonts.ready; }, FONT);
 if (process.env.NOELK) await page.evaluate(() => { window.NOELK = true; });
 
 let n = 0, fallback = 0;
@@ -65,6 +66,7 @@ for (const f of walk(docsDir).sort()) {
       await draw("dagre"); return "dagre";
     }, code, `d${n}`, mermaidConfig, isFlow);
     if (isFlow && used !== "elk") fallback++;
+    await page.evaluate(() => document.fonts.ready);
     const el = await page.$("#c");
     await el.screenshot({ path: join(outDir, `${slug}-${i + 1}.png`) });
     n++;

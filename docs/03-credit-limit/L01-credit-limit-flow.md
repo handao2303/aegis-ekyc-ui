@@ -7,8 +7,8 @@
 | UI mẫu | Web: [/credit-limit/](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) · Mobile: [/app/?screen=cardHome](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome) |
 | Quy tắc chính | BR-LIM-02 (kiểm soát đồng thời), BR-LIM-07 (khoá Boost), SLA p99 < 2s, NFR-SEC-04 (che PAN) |
 | Baseline | BAS-BRD-v1.2 §2.3 (BR-LIM-01 → 10), §3.5 (5 entity), §4.3 (UC-LIM-01 → 06), §5.3 (RULE-LIM-01 → 08), §6.3 (US-LIM-01 → 06) · BAS-RAID-v1.2 |
-| Bộ tài liệu | L01 luồng · [L02](L02-requirements-gap-rtm.md) yêu cầu, điểm lệch, RTM · [L03](L03-ui-spec.md) giao diện · [L04](L04-test-plan-cases.md) kiểm thử UI · [L05](L05-api-data-dictionary.md) API, dữ liệu · [L06](L06-nfr-kpi.md) NFR, KPI · [L07](L07-sit-perf-uat.md) SIT, hiệu năng, UAT |
-| Phiên bản | 1.1 · 25/11/2026 · Han Dao (BA) |
+| Bộ tài liệu | L01 luồng · [L02](L02-requirements-gap-rtm.md) yêu cầu, điểm lệch, RTM · [L03](L03-ui-spec.md) giao diện · [L04](L04-test-plan-cases.md) kiểm thử UI · [L05](L05-api-data-dictionary.md) API, dữ liệu · [L06](L06-nfr-kpi.md) NFR, KPI · [L07](L07-sit-perf-uat.md) SIT, hiệu năng, UAT · [L08](L08-compliance-terms.md) tuân thủ, điều khoản |
+| Phiên bản | 1.2 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 🔧 Luồng mục tiêu. Có 9 điểm lệch với baseline chờ quyết định ở [L02 §3](L02-requirements-gap-rtm.md) |
 
 ## 1. Xử lý một giao dịch thẻ (ISO 8583)
@@ -181,7 +181,8 @@ Ca kiểm thử chi tiết và kết quả chạy trên UI mẫu (31/33 đạt):
 |---|---|---|---|---|
 | 0.1 | 21/11/2026 | Han Dao | `b8931f8` | Bản đầu cùng UI mẫu web và mobile: ISO 8583, cây quyết định, circuit breaker, Boost, gian lận |
 | 1.0 | 23/11/2026 | Han Dao | `792bbfa` | Chuyển vào `docs/03-credit-limit`, thêm bản đồ màn hình và truy vết UAT |
-| 1.1 | 25/11/2026 | Han Dao | — | Đối chiếu BAS-BRD-v1.2: reversal MTI 0420/0120, cách kiểm soát đồng thời của UC-LIM-02, trạng thái và thời hạn Boost theo baseline; liên kết bộ L02 → L07; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
+| 1.1 | 25/11/2026 | Han Dao | `273d6b3` | Đối chiếu BAS-BRD-v1.2: reversal MTI 0420/0120, cách kiểm soát đồng thời của UC-LIM-02, trạng thái và thời hạn Boost theo baseline; liên kết bộ L02 → L07; thêm mục kiểm soát tài liệu (ISO/IEC/IEEE 29148) |
+| 1.2 | 26/11/2026 | Han Dao | — | Thêm L08 vào bộ tài liệu |
 
 ### Phê duyệt
 

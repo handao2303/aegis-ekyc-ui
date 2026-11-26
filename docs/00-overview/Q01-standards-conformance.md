@@ -1,11 +1,11 @@
-# Q01 · Đối chiếu tài liệu Module 1 với chuẩn quốc tế
+# Q01 · Đối chiếu tài liệu 3 module với chuẩn quốc tế
 
 | | |
 |---|---|
-| Phạm vi | 22 tài liệu trong `00-overview/` và `01-ekyc/` |
+| Phạm vi | 22 tài liệu Module 1 (`00-overview/`, `01-ekyc/`) – §2; 16 tài liệu Module 2, 3 (`02-reconciliation/`, `03-credit-limit/`) và X01 – §2.2 (thêm 26/11/2026) |
 | Người rà soát | Han Dao (BA) |
-| Ngày | 23/11/2026 |
-| Phiên bản | 1.0 |
+| Ngày | 23/11/2026 · cập nhật 26/11/2026 |
+| Phiên bản | 1.1 |
 | Cách làm | Đối chiếu từng tài liệu với danh mục nội dung của chuẩn tương ứng. Kết quả là **tự đánh giá**, không phải chứng nhận |
 
 > Các chuẩn ISO là tài liệu có bản quyền. Danh mục dưới đây tóm tắt các mục chính của chuẩn theo hiểu biết chung, chưa đối chiếu với bản gốc. Khi cần chứng nhận hoặc audit, phải dùng bản chuẩn chính thức.
@@ -20,7 +20,11 @@
 | Kiến trúc | Mô hình C4, ISO/IEC/IEEE 42010 | A01, A02 |
 | Sơ đồ | BPMN 2.0 (quy trình), UML 2.5 (trạng thái, tuần tự) | Mọi tài liệu có diagram |
 | Giao diện và trợ năng | WCAG 2.2 mức AA, ISO 9241-110 | U01, U02 |
-| Quyền riêng tư | ISO/IEC 29100, Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15, Nghị định 356/2025/NĐ-CP (thay NĐ 13/2023 từ 01/01/2026) | P01, C12 |
+| Quyền riêng tư | ISO/IEC 29100, Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15, Nghị định 356/2025/NĐ-CP (thay NĐ 13/2023 từ 01/01/2026) | P01, C12, R08, L08 |
+| Chất lượng sản phẩm (NFR) | ISO/IEC 25010:2023 | R06, L06 |
+| Dữ liệu thẻ | PCI DSS v4.0 | L05, L06, L08, R08 |
+| API | OpenAPI 3.1, RFC 9110 | A03, R05, L05 |
+| Bản tin thẻ | ISO 8583 | L01, L05 |
 
 ## 2. Kết quả tổng hợp
 
@@ -45,6 +49,24 @@ Mức đánh giá: ✅ Đạt · 🟡 Đạt một phần · ❌ Thiếu
 
 Cột "Mức" là sau khi sửa: **4 ✅ · 9 🟡 · 0 ❌**. Không còn mục nào thiếu hoàn toàn.
 
+### 2.2 Module 2 Đối soát và Module 3 Hạn mức (26/11/2026)
+
+Hai module viết sau khi đã có quy ước ở §4, nên mỗi tài liệu đều có dòng *Chuẩn tham chiếu* và mục kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt). Đánh giá theo cùng cách với §2.
+
+| Tài liệu | Chuẩn | Mức | Đã có | Thiếu |
+|---|---|---|---|---|
+| R01, L01 Luồng | BPMN 2.0, UML 2.5, BABOK | 🟡 | Sequence, state, flowchart đúng ký hiệu UML; bảng quy tắc | Như Module 1: quy trình vẽ Mermaid, không có ký hiệu BPMN chuẩn |
+| R02, L02 Yêu cầu, điểm lệch, RTM | 29148, BABOK | ✅ | Đánh giá từng BR so baseline; điểm lệch có người quyết; yêu cầu "Hệ thống phải…" một ý, có nguồn, MoSCoW; dữ liệu cần thêm; RTM BR → UC → RULE → US → REQ → màn → ca kiểm thử → UAT → Jira; câu hỏi mở | — |
+| R03, L03 Giao diện | WCAG 2.2 AA | 🟡 | Ảnh từng màn chụp tự động, bảng mục / quy tắc / ghi chú, phân quyền hiển thị; L03 có mục WCAG | R03 chưa có mục WCAG riêng; tương phản nhãn xám chưa đo |
+| R04, L04 Kiểm thử UI | 29119-3 | ✅ | Phạm vi, kỹ thuật thiết kế ca, môi trường, tiêu chí vào / ra, ca có bước – mong đợi – thực tế – truy vết, kết quả chạy thật, lỗi có mức và cách tái hiện, độ phủ, phê duyệt | Chưa tách mức nghiêm trọng với mức ưu tiên (như T03) |
+| R05, L05 API, dữ liệu | OpenAPI 3.1, BABOK §10.15, PCI DSS | 🟡 | Quy ước, vai trò, SoD, ERD, từ điển trường có nguồn và mức PII, vòng đời, API, mã lỗi, sự kiện, ánh xạ UI → API | Chưa xuất file OpenAPI (`.yaml`) như mô tả bảng; thời hạn lưu còn là *đề xuất* |
+| R06, L06 NFR, KPI | 25010, 29148 | ✅ | NFR nhóm theo đặc tính 25010, ngưỡng đo được, nguồn baseline / đề xuất, cách kiểm; KPI theo BRD §1.9 có công thức và truy vấn kiểm chứng | — |
+| R07, L07 SIT, hiệu năng, UAT | 29119-3 | ✅ | Bản đồ tích hợp, kịch bản, tiêu chí vào / ra, mô hình tải, dữ liệu UAT, vai trò, biên bản ký, rủi ro kiểm thử | Chưa chạy được (chờ backend) – không phải thiếu tài liệu |
+| R08, L08 Tuân thủ, điều khoản | ISO 29100, Luật 91/2025, PCI DSS | 🟡 | Phạm vi văn bản có cột *cần xác minh*, ma trận yêu cầu ↔ hiện trạng, phạm vi đồng ý, bên nhận dữ liệu, dự thảo điều khoản, câu hỏi Pháp chế | Toàn bộ số hiệu văn bản chưa được Pháp chế đối chiếu bản gốc |
+| X01 Kiểm tra luồng | 29148 §5.2.5, BABOK *Verify Requirements* | ✅ | Ma trận độ đầy đủ, hành trình 14 chặng, điểm lệch có bằng chứng và trạng thái | — |
+
+Kết quả Module 2, 3: **5 nhóm ✅ · 4 nhóm 🟡 · 0 ❌**.
+
 ## 3. Việc còn lại
 
 | # | Việc | Tài liệu | Ưu tiên |
@@ -59,7 +81,17 @@ Cột "Mức" là sau khi sửa: **4 ✅ · 9 🟡 · 0 ❌**. Không còn mục
 | 8 | Bổ sung mục chuyển dữ liệu ra nước ngoài và danh sách bên nhận sau khi Pháp chế trả lời. 🟡 24/11: đã lập dự thảo P01 §4.1 (7 bên nhận, 2 phương án nơi đặt dữ liệu); còn chờ Pháp chế trả lời câu 6–8 | P01 | Cao, trước khi chọn nơi đặt database |
 | 9 | ~~Lập đặc tả API kèm mã lỗi~~ ✅ 24/11 (A03) | A03 | Cao |
 | 10 | ~~Lập từ điển dữ liệu, phân loại mức nhạy cảm và thời hạn lưu~~ ✅ 24/11 (D01) | D01 | Cao |
+| 11 | Thêm mục WCAG 2.2 cho R03 (như L03 §7) | R03 | TB |
+| 12 | Xuất OpenAPI `.yaml` từ R05, L05 (và A03) để dev sinh code / test hợp đồng | A03, R05, L05 | TB |
+| 13 | Pháp chế đối chiếu bản gốc các văn bản ở R08 §1, L08 §1 | R08, L08 | Cao, trước go-live |
 
 ## 4. Quy ước từ nay
 
 Mỗi tài liệu mới hoặc sửa lớn phải có dòng **Chuẩn tham chiếu** trong bảng đầu tài liệu, và chỉ ghi "đạt" sau khi đã đối chiếu theo bảng ở mục 2.
+
+## 5. Kiểm soát tài liệu
+
+| Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
+|---|---|---|---|---|
+| 1.0 | 23/11/2026 | Han Dao | — | Đánh giá 22 tài liệu Module 1 |
+| 1.1 | 26/11/2026 | Han Dao | — | Thêm §2.2 đánh giá Module 2, 3 và X01; thêm chuẩn 25010, PCI DSS, OpenAPI, ISO 8583 vào §1; việc 11 → 13 |

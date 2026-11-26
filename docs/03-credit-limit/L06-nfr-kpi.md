@@ -2,11 +2,11 @@
 
 | | |
 |---|---|
-| Phiên bản | 0.1 · 25/11/2026 · Han Dao (BA) |
+| Phiên bản | 0.2 · 26/11/2026 · Han Dao (BA) |
 | Trạng thái | 📝 Bản nháp – chờ Tech Lead, Ops, Vận hành thẻ và InfoSec chốt các ngưỡng *đề xuất* |
 | Epic | [SCRUM-8](https://baohandao2303.atlassian.net/browse/SCRUM-8) |
 | Nguồn | BAS-BRD-v1.2: BR-LIM, RULE-LIM, ghi chú NFR trong UC-LIM-01 → 06, §1.9 KPI-07 → 09 · BAS-RAID-v1.2: NFR-PERF-01, NFR-SEC-02, NFR-SEC-04, NFR-AUD-01/02, RSK-08, 09, 14, 16, DEP-10, ISS-04 · bảng dữ liệu [L05](L05-api-data-dictionary.md) |
-| Chuẩn tham chiếu | ISO/IEC 25010:2023 · ISO/IEC/IEEE 29148:2018 · BABOK v3 *Metrics and KPIs* · PCI DSS v4.0 · WCAG 2.2 AA · Nghị định 13/2023/NĐ-CP (dữ liệu cá nhân) |
+| Chuẩn tham chiếu | ISO/IEC 25010:2023 · ISO/IEC/IEEE 29148:2018 · BABOK v3 *Metrics and KPIs* · PCI DSS v4.0 · WCAG 2.2 AA · Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 và Nghị định 356/2025/NĐ-CP (thay NĐ 13/2023 từ 01/01/2026) |
 | Liên quan | Module 2 [R06](../02-reconciliation/R06-nfr-kpi.md) (KPI-09 dùng chung) · cách kiểm từng yêu cầu: [L07](L07-sit-perf-uat.md) |
 
 > ⚠️ Baseline chỉ cho số cứng ở SLA authorization (p99 < 2 giây), 0 sự cố vượt hạn mức và sai lệch EOD bằng 0. Cột **Nguồn** ghi rõ ngưỡng nào từ baseline và ngưỡng nào là **đề xuất của BA**. Ngưỡng đề xuất phải được chốt trước khi đưa vào tiêu chí nghiệm thu (RSK-13, DEP-12).
@@ -44,7 +44,7 @@
 | NFR-LIM-15 | Hệ thống phải không lưu PAN rõ; token hoá ngay tại cổng; mọi màn, log, sự kiện, file xuất chỉ có PAN che. | 0 PAN đầy đủ trong DB, log, sự kiện, ảnh bằng chứng UAT | NFR-SEC-04, PCI DSS 3.3–3.5, RSK-03, RSK-16, DEP-10 | SIT-LIM-10, UAT-LIM-10, TC-LIM-04/25 | Must |
 | NFR-LIM-16 | Kết nối với tổ chức thẻ, CASA, Fraud Engine, Notification phải mã hoá; dịch vụ nội bộ xác thực lẫn nhau. | TLS 1.2 trở lên; mTLS cho API nội bộ | NFR-SEC-02 · *đề xuất* mTLS | SIT-LIM-01 → 08 | Must |
 | NFR-LIM-17 | Hệ thống phải xác thực người dùng qua SSO, phân quyền theo `CARD_OPS`, `CREDIT_RISK`, `LIM_VIEWER`, và kiểm SoD-L1/L2 ở server. | 100% API (trừ health check) cần danh tính; 0 lần vượt SoD bằng gọi API trực tiếp | L05 §1.1 | SIT-LIM-11 | Must |
-| NFR-LIM-18 | Thông báo SMS/App chỉ chứa dữ liệu tối thiểu, không có PAN đầy đủ, OTP, đường link. | 100% mẫu đã duyệt đạt | REQ-LIM-15, Nghị định 13/2023 | UAT-LIM-07 | Must |
+| NFR-LIM-18 | Thông báo SMS/App chỉ chứa dữ liệu tối thiểu, không có PAN đầy đủ, OTP, đường link. | 100% mẫu đã duyệt đạt | REQ-LIM-15, Luật 91/2025, [L08](L08-compliance-terms.md) §4.3 | UAT-LIM-07 | Must |
 
 ### 1.4 Kiểm toán (Accountability)
 
@@ -143,7 +143,8 @@ GROUP BY 1;
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 0.1 | 25/11/2026 | Han Dao | — | Bản đầu: 22 yêu cầu phi chức năng theo ISO/IEC 25010, KPI-07 → 09 và 8 chỉ số vận hành, truy vấn kiểm chứng |
+| 0.2 | 26/11/2026 | Han Dao | — | Căn cứ dữ liệu cá nhân đổi sang Luật 91/2025 + NĐ 356/2025 cho khớp C02, P01 (X01 F-10) |
+| 0.1 | 25/11/2026 | Han Dao | 273d6b3 | Bản đầu: 22 yêu cầu phi chức năng theo ISO/IEC 25010, KPI-07 → 09 và 8 chỉ số vận hành, truy vấn kiểm chứng |
 
 ### Phê duyệt
 

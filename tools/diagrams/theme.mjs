@@ -48,6 +48,12 @@ export const mermaidConfig = {
     .messageText { font-size: 14px; }
     .actor { rx: 10px; ry: 10px; }
     text.actor > tspan { font-weight: 600; }
+    /* Mermaid 11.17 gắn class "actor actor-box" cho cả chữ → chữ bị tô màu nền; ép lại màu chữ */
+    text.actor, text.actor > tspan { fill: ${C.brandText} !important; stroke: none !important; }
+    text.messageText, text.messageText > tspan { fill: ${C.ink} !important; stroke: none !important; }
+    text.noteText, text.noteText > tspan { fill: ${C.ink} !important; stroke: none !important; }
+    text.labelText, text.labelText > tspan, text.loopText, text.loopText > tspan { fill: ${C.amberText} !important; stroke: none !important; }
+    text.sequenceNumber { fill: #ffffff !important; }
     .note { rx: 6px; ry: 6px; }
     .statediagram-state rect.basic, .stateGroup rect { rx: 10px; ry: 10px; }
     .er.entityBox { fill: ${C.brandSoft}; stroke: ${C.brand}; }

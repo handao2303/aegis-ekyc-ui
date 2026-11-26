@@ -7,7 +7,7 @@
 | Đối tượng kiểm thử | UI mẫu [/credit-limit/](https://handao2303.github.io/aegis-ekyc-ui/credit-limit/) và [/app/?screen=cardHome](https://handao2303.github.io/aegis-ekyc-ui/app/?screen=cardHome), bản GitHub Pages ngày 25/11/2026 |
 | Yêu cầu nguồn | BAS-BRD-v1.2 §2.3, §4.3, §5.3 · [L01](L01-credit-limit-flow.md) · [L02](L02-requirements-gap-rtm.md) · [L03](L03-ui-spec.md) |
 | Người thực hiện | Han Dao (BA) |
-| Phiên bản | 1.0 · 25/11/2026 (vòng 1) |
+| Phiên bản | 1.1 · 26/11/2026 (vòng 1 + kiểm tra luồng end-to-end) |
 | Trạng thái | ✅ Vòng UI đã chạy · ⛔ ca backend chờ `limit-service` |
 
 ## 1. Tóm tắt kết quả
@@ -18,7 +18,7 @@
 | Đạt | **31** |
 | Không đạt | **2** – TC-LIM-07 (reversal), TC-LIM-28 (thời hạn Boost) |
 | Ca backend chưa chạy được | 10 (TC-LIM-B01 → B10) |
-| Lỗi / phát hiện mở | 7 (1 High · 3 Medium · 3 Low) – §5 |
+| Lỗi / phát hiện mở | 8 (1 High · 4 Medium · 3 Low) – §5 · DEF-LIM-08 thêm 26/11 khi kiểm tra luồng end-to-end ([X01](../00-overview/X01-end-to-end-flow-check.md) F-02) |
 
 **Kết luận:** UI mẫu thể hiện đúng các kiểm soát chính: che PAN ở mọi màn, xung đột version khi giao dịch đồng thời, ba trạng thái Smart Fallback, bắt lý do khi mở khoá Boost, gửi lại thông báo thất bại, và nút Nhận Boost khoá tới khi khách xác nhận điều kiện. Hai ca không đạt đều là **lệch baseline** (MTI reversal 0420, thời hạn Boost theo chu kỳ sao kê), cần quyết định D-LIM-01 và D-LIM-03 trước khi sửa. Module 3 **chưa đủ điều kiện vào SIT/UAT** vì chưa có bằng chứng `limit-service` chạy được (L02 §1).
 
@@ -115,6 +115,7 @@ Viết sẵn theo thiết kế ở [L05](L05-api-data-dictionary.md). Chạy khi
 | DEF-LIM-04 | Low | Bảng Smart Fallback ở W2 bị cắt cột Trạng thái ở cửa sổ 1280 px | Ảnh `lim-card-profile.png` | Bỏ `minWidth` của bảng hoặc thu cột Điểm bán | Mở |
 | DEF-LIM-06 | Low | Đóng case gian lận không hỏi kết luận | TC-LIM-23 | Hộp thoại chọn kết luận + ghi chú (REQ-LIM-17) | Mở |
 | DEF-LIM-07 | Low | Log authorization không có RRN, không kiểm được chống trùng trên UI | Xem bảng W1 | Thêm cột RRN (REQ-LIM-01) | Mở |
+| DEF-LIM-08 | Medium | Sau khi mở tài khoản thành công, nút "Vào trang chủ" luôn mở M1 với một thẻ tín dụng đang dùng 46 triệu, kể cả khách chỉ mở tài khoản thanh toán (`product = payment`) | App: hoàn tất eKYC TD-01 → bấm "Vào trang chủ"; xem `src/mobile/screens.tsx` | M1 có trạng thái "chưa có thẻ" (giới thiệu thẻ, không hiện hạn mức); chỉ hiện hạn mức khi đã có hồ sơ hạn mức (L08 REQ-LIM-26) | Mở |
 
 ## 6. Độ phủ yêu cầu
 
@@ -134,7 +135,7 @@ Viết sẵn theo thiết kế ở [L05](L05-api-data-dictionary.md). Chạy khi
 
 ## 7. Việc tiếp theo
 
-1. PO, Risk, Vận hành thẻ chốt D-LIM-01, 03, 08 ([L02 §3](L02-requirements-gap-rtm.md)); FE sửa DEF-LIM-01 → 07; chạy lại vòng 2 bằng cùng script.
+1. PO, Risk, Vận hành thẻ chốt D-LIM-01, 03, 08 ([L02 §3](L02-requirements-gap-rtm.md)); FE sửa DEF-LIM-01 → 08; chạy lại vòng 2 bằng cùng script.
 2. Tech Lead xác minh mã `limit-service` (L02 câu hỏi 1); khi có, chạy TC-LIM-B01 → B10.
 
 ## 8. Kiểm soát tài liệu
@@ -143,7 +144,8 @@ Viết sẵn theo thiết kế ở [L05](L05-api-data-dictionary.md). Chạy khi
 
 | Phiên bản | Ngày | Người sửa | Commit | Thay đổi |
 |---|---|---|---|---|
-| 1.0 | 25/11/2026 | Han Dao | — | Kế hoạch, 33 ca UI đã chạy (31 đạt), 10 ca backend viết sẵn, 7 lỗi / phát hiện |
+| 1.0 | 25/11/2026 | Han Dao | 273d6b3 | Kế hoạch, 33 ca UI đã chạy (31 đạt), 10 ca backend viết sẵn, 7 lỗi / phát hiện |
+| 1.1 | 26/11/2026 | Han Dao | — | Thêm DEF-LIM-08 (màn sau eKYC luôn hiện thẻ tín dụng) từ X01 F-02 |
 
 ### Phê duyệt
 
