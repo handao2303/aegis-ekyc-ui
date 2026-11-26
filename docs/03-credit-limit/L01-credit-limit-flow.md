@@ -135,7 +135,7 @@ sequenceDiagram
     end
 ```
 
-Nội dung SMS/App hiện là bản giữ chỗ, chờ Risk/Legal/CSKH duyệt; Notification Service thật chưa sẵn sàng (DEP-07, SCRUM-54).
+Nội dung SMS/App hiện là bản giữ chỗ, chờ Risk/Legal/CSKH duyệt; Notification Service thật chưa sẵn sàng (DEP-07, SCRUM-54). Dự thảo mẫu thông báo: [L08 §4.3](L08-compliance-terms.md).
 
 ## 6. Bản đồ màn hình
 
