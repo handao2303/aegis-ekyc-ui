@@ -5,7 +5,7 @@
 | Mã tài liệu | AEG-REC-R07 |
 | Phiên bản | 0.2 |
 | Ngày phát hành | 26/11/2026 |
-| Trạng thái | ⛔ Kế hoạch xong · chưa chạy được: chưa có `reconciliation-service` và sandbox đối tác |
+| Trạng thái | ⛔ Kế hoạch xong · `reconciliation-service` đã có (56/56 test, R04 §4) · SIT chưa chạy được vì chưa có sandbox đối tác |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
 | Người duyệt | QA Lead · Tech Lead · Kế toán trưởng · Product Owner – chưa duyệt |

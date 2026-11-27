@@ -33,7 +33,7 @@ Cách viết yêu cầu theo ISO/IEC/IEEE 29148:2018: mỗi yêu cầu một câ
 | BR-REC-09 | Dashboard KPI vận hành | Should | R01 §7 | REC-01 | Chưa có |
 | BR-REC-10 | Truy vết từ giao dịch nguồn tới GL và báo cáo | Should | R01 §5 | REC-05 (4 bước) | Chưa có (SCRUM-50) |
 
-Module 2 hiện **chỉ có UI mẫu chạy dữ liệu hư cấu**, chưa có `reconciliation-service`. Mọi yêu cầu xử lý dữ liệu (nạp file, engine khớp, hạch toán) chưa kiểm thử được – xem R04 §2.
+Khi lập tài liệu (24/11), Module 2 **chỉ có UI mẫu chạy dữ liệu hư cấu**. Từ 26/11 đã có `reconciliation-service` ([services/reconciliation](../../services/reconciliation/README.md)): nạp file, engine khớp, hạch toán đã kiểm bằng 56 test tự động – xem R04 §4.
 
 ## 2. Bản đồ tài liệu Module 2
 

@@ -33,7 +33,7 @@
 | Từ điển dữ liệu, thời hạn lưu | ✅ D01 | ✅ R05 §3, §4.3 | ✅ L05 §3, §4 |
 | Kiểm soát tài liệu (phiên bản, lịch sử, phê duyệt) | ✅ | ✅ | ✅ |
 | Đối chiếu chuẩn quốc tế | ✅ Q01 | ✅ Q01 v1.1 §2.2 (mới) | ✅ Q01 v1.1 §2.2 (mới) |
-| Backend chạy được + test tự động | ✅ `ekyc-service`, 57 test | ❌ chưa có `reconciliation-service` | ❌ chưa thấy `limit-service` (F-14) |
+| Backend chạy được + test tự động | ✅ `ekyc-service`, 59 test | ✅ `reconciliation-service`, 56 test (27/11) | ❌ chưa thấy `limit-service` (F-14) |
 
 **Kết luận phần tài liệu:** sau khi thêm R08, L08 và cập nhật Q01, cả 3 module có cùng bộ nội dung. Khác biệt còn lại **không phải tài liệu** mà là backend: Module 2 và 3 mới có UI mẫu và thiết kế đề xuất.
 
