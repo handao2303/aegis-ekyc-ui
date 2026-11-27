@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Mã tài liệu | AEG-REC-R02 |
-| Phiên bản | 0.9 |
+| Phiên bản | 0.10 |
 | Ngày phát hành | 27/11/2026 |
 | Trạng thái | 📝 Chờ Kế toán trưởng, PO và Compliance quyết định 9 điểm ở §3 |
 | Phân loại | Nội bộ |
@@ -42,7 +42,7 @@ Khi lập tài liệu (24/11), Module 2 **chỉ có UI mẫu chạy dữ liệu 
 | [R01](R01-reconciliation-flow.md) | Luồng tổng thể, trạng thái, sequence Maker-Checker, ERD truy vết |
 | **R02** (tài liệu này) | Điểm lệch so với baseline, yêu cầu bổ sung, dữ liệu cần thêm, RTM |
 | [R03](R03-ui-spec.md) | Đặc tả giao diện REC-01 → REC-06, có ảnh |
-| [R04](R04-test-plan-cases.md) | Kế hoạch kiểm thử, 25 test case giao diện, kết quả chạy trên UI mẫu, lỗi |
+| [R04](R04-test-plan-cases.md) | Kế hoạch kiểm thử và kết quả 3 vòng: 25 ca giao diện, 56 ca backend tự động (gồm TC-REC-B01 → B09), 4 luồng end-to-end, lỗi |
 | [R05](R05-api-data-dictionary.md) | Đặc tả API và từ điển dữ liệu đề xuất cho `reconciliation-service`; dữ liệu ở §5 được chi tiết hoá tại đây |
 | [R06](R06-nfr-kpi.md) | Yêu cầu phi chức năng NFR-REC-01 → 23 và từ điển KPI |
 | [R07](R07-sit-perf-uat.md) | Kế hoạch SIT, kiểm thử hiệu năng, bộ UAT và biên bản nghiệm thu |
@@ -198,6 +198,7 @@ Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 | 0.7 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 | 0.8 | 27/11/2026 | Han Dao | — | Ghi chú §1: từ 26/11 đã có `reconciliation-service`, các yêu cầu xử lý dữ liệu đã kiểm bằng test tự động (R04 §4) |
 | 0.9 | 27/11/2026 | Han Dao | — | Cột Backend §1 cập nhật theo `reconciliation-service`: 8 BR có bằng chứng test, BR-REC-04 (1:N) và BR-REC-05 (mô hình AI) còn một phần |
+| 0.10 | 27/11/2026 | Han Dao | — | §2: dòng R04 ghi đủ 3 vòng kiểm thử (UI, backend, end-to-end) |
 
 ### Phê duyệt
 
