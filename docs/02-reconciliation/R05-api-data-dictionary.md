@@ -16,7 +16,7 @@
 | Nguồn | BAS-BRD-v1.2 §3.4 (mô hình dữ liệu) qua [R02 §5](R02-requirements-gap-rtm.md) · ERD [R01 §5](R01-reconciliation-flow.md) · 20 yêu cầu [R02 §4](R02-requirements-gap-rtm.md) · kiểu dữ liệu UI mẫu `src/ops/Reconciliation.tsx` |
 | Liên quan | [R01](R01-reconciliation-flow.md) luồng & trạng thái · [R03](R03-ui-spec.md) giao diện · [R04](R04-test-plan-cases.md) test case backend TC-REC-B01 → B09 · Module 1: [A03](../01-ekyc/1.6-api-data/A03-api-specification.md), [D01](../01-ekyc/1.6-api-data/D01-data-dictionary.md) (cùng quy ước) |
 
-> ⚠️ Tài liệu này là **thiết kế đề xuất để đội backend bắt đầu**, không mô tả hệ thống đang chạy. Tên trạng thái theo UI mẫu và R01 v1.1; các chỗ phụ thuộc quyết định của Kế toán trưởng (D-REC-01 → 09, [R02 §3](R02-requirements-gap-rtm.md)) được đánh dấu **[D-REC-xx]** và phải sửa theo kết quả quyết định. Thời hạn lưu trữ ở §4.3 cần Kế toán trưởng và Pháp chế xác nhận.
+> ⚠️ Tài liệu này là **thiết kế đề xuất**; bản hiện thực tham chiếu `reconciliation-service` ([services/reconciliation](../../services/reconciliation/README.md)) đã làm theo thiết kế này, phần bổ sung ghi ở lịch sử v0.3. Tên trạng thái theo UI mẫu và R01 v1.1; các chỗ phụ thuộc quyết định của Kế toán trưởng (D-REC-01 → 09, [R02 §3](R02-requirements-gap-rtm.md)) được đánh dấu **[D-REC-xx]** và phải sửa theo kết quả quyết định. Thời hạn lưu trữ ở §4.3 cần Kế toán trưởng và Pháp chế xác nhận.
 
 Dev dùng tài liệu này để dựng lược đồ và API; QA dùng để viết test API và chạy TC-REC-B01 → B09; FE dùng §7 để thay dữ liệu mẫu trong UI bằng lời gọi API.
 
