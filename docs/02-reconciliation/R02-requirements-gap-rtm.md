@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | Mã tài liệu | AEG-REC-R02 |
-| Phiên bản | 0.7 |
-| Ngày phát hành | 26/11/2026 |
+| Phiên bản | 0.8 |
+| Ngày phát hành | 27/11/2026 |
 | Trạng thái | 📝 Chờ Kế toán trưởng, PO và Compliance quyết định 9 điểm ở §3 |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
@@ -196,6 +196,7 @@ Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 | 0.5 | 25/11/2026 | Han Dao | — | Thêm R06 (NFR, KPI) và R07 (SIT, hiệu năng, UAT) vào bản đồ tài liệu §2 |
 | 0.6 | 26/11/2026 | Han Dao | — | Thêm R08 (tuân thủ) vào bản đồ tài liệu; REQ-REC-21 → 24 ở R08 §4 chờ duyệt |
 | 0.7 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+| 0.8 | 27/11/2026 | Han Dao | — | Ghi chú §1: từ 26/11 đã có `reconciliation-service`, các yêu cầu xử lý dữ liệu đã kiểm bằng test tự động (R04 §4) |
 
 ### Phê duyệt
 

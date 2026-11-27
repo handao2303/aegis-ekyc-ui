@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | Mã tài liệu | AEG-REC-R07 |
-| Phiên bản | 0.2 |
-| Ngày phát hành | 26/11/2026 |
+| Phiên bản | 0.3 |
+| Ngày phát hành | 27/11/2026 |
 | Trạng thái | ⛔ Kế hoạch xong · `reconciliation-service` đã có (56/56 test, R04 §4) · SIT chưa chạy được vì chưa có sandbox đối tác |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
@@ -258,6 +258,7 @@ Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 |---|---|---|---|---|
 | 0.1 | 25/11/2026 | Han Dao | — | Bản đầu: 9 giao diện tích hợp, 13 kịch bản SIT, 6 kịch bản hiệu năng, 18 kịch bản UAT (6 baseline + 12 bổ sung), dữ liệu UAT, mẫu biên bản nghiệm thu |
 | 0.2 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+| 0.3 | 27/11/2026 | Han Dao | — | Trạng thái: `reconciliation-service` đã có, SIT chờ sandbox đối tác |
 
 ### Phê duyệt
 

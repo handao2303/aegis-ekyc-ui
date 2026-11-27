@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | Mã tài liệu | AEG-GEN-Q01 |
-| Phiên bản | 1.2 |
-| Ngày phát hành | 26/11/2026 |
+| Phiên bản | 1.3 |
+| Ngày phát hành | 27/11/2026 |
 | Trạng thái | ✅ Tự đánh giá · chờ QA Lead, PO xem xét |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
@@ -112,6 +112,7 @@ Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 | 1.0 | 23/11/2026 | Han Dao | — | Đánh giá 22 tài liệu Module 1 |
 | 1.1 | 26/11/2026 | Han Dao | — | Thêm §2.2 đánh giá Module 2, 3 và X01; thêm chuẩn 25010, PCI DSS, OpenAPI, ISO 8583 vào §1; việc 11 → 13 |
 | 1.2 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+| 1.3 | 27/11/2026 | Han Dao | — | Dòng R07, L07: R07 chờ sandbox đối tác (đã có backend), L07 chờ `limit-service` |
 
 ### Phê duyệt
 

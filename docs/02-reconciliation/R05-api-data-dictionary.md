@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | Mã tài liệu | AEG-REC-R05 |
-| Phiên bản | 0.4 |
-| Ngày phát hành | 26/11/2026 |
+| Phiên bản | 0.5 |
+| Ngày phát hành | 27/11/2026 |
 | Trạng thái | ✅ Đã hiện thực bản tham chiếu `reconciliation-service` v1.0 ([services/reconciliation](../../services/reconciliation/README.md)), 56/56 test đạt (R04 §4). Thiết kế vẫn chờ Tech Lead và Kế toán trưởng xác nhận các chỗ **[D-REC-xx]** |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
@@ -588,6 +588,7 @@ Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 | 0.2 | 26/11/2026 | Han Dao | — | Payload `limit.authorization.processed` thêm `card_id`, giá trị `result` khớp L05 (X01 F-11); bảng nhật ký đổi tên `audit_event` (F-06) |
 | 0.3 | 26/11/2026 | Han Dao | — | Có bản hiện thực tham chiếu: 16 bảng (thêm `staff`, `config_changes`, `idempotency`, `limit_ledger`, `gl_approvals`, cột `channel` cho giao dịch nội bộ và `auth_id` cho bút toán từ Hạn mức), 40 endpoint gồm API-01 → 62 và cấu hình Maker-Checker |
 | 0.4 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+| 0.5 | 27/11/2026 | Han Dao | — | Khung cảnh báo: thiết kế đã được hiện thực ở `reconciliation-service` |
 
 ### Phê duyệt
 

@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | Mã tài liệu | AEG-REC-R04 |
-| Phiên bản | 1.6 |
-| Ngày phát hành | 26/11/2026 |
+| Phiên bản | 1.7 |
+| Ngày phát hành | 27/11/2026 |
 | Trạng thái | ✅ UI 25/25 đạt · ✅ backend 56/56 ca tự động đạt (gồm TC-REC-B01 → B09) · ✅ 4 luồng end-to-end UI ↔ service đạt · ⛔ còn chờ sandbox đối tác thật (SIT, R07) |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
@@ -192,6 +192,7 @@ Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 | 1.4 | 26/11/2026 | Han Dao | — | Hồi quy 26/11: 25/25 đạt |
 | 1.5 | 26/11/2026 | Han Dao | — | Vòng 3: có `reconciliation-service`; TC-REC-B01 → B09 (13 ca) và 43 ca bổ sung đạt (56/56); 4 luồng E2E qua UI; DEF-REC-07 → 09 đã sửa; hồi quy UI 25/25 |
 | 1.6 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+| 1.7 | 27/11/2026 | Han Dao | — | Bảng phạm vi: tách vòng 1–2 (chưa có backend) và vòng 3 (đã kiểm bằng `reconciliation-service`) |
 
 ### Phê duyệt
 

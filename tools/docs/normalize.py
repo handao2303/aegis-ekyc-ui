@@ -164,7 +164,7 @@ def normalize(path, idx):
         extra.append(l); i += 1
     if len(history) > 1 and vkey(history[0][0]) > vkey(history[-1][0]):
         history.reverse()
-    if history and history[-1][4] != FMT_NOTE and code != "G02":  # G02 viết theo mẫu mới từ đầu
+    if history and all(h[4] != FMT_NOTE for h in history) and code != "G02":  # G02 viết theo mẫu mới từ đầu
         history.append([bump(history[-1][0]), TODAY, "Han Dao", "—", FMT_NOTE])
     if not approval:
         approval = [["BA (soạn)", "Han Dao", TODAY, "Trình duyệt"], ["Product Owner", "", "", ""]]

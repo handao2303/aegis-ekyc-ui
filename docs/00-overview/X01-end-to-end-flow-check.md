@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | Mã tài liệu | AEG-GEN-X01 |
-| Phiên bản | 1.3 |
-| Ngày phát hành | 26/11/2026 |
+| Phiên bản | 1.4 |
+| Ngày phát hành | 27/11/2026 |
 | Trạng thái | 🔧 Đã sửa 6 điểm ngay trong tài liệu; 8 điểm chờ quyết định |
 | Phân loại | Nội bộ |
 | Tác giả | Han Dao (BA) |
@@ -35,7 +35,7 @@
 | Đối chiếu chuẩn quốc tế | ✅ Q01 | ✅ Q01 v1.1 §2.2 (mới) | ✅ Q01 v1.1 §2.2 (mới) |
 | Backend chạy được + test tự động | ✅ `ekyc-service`, 59 test | ✅ `reconciliation-service`, 56 test (27/11) | ❌ chưa thấy `limit-service` (F-14) |
 
-**Kết luận phần tài liệu:** sau khi thêm R08, L08 và cập nhật Q01, cả 3 module có cùng bộ nội dung. Khác biệt còn lại **không phải tài liệu** mà là backend: Module 2 và 3 mới có UI mẫu và thiết kế đề xuất.
+**Kết luận phần tài liệu:** sau khi thêm R08, L08 và cập nhật Q01, cả 3 module có cùng bộ nội dung. Khác biệt còn lại **không phải tài liệu** mà là backend: Module 2 đã có `reconciliation-service` (26/11); Module 3 mới có UI mẫu và thiết kế đề xuất.
 
 ## 2. Hành trình end-to-end
 
@@ -82,10 +82,10 @@ sequenceDiagram
 | 6 | Authorization, chống trùng, đồng thời, reversal | M3 | L01, L05, L06 | ✅ W1, W2 | ❌ | ⚠️ chờ D-LIM-02, 03 |
 | 7 | Smart Fallback: giữ tiền CASA, hạch toán | M3 ↔ CBS ↔ M2 | L05 §3.3, R05 | ✅ M1, W2 | ❌ | ⚠️ F-09 |
 | 8 | Boost, gian lận, thông báo | M3 ↔ Notification | L01, L05, L08 §4.3 | ✅ W3, W4, M2, M3 | ❌ | ⚠️ chờ D-LIM-01, ISS-03 |
-| 9 | Sự kiện sang Đối soát | M3 → M2 | L05 §5.6 = R05 §5.8 | — | ❌ | ✅ khớp payload (sau F-11) |
-| 10 | Nạp file đối tác, khớp, ngoại lệ | M2 | R01 → R05 | ✅ | ❌ | ⚠️ R08 CR-REC-10 |
-| 11 | Hạch toán GL, Maker-Checker | M2 → CBS | R01, R05, R07 IF-REC-07 | ✅ | ❌ | ❌ chưa có đặc tả hạch toán |
-| 12 | Đối chiếu chéo EOD | M2 ↔ M3 | R05 §5.7, L05 API-L54, KPI-09 | — | ❌ | ✅ thiết kế khớp hai phía |
+| 9 | Sự kiện sang Đối soát | M3 → M2 | L05 §5.6 = R05 §5.8 | — | 🟡 phía nhận có (consumer chống trùng `messageId`), phía phát chưa có | ✅ khớp payload (sau F-11) |
+| 10 | Nạp file đối tác, khớp, ngoại lệ | M2 | R01 → R05 | ✅ | ✅ `reconciliation-service` | ⚠️ R08 CR-REC-10 |
+| 11 | Hạch toán GL, Maker-Checker | M2 → CBS | R01, R05, R07 IF-REC-07 | ✅ | 🟡 bút toán + Maker-Checker có; đẩy vào sổ cái CBS chưa có | ❌ chưa có đặc tả hạch toán |
+| 12 | Đối chiếu chéo EOD | M2 ↔ M3 | R05 §5.7, L05 API-L54, KPI-09 | — | 🟡 phía M2 có, phía M3 chưa | ✅ thiết kế khớp hai phía |
 | 13 | KPI, báo cáo | M1, M2, M3 | C18, R06, L06 | ✅ | ✅ M1 | ✅ mã KPI theo BRD §1.9 |
 | 14 | Dữ liệu cá nhân, audit, che số | M1, M2, M3 | P01, D01, R08, L08 | ✅ | ✅ M1 | ⚠️ F-06, F-07 |
 
@@ -175,6 +175,7 @@ Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 | 1.1 | 26/11/2026 | Han Dao | — | Thêm §3.1 chạy thử hành trình trên app; cập nhật số liệu L04 vòng 2 |
 | 1.2 | 26/11/2026 | Han Dao | — | Cập nhật số liệu L04 (34/36) sau khi sửa DEF-LIM-03 |
 | 1.3 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
+| 1.4 | 27/11/2026 | Han Dao | — | Cập nhật sau khi có `reconciliation-service`: dòng Backend ở §1, kết luận §1, cột Backend chặng 9–12, ghi chú §3.1 |
 
 ### Phê duyệt
 

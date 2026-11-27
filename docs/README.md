@@ -94,8 +94,8 @@ flowchart LR
 | [A01 Tổng quan giải pháp](00-overview/A01-solution-overview.md) | SCRUM-69 | Context, Container, Sequence, Flowchart ×4 | ✅ v1.3 · mở rộng cho cả 3 module · dự án bắt đầu 15/11/2026 |
 | [C01 Nhật ký đồng bộ Jira](00-overview/C01-jira-hygiene-log.md) | SCRUM-70 | — | ✅ v1.2 · thêm quy ước cho Module 2, 3 (X01 F-14) |
 | [C03 Requirements Addendum v1.3-draft4 & RTM](00-overview/C03-requirements-addendum-v1.3.md) | SCRUM-72 | State | 📝 draft3 · chờ PO & Compliance duyệt |
-| [Q01 Đối chiếu chuẩn quốc tế](00-overview/Q01-standards-conformance.md) | SCRUM-69 | — | ✅ v1.2 · M1: 4 đạt · 9 một phần · M2, M3: 5 đạt · 4 một phần · 0 thiếu |
-| [X01 Kiểm tra luồng end-to-end 3 module](00-overview/X01-end-to-end-flow-check.md) | SCRUM-7, 8, 69 | Sequence | 🔧 v1.3 · 14 chặng · 14 điểm lệch (6 đã sửa, 8 chờ quyết định) · đã chạy thử trên app 26/11 |
+| [Q01 Đối chiếu chuẩn quốc tế](00-overview/Q01-standards-conformance.md) | SCRUM-69 | — | ✅ v1.3 · M1: 4 đạt · 9 một phần · M2, M3: 5 đạt · 4 một phần · 0 thiếu |
+| [X01 Kiểm tra luồng end-to-end 3 module](00-overview/X01-end-to-end-flow-check.md) | SCRUM-7, 8, 69 | Sequence | 🔧 v1.4 · 14 chặng · 14 điểm lệch (6 đã sửa, 8 chờ quyết định) · đã chạy thử trên app 26/11 |
 | [G01 Rà soát theo từng vai trò](00-overview/G01-role-reviews.md) | SCRUM-69 | — | ✅ v1.2 · 7 vai · 26 phát hiện mở · G-SE-01 đã sửa · bảng phê duyệt để trống có chủ đích |
 | [G02 Thuật ngữ và chữ viết tắt](00-overview/G02-glossary.md) | SCRUM-69 | — | ✅ v1.0 · nghiệp vụ, kỹ thuật, mã yêu cầu, ký hiệu trạng thái – dùng chung cho mọi tài liệu |
 
@@ -130,12 +130,12 @@ flowchart LR
 | Tài liệu | Jira | Diagram | Trạng thái |
 |---|---|---|---|
 | [R01 Luồng, trạng thái & kiểm soát](02-reconciliation/R01-reconciliation-flow.md) | SCRUM-7, 49, 50 | Flowchart ×2, State ×2, Sequence, ERD | ✅ v1.3 · Đặc tả + UI mẫu + `reconciliation-service` |
-| [R02 Yêu cầu bổ sung, điểm lệch baseline & RTM](02-reconciliation/R02-requirements-gap-rtm.md) | SCRUM-7, 23, 26, 50, 53 | State | 📝 v0.7 · 9 điểm chờ Kế toán trưởng quyết định · 20 yêu cầu |
+| [R02 Yêu cầu bổ sung, điểm lệch baseline & RTM](02-reconciliation/R02-requirements-gap-rtm.md) | SCRUM-7, 23, 26, 50, 53 | State | 📝 v0.8 · 9 điểm chờ Kế toán trưởng quyết định · 20 yêu cầu |
 | [R03 Đặc tả giao diện REC-01 → 06](02-reconciliation/R03-ui-spec.md) | SCRUM-49 | — | ✅ v1.4, có ảnh từng màn |
-| [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–3](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ v1.6 · UI 25/25 · backend 56/56 (gồm TC-REC-B01 → B09) · E2E 4/4 · 9 lỗi đã sửa, 0 mở |
-| [R05 Đặc tả API & từ điển dữ liệu](02-reconciliation/R05-api-data-dictionary.md) | SCRUM-7, 22–26, 50, 53 | ERD | ✅ v0.4 · đã hiện thực ở `services/reconciliation` · chờ Tech Lead & Kế toán trưởng chốt các chỗ [D-REC-xx] |
+| [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–3](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ v1.7 · UI 25/25 · backend 56/56 (gồm TC-REC-B01 → B09) · E2E 4/4 · 9 lỗi đã sửa, 0 mở |
+| [R05 Đặc tả API & từ điển dữ liệu](02-reconciliation/R05-api-data-dictionary.md) | SCRUM-7, 22–26, 50, 53 | ERD | ✅ v0.5 · đã hiện thực ở `services/reconciliation` · chờ Tech Lead & Kế toán trưởng chốt các chỗ [D-REC-xx] |
 | [R06 Yêu cầu phi chức năng & từ điển KPI](02-reconciliation/R06-nfr-kpi.md) | SCRUM-7, 53 | — | 📝 v0.3 · 23 NFR theo ISO/IEC 25010 · 5 KPI đã đối chiếu BRD §1.9, chờ Tech Lead & Ops chốt ngưỡng |
-| [R07 SIT, hiệu năng, UAT & biên bản nghiệm thu](02-reconciliation/R07-sit-perf-uat.md) | SCRUM-7, 22–26, 50, 53 | Flowchart ×2 | ⛔ v0.2 · 13 SIT · 6 hiệu năng · 18 UAT · backend đã có, chờ sandbox đối tác |
+| [R07 SIT, hiệu năng, UAT & biên bản nghiệm thu](02-reconciliation/R07-sit-perf-uat.md) | SCRUM-7, 22–26, 50, 53 | Flowchart ×2 | ⛔ v0.3 · 13 SIT · 6 hiệu năng · 18 UAT · backend đã có, chờ sandbox đối tác |
 | [R08 Tuân thủ, cơ sở pháp lý & dữ liệu cá nhân](02-reconciliation/R08-compliance-mapping.md) | SCRUM-7 | Flowchart | 📝 v0.3 · 12 yêu cầu tuân thủ (6 ✅ · 5 🟡 · 1 ❌) · REQ-REC-21 → 24 có tiêu chí nghiệm thu · chờ Pháp chế, Kế toán trưởng |
 
 ### Module 3 · Hạn mức
