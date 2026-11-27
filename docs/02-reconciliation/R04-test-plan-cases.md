@@ -37,7 +37,7 @@
 
 | Trong phạm vi | Ngoài phạm vi (vòng này) |
 |---|---|
-| 6 màn REC-01 → REC-06: hiển thị, điều hướng, quy tắc chặn trên giao diện | Nạp file thật, engine khớp, hạch toán vào sổ cái, hiệu năng – chưa có backend |
+| 6 màn REC-01 → REC-06: hiển thị, điều hướng, quy tắc chặn trên giao diện | Vòng 1–2: nạp file thật, engine khớp, hạch toán, hiệu năng – chưa có backend. Vòng 3 đã kiểm nạp file, engine, hạch toán bằng `reconciliation-service` (§4); còn ngoài phạm vi: hạch toán vào sổ cái Core Banking thật và hiệu năng |
 | Kiểm soát SoD, ngưỡng Maker-Checker, truy vết, trạng thái ngoại lệ | Đối chiếu chéo EOD với Hạn mức (SCRUM-53) |
 | | Phân quyền thật theo SSO – UI mẫu dùng ô "Đăng nhập UAT với vai trò" (3 người dùng) |
 

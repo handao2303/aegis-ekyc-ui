@@ -69,7 +69,7 @@ Hai module viết sau khi đã có quy ước ở §4, nên mỗi tài liệu đ
 | R04, L04 Kiểm thử UI | 29119-3 | ✅ | Phạm vi, kỹ thuật thiết kế ca, môi trường, tiêu chí vào / ra, ca có bước – mong đợi – thực tế – truy vết, kết quả chạy thật, lỗi có mức và cách tái hiện, độ phủ, phê duyệt | Chưa tách mức nghiêm trọng với mức ưu tiên (như T03) |
 | R05, L05 API, dữ liệu | OpenAPI 3.1, BABOK §10.15, PCI DSS | 🟡 | Quy ước, vai trò, SoD, ERD, từ điển trường có nguồn và mức PII, vòng đời, API, mã lỗi, sự kiện, ánh xạ UI → API | Chưa xuất file OpenAPI (`.yaml`) như mô tả bảng; thời hạn lưu còn là *đề xuất* |
 | R06, L06 NFR, KPI | 25010, 29148 | ✅ | NFR nhóm theo đặc tính 25010, ngưỡng đo được, nguồn baseline / đề xuất, cách kiểm; KPI theo BRD §1.9 có công thức và truy vấn kiểm chứng | — |
-| R07, L07 SIT, hiệu năng, UAT | 29119-3 | ✅ | Bản đồ tích hợp, kịch bản, tiêu chí vào / ra, mô hình tải, dữ liệu UAT, vai trò, biên bản ký, rủi ro kiểm thử | Chưa chạy được (chờ backend) – không phải thiếu tài liệu |
+| R07, L07 SIT, hiệu năng, UAT | 29119-3 | ✅ | Bản đồ tích hợp, kịch bản, tiêu chí vào / ra, mô hình tải, dữ liệu UAT, vai trò, biên bản ký, rủi ro kiểm thử | Chưa chạy được – R07 chờ sandbox đối tác (đã có `reconciliation-service`), L07 chờ `limit-service`. Không phải thiếu tài liệu |
 | R08, L08 Tuân thủ, điều khoản | ISO 29100, Luật 91/2025, PCI DSS | 🟡 | Phạm vi văn bản có cột *cần xác minh*, ma trận yêu cầu ↔ hiện trạng, phạm vi đồng ý, bên nhận dữ liệu, dự thảo điều khoản, câu hỏi Pháp chế | Toàn bộ số hiệu văn bản chưa được Pháp chế đối chiếu bản gốc |
 | X01 Kiểm tra luồng | 29148 §5.2.5, BABOK *Verify Requirements* | ✅ | Ma trận độ đầy đủ, hành trình 14 chặng, điểm lệch có bằng chứng và trạng thái | — |
 

@@ -122,7 +122,7 @@ sequenceDiagram
 | 6–8 Authorization, Smart Fallback, Boost, gian lận | `lim-screens.mjs`, 36 ca | 34 đạt · 2 không đạt chờ D-LIM-01, 03 | L04 vòng 2 |
 | 10–11 Đối soát, Maker-Checker | `rec-screens.mjs`, 25 ca | 25 đạt | R04 |
 
-Chặng 9, 12 chỉ có thiết kế, chưa chạy được vì chưa có backend Module 2, 3. Kết quả khẳng định F-01, F-02 là điểm đứt thật trên sản phẩm, không chỉ trên giấy.
+Chặng 9, 12 chỉ có thiết kế, chưa chạy được vì lúc chạy thử (26/11) chưa có backend Module 2, 3. Cuối ngày 26/11 Module 2 đã có `reconciliation-service` (R04 §4); Module 3 vẫn chưa có `limit-service`. Kết quả khẳng định F-01, F-02 là điểm đứt thật trên sản phẩm, không chỉ trên giấy.
 
 ## 4. Đề xuất phong bì sự kiện chung (F-03, F-05)
 

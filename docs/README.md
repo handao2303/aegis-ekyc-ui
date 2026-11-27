@@ -135,7 +135,7 @@ flowchart LR
 | [R04 Kiểm thử: kế hoạch, test case, kết quả vòng 1–3](02-reconciliation/R04-test-plan-cases.md) | SCRUM-7, 49 | — | ✅ v1.6 · UI 25/25 · backend 56/56 (gồm TC-REC-B01 → B09) · E2E 4/4 · 9 lỗi đã sửa, 0 mở |
 | [R05 Đặc tả API & từ điển dữ liệu](02-reconciliation/R05-api-data-dictionary.md) | SCRUM-7, 22–26, 50, 53 | ERD | ✅ v0.4 · đã hiện thực ở `services/reconciliation` · chờ Tech Lead & Kế toán trưởng chốt các chỗ [D-REC-xx] |
 | [R06 Yêu cầu phi chức năng & từ điển KPI](02-reconciliation/R06-nfr-kpi.md) | SCRUM-7, 53 | — | 📝 v0.3 · 23 NFR theo ISO/IEC 25010 · 5 KPI đã đối chiếu BRD §1.9, chờ Tech Lead & Ops chốt ngưỡng |
-| [R07 SIT, hiệu năng, UAT & biên bản nghiệm thu](02-reconciliation/R07-sit-perf-uat.md) | SCRUM-7, 22–26, 50, 53 | Flowchart ×2 | ⛔ v0.2 · 13 SIT · 6 hiệu năng · 18 UAT, chờ backend và sandbox đối tác |
+| [R07 SIT, hiệu năng, UAT & biên bản nghiệm thu](02-reconciliation/R07-sit-perf-uat.md) | SCRUM-7, 22–26, 50, 53 | Flowchart ×2 | ⛔ v0.2 · 13 SIT · 6 hiệu năng · 18 UAT · backend đã có, chờ sandbox đối tác |
 | [R08 Tuân thủ, cơ sở pháp lý & dữ liệu cá nhân](02-reconciliation/R08-compliance-mapping.md) | SCRUM-7 | Flowchart | 📝 v0.3 · 12 yêu cầu tuân thủ (6 ✅ · 5 🟡 · 1 ❌) · REQ-REC-21 → 24 có tiêu chí nghiệm thu · chờ Pháp chế, Kế toán trưởng |
 
 ### Module 3 · Hạn mức
