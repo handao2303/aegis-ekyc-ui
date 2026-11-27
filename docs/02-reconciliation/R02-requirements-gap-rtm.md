@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Mã tài liệu | AEG-REC-R02 |
-| Phiên bản | 0.8 |
+| Phiên bản | 0.9 |
 | Ngày phát hành | 27/11/2026 |
 | Trạng thái | 📝 Chờ Kế toán trưởng, PO và Compliance quyết định 9 điểm ở §3 |
 | Phân loại | Nội bộ |
@@ -20,18 +20,18 @@ Cách viết yêu cầu theo ISO/IEC/IEEE 29148:2018: mỗi yêu cầu một câ
 
 ## 1. Phạm vi baseline và mức độ đáp ứng hiện tại
 
-| BR | Nội dung (rút gọn) | Ưu tiên | Đặc tả | UI mẫu | Backend |
+| BR | Nội dung (rút gọn) | Ưu tiên | Đặc tả | UI mẫu | Backend (27/11) |
 |---|---|---|---|---|---|
-| BR-REC-01 | Nạp và chuẩn hoá nhiều nguồn (ISO 20022 camt.053/054, Visa BASE II/TC33, Mastercard IPM, Napas) | Must | R01 §1 | Bảng trạng thái nạp nguồn (REC-01) | Chưa có |
-| BR-REC-02 | Kế toán tự cấu hình Matching Rule no-code | Must | R01 §2 | REC-02, REC-03 | Chưa có |
-| BR-REC-03 | Exact theo `reference_no + amount + currency`; Fuzzy weighted scoring, ngưỡng ≥ 0.95 | Must | R01 §1 | Chỉ hiển thị loại quy tắc | Chưa có |
-| BR-REC-04 | N:1 / 1:N, subset-sum có giới hạn thời gian | Should | R01 §1 | Quy tắc MR-003 mẫu | Chưa có |
-| BR-REC-05 | Top-3 nguyên nhân kèm xác suất (Explainable AI) | Should | R01 §3 | REC-04, REC-05 | Chưa có |
-| BR-REC-06 | GLEntry hạch toán kép, bất biến | Must | R01 §4 | Một cặp Nợ/Có mỗi bút toán | Chưa có |
-| BR-REC-07 | Điều chỉnh > 50 triệu bắt buộc Maker-Checker | Must | R01 §4 | REC-05, REC-06 | Chưa có |
-| BR-REC-08 | Người cấu hình rule không được duyệt Exception giá trị lớn (SoD) | Must | R01 §2 (hiểu khác – xem D-REC-04) | REC-06 chặn người tạo quy tắc duyệt bút toán > 50 triệu sinh từ quy tắc đó (REQ-REC-07) | Chưa có |
-| BR-REC-09 | Dashboard KPI vận hành | Should | R01 §7 | REC-01 | Chưa có |
-| BR-REC-10 | Truy vết từ giao dịch nguồn tới GL và báo cáo | Should | R01 §5 | REC-05 (4 bước) | Chưa có (SCRUM-50) |
+| BR-REC-01 | Nạp và chuẩn hoá nhiều nguồn (ISO 20022 camt.053/054, Visa BASE II/TC33, Mastercard IPM, Napas) | Must | R01 §1 | Bảng trạng thái nạp nguồn (REC-01) | ✅ Nạp CSV, JSON, ISO 20022 camt.053/054; cách ly, chống trùng (TC-REC-B01, B02) |
+| BR-REC-02 | Kế toán tự cấu hình Matching Rule no-code | Must | R01 §2 | REC-02, REC-03 | ✅ Quy tắc có version, duyệt khác người tạo (API-10 → 17) |
+| BR-REC-03 | Exact theo `reference_no + amount + currency`; Fuzzy weighted scoring, ngưỡng ≥ 0.95 | Must | R01 §1 | Chỉ hiển thị loại quy tắc | ✅ EXACT rồi FUZZY theo ngưỡng / khoảng cách (TC-REC-B03, B04) |
+| BR-REC-04 | N:1 / 1:N, subset-sum có giới hạn thời gian | Should | R01 §1 | Quy tắc MR-003 mẫu | 🟡 N:1 có subset-sum giới hạn thời gian (TC-REC-B05); 1:N chưa có |
+| BR-REC-05 | Top-3 nguyên nhân kèm xác suất (Explainable AI) | Should | R01 §3 | REC-04, REC-05 | 🟡 Top-3 có xác suất, nhưng do luật viết tay – chưa có mô hình AI (G01 G-CO-04) |
+| BR-REC-06 | GLEntry hạch toán kép, bất biến | Must | R01 §4 | Một cặp Nợ/Có mỗi bút toán | ✅ Nợ = Có, bút toán POSTED bất biến bằng trigger (TC-REC-B06) |
+| BR-REC-07 | Điều chỉnh > 50 triệu bắt buộc Maker-Checker | Must | R01 §4 | REC-05, REC-06 | ✅ > 50 triệu chờ Checker, SoD-1 (R04 §4.2) |
+| BR-REC-08 | Người cấu hình rule không được duyệt Exception giá trị lớn (SoD) | Must | R01 §2 (hiểu khác – xem D-REC-04) | REC-06 chặn người tạo quy tắc duyệt bút toán > 50 triệu sinh từ quy tắc đó (REQ-REC-07) | ✅ SoD-2 kiểm ở server (TC-REC-B07) |
+| BR-REC-09 | Dashboard KPI vận hành | Should | R01 §7 | REC-01 | ✅ API KPI, CSV, nguyên nhân (API-50 → 52); xu hướng theo ngày chưa có |
+| BR-REC-10 | Truy vết từ giao dịch nguồn tới GL và báo cáo | Should | R01 §5 | REC-05 (4 bước) | ✅ API truy vết có kiểm toàn vẹn (TC-REC-B08, SCRUM-50) |
 
 Khi lập tài liệu (24/11), Module 2 **chỉ có UI mẫu chạy dữ liệu hư cấu**. Từ 26/11 đã có `reconciliation-service` ([services/reconciliation](../../services/reconciliation/README.md)): nạp file, engine khớp, hạch toán đã kiểm bằng 56 test tự động – xem R04 §4.
 
@@ -197,6 +197,7 @@ Chuẩn quốc tế: xem trường *Chuẩn tham chiếu* ở đầu trang.
 | 0.6 | 26/11/2026 | Han Dao | — | Thêm R08 (tuân thủ) vào bản đồ tài liệu; REQ-REC-21 → 24 ở R08 §4 chờ duyệt |
 | 0.7 | 26/11/2026 | Han Dao | — | Chuẩn hoá cấu trúc theo ISO/IEC/IEEE 15289: khối thuộc tính đầu trang, tài liệu tham chiếu, thuật ngữ dùng chung (G02), mục kiểm soát tài liệu thống nhất |
 | 0.8 | 27/11/2026 | Han Dao | — | Ghi chú §1: từ 26/11 đã có `reconciliation-service`, các yêu cầu xử lý dữ liệu đã kiểm bằng test tự động (R04 §4) |
+| 0.9 | 27/11/2026 | Han Dao | — | Cột Backend §1 cập nhật theo `reconciliation-service`: 8 BR có bằng chứng test, BR-REC-04 (1:N) và BR-REC-05 (mô hình AI) còn một phần |
 
 ### Phê duyệt
 
