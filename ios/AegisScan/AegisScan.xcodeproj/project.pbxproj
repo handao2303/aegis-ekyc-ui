@@ -7,14 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BF571BAAECC67B52ACCE688 /* FaceCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59AB41C81B5B5B5DB9321B99 /* FaceCamera.swift */; };
 		2C81A7DE4A78B9E95C93BF0C /* ChipReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3705D93F07A3E7403B04F7 /* ChipReader.swift */; };
 		2D8A010453011727F8DB9499 /* MRZCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD5201829C447AC0062A0EB /* MRZCamera.swift */; };
 		71E01854EF3AED0525B83CCA /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1A04A46C183213E5EE9C52 /* Theme.swift */; };
 		80DA97934C2E518CB7D9482D /* Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351C589C4BA65A270404AC92 /* Flow.swift */; };
+		90154847E7341074847F5DF7 /* Mascot3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77475FE9AB3F802814553882 /* Mascot3D.swift */; };
 		A123A8472A35E4E4D4B1FDA2 /* NFCPassportReader in Frameworks */ = {isa = PBXBuildFile; productRef = C19D8F6CF74446F688ACFC48 /* NFCPassportReader */; };
+		A2EEAA59F1BC4459DD80D555 /* MascotRenderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A7450438D53FEF78F1AD0 /* MascotRenderTests.swift */; };
+		B0EA4660175E8247B55F78F3 /* FaceMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B044E3CF55D903A8CECDF61C /* FaceMatch.swift */; };
 		B54A79794EA04038070FB9AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B85A3C29B7A41C43E8392A7 /* Assets.xcassets */; };
+		BB84CDB6D34A69259051AF5A /* Liveness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F92877EDB37BA84E24FE345 /* Liveness.swift */; };
 		C7353BC37C9C0E12F78B06A4 /* MRZ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 929FB159172042E650B4EED8 /* MRZ.swift */; };
 		E75312BACCF228D126CD71BB /* MRZTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0465625A574ECB69D2DAF867 /* MRZTests.swift */; };
+		E9CF63DFF7E8BFCD730C6895 /* FaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFBD5AD0245192C3B39D3EF /* FaceTests.swift */; };
+		F67837939DF46BD4F80C9BE7 /* FaceViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C57CCBC3579B1B66F64928C /* FaceViews.swift */; };
+		F8174816F013C01BC7D52FA2 /* FaceGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D84A6BCF4ABFF55A72AB5EC /* FaceGuide.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,11 +39,19 @@
 		02A3DA2163ED1BD990C23252 /* AegisScan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AegisScan.entitlements; sourceTree = "<group>"; };
 		0465625A574ECB69D2DAF867 /* MRZTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZTests.swift; sourceTree = "<group>"; };
 		04C513704E59D1989599B2D3 /* AegisScanTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AegisScanTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C57CCBC3579B1B66F64928C /* FaceViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceViews.swift; sourceTree = "<group>"; };
+		239A7450438D53FEF78F1AD0 /* MascotRenderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotRenderTests.swift; sourceTree = "<group>"; };
 		351C589C4BA65A270404AC92 /* Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flow.swift; sourceTree = "<group>"; };
+		4F92877EDB37BA84E24FE345 /* Liveness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Liveness.swift; sourceTree = "<group>"; };
+		59AB41C81B5B5B5DB9321B99 /* FaceCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceCamera.swift; sourceTree = "<group>"; };
 		5BD5201829C447AC0062A0EB /* MRZCamera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZCamera.swift; sourceTree = "<group>"; };
+		77475FE9AB3F802814553882 /* Mascot3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mascot3D.swift; sourceTree = "<group>"; };
+		7D84A6BCF4ABFF55A72AB5EC /* FaceGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceGuide.swift; sourceTree = "<group>"; };
 		899FED50C9D0AC33F245D795 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		929FB159172042E650B4EED8 /* MRZ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MRZ.swift; sourceTree = "<group>"; };
 		9B85A3C29B7A41C43E8392A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B044E3CF55D903A8CECDF61C /* FaceMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceMatch.swift; sourceTree = "<group>"; };
+		CBFBD5AD0245192C3B39D3EF /* FaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceTests.swift; sourceTree = "<group>"; };
 		CF54B88DDCD455163C2A30FB /* AegisScan.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AegisScan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA3705D93F07A3E7403B04F7 /* ChipReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipReader.swift; sourceTree = "<group>"; };
 		EA1A04A46C183213E5EE9C52 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -56,6 +72,8 @@
 		25291FD377DC11E7E1F7BC7C /* AegisScanTests */ = {
 			isa = PBXGroup;
 			children = (
+				CBFBD5AD0245192C3B39D3EF /* FaceTests.swift */,
+				239A7450438D53FEF78F1AD0 /* MascotRenderTests.swift */,
 				0465625A574ECB69D2DAF867 /* MRZTests.swift */,
 			);
 			path = AegisScanTests;
@@ -85,7 +103,10 @@
 		74763CCB8F6998F0C6864D5F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7D84A6BCF4ABFF55A72AB5EC /* FaceGuide.swift */,
+				1C57CCBC3579B1B66F64928C /* FaceViews.swift */,
 				351C589C4BA65A270404AC92 /* Flow.swift */,
+				77475FE9AB3F802814553882 /* Mascot3D.swift */,
 				EA1A04A46C183213E5EE9C52 /* Theme.swift */,
 			);
 			path = Views;
@@ -104,6 +125,9 @@
 			isa = PBXGroup;
 			children = (
 				DA3705D93F07A3E7403B04F7 /* ChipReader.swift */,
+				59AB41C81B5B5B5DB9321B99 /* FaceCamera.swift */,
+				B044E3CF55D903A8CECDF61C /* FaceMatch.swift */,
+				4F92877EDB37BA84E24FE345 /* Liveness.swift */,
 				929FB159172042E650B4EED8 /* MRZ.swift */,
 				5BD5201829C447AC0062A0EB /* MRZCamera.swift */,
 			);
@@ -204,7 +228,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9CF63DFF7E8BFCD730C6895 /* FaceTests.swift in Sources */,
 				E75312BACCF228D126CD71BB /* MRZTests.swift in Sources */,
+				A2EEAA59F1BC4459DD80D555 /* MascotRenderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,9 +239,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C81A7DE4A78B9E95C93BF0C /* ChipReader.swift in Sources */,
+				1BF571BAAECC67B52ACCE688 /* FaceCamera.swift in Sources */,
+				F8174816F013C01BC7D52FA2 /* FaceGuide.swift in Sources */,
+				B0EA4660175E8247B55F78F3 /* FaceMatch.swift in Sources */,
+				F67837939DF46BD4F80C9BE7 /* FaceViews.swift in Sources */,
 				80DA97934C2E518CB7D9482D /* Flow.swift in Sources */,
+				BB84CDB6D34A69259051AF5A /* Liveness.swift in Sources */,
 				C7353BC37C9C0E12F78B06A4 /* MRZ.swift in Sources */,
 				2D8A010453011727F8DB9499 /* MRZCamera.swift in Sources */,
+				90154847E7341074847F5DF7 /* Mascot3D.swift in Sources */,
 				71E01854EF3AED0525B83CCA /* Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

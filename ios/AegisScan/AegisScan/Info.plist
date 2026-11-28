@@ -23,7 +23,7 @@
 	<key>NFCReaderUsageDescription</key>
 	<string>Aegis dùng NFC để đọc chip trên CCCD gắn chip hoặc hộ chiếu điện tử.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Aegis dùng camera để đọc dòng MRZ trên CCCD hoặc hộ chiếu. Ảnh không được lưu hay gửi đi.</string>
+	<string>Aegis dùng camera để đọc dòng MRZ trên CCCD hoặc hộ chiếu và chụp ảnh khuôn mặt để so với ảnh trong chip. Ảnh chỉ xử lý trên máy, không được lưu hay gửi đi.</string>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>

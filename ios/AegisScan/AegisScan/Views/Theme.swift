@@ -180,7 +180,7 @@ struct StepBar: View {
     @EnvironmentObject var lang: Lang
     let step: Int
     var onDark = false
-    private var names: [String] { [lang.t("Giấy tờ", "Document"), lang.t("Quét MRZ", "Scan MRZ"), lang.t("Đọc chip", "Read chip"), lang.t("Kết quả", "Result")] }
+    private var names: [String] { [lang.t("Giấy tờ", "Document"), lang.t("Quét MRZ", "Scan MRZ"), lang.t("Đọc chip", "Read chip"), lang.t("Khuôn mặt", "Face"), lang.t("Kết quả", "Result")] }
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
