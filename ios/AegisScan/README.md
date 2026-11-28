@@ -4,7 +4,8 @@ Native iPhone app that reads a **Vietnamese chip ID card (CCCD)** or an **e-pass
 
 1. **Scan the MRZ** with the rear camera (Apple Vision, on-device). TD1 for ID cards (3 × 30), TD3 for passports (2 × 44), with check-digit validation and OCR clean-up. Manual entry is available.
 2. **Read the chip over NFC** (ICAO 9303: PACE with BAC fallback) using [NFCPassportReader](https://github.com/AndyQ/NFCPassportReader) 3.0.1 (MIT): DG1 (MRZ data), DG2 (face photo), SOD, DG14, plus DG13 for CCCD (Vietnam-specific fields) or DG11 for passports.
-3. **Show the result**: chip photo, identity data, and security checks (access method, data integrity against SOD hashes, CSCA signature, Chip Authentication).
+3. **Face check**, guided by a 3D shield mascot that acts out each step. The front camera first checks the pose: face centred in the circle, right distance, enough light, one person only, head level. Then comes an active liveness test: a blink plus a random head turn. The turn must be held for 2 frames and followed by facing forward again. The limit is 30 seconds, and the test restarts if the face is lost or jumps. Finally the app keeps the 3 sharpest frontal, eyes-open frames, using Vision face capture quality. Faces are levelled by the eye line before they are compared with the chip photo (DG2). With no chip photo (no-NFC build), you can photograph the portrait printed on the front of the document; that source can never auto-match, so the best outcome is "Needs review" (C11 RULE-EKYC-14).
+4. **Show the result**: chip photo, identity data, biometric outcome (match ≥ 80% · review 60–79% · no match < 60%), and security checks (access method, data integrity against SOD hashes, CSCA signature, Chip Authentication).
 
 Everything runs on the device. Nothing is stored or uploaded.
 
@@ -33,7 +34,7 @@ Requirements: a Mac with Xcode, an iPhone 7 or later (iOS 16+), a USB cable.
 
 - **CSCA signature**: needs a master list of country signing certificates (`PassportReader(masterListURL:)`). Without it, the app shows "Not checked". Banks also verify CCCD chips through the national system (C06); see `docs/01-ekyc/1.2-compliance-legal/C11-biometric-source.md`.
 - **DG13 labels** follow the commonly used layout and must be checked against the official specification.
-- **No liveness / face match** yet: compare a selfie with the DG2 photo in the next step.
+- **Liveness and face match are a prototype.** They run on Apple Vision on the device. Apple Vision has no dedicated face-recognition model, so the match compares generic image feature prints of the two face crops. The thresholds are not calibrated on real data and there is no certified presentation-attack detection (ISO/IEC 30107-3 / iBeta). A bank needs a certified eKYC vendor for this step (C14).
 
 ## Develop
 
@@ -51,5 +52,11 @@ The Simulator has no camera or NFC: use manual entry ("Fill in sample data") and
 | `AegisScan/Core/MRZ.swift` | TD1/TD3 parser, check digits, OCR clean-up, BAC key |
 | `AegisScan/Core/MRZCamera.swift` | AVFoundation + Vision live MRZ scanning |
 | `AegisScan/Core/ChipReader.swift` | NFC read, result model, DG13 decoder, error messages |
+| `AegisScan/Core/Liveness.swift` | Liveness challenges and state machine (pure logic) |
+| `AegisScan/Core/FaceCamera.swift` | Front/back camera + Vision face landmarks, auto-capture |
+| `AegisScan/Core/FaceMatch.swift` | Face crop, feature-print similarity, match/review/no-match decision |
+| `AegisScan/Views/Mascot3D.swift` | 3D shield mascot (SceneKit) and its animations |
 | `AegisScan/Views/` | SwiftUI screens (Aurora theme, VI/EN) |
 | `AegisScanTests/MRZTests.swift` | Unit tests with ICAO 9303 sample MRZs |
+| `AegisScanTests/FaceTests.swift` | Liveness state machine, pose hints and decision thresholds |
+| `AegisScanTests/MascotRenderTests.swift` | Renders mascot poses to PNG (`TEST_RUNNER_MASCOT_OUT=<dir>`) |

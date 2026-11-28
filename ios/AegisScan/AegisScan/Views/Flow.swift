@@ -18,14 +18,20 @@ enum Route: Hashable {
     case scan(DocumentKind)
     case confirm(DocumentKind, MRZData?)
     case chip(DocumentKind, MRZData)
+    case face
+    case selfie
+    case portrait
     case result
 }
 
-/// Giữ luồng điều hướng và kết quả chip (không lưu xuống máy)
+/// Giữ luồng điều hướng và kết quả chip, khuôn mặt (không lưu xuống máy)
 final class Flow: ObservableObject {
     @Published var path: [Route] = []
     @Published var result: ChipResult?
-    func restart() { result = nil; path = [] }
+    /// Ảnh chân dung in trên mặt trước giấy tờ – chỉ dùng khi không có ảnh chip
+    @Published var printedPortrait: UIImage?
+    @Published var biometric: BiometricResult?
+    func restart() { result = nil; printedPortrait = nil; biometric = nil; path = [] }
 }
 
 struct RootView: View {
@@ -38,6 +44,9 @@ struct RootView: View {
                     case .scan(let k): ScanView(kind: k)
                     case .confirm(let k, let m): ConfirmView(kind: k, scanned: m)
                     case .chip(let k, let m): ChipView(kind: k, mrz: m)
+                    case .face: FaceIntroView()
+                    case .selfie: SelfieView()
+                    case .portrait: PortraitCaptureView()
                     case .result: ResultView()
                     }
                 }
@@ -55,8 +64,13 @@ struct HomeView: View {
 
     var body: some View {
         Screen(title: "Aegis Bank", step: 0, showBack: false) {
-            ScanIllustration()
-                .padding(.bottom, 28)
+            ZStack {
+                RoundedRectangle(cornerRadius: 28, style: .continuous).fill(Theme.soft)
+                Mascot3D(action: .idle)
+            }
+            .frame(height: 230)
+            .accessibilityHidden(true)
+            .padding(.bottom, 28)
             PageTitle(
                 title: lang.t("Chọn giấy tờ để tiếp tục", "Select a document to continue"),
                 subtitle: lang.t("Dùng giấy tờ gốc, còn hạn, có gắn chip để xác minh danh tính của bạn.", "Use an original, valid chip document to verify your identity.")
@@ -347,14 +361,16 @@ struct ChipView: View {
             if !ChipReader.isAvailable {
                 SecondaryButton(title: lang.t("Xem kết quả mẫu", "View a sample result"), systemImage: "doc.text.magnifyingglass") {
                     flow.result = .sample(kind: kind)
-                    flow.path.append(.result)
+                    flow.biometric = nil
+                    flow.path.append(.face)
                 }
             }
         }
         .onChange(of: reader.doneToken) { _ in
             if case .done(let r) = reader.phase {
                 flow.result = r
-                flow.path.append(.result)
+                flow.biometric = nil
+                flow.path.append(.face)
             }
         }
     }
@@ -380,7 +396,7 @@ struct ResultView: View {
     @EnvironmentObject var flow: Flow
 
     var body: some View {
-        Screen(title: lang.t("Kết quả", "Result"), step: 3, showBack: false) {
+        Screen(title: lang.t("Kết quả", "Result"), step: 4, showBack: false) {
             if let r = flow.result {
                 content(r)
             }
@@ -432,6 +448,8 @@ struct ResultView: View {
             .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
         )
         .padding(.bottom, 24)
+
+        if let b = flow.biometric { BiometricSection(b: b) }
 
         section(lang.t("Thông tin trong chip", "Chip data"))
         Card {

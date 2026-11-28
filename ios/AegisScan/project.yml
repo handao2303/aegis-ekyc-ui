@@ -31,7 +31,7 @@ targets:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         UIRequiresFullScreen: true
-        NSCameraUsageDescription: Aegis dùng camera để đọc dòng MRZ trên CCCD hoặc hộ chiếu. Ảnh không được lưu hay gửi đi.
+        NSCameraUsageDescription: Aegis dùng camera để đọc dòng MRZ trên CCCD hoặc hộ chiếu và chụp ảnh khuôn mặt để so với ảnh trong chip. Ảnh chỉ xử lý trên máy, không được lưu hay gửi đi.
         NFCReaderUsageDescription: Aegis dùng NFC để đọc chip trên CCCD gắn chip hoặc hộ chiếu điện tử.
         com.apple.developer.nfc.readersession.iso7816.select-identifiers:
           - A0000002471001
